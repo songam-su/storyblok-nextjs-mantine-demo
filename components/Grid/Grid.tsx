@@ -1,19 +1,13 @@
-import { Box } from '@mantine/core'
-import { ReactNode } from 'react'
-import styles from './Grid.module.scss'
+import { Box } from '@mantine/core';
+import { ReactNode } from 'react';
+import styles from './Grid.module.scss';
 
 type Props = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 const Grid = (props: Props) => {
-  return (
-    <Box
-      className={styles.box}
-    >
-      {props.children}
-    </Box>
-  )
-}
+  return <Box className={styles.box}>{props.children}</Box>;
+};
 
-export default Grid
+export default Grid;

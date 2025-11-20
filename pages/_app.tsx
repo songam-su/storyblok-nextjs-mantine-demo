@@ -14,26 +14,26 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <Component {...pageProps} />
     </MantineProvider>
-  )
+  );
 }
 
 const getTheme = () => {
   return createTheme({
-  breakpoints: {
-    xs: '500px',
-    sm: '800px',
-    md: '1000px',
-    lg: '1200px',
-    xl: '1400px',
-  },
-  components: {
-    Button: {
-      styles: {
-        root: { borderRadius: '8px' }, // global override
+    breakpoints: {
+      xs: '500px',
+      sm: '800px',
+      md: '1000px',
+      lg: '1200px',
+      xl: '1400px',
+    },
+    components: {
+      Button: {
+        styles: {
+          root: { borderRadius: '8px' }, // global override
+        },
       },
     },
-  },
-});
-}
+  });
+};
 
-export default MyApp
+export default MyApp;
