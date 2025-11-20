@@ -1,4 +1,9 @@
 module.exports = {
+  endOfLine: 'auto',
+  printWidth: 100,
+  semi: true,
   singleQuote: true,
-  semi: false,
-}
+  tabWidth: 2,
+  trailingComma: 'es5',
+  useTabs: false,
+};

@@ -1,10 +1,15 @@
 {
-    "editor.codeActionsOnSave": ["source.fixAll", "source.fixAll.eslint", "source.organizeImports"],
-    "editor.rulers": [120],
-    "[scss]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.formatOnSave": true
-    },
-    "typescript.format.enable": true,
-    "typescript.tsdk": "node_modules/stypescript/lib"
+  "editor.codeActionsOnSave": ["source.fixAll", "source.fixAll.eslint", "source.organizeImports"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.rulers": [120],
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "typescript.format.enable": true,
+  "typescript.tsdk": "node_modules/stypescript/lib"
 }
