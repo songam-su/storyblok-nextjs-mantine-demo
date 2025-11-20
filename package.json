@@ -48,10 +48,5 @@
   },
   "sideEffects": [
     "*.scss"
-  ],
-  "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": ["react"]
-    }
-  }
+  ]
 }
