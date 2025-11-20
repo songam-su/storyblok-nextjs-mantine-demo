@@ -1,0 +1,27 @@
+.button {
+  //   background-color: var(--mantine-color-blue-6);
+  border: 1px solid #eaeaea;
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: left;
+  color: black;
+  max-width: 300px;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    border-color: #0070f3;
+    color: #0070f3;
+  }
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+.description {
+  font-size: 1rem;
+  text-align: left;
+}

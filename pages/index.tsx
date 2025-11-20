@@ -1,18 +1,16 @@
+import { Box, Code, Text } from '@mantine/core'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { Box, Code, Text } from '@mantine/core'
-import Card from '../components/Card'
-import Grid from '../components/Grid'
+import Card from '../components/Card/Card'
+import Grid from '../components/Grid/Grid'
+import styles from './index.module.scss'
 
 const Home: NextPage = () => {
   return (
     <Box
       component="main"
-      sx={{
-        paddingLeft: '2rem',
-        paddingRight: '2rem',
-      }}
+      className={styles.mainLevel1}
     >
       <Head>
         <title>Create Next App</title>
@@ -22,48 +20,20 @@ const Home: NextPage = () => {
 
       <Box
         component="main"
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          paddingTop: '2rem',
-          paddingBottom: '2rem',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+        className={styles.mainLevel2}
       >
         <Text
-          sx={{
-            color: '#0070f3',
-            fontSize: '2rem',
-            '@media (min-width: 800px)': {
-              fontSize: '3rem',
-            },
-            fontWeight: 'bold',
-            textAlign: 'center',
-          }}
+          className={styles.welcome}
         >
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </Text>
 
         <Text
-          sx={{
-            color: 'black',
-            fontSize: '0.9rem',
-            '@media (min-width: 700px)': {
-              fontSize: '1.2rem',
-            },
-            padding: '1rem',
-            textAlign: 'center',
-          }}
+          className={styles.getStarted}
         >
           Get started by editing{' '}
           <Code
-            sx={{
-              color: 'black',
-              fontSize: '0.8rem',
-              textAlign: 'center',
-            }}
+            className={styles.code}
           >
             pages/index.tsx
           </Code>
@@ -95,15 +65,7 @@ const Home: NextPage = () => {
 
       <Box
         component="footer"
-        sx={{
-          display: 'flex',
-          flex: '1',
-          paddingTop: '2rem',
-          paddingBottom: '2rem',
-          borderTop: '1px solid #eaeaea',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+        className={styles.footer}
       >
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -111,7 +73,7 @@ const Home: NextPage = () => {
           rel="noopener noreferrer"
         >
           Powered by{' '}
-          <Box component="span" sx={{ height: '1rem', marginLeft: '1.5rem' }}>
+          <Box component="span" className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </Box>
         </a>

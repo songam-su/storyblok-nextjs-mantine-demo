@@ -1,20 +1,20 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
 import { MantineProvider } from '@mantine/core'
+import type { AppProps } from 'next/app'
+import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
+      // withGlobalStyles // TODO: upgate to Mantine 8.x.x ?
+      // withNormalizeCSS
+      defaultColorScheme="light"
       theme={{
-        colorScheme: 'light',
         breakpoints: {
-          xs: 500,
-          sm: 800,
-          md: 1000,
-          lg: 1200,
-          xl: 1400,
+          xs: '500px',
+          sm: '800px',
+          md: '1000px',
+          lg: '1200px',
+          xl: '1400px',
         },
       }}
     >
