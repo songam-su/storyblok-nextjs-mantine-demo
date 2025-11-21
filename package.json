@@ -5,7 +5,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev -p 3010 --experimental-https --experimental-https-key ./.dev/certs/localhost-key.pem --experimental-https-cert ./.dev/certs/localhost-crt.pem",
-    "dev-setup": "node ./.dev/generate-cert",
+    "dev-setup": "node ./.dev/certs/generate-cert",
     "sb:build": "storyblok build",
     "sb:components": "storyblok pull-components --space 288596360272599 --path ./src/lib/storyblok/resources/",
     "sb:datasources": "storyblok datasources pull --space 288596360272599",
