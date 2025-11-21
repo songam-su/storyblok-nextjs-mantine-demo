@@ -7,12 +7,13 @@
     "dev": "next dev -p 3010 --experimental-https --experimental-https-key ./.dev/certs/localhost-key.pem --experimental-https-cert ./.dev/certs/localhost-crt.pem",
     "dev-setup": "node ./.dev/certs/generate-cert",
     "sb:build": "storyblok build",
-    "sb:components": "storyblok pull-components --space 288596360272599 --path ./src/lib/storyblok/resources/",
-    "sb:datasources": "storyblok datasources pull --space 288596360272599",
-    "sb:languages": "storyblok languages pull --space 288596360272599",
     "sb:login": "storyblok logout && storyblok login --region eu",
     "sb:logout": "storyblok logout",
-    "sb:types": "pnpm sb:components && storyblok-generate-ts source=./src/lib/storyblok/resources/components.288596360272599.json target=./src/lib/storyblok/resources/bloks.288596360272599",
+    "sb:pull": "node ./.dev/storyblok/pull-resources",
+    "sb:pull-components": "node ./.dev/storyblok/pull-components",
+    "sb:pull-datasources": "node ./.dev/storyblok/pull-datasources",
+    "sb:pull-languages": "node ./.dev/storyblok/pull-languages",
+    "sb:pull-types": "node ./.dev/storyblok/pull-types",
     "start": "next start",
     "vercel": "vercel env pull"
   },
@@ -41,6 +42,7 @@
     "@types/node": "24.10.1",
     "@types/react": "19.2.6",
     "@types/react-dom": "19.2.3",
+    "dotenv": "^17.2.3",
     "eslint": "^9.39.1",
     "eslint-config-mantine": "^4.0.3",
     "eslint-config-next": "^16.0.3",
@@ -50,6 +52,7 @@
     "mkcert": "^3.2.0",
     "prettier": "3.6.2",
     "selfsigned": "^4.0.0",
+    "storyblok": "^4.7.0",
     "typescript": "5.9.3"
   },
   "sideEffects": [
