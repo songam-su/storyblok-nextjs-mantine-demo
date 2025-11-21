@@ -35,9 +35,6 @@ importers:
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
-      debug:
-        specifier: ^4.4.3
-        version: 4.4.3
       html-react-parser:
         specifier: ^5.2.10
         version: 5.2.10(@types/react@19.2.6)(react@19.2.0)

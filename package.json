@@ -27,7 +27,6 @@
     "@tanstack/react-query": "^5.90.10",
     "@vercel/speed-insights": "^1.2.0",
     "classnames": "^2.5.1",
-    "debug": "^4.4.3",
     "html-react-parser": "^5.2.10",
     "next": "latest",
     "nuqs": "^2.8.0",
