@@ -1,7 +1,7 @@
 {
   "private": true,
   "version": "0.1.0",
-  "name": "songam-brand-site",
+  "name": "my-storyblok-demo",
   "scripts": {
     "build": "next build",
     "dev": "next dev -p 3010 --experimental-https --experimental-https-key ./.dev/certs/localhost-key.pem --experimental-https-cert ./.dev/certs/localhost-crt.pem",
