@@ -1,5 +1,6 @@
 import { execSync } from 'child_process';
 import dotenv from 'dotenv';
+import { existsSync } from 'fs';
 
 dotenv.config();
 
@@ -11,6 +12,13 @@ if (!spaceId) {
 
 const resourcesPath = './src/lib/storyblok/resources/';
 const moveScript = './.dev/storyblok/helpers/move-files.mjs';
+
+const componentFiles = [
+  `${resourcesPath}components/${spaceId}/components.json`,
+  `${resourcesPath}components/${spaceId}/groups.json`,
+  `${resourcesPath}components/${spaceId}/presets.json`,
+];
+const typeFile = `${resourcesPath}types/${spaceId}/storyblok-components.d.ts`;
 
 try {
   console.log('Pulling Storyblok components...');
@@ -27,23 +35,21 @@ try {
 
   console.log('✅ Pull complete. Moving files...');
 
-  // Move files individually
-  execSync(`node ${moveScript} ${resourcesPath}components/${spaceId}/components.json ${resourcesPath}components`, {
-    stdio: 'inherit',
-    shell: true,
+  // Move component files and remove folder with spaceId
+  componentFiles.forEach((file) => {
+    if (existsSync(file)) {
+      execSync(`node ${moveScript} ${file} ${resourcesPath}components`, { stdio: 'inherit', shell: true });
+    } else {
+      console.warn(`⚠️ Component file not found: ${file}`);
+    }
   });
-  execSync(`node ${moveScript} ${resourcesPath}components/${spaceId}/groups.json ${resourcesPath}components`, {
-    stdio: 'inherit',
-    shell: true,
-  });
-  execSync(`node ${moveScript} ${resourcesPath}components/${spaceId}/presets.json ${resourcesPath}components`, {
-    stdio: 'inherit',
-    shell: true,
-  });
-  execSync(`node ${moveScript} ${resourcesPath}types/${spaceId}/storyblok-components.d.ts ${resourcesPath}types`, {
-    stdio: 'inherit',
-    shell: true,
-  });
+
+  // Move types file and remove folder with spaceId
+  if (existsSync(typeFile)) {
+    execSync(`node ${moveScript} ${typeFile} ${resourcesPath}types`, { stdio: 'inherit', shell: true });
+  } else {
+    console.warn(`⚠️ Types file not found: ${typeFile}`);
+  }
 
   console.log('✅ All files moved successfully. SpaceId folders removed successfully.');
 } catch (error) {

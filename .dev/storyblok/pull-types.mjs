@@ -31,7 +31,7 @@ try {
 
   console.log('✅ Pull components and types complete. Moving files...');
 
-  // Move component files
+  // Move component files and remove folder with spaceId
   componentFiles.forEach((file) => {
     if (existsSync(file)) {
       execSync(`node ${moveScript} ${file} ${resourcesPath}components`, { stdio: 'inherit', shell: true });
@@ -40,7 +40,7 @@ try {
     }
   });
 
-  // Move types file
+  // Move types file and remove folder with spaceId
   if (existsSync(typeFile)) {
     execSync(`node ${moveScript} ${typeFile} ${resourcesPath}types`, { stdio: 'inherit', shell: true });
   } else {
