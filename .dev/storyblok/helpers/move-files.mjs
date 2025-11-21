@@ -1,4 +1,5 @@
-import { existsSync, mkdirSync, renameSync } from 'fs';
+// .dev/storyblok/helpers/move-files.mjs
+import { existsSync, mkdirSync, renameSync, rmdirSync } from 'fs';
 import path from 'path';
 
 const args = process.argv.slice(2);
@@ -30,6 +31,15 @@ try {
   console.log(`Moving ${sourceFilePath} → ${targetFilePath}`);
   renameSync(sourceFilePath, targetFilePath);
   console.log('✅ File moved successfully.');
+
+  // Delete the original folder if empty
+  const sourceFolder = path.dirname(sourceFilePath);
+  try {
+    rmdirSync(sourceFolder);
+    console.log(`🗑️ Removed empty folder: ${sourceFolder}`);
+  } catch {
+    console.warn(`⚠️ Could not remove folder (not empty or in use): ${sourceFolder}`);
+  }
 } catch (error) {
   console.error('❌ Error moving file:', error.message);
   process.exit(1);
