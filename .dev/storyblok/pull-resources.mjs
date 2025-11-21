@@ -19,6 +19,9 @@ try {
   console.log('Pulling Storyblok TypeScript types...');
   execSync(`storyblok types --space ${spaceId} --path ${resourcesPath} generate`, { stdio: 'inherit' });
 
+  console.log('Pulling Storyblok datasources...');
+  execSync(`storyblok datasources --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
+
   console.log('Pulling Storyblok languages...');
   execSync(`storyblok languages --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
 
