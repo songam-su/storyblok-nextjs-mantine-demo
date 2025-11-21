@@ -7,14 +7,13 @@
     "dev": "next dev -p 3010 --experimental-https --experimental-https-key ./.dev/certs/localhost-key.pem --experimental-https-cert ./.dev/certs/localhost-crt.pem",
     "dev-setup": "node ./.dev/certs/generate-cert",
     "sb:build": "storyblok build",
-    "sb:generate-types": "node ./.dev/storyblok/generate-types",
     "sb:login": "storyblok logout && storyblok login --region eu",
     "sb:logout": "storyblok logout",
-    "sb:pull": "node ./.dev/storyblok/pull-resources",
-    "sb:pull-components": "node ./.dev/storyblok/pull-components",
-    "sb:pull-datasources": "node ./.dev/storyblok/pull-datasources",
-    "sb:pull-languages": "node ./.dev/storyblok/pull-languages",
-    "sb:pull-types": "node ./.dev/storyblok/pull-types",
+    "sb:pull": "node ./.dev/storyblok/pull-resources.mjs",
+    "sb:pull-components": "node ./.dev/storyblok/pull-components.mjs",
+    "sb:pull-datasources": "node ./.dev/storyblok/pull-datasources.mjs",
+    "sb:pull-languages": "node ./.dev/storyblok/pull-languages.mjs",
+    "sb:pull-types": "node ./.dev/storyblok/pull-types.mjs",
     "start": "next start",
     "vercel": "vercel env pull"
   },
@@ -51,7 +50,6 @@
     "eslint-plugin-react": "^7.37.5",
     "prettier": "3.6.2",
     "storyblok": "^4.7.0",
-    "storyblok-generate-ts": "^2.2.0",
     "typescript": "5.9.3"
   },
   "sideEffects": [
