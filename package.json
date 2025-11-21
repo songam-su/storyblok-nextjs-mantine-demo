@@ -7,6 +7,7 @@
     "dev": "next dev -p 3010 --experimental-https --experimental-https-key ./.dev/certs/localhost-key.pem --experimental-https-cert ./.dev/certs/localhost-crt.pem",
     "dev-setup": "node ./.dev/certs/generate-cert",
     "sb:build": "storyblok build",
+    "sb:generate-types": "node ./.dev/storyblok/generate-types",
     "sb:login": "storyblok logout && storyblok login --region eu",
     "sb:logout": "storyblok logout",
     "sb:pull": "node ./.dev/storyblok/pull-resources",
@@ -29,7 +30,7 @@
     "classnames": "^2.5.1",
     "html-react-parser": "^5.2.10",
     "next": "latest",
-    "nuqs": "^2.8.0",
+    "nuqs": "^2.8.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.66.1",
@@ -50,6 +51,7 @@
     "eslint-plugin-react": "^7.37.5",
     "prettier": "3.6.2",
     "storyblok": "^4.7.0",
+    "storyblok-generate-ts": "^2.2.0",
     "typescript": "5.9.3"
   },
   "sideEffects": [

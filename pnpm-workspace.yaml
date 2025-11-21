@@ -1,5 +1,7 @@
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - '@vercel/speed-insights'
+  - es5-ext
+  - esbuild
   - sharp
   - unrs-resolver
