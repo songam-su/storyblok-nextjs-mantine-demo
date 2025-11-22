@@ -1,5 +1,0 @@
-// export interface StoryblokComponentBase {
-//   _uid: string;
-//   component: string;
-//   [key: string]: any; // fallback for dynamic fields
-// }

@@ -1,4 +1,0 @@
-// import { ISbStoryData } from '@storyblok/react/rsc';
-// import { StoryblokBlokData } from './StoryblokBlokData.tsx.disable';
-
-// export type StoryblokStoryData<T extends StoryblokBlokData> = ISbStoryData<T>;

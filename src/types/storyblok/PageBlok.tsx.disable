@@ -1,5 +1,0 @@
-// import { StoryblokComponentBase } from './SbComponentBase.tsx.disable';
-
-// export interface PageBlok extends StoryblokComponentBase {
-//   body?: StoryblokComponentBase[];
-// }
