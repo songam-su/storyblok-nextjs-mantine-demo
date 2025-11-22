@@ -31,10 +31,10 @@
     "src/app/(pages)/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "src/lib/storyblok/StoryblokBlokData.tsx.disable",
-    "src/types/storyblok/SbComponentBase.tsx.disable",
-    "src/lib/storyblok/StroyblokStory.tsx.disable",
-    "src/lib/storyblok/StoryblokStoryData.tsx.disable"
+    "src/lib/storyblok/StoryblokProvider.tsx.disabled",
+    "src/components/Storyblok/StoryblokDynamicProvider.tsx.disabled",
+    "src/app/(preview)/layout.tsx.disabled",
+    "src/app/(preview)/[...slug]/page.tsx.disabled"
   ],
   "exclude": ["node_modules"]
 }

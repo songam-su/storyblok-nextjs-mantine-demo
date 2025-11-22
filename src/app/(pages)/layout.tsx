@@ -1,12 +1,18 @@
 import { MantineProvider } from '@mantine/core';
-import '@/lib/storyblok/storyblok'; // ✅ Initialize Storyblok
+import '@mantine/core/styles.css';
 import '../../styles/globals.scss';
+import StoryblokClientRenderer from '@/components/Storyblok/StoryblokClientRenderer';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider>
+          {/* <ClientInit />
+          {children} */}
+          {/* <StoryblokProvider>{children}</StoryblokProvider> */}
+          <StoryblokClientRenderer>{children}</StoryblokClientRenderer>
+        </MantineProvider>
       </body>
     </html>
   );
