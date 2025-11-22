@@ -59,6 +59,9 @@ importers:
       search-insights:
         specifier: ^2.17.3
         version: 2.17.3
+      storyblok-js-client:
+        specifier: ^7.1.6
+        version: 7.1.6
       zod:
         specifier: ^4.1.12
         version: 4.1.12

@@ -1,5 +1,6 @@
 import { createTheme, MantineProvider } from '@mantine/core';
 import type { AppProps } from 'next/app';
+import '../src/lib/storyblok/storyblok'; // ✅ This runs storyblokInit before rendering
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
