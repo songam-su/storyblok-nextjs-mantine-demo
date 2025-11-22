@@ -9,12 +9,32 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/app/(pages)/**/*.ts",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "src/lib/storyblok/StoryblokBlokData.tsx.disable",
+    "src/types/storyblok/SbComponentBase.tsx.disable",
+    "src/lib/storyblok/StroyblokStory.tsx.disable",
+    "src/lib/storyblok/StoryblokStoryData.tsx.disable"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,8 @@
+'use client';
+//SbBanner.tsx
 import React from 'react';
-import { Banner as SbBannerProps } from '../../../src/lib/storyblok/resources/types/storyblok-components';
-import { SbComponentProps } from '../../../src/lib/storyblok/types/SbComponentProps';
+import { Banner as SbBannerProps } from '../../../lib/storyblok/resources/types/storyblok-components';
+import { SbComponentProps } from '../../../types/storyblok/SbComponentProps';
 import SbButton from '../SbButton/SbButton';
 
 const SbBanner: React.FC<SbComponentProps<SbBannerProps>> = (props) => {

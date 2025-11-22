@@ -1,14 +1,16 @@
-import { MantineColor, MantineSize } from '@mantine/core';
-import { Button, ButtonVariant } from '@mantine/core/lib/components/Button';
+'use client';
+//SbButton.tsx
+import { Button, ButtonVariant, MantineColor, MantineSize } from '@mantine/core';
 import Link from 'next/link';
+import styles from './SbButton.module.scss'; // ✅ Import SCSS module
 import React, { useMemo } from 'react';
-import { StoryblokMultilink } from '../../../src/lib/storyblok/resources/types/storyblok';
-import { Button as SbButtonProps } from '../../../src/lib/storyblok/resources/types/storyblok-components';
-import { SbComponentProps } from '../../../src/lib/storyblok/types/SbComponentProps';
+import { StoryblokMultilink } from '../../../lib/storyblok/resources/types/storyblok';
+import { Button as SbButtonProps } from '../../../lib/storyblok/resources/types/storyblok-components';
+import { SbComponentProps } from '../../../types/storyblok/SbComponentProps';
 
 const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const { blok, storyblokEditable } = props;
-  const { style, /*background_color,*/ text_color, size, link, label } = blok;
+  const { style, background_color, text_color, size, link, label } = blok;
 
   const getMultilinkHref = (
     link: Exclude<StoryblokMultilink, { linktype?: 'email' } | { linktype?: 'asset' }>
@@ -17,11 +19,12 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
 
     switch (link.linktype) {
       case 'story':
-        // Internal Storyblok story
         return `/${link.cached_url || ''}`;
       case 'url':
-        // External URL
-        return link.url || '#';
+        if (link.url?.startsWith('http://') || link.url?.startsWith('https://')) {
+          return link.url;
+        }
+        return `https://${link.url}`; // fallback
       default:
         return '#';
     }
@@ -65,8 +68,8 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const useUIButtonVariant = (sbStyle: 'default' | 'ghost' | undefined): ButtonVariant => {
     const variantMap = useMemo<Record<'default' | 'ghost', ButtonVariant>>(
       () => ({
-        default: 'filled',
-        ghost: 'transparent', // Mantine's closest to ghost
+        default: 'default',
+        ghost: 'subtle', // Mantine's closest to ghost
       }),
       []
     );
@@ -74,26 +77,52 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
     return variantMap[sbStyle ?? 'default'];
   };
 
+  // ✅ Map Storyblok color to SCSS class
+
+  const getColorClass = (sbColor?: string): string => {
+    const colorMap: Record<string, string> = {
+      'primary-highlight': styles['primary-highlight'],
+      'highlight-1': styles['highlight-1'],
+      'highlight-2': styles['highlight-2'],
+      'highlight-3': styles['highlight-3'],
+      'primary-dark': styles['primary-dark'],
+      white: styles['white'],
+    };
+    return colorMap[sbColor ?? 'primary-highlight'];
+  };
+
+  // const href = getMultilinkHref(link);
+  // const variant = useUIButtonVariant(style);
+
   const href = getMultilinkHref(link);
+  const isExternal = link?.linktype === 'url';
   const variant = useUIButtonVariant(style);
   const backgroundColorClass =
-    variant === 'transparent' ? 'transparent' : blok.color ? blok.color : 'primary-highlight'; // fallback
+    variant === 'transparent' ? 'transparent' : background_color ? background_color : 'primary-highlight'; // fallback
+  const colorClass = getColorClass(backgroundColorClass); // ✅ Use blok.color for SCSS mapping
 
-  return (
+  const button = (
     <Button
       {...storyblokEditable}
       disabled={href === '#'}
-      component={Link}
-      href={href}
       size={useUISize(size)}
       color={useUIColor(text_color)}
       variant={variant}
-      classNames={backgroundColorClass}
+      className={colorClass}
       // autoContrast={variant === 'filled'} // replaced by classNames usage
     >
       {label}
     </Button>
   );
+  if (isExternal) {
+    return (
+      <Link href={href} target="_blank" rel="noopener noreferrer" className={styles.link}>
+        {button}
+      </Link>
+    );
+  } else {
+    return button;
+  }
 };
 
 export default SbButton;

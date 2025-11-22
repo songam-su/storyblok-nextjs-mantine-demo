@@ -8,13 +8,3 @@ export type SbComponentProps<T> = {
   component: string;
   [key: string]: any; // fallback for dynamic fields
 };
-
-export interface StoryblokComponentBase {
-  _uid: string;
-  component: string;
-  [key: string]: any; // fallback for dynamic fields
-}
-
-export interface PageBlok extends StoryblokComponentBase {
-  body?: StoryblokComponentBase[];
-}
