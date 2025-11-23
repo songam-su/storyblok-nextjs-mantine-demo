@@ -5,7 +5,7 @@ import SbBanner from '@/components/Storyblok/SbBanner/SbBanner';
 import SbButton from '@/components/Storyblok/SbButton/SbButton';
 import { ReactNode } from 'react';
 
-// Initialize registry immediately
+// Initialize Storyblok for client-side rendering
 storyblokInit({
   accessToken: process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN,
   use: [apiPlugin],
@@ -15,6 +15,6 @@ storyblokInit({
   },
 });
 
-export default function StoryblokClientWrapper({ children }: { children: ReactNode }) {
+export default function StoryblokClientRenderer({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }

@@ -8,9 +8,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <MantineProvider>
-          {/* <ClientInit />
-          {children} */}
-          {/* <StoryblokProvider>{children}</StoryblokProvider> */}
           <StoryblokClientRenderer>{children}</StoryblokClientRenderer>
         </MantineProvider>
       </body>
