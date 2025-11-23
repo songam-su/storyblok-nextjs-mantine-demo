@@ -3,7 +3,7 @@ import '@mantine/core/styles.css';
 import '@/styles/globals.scss';
 import StoryblokClientRenderer from '@/components/Storyblok/StoryblokClientRenderer';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function PreviewLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>

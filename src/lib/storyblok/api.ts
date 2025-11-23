@@ -1,8 +1,15 @@
 export async function fetchStory(slug: string, version: 'published' | 'draft') {
-  const token = process.env.STORYBLOK_PREVIEW_TOKEN; // Private token for secure server-side calls
+  const token =
+    version === 'draft'
+      ? process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN // safe for client-side preview
+      : process.env.STORYBLOK_PREVIEW_TOKEN; // private token for published
+
   const url = `https://api.storyblok.com/v2/cdn/stories/${slug}?token=${token}&version=${version}`;
 
-  const res = await fetch(url, { cache: version === 'published' ? 'force-cache' : 'no-store' });
+  const res = await fetch(url, {
+    cache: version === 'published' ? 'force-cache' : 'no-store',
+  });
+
   if (!res.ok) return null;
 
   const data = await res.json();

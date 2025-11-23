@@ -1,9 +1,9 @@
 'use client';
 //SbBanner.tsx
 import React from 'react';
-import { Banner as SbBannerProps } from '../../../lib/storyblok/resources/types/storyblok-components';
-import { SbComponentProps } from '../../../types/storyblok/SbComponentProps';
-import SbButton from '../SbButton/SbButton';
+import { Banner as SbBannerProps } from '@/lib/storyblok/resources/types/storyblok-components';
+import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import SbButton from '@/components/Storyblok/SbButton/SbButton';
 
 const SbBanner: React.FC<SbComponentProps<SbBannerProps>> = (props) => {
   const { blok, storyblokEditable } = props;
@@ -84,7 +84,7 @@ const SbBanner: React.FC<SbComponentProps<SbBannerProps>> = (props) => {
   if (!buttonBlok) return <h1>NO BUTTON</h1>;
 
   return (
-    <SbButton blok={buttonBlok} _uid={blok._uid} component={blok.component} />
+    <SbButton {...storyblokEditable} blok={buttonBlok} _uid={blok._uid} component={blok.component} />
     // <Banner
     //   {...storyblokEditable}
     //   disabled={href === '#'}

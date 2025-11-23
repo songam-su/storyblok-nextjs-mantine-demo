@@ -4,9 +4,9 @@ import { Button, ButtonVariant, MantineColor, MantineSize } from '@mantine/core'
 import Link from 'next/link';
 import styles from './SbButton.module.scss'; // ✅ Import SCSS module
 import React, { useMemo } from 'react';
-import { StoryblokMultilink } from '../../../lib/storyblok/resources/types/storyblok';
-import { Button as SbButtonProps } from '../../../lib/storyblok/resources/types/storyblok-components';
-import { SbComponentProps } from '../../../types/storyblok/SbComponentProps';
+import { StoryblokMultilink } from '@/lib/storyblok/resources/types/storyblok';
+import { Button as SbButtonProps } from '@/lib/storyblok/resources/types/storyblok-components';
+import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 
 const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const { blok, storyblokEditable } = props;
@@ -69,7 +69,7 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
     const variantMap = useMemo<Record<'default' | 'ghost', ButtonVariant>>(
       () => ({
         default: 'default',
-        ghost: 'subtle', // Mantine's closest to ghost
+        ghost: 'transparent', // Mantine's closest to ghost
       }),
       []
     );
@@ -102,17 +102,23 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const colorClass = getColorClass(backgroundColorClass); // ✅ Use blok.color for SCSS mapping
 
   const button = (
-    <Button
-      {...storyblokEditable}
-      disabled={href === '#'}
-      size={useUISize(size)}
-      color={useUIColor(text_color)}
-      variant={variant}
-      className={colorClass}
-      // autoContrast={variant === 'filled'} // replaced by classNames usage
-    >
-      {label}
-    </Button>
+    <>
+      <div>size={useUISize(size)}</div>
+      <div>color={useUIColor(text_color)}</div>
+      <div>variant={variant}</div>
+      <div>className={colorClass}</div>
+      <Button
+        {...storyblokEditable}
+        disabled={href === '#'}
+        size={useUISize(size)}
+        color={useUIColor(text_color)}
+        variant={variant}
+        className={colorClass}
+        // autoContrast={variant === 'filled'} // replaced by classNames usage
+      >
+        {label}
+      </Button>
+    </>
   );
   if (isExternal) {
     return (

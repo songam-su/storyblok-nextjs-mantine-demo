@@ -1,6 +1,6 @@
 // //SbPage.tsx
 // import StoryblokRenderer from '@/components/Storyblok/StoryblokRenderer';
-// import { PageBlok } from '../../../types/storyblok/PageBlok';
+// import { PageBlok } from '@/types/storyblok/PageBlok';
 
 // interface PageProps {
 //   blok: PageBlok;
