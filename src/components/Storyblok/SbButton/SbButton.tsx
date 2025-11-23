@@ -1,5 +1,5 @@
 'use client';
-//SbButton.tsx
+
 import { Button, ButtonVariant, MantineColor, MantineSize } from '@mantine/core';
 import Link from 'next/link';
 import styles from './SbButton.module.scss'; // ✅ Import SCSS module

@@ -1,5 +1,5 @@
 'use client';
-//SbBanner.tsx
+
 import React from 'react';
 import { Banner as SbBannerProps } from '@/lib/storyblok/resources/types/storyblok-components';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
