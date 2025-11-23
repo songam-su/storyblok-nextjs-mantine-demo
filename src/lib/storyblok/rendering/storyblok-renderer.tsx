@@ -1,7 +1,7 @@
 'use client';
 
-import { StoryblokComponentRenderer } from '@/lib/storyblok/StoryblokComponentRenderer';
-import { useStoryblokBridge } from '@/lib/storyblok/hooks/use-storyblok-bridge';
+import { StoryblokComponentRenderer } from './storyblok-component-renderer';
+import { useStoryblokBridge } from '../hooks/use-storyblok-bridge';
 
 export default function StoryblokRenderer({ story }: { story: any }) {
   console.log('Initial story:', story);

@@ -37,7 +37,10 @@
     "src/app/(preview)/sb-preview/layout.tsx",
     "src/app/(preview)/sb-preview/[...slug]/page.tsx",
     "src/middleware.ts",
-    "src/middleware/auth.ts"
+    "src/middleware/auth.ts",
+    "src/lib/storyblok/registry/storyblok-components.ts.disable",
+    "src/lib/storyblok/registry/component-paths.ts.disabled",
+    ".dev/storyblok/generate-union-type.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,5 +1,5 @@
 import { fetchStory } from '@/lib/storyblok/api';
-import StoryblokRenderer from '@/components/Storyblok/StoryblokRenderer';
+import StoryblokRenderer from '@/lib/storyblok/rendering/storyblok-renderer';
 import { notFound } from 'next/navigation';
 import { draftMode } from 'next/headers';
 

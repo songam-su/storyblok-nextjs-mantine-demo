@@ -1,7 +1,7 @@
 import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@/styles/globals.scss';
-import StoryblokClientRenderer from '@/components/Storyblok/StoryblokClientRenderer';
+import StoryblokClientRenderer from '@/lib/storyblok/rendering/storyblok-client-renderer';
 
 export default function PreviewLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -272,7 +272,7 @@
 
 // lazy-registry.ts
 import React from 'react';
-import { registry } from './storyblok-component-registry';
+import { registry } from './component-registry';
 
 export const lazyRegistry = {
   components: Object.fromEntries(Object.entries(registry).map(([key, loader]) => [key, React.lazy(loader)])) as Record<
