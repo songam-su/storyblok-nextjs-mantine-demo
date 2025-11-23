@@ -1,10 +1,11 @@
 'use client';
 
-// import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { lazyRegistry } from '../registry/lazy-registry';
-// import { ErrorBoundary } from './ErrorBoundary';
+import { Loader } from '@mantine/core';
+import { ErrorBoundary } from './ErrorBoundary';
 
-export function StoryblokComponentRenderer(blok: any) {
+export function StoryblokComponentRenderer({ blok, isPreview }: { blok: any; isPreview?: boolean }) {
   if (!blok?.component) return null;
 
   const key = blok.component as keyof typeof lazyRegistry.components;
@@ -16,18 +17,21 @@ export function StoryblokComponentRenderer(blok: any) {
   }
 
   lazyRegistry.preload('banner');
-
-  // ✅ Preload for better UX
   lazyRegistry.preload(key);
 
-  // ✅ Analytics tracking
-  console.log(`[Analytics] Rendering component: ${key}`);
+  const spinner = <Loader size="lg" type="dots" />;
 
   return (
-    // <ErrorBoundary>
-    // <Suspense fallback={<div>Loading {key}...</div>}>
-    <Component blok={blok} key={blok._uid} />
-    // </Suspense>
-    // </ErrorBoundary>
+    <ErrorBoundary>
+      <Suspense fallback={spinner}>
+        {isPreview ? (
+          <div data-blok-c={blok._editable} data-blok-uid={blok._uid} style={{ display: 'contents' }}>
+            <Component blok={blok} />
+          </div>
+        ) : (
+          <Component blok={blok} />
+        )}
+      </Suspense>
+    </ErrorBoundary>
   );
 }

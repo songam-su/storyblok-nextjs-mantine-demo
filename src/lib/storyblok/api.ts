@@ -8,6 +8,7 @@ export async function fetchStory(slug: string, version: 'published' | 'draft') {
 
   const res = await fetch(url, {
     cache: version === 'published' ? 'force-cache' : 'no-store',
+    next: { revalidate: 6000 }, // Revalidate every 60 minutes for published content
   });
 
   if (!res.ok) return null;
@@ -19,7 +20,10 @@ export async function fetchStory(slug: string, version: 'published' | 'draft') {
 export async function fetchTheme() {
   const token = process.env.STORYBLOK_THEME_TOKEN;
   const url = `https://api.storyblok.com/v2/cdn/themes?token=${token}`;
-  const res = await fetch(url, { cache: 'force-cache' });
+  const res = await fetch(url, {
+    cache: 'force-cache',
+    next: { revalidate: 6000 }, // Revalidate every 60 minutes for published content
+  });
   if (!res.ok) return null;
   return await res.json();
 }

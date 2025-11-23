@@ -2,6 +2,13 @@
 import { useEffect, useState } from 'react';
 import { StoryblokClient, apiPlugin } from '@storyblok/react';
 
+declare global {
+  interface Window {
+    // @ts-ignore
+    StoryblokBridge?: any;
+  }
+}
+
 export interface BridgeOptions {
   resolveRelations?: string[];
   language?: string;
@@ -29,25 +36,23 @@ export function useStoryblokBridge(initialStory: StoryblokStory, options?: Bridg
   const [story, setStory] = useState<StoryblokStory>(initialStory);
 
   useEffect(() => {
-    if (options?.disableBridge) return;
+    const isPreview = typeof window !== 'undefined' && !!window.StoryblokBridge;
+    if (!isPreview || options?.disableBridge) return;
 
-    if (typeof window !== 'undefined' && window.StoryblokBridge) {
+    if (window.StoryblokBridge) {
       const sbBridge = new window.StoryblokBridge();
+      const client = options?.apiClient || apiPlugin({ accessToken: process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN });
 
       sbBridge.on(['input', 'published', 'change'], async (event: any) => {
         options?.onBridgeEvent?.(event);
 
         if (event.story) {
           if (options?.resolveRelations?.length) {
-            const client =
-              options.apiClient || apiPlugin({ accessToken: process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN });
-
             const response = await client.get(`cdn/stories/${event.story.slug}`, {
               version: options.version || 'draft',
               resolve_relations: options.resolveRelations.join(','),
               language: options.language || 'default',
             });
-
             setStory(response.data.story);
           } else {
             setStory(event.story);
@@ -55,7 +60,7 @@ export function useStoryblokBridge(initialStory: StoryblokStory, options?: Bridg
         }
       });
     }
-  }, [options]);
+  }, [initialStory, options]);
 
   return story;
 }
