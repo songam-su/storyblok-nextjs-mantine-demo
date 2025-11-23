@@ -1,36 +1,59 @@
+// import { FC } from 'react';
+// import type { StoryblokBlok } from './generated-union';
+// import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+// import SbBanner from '@/components/Storyblok/SbBanner/SbBanner';
+// import SbButton from '@/components/Storyblok/SbButton/SbButton';
+
+// // Strict type for the static map
+// export type StoryblokComponentMapStrict = {
+//   [K in StoryblokBlok['component']]: FC<SbComponentProps<Extract<StoryblokBlok, { component: K }>>>;
+// };
+
+// // Simplified version for development (where components have not been created yet for all types)
+// // export type StoryblokComponentMap = {
+// //   [key: string]: FC<any>; // Simplify here
+// // };
+
+// // function createStoryblokComponentMap<T extends StoryblokComponentMap>(map: T): T {
+// //   return map;
+// // }
+
+// // export const Placeholder: FC<any> = () => null;
+
+// // Factory to enforce type safety
+// function createStoryblokComponentMap<T extends StoryblokComponentMapStrict>(map: T): T {
+//   return map;
+// }
+
+// // Placeholder for unimplemented components
+// export const Placeholder: FC<any> = () => null;
+
+// export const components = createStoryblokComponentMap({
+//   banner: SbBanner,
+//   button: SbButton,
+
 import { FC } from 'react';
 import type { StoryblokBlok } from './generated-union';
+// import type { StoryblokBlok } from './generated-union-types';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+
 import SbBanner from '@/components/Storyblok/SbBanner/SbBanner';
 import SbButton from '@/components/Storyblok/SbButton/SbButton';
 
-// Strict type for the static map
+export const Placeholder: FC<any> = () => null;
+
 export type StoryblokComponentMapStrict = {
   [K in StoryblokBlok['component']]: FC<SbComponentProps<Extract<StoryblokBlok, { component: K }>>>;
 };
 
-// Simplified version for development (where components have not been created yet for all types)
-// export type StoryblokComponentMap = {
-//   [key: string]: FC<any>; // Simplify here
-// };
-
-// function createStoryblokComponentMap<T extends StoryblokComponentMap>(map: T): T {
-//   return map;
-// }
-
-// export const Placeholder: FC<any> = () => null;
-
-// Factory to enforce type safety
 function createStoryblokComponentMap<T extends StoryblokComponentMapStrict>(map: T): T {
   return map;
 }
 
-// Placeholder for unimplemented components
-export const Placeholder: FC<any> = () => null;
-
-export const components = createStoryblokComponentMap({
+export const storyblokComponents = createStoryblokComponentMap({
   banner: SbBanner,
   button: SbButton,
+
   'article-overview-page': Placeholder,
   'article-page': Placeholder,
   'banner-reference': Placeholder,
