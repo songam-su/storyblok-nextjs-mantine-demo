@@ -1,18 +1,16 @@
 'use client';
 
 import { storyblokInit, apiPlugin } from '@storyblok/react';
-import SbBanner from '@/components/Storyblok/SbBanner/SbBanner';
-import SbButton from '@/components/Storyblok/SbButton/SbButton';
 import { ReactNode } from 'react';
+import { lazyRegistry } from '@/lib/storyblok/component-registry/lazy-registry';
+import { components } from '@/lib/storyblok/component-registry/component-map';
 
 // Initialize Storyblok for client-side rendering
 storyblokInit({
   accessToken: process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN,
   use: [apiPlugin],
-  components: {
-    banner: SbBanner,
-    button: SbButton,
-  },
+  bridge: true,
+  components: lazyRegistry.components,
 });
 
 export default function StoryblokClientRenderer({ children }: { children: ReactNode }) {

@@ -1,14 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Banner as SbBannerProps } from '@/lib/storyblok/resources/types/storyblok-components';
+import { Banner } from '@/lib/storyblok/resources/types/storyblok-components';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import SbButton from '@/components/Storyblok/SbButton/SbButton';
 
-const SbBanner: React.FC<SbComponentProps<SbBannerProps>> = (props) => {
+const SbBanner: React.FC<SbComponentProps<Banner>> = (props) => {
   const { blok, storyblokEditable } = props;
 
-  const buttonBlok = blok.buttons?.[0];
+  const buttonBlok = blok?.buttons?.[0] ?? null;
 
   // const { style, /*background_color,*/ text_color, size, link, label } = blok;
 

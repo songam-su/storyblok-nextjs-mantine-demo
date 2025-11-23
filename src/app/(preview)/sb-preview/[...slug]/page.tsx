@@ -17,5 +17,5 @@ export default async function PreviewPage({ params }: PreviewPageProps) {
 
   if (!story) notFound();
 
-  return <StoryblokRenderer body={story.content.body} />;
+  return <StoryblokRenderer story={story} />;
 }

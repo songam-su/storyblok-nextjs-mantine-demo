@@ -6,7 +6,7 @@ export interface ArticleOverviewPage {
   meta_title?: string;
   meta_description?: string;
   headline?: string;
-  component: 'article-overview-page';
+  component: "article-overview-page";
   _uid: string;
   [k: string]: unknown;
 }
@@ -19,7 +19,7 @@ export interface ArticlePage {
   categories?: (ISbStoryData<Category> | string)[];
   meta_title?: string;
   meta_description?: string;
-  component: 'article-page';
+  component: "article-page";
   _uid: string;
   [k: string]: unknown;
 }
@@ -27,34 +27,34 @@ export interface ArticlePage {
 export interface Banner {
   background_image?: StoryblokAsset;
   background_image_cover?: boolean;
-  background_image_alignment?: 'left' | 'center' | 'right';
-  background_image_width?: '100' | '75' | '50';
+  background_image_alignment?: "left" | "center" | "right";
+  background_image_width?: "100" | "75" | "50";
   background_video?: StoryblokAsset;
   background_color?: AdvancedBackgroundColorsDataSource;
   headline?: HeadlineSegment[];
   lead?: string;
   buttons?: Button[];
-  text_alignment?: 'center' | 'left';
-  component: 'banner';
+  text_alignment?: "center" | "left";
+  component: "banner";
   _uid: string;
   [k: string]: unknown;
 }
 
 export interface BannerReference {
   banners?: (ISbStoryData<Banner> | string)[];
-  component: 'banner-reference';
+  component: "banner-reference";
   _uid: string;
   [k: string]: unknown;
 }
 
 export interface Button {
-  style?: 'default' | 'ghost';
+  style?: "default" | "ghost";
   background_color?: ButtonColorsDataSource;
-  text_color?: 'white' | 'primary-dark';
-  size?: 'small' | 'medium' | 'large';
-  link: Exclude<StoryblokMultilink, { linktype?: 'email' } | { linktype?: 'asset' }>;
+  text_color?: "white" | "primary-dark";
+  size?: "small" | "medium" | "large";
+  link: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
   label?: string;
-  component: 'button';
+  component: "button";
   _uid: string;
   [k: string]: unknown;
 }
@@ -64,7 +64,7 @@ export interface Category {
   icon?: StoryblokAsset;
   meta_title?: string;
   meta_description?: string;
-  component: 'category';
+  component: "category";
   _uid: string;
   [k: string]: unknown;
 }
@@ -77,7 +77,7 @@ export interface ContactFormSection {
   quote?: string;
   name?: string;
   position?: string;
-  component: 'contact-form-section';
+  component: "contact-form-section";
   _uid: string;
   [k: string]: unknown;
 }
@@ -103,7 +103,7 @@ export interface DefaultPage {
     | TextSection
     | TwoColumnsSection
   )[];
-  component: 'default-page';
+  component: "default-page";
   _uid: string;
   [k: string]: unknown;
 }
@@ -111,7 +111,7 @@ export interface DefaultPage {
 export interface FaqEntry {
   question?: string;
   answer?: StoryblokRichtext;
-  component: 'faq-entry';
+  component: "faq-entry";
   _uid: string;
   [k: string]: unknown;
 }
@@ -120,7 +120,7 @@ export interface FaqSection {
   headline?: HeadlineSegment[];
   lead?: string;
   faq_entries?: FaqEntry[];
-  component: 'faq-section';
+  component: "faq-section";
   _uid: string;
   [k: string]: unknown;
 }
@@ -129,18 +129,18 @@ export interface FeaturedArticlesSection {
   headline?: HeadlineSegment[];
   lead?: string;
   articles?: (ISbStoryData<ArticlePage> | string)[];
-  cols?: '2' | '3' | '4';
+  cols?: "2" | "3" | "4";
   background_color?: BasicBackgroundColorsDataSource;
-  component: 'featured-articles-section';
+  component: "featured-articles-section";
   _uid: string;
   [k: string]: unknown;
 }
 
 export interface FormSection {
   headline?: HeadlineSegment[];
-  form?: 'contact' | 'newsletter';
+  form?: "contact" | "newsletter";
   button?: Button[];
-  component: 'form-section';
+  component: "form-section";
   _uid: string;
   [k: string]: unknown;
 }
@@ -150,24 +150,24 @@ export interface GridCard {
   label?: string;
   text?: string;
   button?: Button[];
-  row_span?: '1' | '2';
+  row_span?: "1" | "2";
   border?: boolean;
   background_image?: StoryblokAsset;
-  icon_width?: '48' | '80' | '160' | '200';
+  icon_width?: "48" | "80" | "160" | "200";
   icon?: StoryblokAsset;
-  component: 'grid-card';
+  component: "grid-card";
   _uid: string;
   [k: string]: unknown;
 }
 
 export interface GridSection {
   cards?: (GridCard | PriceCard | ImageCard)[];
-  cols?: '2' | '3' | '4';
+  cols?: "2" | "3" | "4";
   headline?: HeadlineSegment[];
   lead?: string;
   background_color?: BasicBackgroundColorsDataSource;
   button?: Button[];
-  component: 'grid-section';
+  component: "grid-section";
   _uid: string;
   [k: string]: unknown;
 }
@@ -175,16 +175,16 @@ export interface GridSection {
 export interface HeadlineSegment {
   text?: string;
   highlight?: HighlightColorsDataSource;
-  component: 'headline-segment';
+  component: "headline-segment";
   _uid: string;
   [k: string]: unknown;
 }
 
 export interface HeroSection {
-  layout?: 'stacked' | 'split';
+  layout?: "stacked" | "split";
   background_color?: HighlightAndBackgroundColorsDataSource;
   secondary_background_color?: HighlightAndBackgroundColorsDataSource;
-  text_alignment?: 'left' | 'center';
+  text_alignment?: "left" | "center";
   image_decoration?: boolean;
   eyebrow?: string;
   headline?: HeadlineSegment[];
@@ -192,7 +192,7 @@ export interface HeroSection {
   buttons?: Button[];
   image?: StoryblokAsset;
   preserve_image_aspect_ratio?: boolean;
-  component: 'hero-section';
+  component: "hero-section";
   _uid: string;
   [k: string]: unknown;
 }
@@ -202,7 +202,7 @@ export interface ImageCard {
   label?: string;
   text?: string;
   background_color?: AdvancedBackgroundColorsDataSource;
-  component: 'image-card';
+  component: "image-card";
   _uid: string;
   [k: string]: unknown;
 }
@@ -217,7 +217,7 @@ export interface ImageTextSection {
   buttons?: Button[];
   image?: StoryblokAsset;
   preserve_image_aspect_ratio?: boolean;
-  component: 'image-text-section';
+  component: "image-text-section";
   _uid: string;
   [k: string]: unknown;
 }
@@ -225,7 +225,7 @@ export interface ImageTextSection {
 export interface LatestArticlesSection {
   headline?: HeadlineSegment[];
   lead?: string;
-  component: 'latest-articles-section';
+  component: "latest-articles-section";
   _uid: string;
   [k: string]: unknown;
 }
@@ -233,15 +233,15 @@ export interface LatestArticlesSection {
 export interface LogoSection {
   lead?: string;
   logos?: StoryblokMultiasset;
-  component: 'logo-section';
+  component: "logo-section";
   _uid: string;
   [k: string]: unknown;
 }
 
 export interface NavItem {
-  link: Exclude<StoryblokMultilink, { linktype?: 'email' } | { linktype?: 'asset' }>;
+  link: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
   label?: string;
-  component: 'nav-item';
+  component: "nav-item";
   _uid: string;
   [k: string]: unknown;
 }
@@ -249,13 +249,13 @@ export interface NavItem {
 export interface NewsletterFormSection {
   headline?: HeadlineSegment[];
   button?: Button[];
-  component: 'newsletter-form-section';
+  component: "newsletter-form-section";
   _uid: string;
   [k: string]: unknown;
 }
 
 export interface PersonalizedSection {
-  preview?: 'new_visitor' | 'returning_visitor';
+  preview?: "new_visitor" | "returning_visitor";
   returning_visitor?: unknown;
   returning_visitor_blocks?: (
     | Banner
@@ -294,7 +294,7 @@ export interface PersonalizedSection {
     | TextSection
     | TwoColumnsSection
   )[];
-  component: 'personalized-section';
+  component: "personalized-section";
   _uid: string;
   [k: string]: unknown;
 }
@@ -306,7 +306,7 @@ export interface PriceCard {
   price?: string;
   button?: Button[];
   text_2?: StoryblokRichtext;
-  component: 'price-card';
+  component: "price-card";
   _uid: string;
   [k: string]: unknown;
 }
@@ -315,14 +315,14 @@ export interface ProductsSection {
   headline?: HeadlineSegment[];
   lead?: string;
   plugin?: unknown;
-  component: 'products-section';
+  component: "products-section";
   _uid: string;
   [k: string]: unknown;
 }
 
 export interface RichtextYoutube {
   video_id?: string;
-  component: 'richtext-youtube';
+  component: "richtext-youtube";
   _uid: string;
   [k: string]: unknown;
 }
@@ -354,7 +354,7 @@ export interface SiteConfig {
   use_custom_fonts?: boolean;
   custom_font_display?: FontsDataSource;
   custom_font_body?: FontsDataSource;
-  x?: Exclude<StoryblokMultilink, { linktype?: 'email' } | { linktype?: 'asset' }>;
+  x?: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
   footer_headline?: HeadlineSegment[];
   footer_about?: StoryblokRichtext;
   footer_nav_1_headline?: string;
@@ -366,10 +366,10 @@ export interface SiteConfig {
   header_logo?: StoryblokAsset;
   header_nav?: NavItem[];
   header_buttons?: Button[];
-  instagram?: Exclude<StoryblokMultilink, { linktype?: 'email' } | { linktype?: 'asset' }>;
-  youtube?: Exclude<StoryblokMultilink, { linktype?: 'email' } | { linktype?: 'asset' }>;
-  facebook?: Exclude<StoryblokMultilink, { linktype?: 'email' } | { linktype?: 'asset' }>;
-  component: 'site-config';
+  instagram?: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
+  youtube?: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
+  facebook?: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
+  component: "site-config";
   _uid: string;
   [k: string]: unknown;
 }
@@ -379,7 +379,7 @@ export interface TabbedContentEntry {
   headline?: string;
   description?: StoryblokRichtext;
   button?: Button[];
-  component: 'tabbed-content-entry';
+  component: "tabbed-content-entry";
   _uid: string;
   [k: string]: unknown;
 }
@@ -388,7 +388,7 @@ export interface TabbedContentSection {
   headline?: HeadlineSegment[];
   lead?: string;
   entries?: TabbedContentEntry[];
-  component: 'tabbed-content-section';
+  component: "tabbed-content-section";
   _uid: string;
   [k: string]: unknown;
 }
@@ -398,7 +398,7 @@ export interface Testimonial {
   photo?: StoryblokAsset;
   name?: string;
   role?: string;
-  component: 'testimonial';
+  component: "testimonial";
   _uid: string;
   [k: string]: unknown;
 }
@@ -407,19 +407,19 @@ export interface TestimonialsSection {
   headline?: HeadlineSegment[];
   lead?: string;
   testimonials?: (ISbStoryData<Testimonial> | ISbStoryData<Testimonial> | string)[];
-  component: 'testimonials-section';
+  component: "testimonials-section";
   _uid: string;
   [k: string]: unknown;
 }
 
 export interface TextSection {
   eyebrow?: string;
-  text_alignment?: 'left' | 'center';
+  text_alignment?: "left" | "center";
   headline?: HeadlineSegment[];
   text?: StoryblokRichtext;
   buttons?: Button[];
   background_color?: BasicBackgroundColorsDataSource;
-  component: 'text-section';
+  component: "text-section";
   _uid: string;
   [k: string]: unknown;
 }
@@ -437,61 +437,61 @@ export interface TwoColumnsSection {
   column_2_background_color?: AdvancedBackgroundColorsDataSource;
   column_1_decoration_color?: HighlightColorsDataSource;
   column_2_decoration_color?: HighlightColorsDataSource;
-  component: 'two-columns-section';
+  component: "two-columns-section";
   _uid: string;
   [k: string]: unknown;
 }
 
 export type AdvancedBackgroundColorsDataSource =
-  | 'white'
-  | 'primary-background'
-  | 'background-1'
-  | 'background-2'
-  | 'background-3'
-  | 'background-4'
-  | 'background-5'
-  | 'background-6'
-  | 'background-7'
-  | 'background-8'
-  | 'background-9'
-  | 'background-10';
+  | "white"
+  | "primary-background"
+  | "background-1"
+  | "background-2"
+  | "background-3"
+  | "background-4"
+  | "background-5"
+  | "background-6"
+  | "background-7"
+  | "background-8"
+  | "background-9"
+  | "background-10";
 
-export type BasicBackgroundColorsDataSource = 'white' | 'primary-background';
+export type BasicBackgroundColorsDataSource = "white" | "primary-background";
 
 export type ButtonColorsDataSource =
-  | 'primary-highlight'
-  | 'highlight-1'
-  | 'highlight-2'
-  | 'highlight-3'
-  | 'primary-dark'
-  | 'white';
+  | "primary-highlight"
+  | "highlight-1"
+  | "highlight-2"
+  | "highlight-3"
+  | "primary-dark"
+  | "white";
 
 export type FontsDataSource =
-  | 'Roboto, sans-serif'
-  | 'Roboto Slab, serif'
-  | 'Roboto Serif, sans-serif'
-  | 'Noto Serif, serif'
-  | 'Montserrat, sans-serif';
+  | "Roboto, sans-serif"
+  | "Roboto Slab, serif"
+  | "Roboto Serif, sans-serif"
+  | "Noto Serif, serif"
+  | "Montserrat, sans-serif";
 
 export type HighlightAndBackgroundColorsDataSource =
-  | 'primary-highlight'
-  | 'highlight-1'
-  | 'highlight-2'
-  | 'highlight-3'
-  | 'white'
-  | 'primary-background'
-  | 'background-1'
-  | 'background-2'
-  | 'background-3'
-  | 'background-4'
-  | 'background-5'
-  | 'background-6'
-  | 'background-7'
-  | 'background-8'
-  | 'background-9'
-  | 'background-10';
+  | "primary-highlight"
+  | "highlight-1"
+  | "highlight-2"
+  | "highlight-3"
+  | "white"
+  | "primary-background"
+  | "background-1"
+  | "background-2"
+  | "background-3"
+  | "background-4"
+  | "background-5"
+  | "background-6"
+  | "background-7"
+  | "background-8"
+  | "background-9"
+  | "background-10";
 
-export type HighlightColorsDataSource = 'primary-highlight' | 'highlight-1' | 'highlight-2' | 'highlight-3';
+export type HighlightColorsDataSource = "primary-highlight" | "highlight-1" | "highlight-2" | "highlight-3";
 
 export type ContentType =
   | ArticleOverviewPage

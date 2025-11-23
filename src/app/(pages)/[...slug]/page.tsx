@@ -14,5 +14,5 @@ export default async function Page({ params }: PageProps) {
 
   if (!story) notFound();
 
-  return <StoryblokRenderer body={story.content.body} />;
+  return <StoryblokRenderer story={story} />;
 }

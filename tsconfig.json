@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2020",
+    "lib": ["DOM", "DOM.Iterable", "esnext", "ES2020"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,6 +14,7 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "downlevelIteration": true,
     "plugins": [
       {
         "name": "next"

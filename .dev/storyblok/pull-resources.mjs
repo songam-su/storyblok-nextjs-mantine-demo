@@ -19,6 +19,8 @@ const componentFiles = [
   `${resourcesPath}components/${spaceId}/presets.json`,
 ];
 const typeFile = `${resourcesPath}types/${spaceId}/storyblok-components.d.ts`;
+const datasourcesFile = `${resourcesPath}datasources/${spaceId}/datasources.json`;
+// const languagesFile = `${resourcesPath}languages/${spaceId}/languages.json`; // TODO: determine correct filename and path
 
 try {
   console.log('Pulling Storyblok components...');
@@ -50,6 +52,21 @@ try {
   } else {
     console.warn(`⚠️ Types file not found: ${typeFile}`);
   }
+
+  // Move datasources file and remove folder with spaceId
+  if (existsSync(datasourcesFile)) {
+    execSync(`node ${moveScript} ${datasourcesFile} ${resourcesPath}types`, { stdio: 'inherit', shell: true });
+  } else {
+    console.warn(`⚠️ Types file not found: ${datasourcesFile}`);
+  }
+
+  // TODO: determine correct filename and path to be able to move languages file and remove folder with spaceId
+  // Move languages file and remove folder with spaceId
+  // if (existsSync(datasourcesFile)) {
+  //   execSync(`node ${moveScript} ${datasourcesFile} ${resourcesPath}types`, { stdio: 'inherit', shell: true });
+  // } else {
+  //   console.warn(`⚠️ Types file not found: ${datasourcesFile}`);
+  // }
 
   console.log('✅ All files moved successfully. SpaceId folders removed successfully.');
 } catch (error) {
