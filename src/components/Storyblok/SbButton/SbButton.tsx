@@ -9,6 +9,7 @@ import { Button as SbButtonProps } from '@/lib/storyblok/resources/types/storybl
 import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import { storyblokEditable as createEditable } from '@storyblok/react';
 
 const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const { blok, storyblokEditable } = props;
@@ -80,12 +81,12 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   // Link Handling
   const href = useMemo(() => getSbLink(link as StoryblokMultilink), [link]);
   const { isEditor } = useStoryblokEditor();
+  const editableAttributes = storyblokEditable ?? createEditable(blok as any);
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
       if (isEditor) {
         event.preventDefault();
-        event.stopPropagation();
       }
     },
     [isEditor]
@@ -99,7 +100,7 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
 
   return (
     <Button
-      {...storyblokEditable}
+      {...editableAttributes}
       disabled={!href || href === '#'}
       size={useUISize(size)}
       color={useUIColor(text_color)}

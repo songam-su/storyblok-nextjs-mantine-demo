@@ -11,11 +11,14 @@ import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import SbButton from '@/components/Storyblok/SbButton/SbButton';
 import styles from './SbBanner.module.scss';
 
-const highlightColorMap: Record<HighlightColorsDataSource, string> = {
+const highlightColorMap: Record<string, string> = {
   'primary-highlight': 'var(--mantine-color-blue-2)',
   'highlight-1': 'var(--mantine-color-indigo-2)',
   'highlight-2': 'var(--mantine-color-teal-2)',
   'highlight-3': 'var(--mantine-color-pink-2)',
+  color_1: 'var(--mantine-color-indigo-2)',
+  color_2: 'var(--mantine-color-teal-2)',
+  color_3: 'var(--mantine-color-pink-2)',
 };
 
 const backgroundColorClassMap: Record<string, string> = {
@@ -31,12 +34,12 @@ const renderHeadline = (segments: HeadlineSegment[] | undefined, fallbackColor: 
   if (!segments?.length) return null;
 
   return (
-    <Title order={2} fw={600} ta="inherit">
+    <Title order={1} fw={700} size="h1">
       {segments.map((segment, index) => (
         <Text
           key={segment._uid ?? index}
           component="span"
-          c={segment.highlight ? highlightColorMap[segment.highlight] : fallbackColor}
+          c={segment.highlight && segment.highlight !== 'none' ? highlightColorMap[segment.highlight] : fallbackColor}
         >
           {segment.text}
         </Text>
