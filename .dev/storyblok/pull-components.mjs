@@ -10,25 +10,25 @@ if (!spaceId) {
   process.exit(1);
 }
 
-const generatedPath = `./src/lib/storyblok/generated/`;
+const resourcesPath = `./src/lib/storyblok/resources/`;
 const moveScript = './.dev/storyblok/helpers/move-files.mjs';
 
 // Paths for components
 const componentFiles = [
-  `${generatedPath}components/${spaceId}/components.json`,
-  `${generatedPath}components/${spaceId}/groups.json`,
-  `${generatedPath}components/${spaceId}/presets.json`,
+  `${resourcesPath}components/${spaceId}/components.json`,
+  `${resourcesPath}components/${spaceId}/groups.json`,
+  `${resourcesPath}components/${spaceId}/presets.json`,
 ];
 
 try {
   console.log('Pulling Storyblok components...');
-  execSync(`storyblok components --space ${spaceId} --path ${generatedPath} pull`, { stdio: 'inherit' });
+  execSync(`storyblok components --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
   console.log('✅ Pull components complete. Moving files...');
 
   // Move component files and remove folder with spaceId
   componentFiles.forEach((file) => {
     if (existsSync(file)) {
-      execSync(`node ${moveScript} ${file} ${generatedPath}components`, { stdio: 'inherit', shell: true });
+      execSync(`node ${moveScript} ${file} ${resourcesPath}components`, { stdio: 'inherit', shell: true });
     } else {
       console.warn(`⚠️ Component file not found: ${file}`);
     }

@@ -10,21 +10,21 @@ if (!spaceId) {
   process.exit(1);
 }
 
-const generatedPath = `./src/lib/storyblok/generated/`;
+const resourcesPath = `./src/lib/storyblok/resources/`;
 const moveScript = './.dev/storyblok/helpers/move-files.mjs';
-const datasourcesFile = `${generatedPath}datasources/${spaceId}/datasources.json`;
+const datasourcesFile = `${resourcesPath}datasources/${spaceId}/datasources.json`;
 
 try {
   console.log('Pulling Storyblok datasources...');
 
   // Move datasources file and remove folder with spaceId
   if (existsSync(datasourcesFile)) {
-    execSync(`node ${moveScript} ${datasourcesFile} ${generatedPath}types`, { stdio: 'inherit', shell: true });
+    execSync(`node ${moveScript} ${datasourcesFile} ${resourcesPath}datasources`, { stdio: 'inherit', shell: true });
   } else {
     console.warn(`⚠️ Datasource file not found: ${datasourcesFile}`);
   }
 
-  console.log('✅ Datasources generated successfully!');
+  console.log('✅ Datasources resources successfully!');
 } catch (error) {
   console.error('❌ Error executing commands:', error.message);
   process.exit(1);

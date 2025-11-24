@@ -10,37 +10,37 @@ if (!spaceId) {
   process.exit(1);
 }
 
-const generatedPath = './src/lib/storyblok/generated/';
+const resourcesPath = './src/lib/storyblok/resources/';
 const moveScript = './.dev/storyblok/helpers/move-files.mjs';
 
 const componentFiles = [
-  `${generatedPath}components/${spaceId}/components.json`,
-  `${generatedPath}components/${spaceId}/groups.json`,
-  `${generatedPath}components/${spaceId}/presets.json`,
+  `${resourcesPath}components/${spaceId}/components.json`,
+  `${resourcesPath}components/${spaceId}/groups.json`,
+  `${resourcesPath}components/${spaceId}/presets.json`,
 ];
-const typeFile = `${generatedPath}types/${spaceId}/storyblok-components.d.ts`;
-const datasourcesFile = `${generatedPath}datasources/${spaceId}/datasources.json`;
-// const languagesFile = `${generatedPath}languages/${spaceId}/languages.json`; // TODO: determine correct filename and path
+const typeFile = `${resourcesPath}types/${spaceId}/storyblok-components.d.ts`;
+const datasourcesFile = `${resourcesPath}datasources/${spaceId}/datasources.json`;
+// const languagesFile = `${resourcesPath}languages/${spaceId}/languages.json`; // TODO: determine correct filename and path
 
 try {
   console.log('Pulling Storyblok components...');
-  execSync(`storyblok components --space ${spaceId} --path ${generatedPath} pull`, { stdio: 'inherit' });
+  execSync(`storyblok components --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
 
   console.log('Pulling Storyblok types...');
-  execSync(`storyblok types --space ${spaceId} --path ${generatedPath} generate`, { stdio: 'inherit' });
+  execSync(`storyblok types --space ${spaceId} --path ${resourcesPath} generate`, { stdio: 'inherit' });
 
   console.log('Pulling Storyblok datasources...');
-  execSync(`storyblok datasources --space ${spaceId} --path ${generatedPath} pull`, { stdio: 'inherit' });
+  execSync(`storyblok datasources --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
 
   console.log('Pulling Storyblok languages...');
-  execSync(`storyblok languages --space ${spaceId} --path ${generatedPath} pull`, { stdio: 'inherit' });
+  execSync(`storyblok languages --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
 
   console.log('✅ Pull complete. Moving files...');
 
   // Move component files and remove folder with spaceId
   componentFiles.forEach((file) => {
     if (existsSync(file)) {
-      execSync(`node ${moveScript} ${file} ${generatedPath}components`, { stdio: 'inherit', shell: true });
+      execSync(`node ${moveScript} ${file} ${resourcesPath}components`, { stdio: 'inherit', shell: true });
     } else {
       console.warn(`⚠️ Component file not found: ${file}`);
     }
@@ -48,14 +48,14 @@ try {
 
   // Move types file and remove folder with spaceId
   if (existsSync(typeFile)) {
-    execSync(`node ${moveScript} ${typeFile} ${generatedPath}types`, { stdio: 'inherit', shell: true });
+    execSync(`node ${moveScript} ${typeFile} ${resourcesPath}types`, { stdio: 'inherit', shell: true });
   } else {
     console.warn(`⚠️ Types file not found: ${typeFile}`);
   }
 
   // Move datasources file and remove folder with spaceId
   if (existsSync(datasourcesFile)) {
-    execSync(`node ${moveScript} ${datasourcesFile} ${generatedPath}types`, { stdio: 'inherit', shell: true });
+    execSync(`node ${moveScript} ${datasourcesFile} ${resourcesPath}datasources`, { stdio: 'inherit', shell: true });
   } else {
     console.warn(`⚠️ Datasource file not found: ${datasourcesFile}`);
   }
@@ -63,7 +63,7 @@ try {
   // TODO: determine correct filename and path to be able to move languages file and remove folder with spaceId
   // Move languages file and remove folder with spaceId
   // if (existsSync(datasourcesFile)) {
-  //   execSync(`node ${moveScript} ${datasourcesFile} ${generatedPath}types`, { stdio: 'inherit', shell: true });
+  //   execSync(`node ${moveScript} ${datasourcesFile} ${resourcesPath}types`, { stdio: 'inherit', shell: true });
   // } else {
   //   console.warn(`⚠️ Types file not found: ${datasourcesFile}`);
   // }
