@@ -14,7 +14,7 @@ interface PreviewProvidersProps {
 
 export default function PreviewProviders({ children }: PreviewProvidersProps) {
   return (
-    <StoryblokEditorProvider initialIsEditor>
+    <StoryblokEditorProvider>
       <MantineProvider theme={theme} defaultColorScheme="dark">
         <StoryblokClientRenderer>{children}</StoryblokClientRenderer>
       </MantineProvider>

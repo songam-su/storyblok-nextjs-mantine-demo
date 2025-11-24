@@ -2,8 +2,8 @@
 
 import { Button, ButtonVariant, MantineColor, MantineSize } from '@mantine/core';
 import Link from 'next/link';
-import styles from './SbButton.module.scss'; // ✅ Import SCSS module
-import React, { useEffect, useMemo, useState } from 'react';
+import styles from './SbButton.module.scss';
+import React, { useCallback, useMemo } from 'react';
 import { StoryblokMultilink } from '@/lib/storyblok/resources/types/storyblok';
 import { Button as SbButtonProps } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
@@ -78,15 +78,18 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   };
 
   // Link Handling
-  const resolvedHref = useMemo(() => getSbLink(link as StoryblokMultilink), [link]);
-  const [href, setHref] = useState(resolvedHref);
+  const href = useMemo(() => getSbLink(link as StoryblokMultilink), [link]);
   const { isEditor } = useStoryblokEditor();
 
-  useEffect(() => {
-    setHref(isEditor ? '#' : resolvedHref);
-  }, [isEditor, resolvedHref]);
-
-  const isExternal = link?.linktype === 'url' && href !== '#';
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (isEditor) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    },
+    [isEditor]
+  );
 
   // Styles Handling
   const variant = useUIButtonVariant(style);
@@ -97,15 +100,16 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   return (
     <Button
       {...storyblokEditable}
-      disabled={href === '#'}
+      disabled={!href || href === '#'}
       size={useUISize(size)}
       color={useUIColor(text_color)}
       variant={variant}
       className={colorClass}
       component={Link}
-      href={href}
-      target={isExternal ? '_blank' : undefined}
-      rel={isExternal ? 'noopener noreferrer' : undefined}
+      href={href || '#'}
+      onClick={handleClick}
+      target={!isEditor && link?.linktype === 'url' && href && href !== '#' ? '_blank' : undefined}
+      rel={!isEditor && link?.linktype === 'url' && href && href !== '#' ? 'noopener noreferrer' : undefined}
     >
       {label}
     </Button>
