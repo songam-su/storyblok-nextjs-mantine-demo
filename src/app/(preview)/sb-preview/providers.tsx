@@ -6,6 +6,7 @@ import '@mantine/core/styles.css';
 import '@/styles/globals.scss';
 import theme from '@/lib/mantine/theme';
 import StoryblokClientRenderer from '@/lib/storyblok/rendering/StoryblokClientRenderer';
+import { StoryblokEditorProvider } from '@/lib/storyblok/context/StoryblokEditorContext';
 
 interface PreviewProvidersProps {
   children: ReactNode;
@@ -13,8 +14,10 @@ interface PreviewProvidersProps {
 
 export default function PreviewProviders({ children }: PreviewProvidersProps) {
   return (
-    <MantineProvider theme={theme} defaultColorScheme="dark">
-      <StoryblokClientRenderer>{children}</StoryblokClientRenderer>
-    </MantineProvider>
+    <StoryblokEditorProvider initialIsEditor>
+      <MantineProvider theme={theme} defaultColorScheme="dark">
+        <StoryblokClientRenderer>{children}</StoryblokClientRenderer>
+      </MantineProvider>
+    </StoryblokEditorProvider>
   );
 }
