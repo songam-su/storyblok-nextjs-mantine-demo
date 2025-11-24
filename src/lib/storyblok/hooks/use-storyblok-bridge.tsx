@@ -1,66 +1,35 @@
 'use client';
+
 import { useEffect, useState } from 'react';
-import { StoryblokClient, apiPlugin } from '@storyblok/react';
+import type { ISbStoryData } from '@storyblok/react';
+import type { StoryblokBridgeConfigV2 } from '@storyblok/react';
 
-// declare global {
-//   interface Window {
-//     // @ts-ignore
-//     StoryblokBridge?: any;
-//   }
-// }
-
-export interface BridgeOptions {
-  resolveRelations?: string[];
-  language?: string;
-  version?: 'draft' | 'published';
-  apiClient?: StoryblokClient;
-  onBridgeEvent?: (event: any) => void;
-  disableBridge?: boolean;
-}
-
-export interface StoryblokStory {
-  id: number;
-  name: string;
-  slug: string;
-  full_slug: string;
-  content: {
-    _uid: string;
-    body?: any[];
-    component: string;
-    [key: string]: any;
-  };
-  [key: string]: any;
-}
-
-export function useStoryblokBridge(initialStory: StoryblokStory, options?: BridgeOptions): StoryblokStory {
-  const [story, setStory] = useState<StoryblokStory>(initialStory);
+export function useStoryblokBridge(initialStory: ISbStoryData, options: StoryblokBridgeConfigV2 = {}): ISbStoryData {
+  const [story, setStory] = useState<ISbStoryData>(initialStory);
 
   useEffect(() => {
-    if (options?.disableBridge) return;
+    // Load the bridge script if not present
+    if (typeof window !== 'undefined' && !window.StoryblokBridge) {
+      const script = document.createElement('script');
+      script.src = 'https://app.storyblok.com/f/storyblok-v2-latest.js';
+      script.async = true;
+      script.onload = initBridge;
+      document.body.appendChild(script);
+      return;
+    }
 
-    if (typeof window !== 'undefined' && window.StoryblokBridge) {
-      const sbBridge = new window.StoryblokBridge();
-
-      sbBridge.on(['input', 'published', 'change'], async (event: any) => {
-        options?.onBridgeEvent?.(event);
-
-        if (event.story) {
-          if (options?.resolveRelations?.length) {
-            const client =
-              options.apiClient || apiPlugin({ accessToken: process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN });
-
-            const response = await client.get(`cdn/stories/${event.story.slug}`, {
-              version: options.version || 'draft',
-              resolve_relations: options.resolveRelations.join(','),
-              language: options.language || 'default',
-            });
-
-            setStory(response.data.story);
-          } else {
-            setStory(event.story);
-          }
+    function initBridge() {
+      if (!window.StoryblokBridge) return;
+      const sbBridge = new window.StoryblokBridge(options);
+      sbBridge.on(['input', 'published', 'change'], (event: any) => {
+        if (event?.story) {
+          setStory(event.story);
         }
       });
+    }
+
+    if (typeof window !== 'undefined' && window.StoryblokBridge) {
+      initBridge();
     }
   }, [options]);
 
