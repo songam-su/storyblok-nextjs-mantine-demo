@@ -5,7 +5,7 @@ import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@/styles/globals.scss';
 import theme from '@/lib/mantine/theme';
-import StoryblokClientRenderer from '@/lib/storyblok/storyblok-client-renderer';
+import StoryblokClientRenderer from '@/lib/storyblok/rendering/StoryblokClientRenderer';
 
 interface PreviewProvidersProps {
   children: ReactNode;

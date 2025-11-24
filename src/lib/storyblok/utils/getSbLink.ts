@@ -1,4 +1,4 @@
-import { StoryblokMultilink } from '@/lib/storyblok/resources/types/storyblok';
+import { StoryblokMultilink } from '@/lib/storyblok/generated/types/storyblok';
 
 const STORYBLOK_PREVIEW_QUERY = '_storyblok';
 const STORYBLOK_PREVIEW_HOST = 'app.storyblok.com';

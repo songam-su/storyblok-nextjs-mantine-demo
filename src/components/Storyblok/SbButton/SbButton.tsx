@@ -4,31 +4,14 @@ import { Button, ButtonVariant, MantineColor, MantineSize } from '@mantine/core'
 import Link from 'next/link';
 import styles from './SbButton.module.scss'; // ✅ Import SCSS module
 import React, { useMemo } from 'react';
-import { StoryblokMultilink } from '@/lib/storyblok/resources/types/storyblok';
-import { Button as SbButtonProps } from '@/lib/storyblok/resources/types/storyblok-components';
+import { StoryblokMultilink } from '@/lib/storyblok/generated/types/storyblok';
+import { Button as SbButtonProps } from '@/lib/storyblok/generated/types/storyblok-components';
+import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 
 const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const { blok, storyblokEditable } = props;
   const { style, background_color, text_color, size, link, label } = blok;
-
-  const getMultilinkHref = (
-    link: Exclude<StoryblokMultilink, { linktype?: 'email' } | { linktype?: 'asset' }>
-  ): string => {
-    if (!link) return '#';
-
-    switch (link.linktype) {
-      case 'story':
-        return `/${link.cached_url || ''}`;
-      case 'url':
-        if (link.url?.startsWith('http://') || link.url?.startsWith('https://')) {
-          return link.url;
-        }
-        return `https://${link.url}`; // fallback
-      default:
-        return '#';
-    }
-  };
 
   const useUISize = (
     sbSize?: 'small' | 'medium' | 'large'
@@ -94,7 +77,7 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   // const href = getMultilinkHref(link);
   // const variant = useUIButtonVariant(style);
 
-  const href = getMultilinkHref(link);
+  const href = getSbLink(link as StoryblokMultilink);
   const isExternal = link?.linktype === 'url';
   const variant = useUIButtonVariant(style);
   const backgroundColorClass =
@@ -102,33 +85,23 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const colorClass = getColorClass(backgroundColorClass); // ✅ Use blok.color for SCSS mapping
 
   const button = (
-    <>
-      <div>size={useUISize(size)}</div>
-      <div>color={useUIColor(text_color)}</div>
-      <div>variant={variant}</div>
-      <div>className={colorClass}</div>
-      <Button
-        {...storyblokEditable}
-        disabled={href === '#'}
-        size={useUISize(size)}
-        color={useUIColor(text_color)}
-        variant={variant}
-        className={colorClass}
-        // autoContrast={variant === 'filled'} // replaced by classNames usage
-      >
-        {label}
-      </Button>
-    </>
+    <Button
+      {...storyblokEditable}
+      disabled={href === '#'}
+      size={useUISize(size)}
+      color={useUIColor(text_color)}
+      variant={variant}
+      className={colorClass}
+      component={Link}
+      href={href}
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
+    >
+      {label}
+    </Button>
   );
-  if (isExternal) {
-    return (
-      <Link href={href} target="_blank" rel="noopener noreferrer" className={styles.link}>
-        {button}
-      </Link>
-    );
-  } else {
-    return button;
-  }
+
+  return button;
 };
 
 export default SbButton;

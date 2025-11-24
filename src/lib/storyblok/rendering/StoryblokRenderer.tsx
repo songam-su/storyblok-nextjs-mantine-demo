@@ -1,7 +1,7 @@
 'use client';
 
-import { useStoryblokBridge } from './hooks/use-storyblok-bridge';
-import { StoryblokComponentRenderer } from './rendering/storyblok-component-renderer';
+import { useStoryblokBridge } from '../hooks/useStoryblokBridge';
+import { StoryblokComponentRenderer } from './StoryblokComponentRenderer';
 import type { ISbStoryData, StoryblokBridgeConfigV2 } from '@storyblok/react';
 
 interface StoryblokRendererProps {

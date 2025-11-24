@@ -9,18 +9,18 @@ if (!spaceId) {
   process.exit(1);
 }
 
-const resourcesPath = `./src/lib/storyblok/resources/`;
+const generatedPath = `./src/lib/storyblok/generated/`;
 const moveScript = './.dev/storyblok/helpers/move-files.mjs';
 
 try {
   console.log('Pulling Storyblok datasources...');
-  execSync(`storyblok datasources --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
+  execSync(`storyblok datasources --space ${spaceId} --path ${generatedPath} pull`, { stdio: 'inherit' });
   console.log('✅ Types generated successfully!');
 
   // Move component files and remove folder with spaceId
   componentFiles.forEach((file) => {
     if (existsSync(file)) {
-      execSync(`node ${moveScript} ${file} ${resourcesPath}components`, { stdio: 'inherit', shell: true });
+      execSync(`node ${moveScript} ${file} ${generatedPath}components`, { stdio: 'inherit', shell: true });
     } else {
       console.warn(`⚠️ Component file not found: ${file}`);
     }

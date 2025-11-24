@@ -1,5 +1,5 @@
 import React from 'react';
-import { registry } from './component-registry';
+import { registry } from './loaders';
 
 export const lazyRegistry = {
   components: Object.fromEntries(Object.entries(registry).map(([key, loader]) => [key, React.lazy(loader)])) as Record<
@@ -15,8 +15,6 @@ export const lazyRegistry = {
     }
     try {
       await loader();
-      // Logging to verify preload
-      // console.log(`[Preload] Preloaded: ${key}`);
     } catch {
       console.warn(`[Preload] Failed to preload: ${key}`);
     }

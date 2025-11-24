@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { StoryblokComponentsInitializer } from './rendering/storyblok-component-initializer';
+import { StoryblokComponentsInitializer } from './StoryblokComponentInitializer';
 
 export default function StoryblokClientRenderer({ children }: { children: ReactNode }) {
   return (

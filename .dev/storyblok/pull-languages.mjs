@@ -9,11 +9,11 @@ if (!spaceId) {
   process.exit(1);
 }
 
-const resourcesPath = `./src/lib/storyblok/resources/`;
+const generatedPath = `./src/lib/storyblok/generated/`;
 
 try {
   console.log('Pulling Storyblok languages...');
-  execSync(`storyblok languages --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
+  execSync(`storyblok languages --space ${spaceId} --path ${generatedPath} pull`, { stdio: 'inherit' });
   console.log('✅ Types generated successfully!');
 } catch (error) {
   console.error('❌ Error executing commands:', error.message);

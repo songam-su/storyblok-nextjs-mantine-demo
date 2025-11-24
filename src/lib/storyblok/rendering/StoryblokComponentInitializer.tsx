@@ -2,7 +2,7 @@
 
 import { FC, useEffect } from 'react';
 import { storyblokInit, apiPlugin } from '@storyblok/react';
-import { registry } from '../component-registry/component-registry';
+import { registry } from '../registry/loaders';
 
 const Placeholder: FC<any> = () => null;
 
