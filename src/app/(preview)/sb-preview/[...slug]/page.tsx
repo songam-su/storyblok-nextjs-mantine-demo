@@ -1,33 +1,35 @@
 import { fetchStory } from '@/lib/storyblok/api';
-import StoryblokRenderer from '@/lib/storyblok/storyblokRenderer';
+import StoryblokRenderer from '@/lib/storyblok/storyblok-renderer';
 import { notFound } from 'next/navigation';
-import { draftMode, headers } from 'next/headers';
+import { cookies, draftMode } from 'next/headers';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+type Awaitable<T> = T | Promise<T>;
 
 type PreviewPageProps = {
-  params: { slug?: string[] };
-  searchParams: Record<string, string | string[] | undefined>;
+  params: Awaitable<{ slug?: string[] }>;
+  searchParams: Awaitable<Record<string, string | string[] | undefined>>;
 };
 
-export default async function PreviewPage({ params, searchParams }: PreviewPageProps) {
-  const resolvedParams = await params;
-  const slug = resolvedParams?.slug ? resolvedParams.slug.join('/') : 'home';
+export default async function PreviewPage(props: PreviewPageProps) {
+  const params = await props.params;
+  const slug = params?.slug ? params.slug.join('/') : 'home';
 
-  // SSR: Next.js draft mode
-  let isPreview = (await draftMode()).isEnabled;
+  const { isEnabled } = await draftMode();
 
-  // SSR: Fallbacks for Storyblok Visual Editor
-  if (!isPreview) {
-    const hdrs = headers();
-    const referer = (await hdrs).get('referer') || '';
-    const userAgent = (await hdrs).get('user-agent') || '';
-    if (
-      referer.includes('app.storyblok.com') ||
-      userAgent.toLowerCase().includes('storyblok') ||
-      slug.startsWith('sb-preview/')
-    ) {
-      isPreview = true;
-    }
-  }
+  const cookieStore = await cookies();
+  const hasPreviewData = Boolean(cookieStore.get('__next_preview_data'));
+  const hasBypass = Boolean(cookieStore.get('__prerender_bypass'));
+  const hasPreviewCookies = hasPreviewData && hasBypass;
+
+  const isPreview = isEnabled || hasPreviewCookies;
+
+  console.log('Server isPreview:', isPreview, '| draftMode:', isEnabled, '| cookies:', {
+    __next_preview_data: hasPreviewData,
+    __prerender_bypass: hasBypass,
+  });
 
   const story = await fetchStory(slug, isPreview ? 'draft' : 'published');
 

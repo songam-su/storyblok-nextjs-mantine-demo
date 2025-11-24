@@ -1,13 +1,33 @@
 import { draftMode } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const slug = url.searchParams.get('slug') || 'home';
+  let slug = url.searchParams.get('slug') || '/';
+  slug = slug.startsWith('/') ? slug.slice(1) : slug;
 
-  // Enable Next.js draft mode
-  (await draftMode()).enable();
+  const draft = await draftMode();
+  draft.enable();
 
-  // Redirect to your preview page
-  redirect(`/preview/${slug}`);
+  const redirectUrl = new URL(`/sb-preview/${slug}`, url.origin);
+  const response = NextResponse.redirect(redirectUrl, 307);
+
+  // Ensure preview cookies survive inside Storyblok's cross-site iframe
+  const previewCookieNames: Array<'__prerender_bypass' | '__next_preview_data'> = [
+    '__prerender_bypass',
+    '__next_preview_data',
+  ];
+
+  previewCookieNames.forEach((name) => {
+    const cookie = response.cookies.get(name);
+    if (cookie) {
+      response.cookies.set({
+        ...cookie,
+        sameSite: 'none',
+        secure: true,
+      });
+    }
+  });
+
+  return response;
 }
