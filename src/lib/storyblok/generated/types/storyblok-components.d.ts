@@ -30,7 +30,7 @@ export interface Banner {
   background_image_alignment?: "left" | "center" | "right";
   background_image_width?: "100" | "75" | "50";
   background_video?: StoryblokAsset;
-  background_color?: AdvancedBackgroundColorsDataSource;
+  background_color?: number | string;
   headline?: HeadlineSegment[];
   lead?: string;
   buttons?: Button[];
@@ -49,7 +49,7 @@ export interface BannerReference {
 
 export interface Button {
   style?: "default" | "ghost";
-  background_color?: ButtonColorsDataSource;
+  background_color?: number | string;
   text_color?: "white" | "primary-dark";
   size?: "small" | "medium" | "large";
   link: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
@@ -130,7 +130,7 @@ export interface FeaturedArticlesSection {
   lead?: string;
   articles?: (ISbStoryData<ArticlePage> | string)[];
   cols?: "2" | "3" | "4";
-  background_color?: BasicBackgroundColorsDataSource;
+  background_color?: number | string;
   component: "featured-articles-section";
   _uid: string;
   [k: string]: unknown;
@@ -165,7 +165,7 @@ export interface GridSection {
   cols?: "2" | "3" | "4";
   headline?: HeadlineSegment[];
   lead?: string;
-  background_color?: BasicBackgroundColorsDataSource;
+  background_color?: number | string;
   button?: Button[];
   component: "grid-section";
   _uid: string;
@@ -174,7 +174,7 @@ export interface GridSection {
 
 export interface HeadlineSegment {
   text?: string;
-  highlight?: HighlightColorsDataSource;
+  highlight?: "none" | "color_1" | "color_2" | "color_3";
   component: "headline-segment";
   _uid: string;
   [k: string]: unknown;
@@ -182,8 +182,12 @@ export interface HeadlineSegment {
 
 export interface HeroSection {
   layout?: "stacked" | "split";
-  background_color?: HighlightAndBackgroundColorsDataSource;
-  secondary_background_color?: HighlightAndBackgroundColorsDataSource;
+  background_color?: number | string;
+  secondary_background_color?:
+    | ""
+    | "medium"
+    | '["#E4DDB9", "#A59441", "#9D86F7", "#8D60FF", "#F5F5F7", "#FFFFFF"]'
+    | "#A59441";
   text_alignment?: "left" | "center";
   image_decoration?: boolean;
   eyebrow?: string;
@@ -201,14 +205,14 @@ export interface ImageCard {
   image?: StoryblokAsset;
   label?: string;
   text?: string;
-  background_color?: AdvancedBackgroundColorsDataSource;
+  background_color?: "" | "medium" | "#fbe8d5" | '["#d8d4f9", "#fbe8d5", "#e9e8d2", "#e3f0d5", "#f8d7d4", "#d9e4f1"]';
   component: "image-card";
   _uid: string;
   [k: string]: unknown;
 }
 
 export interface ImageTextSection {
-  background_color?: BasicBackgroundColorsDataSource;
+  background_color?: number | string;
   reverse_mobile_layout?: boolean;
   reverse_desktop_layout?: boolean;
   eyebrow?: string;
@@ -352,8 +356,8 @@ export interface SiteConfig {
   colors?: unknown;
   colored_headlines?: boolean;
   use_custom_fonts?: boolean;
-  custom_font_display?: FontsDataSource;
-  custom_font_body?: FontsDataSource;
+  custom_font_display?: number | string;
+  custom_font_body?: number | string;
   x?: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
   footer_headline?: HeadlineSegment[];
   footer_about?: StoryblokRichtext;
@@ -418,7 +422,7 @@ export interface TextSection {
   headline?: HeadlineSegment[];
   text?: StoryblokRichtext;
   buttons?: Button[];
-  background_color?: BasicBackgroundColorsDataSource;
+  background_color?: number | string;
   component: "text-section";
   _uid: string;
   [k: string]: unknown;
@@ -430,68 +434,17 @@ export interface TwoColumnsSection {
   column_1_text_2?: StoryblokRichtext;
   column_1_button?: Button[];
   column_1_image?: StoryblokAsset;
-  column_1_background_color?: AdvancedBackgroundColorsDataSource;
+  column_1_background_color?: "" | "medium" | "#BCE2FF" | '["#f4f2ea", "#d8d4f9", "#BCE2FF"]';
   column_2_headline?: HeadlineSegment[];
   column_2_text_1?: StoryblokRichtext;
   column_2_button?: Button[];
-  column_2_background_color?: AdvancedBackgroundColorsDataSource;
-  column_1_decoration_color?: HighlightColorsDataSource;
-  column_2_decoration_color?: HighlightColorsDataSource;
+  column_2_background_color?: "" | "medium" | "#d8d4f9" | '["#f4f2ea", "#d8d4f9", "#BCE2FF"]';
+  column_1_decoration_color?: "" | "medium" | "#71b3f9" | '["#dfdbbb", "#9987f0", "#71b3f9"]';
+  column_2_decoration_color?: "" | "medium" | "#9987f0" | '["#dfdbbb", "#9987f0", "#71b3f9"]';
   component: "two-columns-section";
   _uid: string;
   [k: string]: unknown;
 }
-
-export type AdvancedBackgroundColorsDataSource =
-  | "white"
-  | "primary-background"
-  | "background-1"
-  | "background-2"
-  | "background-3"
-  | "background-4"
-  | "background-5"
-  | "background-6"
-  | "background-7"
-  | "background-8"
-  | "background-9"
-  | "background-10";
-
-export type BasicBackgroundColorsDataSource = "white" | "primary-background";
-
-export type ButtonColorsDataSource =
-  | "primary-highlight"
-  | "highlight-1"
-  | "highlight-2"
-  | "highlight-3"
-  | "primary-dark"
-  | "white";
-
-export type FontsDataSource =
-  | "Roboto, sans-serif"
-  | "Roboto Slab, serif"
-  | "Roboto Serif, sans-serif"
-  | "Noto Serif, serif"
-  | "Montserrat, sans-serif";
-
-export type HighlightAndBackgroundColorsDataSource =
-  | "primary-highlight"
-  | "highlight-1"
-  | "highlight-2"
-  | "highlight-3"
-  | "white"
-  | "primary-background"
-  | "background-1"
-  | "background-2"
-  | "background-3"
-  | "background-4"
-  | "background-5"
-  | "background-6"
-  | "background-7"
-  | "background-8"
-  | "background-9"
-  | "background-10";
-
-export type HighlightColorsDataSource = "primary-highlight" | "highlight-1" | "highlight-2" | "highlight-3";
 
 export type ContentType =
   | ArticleOverviewPage

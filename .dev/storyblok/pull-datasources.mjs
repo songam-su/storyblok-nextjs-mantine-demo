@@ -1,5 +1,6 @@
 import { execSync } from 'child_process';
 import dotenv from 'dotenv';
+import { existsSync } from 'fs';
 
 dotenv.config(); // Loads .env
 
@@ -11,22 +12,19 @@ if (!spaceId) {
 
 const generatedPath = `./src/lib/storyblok/generated/`;
 const moveScript = './.dev/storyblok/helpers/move-files.mjs';
+const datasourcesFile = `${generatedPath}datasources/${spaceId}/datasources.json`;
 
 try {
   console.log('Pulling Storyblok datasources...');
-  execSync(`storyblok datasources --space ${spaceId} --path ${generatedPath} pull`, { stdio: 'inherit' });
-  console.log('✅ Types generated successfully!');
 
-  // Move component files and remove folder with spaceId
-  componentFiles.forEach((file) => {
-    if (existsSync(file)) {
-      execSync(`node ${moveScript} ${file} ${generatedPath}components`, { stdio: 'inherit', shell: true });
-    } else {
-      console.warn(`⚠️ Component file not found: ${file}`);
-    }
-  });
+  // Move datasources file and remove folder with spaceId
+  if (existsSync(datasourcesFile)) {
+    execSync(`node ${moveScript} ${datasourcesFile} ${generatedPath}types`, { stdio: 'inherit', shell: true });
+  } else {
+    console.warn(`⚠️ Datasource file not found: ${datasourcesFile}`);
+  }
 
-  console.log('✅ Component files moved successfully. SpaceId folders removed successfully.');
+  console.log('✅ Datasources generated successfully!');
 } catch (error) {
   console.error('❌ Error executing commands:', error.message);
   process.exit(1);

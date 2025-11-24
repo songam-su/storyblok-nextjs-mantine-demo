@@ -11,30 +11,30 @@ if (!spaceId) {
   process.exit(1);
 }
 
-const resourcesPath = './src/lib/storyblok/resources/';
+const generatedPath = './src/lib/storyblok/generated/';
 const moveScript = './.dev/storyblok/helpers/move-files.mjs';
 
 // Paths for components and types
 const componentFiles = [
-  `${resourcesPath}components/${spaceId}/components.json`,
-  `${resourcesPath}components/${spaceId}/groups.json`,
-  `${resourcesPath}components/${spaceId}/presets.json`,
+  `${generatedPath}components/${spaceId}/components.json`,
+  `${generatedPath}components/${spaceId}/groups.json`,
+  `${generatedPath}components/${spaceId}/presets.json`,
 ];
-const typeFile = `${resourcesPath}types/${spaceId}/storyblok-components.d.ts`;
+const typeFile = `${generatedPath}types/${spaceId}/storyblok-components.d.ts`;
 
 try {
   console.log('Pulling Storyblok components...');
-  execSync(`storyblok components --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
+  execSync(`storyblok components --space ${spaceId} --path ${generatedPath} pull`, { stdio: 'inherit' });
 
-  console.log('Pulling Storyblok TypeScript types...');
-  execSync(`storyblok types --space ${spaceId} --path ${resourcesPath} generate`, { stdio: 'inherit' });
+  console.log('Pulling Storyblok types...');
+  execSync(`storyblok types --space ${spaceId} --path ${generatedPath} generate`, { stdio: 'inherit' });
 
   console.log('✅ Pull components and types complete. Moving files...');
 
   // Move component files and remove folder with spaceId
   componentFiles.forEach((file) => {
     if (existsSync(file)) {
-      execSync(`node ${moveScript} ${file} ${resourcesPath}components`, { stdio: 'inherit', shell: true });
+      execSync(`node ${moveScript} ${file} ${generatedPath}components`, { stdio: 'inherit', shell: true });
     } else {
       console.warn(`⚠️ Component file not found: ${file}`);
     }
@@ -42,7 +42,7 @@ try {
 
   // Move types file and remove folder with spaceId
   if (existsSync(typeFile)) {
-    execSync(`node ${moveScript} ${typeFile} ${resourcesPath}types`, { stdio: 'inherit', shell: true });
+    execSync(`node ${moveScript} ${typeFile} ${generatedPath}types`, { stdio: 'inherit', shell: true });
   } else {
     console.warn(`⚠️ Types file not found: ${typeFile}`);
   }
