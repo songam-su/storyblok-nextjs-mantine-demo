@@ -11,13 +11,13 @@ interface StoryblokRendererProps {
 }
 
 const StoryblokRenderer: React.FC<StoryblokRendererProps> = (props) => {
-  const { story, isPreview, bridgeOptions = {} } = props;
+  const { story: initialStory, isPreview, bridgeOptions: options = {} } = props;
 
   // Only enable the bridge in preview mode
-  const liveStory = isPreview ? useStoryblokBridge(story, bridgeOptions) : story;
+  const liveStory = isPreview ? useStoryblokBridge({ initialStory, options }) : initialStory;
 
   if (!liveStory?.content?.body) {
-    return <p>No content available</p>;
+    return null;
   }
 
   return (
