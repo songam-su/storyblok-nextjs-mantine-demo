@@ -3,11 +3,10 @@
 import { storyblokEditable } from '@storyblok/react';
 import { Group, Paper, Stack, Text, Title } from '@mantine/core';
 import React from 'react';
-import {
-  Banner,
-  HeadlineSegment,
-  HighlightColorsDataSource,
-} from '@/lib/storyblok/generated/types/storyblok-components';
+import { Banner, HeadlineSegment } from '@/lib/storyblok/resources/types/storyblok-components';
+
+type HighlightColorsDataSource = 'primary-highlight' | 'highlight-1' | 'highlight-2' | 'highlight-3';
+
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import SbButton from '@/components/Storyblok/SbButton/SbButton';
 import styles from './SbBanner.module.scss';

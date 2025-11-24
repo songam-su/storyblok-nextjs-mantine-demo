@@ -4,8 +4,8 @@ import { Button, ButtonVariant, MantineColor, MantineSize } from '@mantine/core'
 import Link from 'next/link';
 import styles from './SbButton.module.scss'; // ✅ Import SCSS module
 import React, { useMemo } from 'react';
-import { StoryblokMultilink } from '@/lib/storyblok/generated/types/storyblok';
-import { Button as SbButtonProps } from '@/lib/storyblok/generated/types/storyblok-components';
+import { StoryblokMultilink } from '@/lib/storyblok/resources/types/storyblok';
+import { Button as SbButtonProps } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 
