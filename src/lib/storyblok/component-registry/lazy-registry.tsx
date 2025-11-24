@@ -15,7 +15,8 @@ export const lazyRegistry = {
     }
     try {
       await loader();
-      console.log(`[Preload] Preloaded: ${key}`);
+      // Logging to verify preload
+      // console.log(`[Preload] Preloaded: ${key}`);
     } catch {
       console.warn(`[Preload] Failed to preload: ${key}`);
     }

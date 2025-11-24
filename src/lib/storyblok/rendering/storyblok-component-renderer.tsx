@@ -3,7 +3,7 @@
 import { Suspense } from 'react';
 import { lazyRegistry } from '../component-registry/lazy-registry';
 import { Loader } from '@mantine/core';
-import { ErrorBoundary } from './ErrorBoundary';
+import { ErrorBoundary } from './error-boundary';
 
 export function StoryblokComponentRenderer({ blok, isPreview }: { blok: any; isPreview?: boolean }) {
   if (!blok?.component) return null;

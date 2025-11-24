@@ -26,10 +26,11 @@ export default async function PreviewPage(props: PreviewPageProps) {
 
   const isPreview = isEnabled || hasPreviewCookies;
 
-  console.log('Server isPreview:', isPreview, '| draftMode:', isEnabled, '| cookies:', {
-    __next_preview_data: hasPreviewData,
-    __prerender_bypass: hasBypass,
-  });
+  // Debugging logs
+  // console.log('Server isPreview:', isPreview, '| draftMode:', isEnabled, '| cookies:', {
+  //   __next_preview_data: hasPreviewData,
+  //   __prerender_bypass: hasBypass,
+  // });
 
   const story = await fetchStory(slug, isPreview ? 'draft' : 'published');
 
