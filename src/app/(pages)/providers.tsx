@@ -11,7 +11,7 @@ interface PreviewProvidersProps {
   children: ReactNode;
 }
 
-export default function PreviewProviders({ children }: PreviewProvidersProps) {
+export default function PublishedProviders({ children }: PreviewProvidersProps) {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
       <StoryblokClientRenderer>{children}</StoryblokClientRenderer>

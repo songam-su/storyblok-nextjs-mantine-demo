@@ -1,10 +1,10 @@
-import PreviewProviders from './providers';
+import PublishedProviders from './providers';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <PreviewProviders>{children}</PreviewProviders>
+        <PublishedProviders>{children}</PublishedProviders>
       </body>
     </html>
   );
