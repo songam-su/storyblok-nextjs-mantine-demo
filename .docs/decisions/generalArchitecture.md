@@ -28,7 +28,7 @@ Each segment has its own `layout.tsx` (server component) and `providers.tsx` (cl
 
 ## 🔗 Rendering Chain: From Layout to Components
 
-### Flow:
+### Flow
 
 1. **`layout.tsx` (Server Component)**
    - Wraps HTML structure for the route segment.
@@ -90,7 +90,7 @@ A simpler setup might hardcode all components and providers globally, but that c
 - **Editor Experience:** Manual redeploys for new components.
 - **Flexibility:** No easy way to customize behavior per route segment.
 
-### Our approach solves these by:
+### Our approach solves these by
 
 - Keeping server-rendered HTML lean.
 - Supporting previews without bloating production.
