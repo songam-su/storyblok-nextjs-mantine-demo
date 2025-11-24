@@ -3,8 +3,8 @@ import path from 'path';
 
 const projectRoot = path.resolve(process.cwd());
 const inputFile = path.join(projectRoot, 'src', 'lib', 'storyblok', 'generated', 'types', 'storyblok-components.d.ts');
-const outputDir = path.join(projectRoot, 'src', 'lib', 'storyblok', 'component-registry');
-const outputFile = path.join(outputDir, 'generated-union.ts');
+const outputDir = path.join(projectRoot, 'src', 'lib', 'storyblok', 'registry', 'unutilized');
+const outputFile = path.join(outputDir, 'StoryblokBlok.ts');
 
 // ✅ Ensure directory exists
 fs.mkdirSync(outputDir, { recursive: true });
