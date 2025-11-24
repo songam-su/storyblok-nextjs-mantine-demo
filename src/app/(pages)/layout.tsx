@@ -1,16 +1,10 @@
-import { MantineProvider } from '@mantine/core';
-import '@mantine/core/styles.css';
-import '@/styles/globals.scss';
-import StoryblokClientRenderer from '@/lib/storyblok/rendering/StoryblokClientRenderer';
-import theme from '@/lib/mantine/theme';
+import PreviewProviders from './providers';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <MantineProvider theme={theme}>
-          <StoryblokClientRenderer>{children}</StoryblokClientRenderer>
-        </MantineProvider>
+        <PreviewProviders>{children}</PreviewProviders>
       </body>
     </html>
   );
