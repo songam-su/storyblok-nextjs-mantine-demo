@@ -1,5 +1,5 @@
 import { fetchStory } from '@/lib/storyblok/api';
-import StoryblokRenderer from '@/lib/storyblok/rendering/storyblok-renderer';
+import StoryblokRenderer from '@/lib/storyblok/storyblokRenderer';
 import { notFound } from 'next/navigation';
 
 type PageProps = {

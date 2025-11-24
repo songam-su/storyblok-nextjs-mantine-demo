@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
-import { lazyRegistry } from '../registry/lazy-registry';
+import { lazyRegistry } from '../component-registry/lazy-registry';
 import { Loader } from '@mantine/core';
 import { ErrorBoundary } from './ErrorBoundary';
 

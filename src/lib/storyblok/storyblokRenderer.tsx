@@ -1,7 +1,7 @@
 'use client';
 
-import { StoryblokComponentRenderer } from './storyblok-component-renderer';
-import { useStoryblokBridge } from '../hooks/use-storyblok-bridge';
+import { StoryblokComponentRenderer } from './rendering/storyblok-component-renderer';
+import { useStoryblokBridge } from './hooks/use-storyblok-bridge';
 
 export default function StoryblokRenderer({ story }: { story: any }) {
   const isPreview = typeof window !== 'undefined' && !!window.StoryblokBridge;
