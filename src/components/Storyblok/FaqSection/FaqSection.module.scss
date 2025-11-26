@@ -3,8 +3,7 @@
   background-color: rgba(10, 12, 24, 0.8);
   padding: clamp(1.5rem, 4vw, 3rem);
   color: var(--mantine-color-white);
-  max-width: var(--page-shell-max-width);
-  width: 100%;
+  width: min(var(--page-shell-max-width), calc(100% - (2 * var(--page-shell-inline-padding))));
   margin: 0 auto;
 }
 

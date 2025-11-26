@@ -25,8 +25,10 @@ html {
   color-scheme: dark;
   background-color: #05060c;
   --page-shell-max-width: 1400px;
-  --page-shell-inline-padding-mobile: var(--mantine-spacing-md);
-  --page-shell-inline-padding-desktop: var(--mantine-spacing-xl);
+  --page-shell-inline-padding-xs: var(--mantine-spacing-md);
+  --page-shell-inline-padding-sm: 20px;
+  --page-shell-inline-padding-md: var(--mantine-spacing-xl);
+  --page-shell-inline-padding: var(--page-shell-inline-padding-xs);
   --page-shell-block-padding: clamp(2rem, 6vw, 4rem);
   --page-shell-section-gap: clamp(1.5rem, 4vw, 3rem);
 }
@@ -42,7 +44,7 @@ body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding: var(--page-shell-block-padding) var(--page-shell-inline-padding-mobile);
+  padding: var(--page-shell-block-padding) var(--page-shell-inline-padding);
 }
 
 .page-shell__content {
@@ -62,23 +64,23 @@ body {
 .edge-to-edge__inner {
   width: min(var(--page-shell-max-width), 100%);
   margin: 0 auto;
-  padding-left: var(--page-shell-inline-padding-mobile);
-  padding-right: var(--page-shell-inline-padding-mobile);
+  padding-left: var(--page-shell-inline-padding);
+  padding-right: var(--page-shell-inline-padding);
 }
 
 .edge-to-edge__inner > * {
   max-width: 100%;
 }
 
-@media (min-width: 62em) {
-  .page-shell {
-    padding-left: var(--page-shell-inline-padding-desktop);
-    padding-right: var(--page-shell-inline-padding-desktop);
+@media (min-width: 48em) {
+  :root {
+    --page-shell-inline-padding: var(--page-shell-inline-padding-sm);
   }
+}
 
-  .edge-to-edge__inner {
-    padding-left: var(--page-shell-inline-padding-desktop);
-    padding-right: var(--page-shell-inline-padding-desktop);
+@media (min-width: 62em) {
+  :root {
+    --page-shell-inline-padding: var(--page-shell-inline-padding-md);
   }
 }
 

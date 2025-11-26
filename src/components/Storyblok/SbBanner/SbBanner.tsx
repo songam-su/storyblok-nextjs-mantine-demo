@@ -65,30 +65,30 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
     >
       <div className="edge-to-edge__inner">
         <Stack gap="md" align={alignment.alignItems} style={{ textAlign: alignment.textAlign }}>
-        {hasHeadline && (
-          <Title order={1} fw={700} size="h1">
-            {renderHeadlineSegments(blok.headline)}
-          </Title>
-        )}
-        {hasLead && (
-          <Text size="lg" ta={alignment.textAlign} maw={680}>
-            {blok.lead}
-          </Text>
-        )}
+          {hasHeadline && (
+            <Title order={1} fw={700} size="h1">
+              {renderHeadlineSegments(blok.headline)}
+            </Title>
+          )}
+          {hasLead && (
+            <Text size="lg" ta={alignment.textAlign} maw={680}>
+              {blok.lead}
+            </Text>
+          )}
 
-        {hasButtons && (
-          <Group justify={alignment.justifyContent} gap="md" wrap="wrap" mt="sm">
-            {blok.buttons?.map((button) => (
-              <SbButton
-                key={button._uid}
-                blok={button}
-                _uid={button._uid}
-                component={button.component}
-                storyblokEditable={storyblokEditable(button as any)}
-              />
-            ))}
-          </Group>
-        )}
+          {hasButtons && (
+            <Group justify={alignment.justifyContent} gap="md" wrap="wrap" mt="sm">
+              {blok.buttons?.map((button) => (
+                <SbButton
+                  key={button._uid}
+                  blok={button}
+                  _uid={button._uid}
+                  component={button.component}
+                  storyblokEditable={storyblokEditable(button as any)}
+                />
+              ))}
+            </Group>
+          )}
         </Stack>
       </div>
     </Paper>
