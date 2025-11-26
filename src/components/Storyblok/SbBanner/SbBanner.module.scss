@@ -2,28 +2,125 @@
   position: relative;
   overflow: hidden;
   color: inherit;
+  background-color: var(--sb-banner-color, transparent) !important;
+}
+
+.text-on-dark {
+  color: var(--mantine-color-gray-0);
+}
+
+.text-on-light {
+  color: var(--mantine-color-dark-7);
+}
+
+.has-background-image {
+  background-image: linear-gradient(rgba(6, 11, 26, 0.55), rgba(6, 11, 26, 0.55)), var(--sb-banner-image, none);
+  background-size: var(--sb-banner-size, cover);
+  background-position: var(--sb-banner-position, center);
+  background-repeat: no-repeat;
+}
+
+.background-cover {
+  --sb-banner-size: cover;
+}
+
+.background-contain {
+  --sb-banner-size: contain;
+}
+
+.background-position-left {
+  --sb-banner-position: left;
+}
+
+.background-position-center {
+  --sb-banner-position: center;
+}
+
+.background-position-right {
+  --sb-banner-position: right;
 }
 
 .primary-highlight {
-  background-color: var(--mantine-color-blue-6);
+  --sb-banner-color: var(--mantine-color-neonIceLight-6);
+  color: var(--mantine-color-carbonBlack-8);
 }
 
 .highlight-1 {
-  background-color: var(--mantine-color-indigo-5);
+  --sb-banner-color: var(--mantine-color-bubblegumPink-6);
+  color: var(--mantine-color-white);
 }
 
 .highlight-2 {
-  background-color: var(--mantine-color-teal-5);
+  --sb-banner-color: var(--mantine-color-amberGlow-6);
+  color: var(--mantine-color-carbonBlack-8);
 }
 
 .highlight-3 {
-  background-color: var(--mantine-color-pink-5);
+  --sb-banner-color: var(--mantine-color-blushedBrick-6);
+  color: var(--mantine-color-white);
 }
 
 .primary-dark {
-  background-color: var(--mantine-color-dark-6);
+  --sb-banner-color: var(--mantine-color-carbonBlack-8);
+  color: var(--mantine-color-white);
 }
 
 .white {
-  background-color: var(--mantine-color-gray-0);
+  --sb-banner-color: var(--mantine-color-whiteSmoke-0);
+  color: var(--mantine-color-carbonBlack-8);
+}
+
+.primary-background {
+  --sb-banner-color: var(--mantine-color-carbonBlack-9);
+  color: var(--mantine-color-white);
+}
+
+.background-1 {
+  --sb-banner-color: var(--mantine-color-carbonBlack-5);
+  color: var(--mantine-color-white);
+}
+
+.background-2 {
+  --sb-banner-color: var(--mantine-color-carbonBlack-7);
+  color: var(--mantine-color-white);
+}
+
+.background-3 {
+  --sb-banner-color: var(--mantine-color-carbonBlack-6);
+  color: var(--mantine-color-white);
+}
+
+.background-4 {
+  --sb-banner-color: var(--mantine-color-graphite-8);
+  color: var(--mantine-color-white);
+}
+
+.background-5 {
+  --sb-banner-color: var(--mantine-color-graphite-7);
+  color: var(--mantine-color-white);
+}
+
+.background-6 {
+  --sb-banner-color: var(--mantine-color-gunmetal-8);
+  color: var(--mantine-color-white);
+}
+
+.background-7 {
+  --sb-banner-color: var(--mantine-color-gunmetal-6);
+  color: var(--mantine-color-white);
+}
+
+.background-8 {
+  --sb-banner-color: var(--mantine-color-gunmetal-3);
+  color: var(--mantine-color-carbonBlack-8);
+}
+
+.background-9 {
+  --sb-banner-color: var(--mantine-color-whiteSmoke-3);
+  color: var(--mantine-color-carbonBlack-8);
+}
+
+.background-10 {
+  --sb-banner-color: var(--mantine-color-whiteSmoke-1);
+  color: var(--mantine-color-carbonBlack-8);
 }
