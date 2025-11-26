@@ -21,7 +21,6 @@ const STORYBLOK_COLOR_KEYS = [
   'color_1',
   'color_2',
   'color_3',
-  'color_3',
 ] as const;
 
 const STORYBLOK_COLOR_KEY_SET = new Set<StoryblokColorKey>(STORYBLOK_COLOR_KEYS);

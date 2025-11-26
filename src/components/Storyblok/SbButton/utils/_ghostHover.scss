@@ -1,0 +1,8 @@
+@mixin hover-styles {
+  --sb-button-ghost-hover-bg: var(--sb-color-bg, var(--sb-color-default-bg));
+
+  &:hover {
+    background-color: var(--sb-button-ghost-hover-bg);
+    color: var(--sb-color-text, var(--sb-color-default-text));
+  }
+}

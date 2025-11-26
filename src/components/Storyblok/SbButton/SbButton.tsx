@@ -2,7 +2,7 @@
 
 import { Button, ButtonVariant } from '@mantine/core';
 import Link from 'next/link';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import styles from './SbButton.module.scss';
 import { StoryblokMultilink } from '@/lib/storyblok/resources/types/storyblok';
@@ -39,7 +39,7 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
     isGhost && styles['is-ghost']
   );
 
-  const href = useMemo(() => getSbLink(link as StoryblokMultilink), [link]);
+  const href = getSbLink(link as StoryblokMultilink);
   const { isEditor } = useStoryblokEditor();
   const editableAttributes = storyblokEditable ?? createEditable(blok as any);
 
