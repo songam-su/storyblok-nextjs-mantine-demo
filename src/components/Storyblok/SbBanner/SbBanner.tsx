@@ -13,6 +13,7 @@ import {
   getStoryblokColorClass,
   getStoryblokHighlightClass,
 } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
+import { getStoryblokAlignmentMeta } from '@/lib/storyblok/utils/styles/alignment/storyblokAlignment';
 
 const backgroundAlignmentClassMap: Record<'left' | 'center' | 'right', string> = {
   left: styles['background-position-left'],
@@ -48,9 +49,7 @@ const renderHeadline = (segments: HeadlineSegment[] | undefined) => {
 
 const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
   const editableAttributes = storyblokEditable(blok as any);
-  const alignment = blok.text_alignment ?? 'left';
-  const alignItems = alignment === 'center' ? 'center' : 'flex-start';
-  const textAlign = alignment === 'center' ? 'center' : 'left';
+  const alignment = getStoryblokAlignmentMeta(blok.text_alignment);
   const backgroundKey = typeof blok.background_color === 'string' ? blok.background_color : undefined;
   const backgroundClass = getStoryblokColorClass(backgroundKey);
 
@@ -92,16 +91,16 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
       style={bannerInlineStyle}
       {...editableAttributes}
     >
-      <Stack gap="md" align={alignItems} maw={960} mx="auto" style={{ textAlign }}>
+      <Stack gap="md" align={alignment.alignItems} maw={960} mx="auto" style={{ textAlign: alignment.textAlign }}>
         {hasHeadline && renderHeadline(blok.headline)}
         {hasLead && (
-          <Text size="lg" ta={textAlign} maw={680}>
+          <Text size="lg" ta={alignment.textAlign} maw={680}>
             {blok.lead}
           </Text>
         )}
 
         {hasButtons && (
-          <Group justify={alignment === 'center' ? 'center' : 'flex-start'} gap="md" wrap="wrap" mt="sm">
+          <Group justify={alignment.justifyContent} gap="md" wrap="wrap" mt="sm">
             {blok.buttons?.map((button) => (
               <SbButton
                 key={button._uid}

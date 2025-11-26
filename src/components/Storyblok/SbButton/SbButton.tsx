@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, ButtonVariant, MantineSize } from '@mantine/core';
+import { Button, ButtonVariant } from '@mantine/core';
 import Link from 'next/link';
 import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
@@ -15,35 +15,12 @@ import {
   getStoryblokColorClass,
   getStoryblokTextColorClass,
 } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
+import { getStoryblokButtonMantineSize } from '@/lib/storyblok/utils/styles/size/storyblokSize';
 
 const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const { blok, storyblokEditable } = props;
   const { style, background_color, text_color, size, link, label } = blok;
   const backgroundColorKey = typeof background_color === 'string' ? background_color : undefined;
-
-  // Map Storyblok size to Mantine size
-  const useUISize = (
-    sbSize?: 'small' | 'medium' | 'large'
-  ):
-    | MantineSize
-    | 'compact-xs'
-    | 'compact-sm'
-    | 'compact-md'
-    | 'compact-lg'
-    | 'compact-xl'
-    | (string & {})
-    | undefined => {
-    const sizeMap = useMemo<Record<'small' | 'medium' | 'large', MantineSize>>(
-      () => ({
-        small: 'sm',
-        medium: 'md',
-        large: 'lg',
-      }),
-      []
-    );
-
-    return sizeMap[sbSize ?? 'medium'];
-  };
 
   // Map Storyblok style to Mantine Button variant
   const useUIButtonVariant = (sbStyle: 'default' | 'ghost' | undefined): ButtonVariant => {
@@ -85,7 +62,7 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
       {...editableAttributes}
       className={buttonClasses}
       disabled={!href || href === '#'}
-      size={useUISize(size)}
+      size={getStoryblokButtonMantineSize(size)}
       variant={variant}
       component={Link}
       href={href || '#'}
