@@ -4,16 +4,14 @@ import { storyblokEditable } from '@storyblok/react';
 import { Group, Paper, Stack, Text, Title } from '@mantine/core';
 import classNames from 'classnames';
 import React, { CSSProperties } from 'react';
-import { Banner, HeadlineSegment } from '@/lib/storyblok/resources/types/storyblok-components';
+import { Banner } from '@/lib/storyblok/resources/types/storyblok-components';
 
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import SbButton from '@/components/Storyblok/SbButton/SbButton';
 import styles from './SbBanner.module.scss';
-import {
-  getStoryblokColorClass,
-  getStoryblokHighlightClass,
-} from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
+import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import { getStoryblokAlignmentMeta } from '@/lib/storyblok/utils/styles/alignment/storyblokAlignment';
+import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 
 const backgroundAlignmentClassMap: Record<'left' | 'center' | 'right', string> = {
   left: styles['background-position-left'],
@@ -23,28 +21,6 @@ const backgroundAlignmentClassMap: Record<'left' | 'center' | 'right', string> =
 
 type BannerStyleVars = CSSProperties & {
   '--sb-banner-image'?: string;
-};
-
-const renderHeadline = (segments: HeadlineSegment[] | undefined) => {
-  if (!segments?.length) return null;
-
-  return (
-    <Title order={1} fw={700} size="h1">
-      {segments.map((segment, index) => (
-        <Text
-          key={segment._uid ?? index}
-          component="span"
-          className={
-            segment.highlight && segment.highlight !== 'none'
-              ? getStoryblokHighlightClass(segment.highlight)
-              : undefined
-          }
-        >
-          {segment.text}
-        </Text>
-      ))}
-    </Title>
-  );
 };
 
 const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
@@ -88,7 +64,11 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
       {...editableAttributes}
     >
       <Stack gap="md" align={alignment.alignItems} maw={960} mx="auto" style={{ textAlign: alignment.textAlign }}>
-        {hasHeadline && renderHeadline(blok.headline)}
+        {hasHeadline && (
+          <Title order={1} fw={700} size="h1">
+            {renderHeadlineSegments(blok.headline)}
+          </Title>
+        )}
         {hasLead && (
           <Text size="lg" ta={alignment.textAlign} maw={680}>
             {blok.lead}

@@ -24,6 +24,8 @@ export const registry = {
   // Implemented components
   banner: () => import('@/components/Storyblok/SbBanner/SbBanner'),
   button: () => import('@/components/Storyblok/SbButton/SbButton'),
+  'faq-entry': () => import('@/components/Storyblok/FaqEntry/FaqEntry'),
+  'faq-section': () => import('@/components/Storyblok/FaqSection/FaqSection'),
 
   // Components not implemented yet → fallback to placeholder
   'article-overview-page': fallback,
@@ -32,8 +34,6 @@ export const registry = {
   category: fallback,
   'contact-form-section': fallback,
   'default-page': fallback,
-  'faq-entry': fallback,
-  'faq-section': fallback,
   'featured-articles-section': fallback,
   'form-section': fallback,
   'grid-card': fallback,
