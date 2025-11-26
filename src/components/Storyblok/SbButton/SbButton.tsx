@@ -11,10 +11,12 @@ import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import { storyblokEditable as createEditable } from '@storyblok/react';
+import { getStoryblokColorClass, getStoryblokTextColorClass } from '@/components/Storyblok/utils/storyblokColorUtils';
 
 const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const { blok, storyblokEditable } = props;
   const { style, background_color, text_color, size, link, label } = blok;
+  const backgroundColorKey = typeof background_color === 'string' ? background_color : undefined;
 
   // Map Storyblok size to Mantine size
   const useUISize = (
@@ -57,8 +59,8 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
 
   const buttonClasses = classNames(
     styles.button,
-    background_color && styles[background_color],
-    text_color && styles[`text-${text_color}`],
+    getStoryblokColorClass(backgroundColorKey),
+    getStoryblokTextColorClass(text_color),
     variant === 'subtle' && styles['is-ghost']
   );
 
