@@ -1,4 +1,4 @@
-import colorStyles from '../styles/StoryblokColors.module.scss';
+import colorStyles from './StoryblokColors.module.scss';
 
 const STORYBLOK_COLOR_KEYS = [
   'primary-highlight',

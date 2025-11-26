@@ -9,7 +9,10 @@ import { Banner, HeadlineSegment } from '@/lib/storyblok/resources/types/storybl
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import SbButton from '@/components/Storyblok/SbButton/SbButton';
 import styles from './SbBanner.module.scss';
-import { getStoryblokColorClass, getStoryblokHighlightClass } from '@/components/Storyblok/utils/storyblokColorUtils';
+import {
+  getStoryblokColorClass,
+  getStoryblokHighlightClass,
+} from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 
 const backgroundAlignmentClassMap: Record<'left' | 'center' | 'right', string> = {
   left: styles['background-position-left'],

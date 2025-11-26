@@ -11,7 +11,10 @@ import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import { storyblokEditable as createEditable } from '@storyblok/react';
-import { getStoryblokColorClass, getStoryblokTextColorClass } from '@/components/Storyblok/utils/storyblokColorUtils';
+import {
+  getStoryblokColorClass,
+  getStoryblokTextColorClass,
+} from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 
 const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const { blok, storyblokEditable } = props;
