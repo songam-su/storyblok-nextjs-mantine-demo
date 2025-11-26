@@ -4,8 +4,14 @@ import { Suspense } from 'react';
 import { lazyRegistry } from '../registry/lazy';
 import { Loader } from '@mantine/core';
 import { ErrorBoundary } from './ErrorBoundary';
+import type { StoryblokBlok } from '../registry/StoryblokBlok';
 
-export function StoryblokComponentRenderer({ blok, isPreview }: { blok: any; isPreview?: boolean }) {
+interface StoryblokComponentRendererProps {
+  blok: StoryblokBlok;
+  isPreview?: boolean;
+}
+
+export function StoryblokComponentRenderer({ blok, isPreview }: StoryblokComponentRendererProps) {
   if (!blok?.component) return null;
 
   const key = blok.component as keyof typeof lazyRegistry.components;

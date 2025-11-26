@@ -3,6 +3,7 @@
 import { useStoryblokBridge } from '../hooks/useStoryblokBridge';
 import { StoryblokComponentRenderer } from './StoryblokComponentRenderer';
 import type { ISbStoryData, StoryblokBridgeConfigV2 } from '@storyblok/react';
+import type { StoryblokBlok } from '../registry/StoryblokBlok';
 
 interface StoryblokRendererProps {
   story: ISbStoryData;
@@ -16,13 +17,15 @@ const StoryblokRenderer: React.FC<StoryblokRendererProps> = (props) => {
   // Only enable the bridge in preview mode
   const liveStory = isPreview ? useStoryblokBridge({ initialStory, options }) : initialStory;
 
-  if (!liveStory?.content?.body) {
+  const body = (liveStory?.content?.body ?? []) as StoryblokBlok[];
+
+  if (!body.length) {
     return null;
   }
 
   return (
     <>
-      {liveStory.content.body.map((blok: any) => (
+      {body.map((blok) => (
         <StoryblokComponentRenderer blok={blok} key={blok._uid} isPreview={isPreview} />
       ))}
     </>

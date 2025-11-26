@@ -1,17 +1,26 @@
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import type { StoryblokBlok } from './StoryblokBlok';
 
-export interface StoryblokComponentRegistry {
-  [key: string]: () => Promise<{
-    default: React.ComponentType<SbComponentProps<any>>;
-  }>;
-}
+type StoryblokComponentName = StoryblokBlok['component'];
+type StoryblokComponentLookup = {
+  [K in StoryblokComponentName]: SbComponentProps<Extract<StoryblokBlok, { component: K }>>;
+};
+
+type TypedLoader<K extends StoryblokComponentName> = () => Promise<{
+  default: React.ComponentType<StoryblokComponentLookup[K]>;
+}>;
+
+type TypedRegistry = Partial<{ [K in StoryblokComponentName]: TypedLoader<K> }>;
+type UntypedRegistry = Record<string, () => Promise<{ default: React.ComponentType<SbComponentProps<any>> }>>;
+
+export type StoryblokComponentRegistry = UntypedRegistry & TypedRegistry;
 
 const fallback = async () => ({
-  default: (props: any) => null,
+  default: (props: SbComponentProps<any>) => null,
 });
 
 // ✅ Single source of truth for all components
-export const registry: StoryblokComponentRegistry = {
+export const registry = {
   // Implemented components
   banner: () => import('@/components/Storyblok/SbBanner/SbBanner'),
   button: () => import('@/components/Storyblok/SbButton/SbButton'),
@@ -48,4 +57,4 @@ export const registry: StoryblokComponentRegistry = {
   'testimonials-section': fallback,
   'text-section': fallback,
   'two-columns-section': fallback,
-};
+} satisfies StoryblokComponentRegistry;
