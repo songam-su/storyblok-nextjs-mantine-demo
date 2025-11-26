@@ -2,6 +2,8 @@ import { fetchStory } from '@/lib/storyblok/api/client';
 import StoryblokRenderer from '@/lib/storyblok/rendering/StoryblokRenderer';
 import { notFound } from 'next/navigation';
 
+export const revalidate = 600;
+
 type PageProps = {
   params: { slug?: string[] };
 };
