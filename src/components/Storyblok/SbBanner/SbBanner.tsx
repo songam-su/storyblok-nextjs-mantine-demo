@@ -56,28 +56,24 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
   const hasButtons = Boolean(blok.buttons?.length);
   const hasHeadline = Boolean(blok.headline?.length);
   const hasLead = Boolean(blok.lead);
+  const hasContent = hasHeadline || hasLead || hasButtons;
 
   const backgroundImage = blok.background_image?.filename;
   const hasBackgroundImage = Boolean(backgroundImage);
   const bannerInlineStyle: BannerStyleVars | undefined = hasBackgroundImage
     ? { '--sb-banner-image': `url(${backgroundImage})` }
     : undefined;
-  const backgroundSizeClass = hasBackgroundImage
-    ? blok.background_image_cover
-      ? styles['background-cover']
-      : styles['background-contain']
-    : '';
   const backgroundAlignmentValue = (blok.background_image_alignment ?? 'center') as 'left' | 'center' | 'right';
-  const backgroundAlignmentClass = hasBackgroundImage ? backgroundAlignmentClassMap[backgroundAlignmentValue] : '';
-  const bannerClasses = classNames(
-    styles.banner,
-    backgroundClass,
-    hasBackgroundImage && styles['has-background-image'],
-    hasBackgroundImage && backgroundSizeClass,
-    hasBackgroundImage && backgroundAlignmentClass
-  );
+  const backgroundClasses = hasBackgroundImage
+    ? [
+        styles['has-background-image'],
+        blok.background_image_cover ? styles['background-cover'] : styles['background-contain'],
+        backgroundAlignmentClassMap[backgroundAlignmentValue],
+      ]
+    : [];
+  const bannerClasses = classNames(styles.banner, backgroundClass, ...backgroundClasses);
 
-  if (!hasHeadline && !hasLead && !hasButtons) {
+  if (!hasContent) {
     return null;
   }
 

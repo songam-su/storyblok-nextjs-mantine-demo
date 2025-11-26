@@ -17,31 +17,26 @@ import {
 } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import { getStoryblokButtonMantineSize } from '@/lib/storyblok/utils/styles/size/storyblokSize';
 
+const STORYBLOK_BUTTON_VARIANT_MAP: Record<'default' | 'ghost', ButtonVariant> = {
+  default: 'filled',
+  ghost: 'subtle',
+};
+
+const getStoryblokButtonVariant = (style?: 'default' | 'ghost'): ButtonVariant =>
+  STORYBLOK_BUTTON_VARIANT_MAP[style ?? 'default'];
+
 const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const { blok, storyblokEditable } = props;
   const { style, background_color, text_color, size, link, label } = blok;
   const backgroundColorKey = typeof background_color === 'string' ? background_color : undefined;
-
-  // Map Storyblok style to Mantine Button variant
-  const useUIButtonVariant = (sbStyle: 'default' | 'ghost' | undefined): ButtonVariant => {
-    const variantMap = useMemo<Record<'default' | 'ghost', ButtonVariant>>(
-      () => ({
-        default: 'filled',
-        ghost: 'subtle',
-      }),
-      []
-    );
-
-    return variantMap[sbStyle ?? 'default'];
-  };
-
-  const variant = useUIButtonVariant(style);
+  const variant = getStoryblokButtonVariant(style);
+  const isGhost = variant === 'subtle';
 
   const buttonClasses = classNames(
     styles.button,
     getStoryblokColorClass(backgroundColorKey),
     getStoryblokTextColorClass(text_color),
-    variant === 'subtle' && styles['is-ghost']
+    isGhost && styles['is-ghost']
   );
 
   const href = useMemo(() => getSbLink(link as StoryblokMultilink), [link]);
