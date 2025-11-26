@@ -24,11 +24,62 @@ html {
 :root {
   color-scheme: dark;
   background-color: #05060c;
+  --page-shell-max-width: 1400px;
+  --page-shell-inline-padding-mobile: var(--mantine-spacing-md);
+  --page-shell-inline-padding-desktop: var(--mantine-spacing-xl);
+  --page-shell-block-padding: clamp(2rem, 6vw, 4rem);
+  --page-shell-section-gap: clamp(1.5rem, 4vw, 3rem);
 }
 
 body {
   background-color: #05060c;
   color: #fff;
+  min-height: 100vh;
+}
+
+.page-shell {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: var(--page-shell-block-padding) var(--page-shell-inline-padding-mobile);
+}
+
+.page-shell__content {
+  width: min(var(--page-shell-max-width), 100%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--page-shell-section-gap);
+  margin: 0 auto;
+}
+
+.page-shell__content > .edge-to-edge {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.edge-to-edge__inner {
+  width: min(var(--page-shell-max-width), 100%);
+  margin: 0 auto;
+  padding-left: var(--page-shell-inline-padding-mobile);
+  padding-right: var(--page-shell-inline-padding-mobile);
+}
+
+.edge-to-edge__inner > * {
+  max-width: 100%;
+}
+
+@media (min-width: 62em) {
+  .page-shell {
+    padding-left: var(--page-shell-inline-padding-desktop);
+    padding-right: var(--page-shell-inline-padding-desktop);
+  }
+
+  .edge-to-edge__inner {
+    padding-left: var(--page-shell-inline-padding-desktop);
+    padding-right: var(--page-shell-inline-padding-desktop);
+  }
 }
 
 // a {

@@ -47,7 +47,7 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
         backgroundAlignmentClassMap[backgroundAlignmentValue],
       ]
     : [];
-  const bannerClasses = classNames(styles.banner, backgroundClass, ...backgroundClasses);
+  const bannerClasses = classNames(styles.banner, 'edge-to-edge', backgroundClass, ...backgroundClasses);
 
   if (!hasContent) {
     return null;
@@ -63,7 +63,8 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
       style={bannerInlineStyle}
       {...editableAttributes}
     >
-      <Stack gap="md" align={alignment.alignItems} maw={960} mx="auto" style={{ textAlign: alignment.textAlign }}>
+      <div className="edge-to-edge__inner">
+        <Stack gap="md" align={alignment.alignItems} style={{ textAlign: alignment.textAlign }}>
         {hasHeadline && (
           <Title order={1} fw={700} size="h1">
             {renderHeadlineSegments(blok.headline)}
@@ -88,7 +89,8 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
             ))}
           </Group>
         )}
-      </Stack>
+        </Stack>
+      </div>
     </Paper>
   );
 };
