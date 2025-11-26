@@ -21,7 +21,10 @@ const STORYBLOK_COLOR_KEYS = [
   'color_1',
   'color_2',
   'color_3',
+  'color_3',
 ] as const;
+
+const STORYBLOK_COLOR_KEY_SET = new Set<StoryblokColorKey>(STORYBLOK_COLOR_KEYS);
 
 export type StoryblokColorKey = (typeof STORYBLOK_COLOR_KEYS)[number];
 
@@ -31,10 +34,18 @@ export type StoryblokColorGroup = (typeof STORYBLOK_COLOR_GROUPS)[number];
 
 export type StoryblokButtonTextColor = 'white' | 'primary-dark';
 
+const isStoryblokColorKey = (key?: string): key is StoryblokColorKey =>
+  typeof key === 'string' && STORYBLOK_COLOR_KEY_SET.has(key as StoryblokColorKey);
+
+const toStoryblokColorKey = (key?: string) => (isStoryblokColorKey(key) ? key : undefined);
+
+const isStoryblokButtonTextColor = (key?: string): key is StoryblokButtonTextColor =>
+  key === 'white' || key === 'primary-dark';
+
 type StoryblokColorMeta = {
   className: string;
   highlightClassName?: string;
-  groups?: StoryblokColorGroup[];
+  groups: StoryblokColorGroup[];
 };
 
 const COLOR_META: Record<StoryblokColorKey, StoryblokColorMeta> = {
@@ -127,7 +138,7 @@ const COLOR_META: Record<StoryblokColorKey, StoryblokColorMeta> = {
   },
 };
 
-const COLOR_GROUP_INDEX = STORYBLOK_COLOR_GROUPS.reduce(
+const COLOR_GROUP_INDEX = STORYBLOK_COLOR_GROUPS.reduce<Record<StoryblokColorGroup, StoryblokColorKey[]>>(
   (acc, group) => {
     acc[group] = STORYBLOK_COLOR_KEYS.filter((key) => COLOR_META[key].groups?.includes(group));
     return acc;
@@ -135,7 +146,7 @@ const COLOR_GROUP_INDEX = STORYBLOK_COLOR_GROUPS.reduce(
   {} as Record<StoryblokColorGroup, StoryblokColorKey[]>
 );
 
-const COLOR_GROUP_LOOKUP = STORYBLOK_COLOR_GROUPS.reduce(
+const COLOR_GROUP_LOOKUP = STORYBLOK_COLOR_GROUPS.reduce<Record<StoryblokColorGroup, Set<StoryblokColorKey>>>(
   (acc, group) => {
     acc[group] = new Set(COLOR_GROUP_INDEX[group]);
     return acc;
@@ -148,19 +159,24 @@ const TEXT_COLOR_CLASS_MAP: Record<StoryblokButtonTextColor, string | undefined>
   'primary-dark': colorStyles['text-primary-dark'],
 };
 
-export const getStoryblokColorClass = (key?: string) =>
-  key ? COLOR_META[key as StoryblokColorKey]?.className : undefined;
+const getColorMeta = (key?: string) => {
+  const normalizedKey = toStoryblokColorKey(key);
+  return normalizedKey ? COLOR_META[normalizedKey] : undefined;
+};
 
-export const getStoryblokHighlightClass = (key?: string) =>
-  key ? COLOR_META[key as StoryblokColorKey]?.highlightClassName : undefined;
+export const getStoryblokColorClass = (key?: string) => getColorMeta(key)?.className;
+
+export const getStoryblokHighlightClass = (key?: string) => getColorMeta(key)?.highlightClassName;
 
 export const getStoryblokTextColorClass = (key?: string) =>
-  key ? TEXT_COLOR_CLASS_MAP[key as StoryblokButtonTextColor] : undefined;
+  isStoryblokButtonTextColor(key) ? TEXT_COLOR_CLASS_MAP[key] : undefined;
 
 export const getStoryblokColorKeysByGroup = (group: StoryblokColorGroup) => COLOR_GROUP_INDEX[group] ?? [];
 
 export const getStoryblokDefaultColorForGroup = (group: StoryblokColorGroup, fallback?: StoryblokColorKey) =>
   COLOR_GROUP_INDEX[group]?.[0] ?? fallback;
 
-export const isStoryblokColorInGroup = (key: string | undefined, group: StoryblokColorGroup) =>
-  key ? COLOR_GROUP_LOOKUP[group].has(key as StoryblokColorKey) : false;
+export const isStoryblokColorInGroup = (key: string | undefined, group: StoryblokColorGroup) => {
+  const normalized = toStoryblokColorKey(key);
+  return normalized ? COLOR_GROUP_LOOKUP[group].has(normalized) : false;
+};
