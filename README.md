@@ -8,6 +8,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Tech Stack \& Features](#tech-stack--features)
+  - [Component & Layout Highlights](#component--layout-highlights)
   - [Getting Started](#getting-started)
   - [Local SSL Setup](#local-ssl-setup)
   - [Storyblok Visual Editor](#storyblok-visual-editor)
@@ -29,6 +30,31 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 - **UI**: Mantine + custom theme tokens.
 - **CMS**: Storyblok (live preview bridge, generated typings, ISR friendly fetching).
 - **Tooling**: pnpm, mkcert-powered HTTPS dev server, Storyblok CLI scripts.
+
+## Component & Layout Highlights
+
+| Block | Description | Path | Notes |
+| --- | --- | --- | --- |
+| `banner` | Hero-style CTA wrapper with buttons, color & background-image controls. | `src/components/Storyblok/SbBanner/SbBanner.tsx` | Uses Mantine `Paper`, Storyblok color + alignment helpers, supports full-bleed background with constrained inner content. |
+| `button` | Storyblok-configurable CTA rendered as Mantine `Button`. | `src/components/Storyblok/SbButton/SbButton.tsx` | Shares palette utilities; ghost/default variants honor Storyblok color swatches. |
+| `faq-entry`, `faq-section` | Accordion-based FAQ section with Storyblok-managed entries. | `src/components/Storyblok/FaqSection` | Mantine `Accordion` + `Paper`, inherits global spacing system, edit attributes preserved per entry. |
+
+Additional Storyblok blocks can follow the same pattern. See [Component Implementation Guide](.docs/component-guide.md) for conventions, utilities, and checklist.
+
+### Layout & spacing system
+
+- Global max width: **1400 px**, enforced via `.page-shell__content` within `src/app/(pages)/layout.tsx`.
+- Responsive gutters: `16px (xs) / 20px (sm) / 24px (md+)`, controlled by CSS variables in `src/styles/globals.scss`.
+- Edge-to-edge sections: apply `.edge-to-edge` on the outer wrapper plus `.edge-to-edge__inner` around the textual content to keep full-bleed backgrounds with constrained typography.
+- Standard sections (e.g., FAQ) compute their width with `min(1400px, 100% - 2 * gutter)` so background colors never touch the viewport on smaller screens.
+
+### Shared utilities
+
+- `getStoryblokColorClass` / `storyblokColorUtils`: translates Storyblok color pickers into SCSS module classes for consistent palette usage.
+- `getStoryblokAlignmentMeta`: maps alignment options to flex/text-alignment metadata.
+- `renderHeadlineSegments`: assembles the highlighted headline segments Storyblok editors configure.
+- `renderSbRichText`: server-safe rendering helper (see `src/components/Storyblok/utils`).
+- Global styles expose reusable CSS variables and helper classes (`.edge-to-edge`, `.edge-to-edge__inner`) so each blok stays lightweight.
 
 ## Getting Started
 
