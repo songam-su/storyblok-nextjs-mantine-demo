@@ -25,7 +25,7 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
   }
 
   return (
-    <Paper component="section" className={styles.section} radius="xl" shadow="lg" {...editableAttributes}>
+    <Paper component="section" className={styles.section} radius="sm" shadow="lg" {...editableAttributes}>
       <Stack gap="xl">
         {hasHeader && (
           <Stack gap="sm" className={styles.header}>

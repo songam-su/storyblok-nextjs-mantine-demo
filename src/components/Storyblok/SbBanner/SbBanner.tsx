@@ -56,7 +56,7 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
   return (
     <Paper
       component="section"
-      radius="xl"
+      radius="sm"
       p={{ base: 'xl', md: 'xxl' }}
       shadow="lg"
       className={bannerClasses}
