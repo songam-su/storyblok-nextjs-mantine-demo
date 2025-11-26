@@ -1,23 +1,77 @@
+.button {
+  border-radius: var(--mantine-radius-sm);
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+}
+
 .primary-highlight {
-  background-color: var(--mantine-color-blue-6);
+  background-color: var(--mantine-color-neonIceLight-6);
+
+  &:hover {
+    background-color: var(--mantine-color-neonIceLight-8);
+  }
 }
 
 .highlight-1 {
-  background-color: var(--mantine-color-indigo-5);
+  background-color: var(--mantine-color-bubblegumPink-6);
+  color: var(--mantine-color-white);
+
+  &:hover {
+    background-color: var(--mantine-color-bubblegumPink-5);
+  }
 }
 
 .highlight-2 {
-  background-color: var(--mantine-color-teal-5);
+  background-color: var(--mantine-color-amberGlow-6);
+  color: var(--mantine-color-black);
+
+  &:hover {
+    background-color: var(--mantine-color-amberGlow-5);
+  }
 }
 
 .highlight-3 {
-  background-color: var(--mantine-color-pink-5);
+  background-color: var(--mantine-color-blushedBrick-6);
+  color: var(--mantine-color-white);
+
+  &:hover {
+    background-color: var(--mantine-color-blushedBrick-5);
+  }
 }
 
 .primary-dark {
-  background-color: var(--mantine-color-dark-6);
+  background-color: var(--mantine-color-carbonBlack-8);
+  color: var(--mantine-color-white-smoke-0, #fff);
+
+  &:hover {
+    background-color: var(--mantine-color-carbonBlack-7);
+  }
 }
 
 .white {
-  background-color: var(--mantine-color-gray-0);
+  background-color: var(--mantine-color-whiteSmoke-0);
+  color: var(--mantine-color-carbonBlack-8);
+
+  &:hover {
+    background-color: var(--mantine-color-whiteSmoke-9);
+  }
+}
+
+.text-primary-dark {
+  color: var(--mantine-color-carbonBlack-8) !important;
+}
+
+.text-white {
+  color: var(--mantine-color-white) !important;
+}
+
+.is-ghost {
+  background-color: transparent;
+  border: 1px solid currentColor;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
 }

@@ -1,9 +1,10 @@
 'use client';
 
-import { Button, ButtonVariant, MantineColor, MantineSize } from '@mantine/core';
+import { Button, ButtonVariant, MantineSize } from '@mantine/core';
 import Link from 'next/link';
-import styles from './SbButton.module.scss';
 import React, { useCallback, useMemo } from 'react';
+import classNames from 'classnames';
+import styles from './SbButton.module.scss';
 import { StoryblokMultilink } from '@/lib/storyblok/resources/types/storyblok';
 import { Button as SbButtonProps } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
@@ -39,25 +40,12 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
     return sizeMap[sbSize ?? 'medium'];
   };
 
-  // Map Storyblok color to Mantine color
-  const useUIColor = (sbColor?: 'primary-dark' | 'white'): MantineColor => {
-    const colorMap = useMemo<Record<'primary-dark' | 'white', MantineColor>>(
-      () => ({
-        'primary-dark': 'dark',
-        white: 'cyan', // or 'white' if you want actual white
-      }),
-      []
-    );
-
-    return colorMap[sbColor ?? 'primary-dark'];
-  };
-
   // Map Storyblok style to Mantine Button variant
   const useUIButtonVariant = (sbStyle: 'default' | 'ghost' | undefined): ButtonVariant => {
     const variantMap = useMemo<Record<'default' | 'ghost', ButtonVariant>>(
       () => ({
-        default: 'default',
-        ghost: 'transparent', // Mantine's closest to ghost
+        default: 'filled',
+        ghost: 'subtle',
       }),
       []
     );
@@ -65,20 +53,15 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
     return variantMap[sbStyle ?? 'default'];
   };
 
-  // Map Storyblok color to SCSS class
-  const getColorClass = (sbColor?: string): string => {
-    const colorMap: Record<string, string> = {
-      'primary-highlight': styles['primary-highlight'],
-      'highlight-1': styles['highlight-1'],
-      'highlight-2': styles['highlight-2'],
-      'highlight-3': styles['highlight-3'],
-      'primary-dark': styles['primary-dark'],
-      white: styles['white'],
-    };
-    return colorMap[sbColor ?? 'primary-highlight'];
-  };
+  const variant = useUIButtonVariant(style);
 
-  // Link Handling
+  const buttonClasses = classNames(
+    styles.button,
+    background_color && styles[background_color],
+    text_color && styles[`text-${text_color}`],
+    variant === 'subtle' && styles['is-ghost']
+  );
+
   const href = useMemo(() => getSbLink(link as StoryblokMultilink), [link]);
   const { isEditor } = useStoryblokEditor();
   const editableAttributes = storyblokEditable ?? createEditable(blok as any);
@@ -92,20 +75,13 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
     [isEditor]
   );
 
-  // Styles Handling
-  const variant = useUIButtonVariant(style);
-  const backgroundColorClass =
-    variant === 'transparent' ? 'transparent' : background_color ? String(background_color) : 'primary-highlight'; // fallback
-  const colorClass = getColorClass(backgroundColorClass); // ✅ Use blok.color for SCSS mapping
-
   return (
     <Button
       {...editableAttributes}
+      className={buttonClasses}
       disabled={!href || href === '#'}
       size={useUISize(size)}
-      color={useUIColor(text_color)}
       variant={variant}
-      className={colorClass}
       component={Link}
       href={href || '#'}
       onClick={handleClick}
