@@ -9,11 +9,7 @@ import { Banner, HeadlineSegment } from '@/lib/storyblok/resources/types/storybl
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import SbButton from '@/components/Storyblok/SbButton/SbButton';
 import styles from './SbBanner.module.scss';
-import {
-  getStoryblokColorClass,
-  getStoryblokColorVars,
-  getStoryblokHighlightColor,
-} from '@/components/Storyblok/utils/storyblokColorUtils';
+import { getStoryblokColorClass, getStoryblokHighlightClass } from '@/components/Storyblok/utils/storyblokColorUtils';
 
 const backgroundAlignmentClassMap: Record<'left' | 'center' | 'right', string> = {
   left: styles['background-position-left'],
@@ -23,9 +19,6 @@ const backgroundAlignmentClassMap: Record<'left' | 'center' | 'right', string> =
 
 type BannerStyleVars = CSSProperties & {
   '--sb-banner-image'?: string;
-  '--sb-color-bg'?: string;
-  '--sb-color-text'?: string;
-  '--sb-color-bg-hover'?: string;
 };
 
 const renderHeadline = (segments: HeadlineSegment[] | undefined) => {
@@ -37,9 +30,9 @@ const renderHeadline = (segments: HeadlineSegment[] | undefined) => {
         <Text
           key={segment._uid ?? index}
           component="span"
-          c={
+          className={
             segment.highlight && segment.highlight !== 'none'
-              ? getStoryblokHighlightColor(segment.highlight)
+              ? getStoryblokHighlightClass(segment.highlight)
               : undefined
           }
         >
@@ -57,7 +50,6 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
   const textAlign = alignment === 'center' ? 'center' : 'left';
   const backgroundKey = typeof blok.background_color === 'string' ? blok.background_color : undefined;
   const backgroundClass = getStoryblokColorClass(backgroundKey);
-  const colorVars = getStoryblokColorVars(backgroundKey);
 
   const hasButtons = Boolean(blok.buttons?.length);
   const hasHeadline = Boolean(blok.headline?.length);
@@ -65,14 +57,9 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
 
   const backgroundImage = blok.background_image?.filename;
   const hasBackgroundImage = Boolean(backgroundImage);
-  const inlineColorVars = !backgroundClass && colorVars ? colorVars : undefined;
-  const bannerInlineStyle: BannerStyleVars | undefined =
-    hasBackgroundImage || inlineColorVars
-      ? {
-          ...(hasBackgroundImage ? { '--sb-banner-image': `url(${backgroundImage})` } : {}),
-          ...(inlineColorVars ?? {}),
-        }
-      : undefined;
+  const bannerInlineStyle: BannerStyleVars | undefined = hasBackgroundImage
+    ? { '--sb-banner-image': `url(${backgroundImage})` }
+    : undefined;
   const backgroundSizeClass = hasBackgroundImage
     ? blok.background_image_cover
       ? styles['background-cover']
