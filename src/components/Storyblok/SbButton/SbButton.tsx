@@ -15,7 +15,7 @@ import {
   getStoryblokColorClass,
   getStoryblokTextColorClass,
 } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
-import { getStoryblokButtonMantineSize } from '@/lib/storyblok/utils/styles/size/storyblokSize';
+import { getStoryblokButtonMantineSize } from './utils/storyblokButtonSize';
 
 const STORYBLOK_BUTTON_VARIANT_MAP: Record<'default' | 'ghost', ButtonVariant> = {
   default: 'filled',
