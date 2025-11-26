@@ -9,6 +9,15 @@
   border: 1px solid transparent;
   background-color: var(--sb-color-bg, var(--sb-color-default-bg));
   color: var(--sb-color-text, var(--sb-color-default-text));
+  --sb-button-ghost-hover-text: var(--sb-color-text, var(--sb-color-default-text));
+}
+
+.button[data-sb-text-color='white'] {
+  --sb-button-ghost-hover-text: var(--mantine-color-carbonBlack-8);
+}
+
+.button[data-sb-text-color='primary-dark'] {
+  --sb-button-ghost-hover-text: var(--mantine-color-white);
 }
 
 .button:not(.is-ghost):hover {

@@ -32,6 +32,8 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   const variant = getStoryblokButtonVariant(style);
   const isGhost = variant === 'subtle';
 
+  const textColorKey = typeof text_color === 'string' ? text_color : undefined;
+
   const buttonClasses = classNames(
     styles.button,
     getStoryblokColorClass(backgroundColorKey),
@@ -59,6 +61,7 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
       disabled={!href || href === '#'}
       size={getStoryblokButtonMantineSize(size)}
       variant={variant}
+      data-sb-text-color={textColorKey}
       component={Link}
       href={href || '#'}
       onClick={handleClick}
