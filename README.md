@@ -10,6 +10,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
   - [Tech Stack \& Features](#tech-stack--features)
   - [Component & Layout Highlights](#component--layout-highlights)
   - [Getting Started](#getting-started)
+  - [Testing](#testing)
   - [Local SSL Setup](#local-ssl-setup)
   - [Storyblok Visual Editor](#storyblok-visual-editor)
   - [Environment Variables](#environment-variables)
@@ -37,6 +38,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 | --- | --- | --- | --- |
 | `banner` | Hero-style CTA wrapper with buttons, color & background-image controls. | `src/components/Storyblok/SbBanner/SbBanner.tsx` | Uses Mantine `Paper`, Storyblok color + alignment helpers, supports full-bleed background with constrained inner content. |
 | `button` | Storyblok-configurable CTA rendered as Mantine `Button`. | `src/components/Storyblok/SbButton/SbButton.tsx` | Shares palette utilities; ghost/default variants honor Storyblok color swatches. |
+| `hero` | Media-forward hero that renders Storyblok assets with focal-point aware cropping and buttons. | `src/components/Storyblok/Hero/Hero.tsx` | Uses `getSbImageData` (cropRatio-capable) to honor Storyblok focus points and optional component-defined aspect ratios. |
 | `faq-entry`, `faq-section` | Accordion-based FAQ section with Storyblok-managed entries. | `src/components/Storyblok/FaqSection` | Mantine `Accordion` + `Paper`, inherits global spacing system, edit attributes preserved per entry. |
 
 Additional Storyblok blocks can follow the same pattern. See [Component Implementation Guide](.docs/component-guide.md) for conventions, utilities, and checklist.
@@ -54,6 +56,7 @@ Additional Storyblok blocks can follow the same pattern. See [Component Implemen
 - `getStoryblokAlignmentMeta`: maps alignment options to flex/text-alignment metadata.
 - `renderHeadlineSegments`: assembles the highlighted headline segments Storyblok editors configure.
 - `renderSbRichText`: server-safe rendering helper (see `src/components/Storyblok/utils`).
+- `getSbImageData`: normalizes Storyblok asset data, honors focal points, and accepts optional `cropRatio { x, y }` to preserve focus when fitting a fixed aspect (e.g., 16:9 hero). Returns `objectPosition` suitable for `object-fit` images.
 - Global styles expose reusable CSS variables and helper classes (`.edge-to-edge`, `.edge-to-edge__inner`) so each blok stays lightweight.
 
 ## Getting Started
@@ -62,6 +65,11 @@ Additional Storyblok blocks can follow the same pattern. See [Component Implemen
 2. Copy `.env.local` from the provided sample and fill in Storyblok tokens + secrets.
 3. Run the dev server (HTTP): `pnpm dev`. For HTTPS, see [Local SSL Setup](#local-ssl-setup).
 4. Visit `http://localhost:3000` for published content or `/sb-preview/...` for draft mode.
+
+## Testing
+
+- Unit: `pnpm test` (Vitest, uses alias `@` → `src/`, specs in `tests/unit`).
+- E2E: `pnpm cy:open` / `pnpm cy:run` (Cypress config at `tests/e2e/cypress.config.ts`, specs in `tests/e2e/specs`). Set `CYPRESS_BASE_URL` if not using the default `http://localhost:3010`.
 
 ## Local SSL Setup
 
