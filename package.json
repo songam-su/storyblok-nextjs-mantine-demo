@@ -16,6 +16,10 @@
     "sb:pull-languages": "node ./.dev/storyblok/pull-languages.mjs",
     "sb:pull-types": "node ./.dev/storyblok/pull-types.mjs && npm run sb:generate:blok-union",
     "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "cy:open": "cypress open --config-file tests/e2e/cypress.config.ts",
+    "cy:run": "cypress run --config-file tests/e2e/cypress.config.ts",
     "vercel": "vercel env pull"
   },
   "dependencies": {
@@ -52,7 +56,9 @@
     "eslint-plugin-react": "^7.37.5",
     "prettier": "3.6.2",
     "storyblok": "^4.7.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "^2.1.4",
+    "cypress": "^13.13.2"
   },
   "sideEffects": [
     "*.scss"

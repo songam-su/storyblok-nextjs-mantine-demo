@@ -8,15 +8,38 @@ export type SbImageData = {
   objectPosition?: string; // e.g. '50% 30%'
 };
 
-export function parseFocus(focus?: string | null): { x: number; y: number } | null {
+export function parseFocus(
+  focus?: string | null,
+  width?: number | null,
+  height?: number | null,
+): { x: number; y: number } | null {
   if (!focus) return null;
+
   const cleaned = focus.trim();
-  const parts = cleaned.split(/[,\s]+/);
+  if (!cleaned) return null;
+
+  // Storyblok may emit values like "50x50", "50,50", or "50 50" (percents or pixels)
+  const parts = cleaned.split(/[\s,xX]+/).filter(Boolean);
   if (parts.length < 2) return null;
-  const x = parseFloat(parts[0]);
-  const y = parseFloat(parts[1]);
-  if (Number.isFinite(x) && Number.isFinite(y)) return { x, y };
-  return null;
+
+  const rawX = parseFloat(parts[0]);
+  const rawY = parseFloat(parts[1]);
+  if (!Number.isFinite(rawX) || !Number.isFinite(rawY)) return null;
+
+  const normalize = (value: number, size?: number | null) => {
+    if (value > 1) {
+      // Storyblok focus values are typically percentages (0-100+); clamp later
+      return value / 100;
+    }
+    return value;
+  };
+
+  const x = normalize(rawX, width);
+  const y = normalize(rawY, height);
+
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
+
+  return { x, y };
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -41,14 +64,18 @@ export function getSbImageData(
   const src = asset.filename || asset.src || '';
   if (!src) return null;
 
-  // Default focal point is center if not provided
-  const parsedFocus = parseFocus(asset.focus) || { x: 0.5, y: 0.5 };
-
-  let objectPosX = parsedFocus.x; // 0..1
-  let objectPosY = parsedFocus.y; // 0..1
-
   const width = asset.width ?? null;
   const height = asset.height ?? null;
+
+  // Default focal point is center if not provided
+  const parsedFocus = parseFocus(asset.focus, width, height) || { x: 0.5, y: 0.5 };
+  const normalizedFocus = {
+    x: clamp(parsedFocus.x, 0, 1),
+    y: clamp(parsedFocus.y, 0, 1),
+  };
+
+  let objectPosX = normalizedFocus.x; // 0..1
+  let objectPosY = normalizedFocus.y; // 0..1
 
   if (cropRatio && width && height) {
     const desiredAspect = cropRatio.x / cropRatio.y;
