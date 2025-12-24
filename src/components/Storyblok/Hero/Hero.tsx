@@ -1,0 +1,86 @@
+'use client';
+
+import React from 'react';
+import { storyblokEditable } from '@storyblok/react';
+import classNames from 'classnames';
+import { Group, Stack, Text, Title } from '@mantine/core';
+
+import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import styles from './Hero.module.scss';
+import SbButton from '@/components/Storyblok/SbButton/SbButton';
+import getSbImageData from '@/lib/storyblok/utils/image';
+
+type HeroBlock = {
+  _uid: string;
+  component: string;
+  eyebrow?: string;
+  headline?: string;
+  lead?: string;
+  image?: any; // StoryblokAsset-ish
+  image_cover?: boolean;
+  buttons?: any[];
+};
+
+const Hero: React.FC<SbComponentProps<HeroBlock>> = ({ blok }) => {
+  const editable = storyblokEditable(blok as any);
+
+  const imageData = getSbImageData(blok.image || null);
+  const hasImage = Boolean(imageData?.src);
+  const cover = Boolean(blok.image_cover ?? true);
+
+  const mediaClasses = classNames(styles.media, { [styles.imageContain]: !cover });
+
+  return (
+    <section className={styles.hero} {...editable}>
+      {hasImage ? (
+        <div className={mediaClasses}>
+          <img
+            className={styles.img}
+            src={imageData!.src}
+            alt={imageData!.alt || ''}
+            style={imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : undefined}
+            loading="eager"
+          />
+        </div>
+      ) : (
+        <div className={mediaClasses} />
+      )}
+
+      <div className={styles.overlay}>
+        <div className={styles.content}>
+          <div className={styles.inner}>
+            <Stack spacing="xs">
+              {blok.eyebrow && <Text className={styles.eyebrow}>{blok.eyebrow}</Text>}
+              {blok.headline && (
+                <Title order={1} className={styles.headline} style={{ color: 'inherit' }}>
+                  {blok.headline}
+                </Title>
+              )}
+              {blok.lead && (
+                <Text className={styles.lead} size="lg">
+                  {blok.lead}
+                </Text>
+              )}
+
+              {Array.isArray(blok.buttons) && blok.buttons.length > 0 && (
+                <Group className={styles.actions} spacing="md">
+                  {blok.buttons.map((b: any) => (
+                    <SbButton
+                      key={b._uid}
+                      blok={b}
+                      _uid={b._uid}
+                      component={b.component}
+                      storyblokEditable={storyblokEditable(b as any)}
+                    />
+                  ))}
+                </Group>
+              )}
+            </Stack>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
