@@ -47,7 +47,7 @@ Whenever possible, rely on these helpers instead of duplicating alignment or col
 3. **Layout decision** – Decide whether the blok is full-bleed (`edge-to-edge`) or standard (inherits page-shell width). Apply the helper classes accordingly.
 4. **Spacing** – Use Mantine `Stack`, `Group`, and spacing tokens instead of hard-coded pixel values. Favor `gap` props over manual margins when possible.
 5. **Conditional rendering** – Guard against empty blok fields so unused sections don’t render blank wrappers.
-6. **Buttons/links** – Reuse the shared `SbButton` component when editors can attach CTAs; it already understands Storyblok button fields and theme colors.
+6. **Buttons/links** – Reuse the shared `Button` component when editors can attach CTAs; it already understands Storyblok button fields and theme colors.
 7. **Testing** – Validate the blok in both published (`/`) and preview (`/sb-preview/...`) routes to ensure draft data and the Storyblok bridge work.
 
 ## Examples

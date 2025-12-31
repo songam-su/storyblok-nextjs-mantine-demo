@@ -8,7 +8,9 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Tech Stack \& Features](#tech-stack--features)
-  - [Component & Layout Highlights](#component--layout-highlights)
+  - [Component \& Layout Highlights](#component--layout-highlights)
+    - [Layout \& spacing system](#layout--spacing-system)
+    - [Shared utilities](#shared-utilities)
   - [Getting Started](#getting-started)
   - [Testing](#testing)
   - [Local SSL Setup](#local-ssl-setup)
@@ -39,7 +41,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 | --- | --- | --- | --- |
 | `default-page` | Story-level wrapper that renders nested body bloks without extra layout chrome. | `src/components/Storyblok/DefaultPage/DefaultPage.tsx` | Uses `display: contents` via CSS module to stay DOM-neutral; meta title/description surfaced via `generateMetadata`. |
 | `banner` | Hero-style CTA wrapper with buttons, color & background-image controls. | `src/components/Storyblok/SbBanner/SbBanner.tsx` | Uses Mantine `Paper`, Storyblok color + alignment helpers, supports full-bleed background with constrained inner content. |
-| `button` | Storyblok-configurable CTA rendered as Mantine `Button`. | `src/components/Storyblok/SbButton/SbButton.tsx` | Shares palette utilities; ghost/default variants honor Storyblok color swatches. |
+| `button` | Storyblok-configurable CTA rendered as Mantine `Button`. | `src/components/Storyblok/Button/Button.tsx` | Shares palette utilities; ghost/default variants honor Storyblok color swatches. |
 | `hero` | Media-forward hero that renders Storyblok assets with focal-point aware cropping and buttons. | `src/components/Storyblok/Hero/Hero.tsx` | Uses `getSbImageData` (cropRatio-capable) to honor Storyblok focus points and optional component-defined aspect ratios. |
 | `logo-section` | Responsive grid of logos from a multi-asset field with optional lead. | `src/components/Storyblok/LogoSection/LogoSection.tsx` | Uses `getSbImageData` to respect focal points; displays nothing if no assets and no lead. |
 | `faq-entry`, `faq-section` | Accordion-based FAQ section with Storyblok-managed entries. | `src/components/Storyblok/FaqSection` | Mantine `Accordion` + `Paper`, inherits global spacing system, edit attributes preserved per entry. |

@@ -7,7 +7,7 @@ import { Group, Stack, Text, Title } from '@mantine/core';
 
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import styles from './Hero.module.scss';
-import SbButton from '@/components/Storyblok/SbButton/SbButton';
+import Button from '@/components/Storyblok/Button/Button';
 import getSbImageData from '@/lib/storyblok/utils/image';
 
 type HeroBlock = {
@@ -49,7 +49,7 @@ const Hero: React.FC<SbComponentProps<HeroBlock>> = ({ blok }) => {
       <div className={styles.overlay}>
         <div className={styles.content}>
           <div className={styles.inner}>
-            <Stack spacing="xs">
+            <Stack gap="xs">
               {blok.eyebrow && <Text className={styles.eyebrow}>{blok.eyebrow}</Text>}
               {blok.headline && (
                 <Title order={1} className={styles.headline} style={{ color: 'inherit' }}>
@@ -63,9 +63,9 @@ const Hero: React.FC<SbComponentProps<HeroBlock>> = ({ blok }) => {
               )}
 
               {Array.isArray(blok.buttons) && blok.buttons.length > 0 && (
-                <Group className={styles.actions} spacing="md">
+                <Group className={styles.actions} gap="md">
                   {blok.buttons.map((b: any) => (
-                    <SbButton
+                    <Button
                       key={b._uid}
                       blok={b}
                       _uid={b._uid}

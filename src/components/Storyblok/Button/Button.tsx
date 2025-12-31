@@ -1,12 +1,12 @@
 'use client';
 
-import { Button, ButtonVariant } from '@mantine/core';
+import { Button as MantineButton, ButtonVariant } from '@mantine/core';
 import Link from 'next/link';
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import styles from './Button.module.scss';
 import { StoryblokMultilink } from '@/lib/storyblok/resources/types/storyblok';
-import { Button as SbButtonProps } from '@/lib/storyblok/resources/types/storyblok-components';
+import { Button as ButtonProps } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
@@ -25,7 +25,7 @@ const STORYBLOK_BUTTON_VARIANT_MAP: Record<'default' | 'ghost', ButtonVariant> =
 const getStoryblokButtonVariant = (style?: 'default' | 'ghost'): ButtonVariant =>
   STORYBLOK_BUTTON_VARIANT_MAP[style ?? 'default'];
 
-const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
+const Button: React.FC<SbComponentProps<ButtonProps>> = (props) => {
   const { blok, storyblokEditable } = props;
   const { style, background_color, text_color, size, link, label } = blok;
   const backgroundColorKey = typeof background_color === 'string' ? background_color : undefined;
@@ -55,7 +55,7 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
   );
 
   return (
-    <Button
+    <MantineButton
       {...editableAttributes}
       className={buttonClasses}
       disabled={!href || href === '#'}
@@ -69,8 +69,8 @@ const SbButton: React.FC<SbComponentProps<SbButtonProps>> = (props) => {
       rel={!isEditor && link?.linktype === 'url' && href && href !== '#' ? 'noopener noreferrer' : undefined}
     >
       {label}
-    </Button>
+    </MantineButton>
   );
 };
 
-export default SbButton;
+export default Button;

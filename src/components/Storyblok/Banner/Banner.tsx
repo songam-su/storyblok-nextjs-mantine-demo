@@ -7,7 +7,7 @@ import React, { CSSProperties } from 'react';
 import { Banner } from '@/lib/storyblok/resources/types/storyblok-components';
 
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import SbButton from '@/components/Storyblok/Button/Button';
+import Button from '@/components/Storyblok/Button/Button';
 import styles from './Banner.module.scss';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import { getStoryblokAlignmentMeta } from '@/lib/storyblok/utils/styles/alignment/storyblokAlignment';
@@ -79,7 +79,7 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
           {hasButtons && (
             <Group justify={alignment.justifyContent} gap="md" wrap="wrap" mt="sm">
               {blok.buttons?.map((button) => (
-                <SbButton
+                <Button
                   key={button._uid}
                   blok={button}
                   _uid={button._uid}
