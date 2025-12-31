@@ -4,7 +4,7 @@ import { Button, ButtonVariant } from '@mantine/core';
 import Link from 'next/link';
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import styles from './SbButton.module.scss';
+import styles from './Button.module.scss';
 import { StoryblokMultilink } from '@/lib/storyblok/resources/types/storyblok';
 import { Button as SbButtonProps } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getSbLink } from '@/lib/storyblok/utils/getSbLink';

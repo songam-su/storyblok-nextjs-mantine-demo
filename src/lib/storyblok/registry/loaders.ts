@@ -23,8 +23,8 @@ const fallback = async () => ({
 export const registry = {
   // Implemented components
   'default-page': () => import('@/components/Storyblok/DefaultPage/DefaultPage'),
-  banner: () => import('@/components/Storyblok/SbBanner/SbBanner'),
-  button: () => import('@/components/Storyblok/SbButton/SbButton'),
+  banner: () => import('@/components/Storyblok/Banner/Banner'),
+  button: () => import('@/components/Storyblok/Button/Button'),
   'faq-entry': () => import('@/components/Storyblok/FaqEntry/FaqEntry'),
   'faq-section': () => import('@/components/Storyblok/FaqSection/FaqSection'),
   'logo-section': () => import('@/components/Storyblok/LogoSection/LogoSection'),

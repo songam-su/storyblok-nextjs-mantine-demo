@@ -7,8 +7,8 @@ import React, { CSSProperties } from 'react';
 import { Banner } from '@/lib/storyblok/resources/types/storyblok-components';
 
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import SbButton from '@/components/Storyblok/SbButton/SbButton';
-import styles from './SbBanner.module.scss';
+import SbButton from '@/components/Storyblok/Button/Button';
+import styles from './Banner.module.scss';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import { getStoryblokAlignmentMeta } from '@/lib/storyblok/utils/styles/alignment/storyblokAlignment';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
