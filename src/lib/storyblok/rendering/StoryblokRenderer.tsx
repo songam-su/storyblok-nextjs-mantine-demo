@@ -17,19 +17,15 @@ const StoryblokRenderer: React.FC<StoryblokRendererProps> = (props) => {
   // Only enable the bridge in preview mode
   const liveStory = isPreview ? useStoryblokBridge({ initialStory, options }) : initialStory;
 
-  const body = (liveStory?.content?.body ?? []) as StoryblokBlok[];
+  const rootBlok = liveStory?.content as StoryblokBlok | undefined;
 
-  if (!body.length) {
+  if (!rootBlok?.component) {
     return null;
   }
 
-  return (
-    <>
-      {body.map((blok) => (
-        <StoryblokComponentRenderer blok={blok} key={blok._uid} isPreview={isPreview} />
-      ))}
-    </>
-  );
+  const key = rootBlok._uid ?? rootBlok.component;
+
+  return <StoryblokComponentRenderer blok={rootBlok} key={key} isPreview={isPreview} />;
 };
 
 export default StoryblokRenderer;

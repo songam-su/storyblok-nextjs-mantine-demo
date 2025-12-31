@@ -54,5 +54,6 @@ Whenever possible, rely on these helpers instead of duplicating alignment or col
 
 - **Banner (`banner`)** – Demonstrates full-bleed backgrounds with constrained inner content, background image cover/contain toggles, and alignment helpers.
 - **FAQ Section (`faq-section`)** – Shows how to compose nested bloks (entries) with Mantine `Accordion`, including edit attributes at the item level.
+- **Default Page (`default-page`)** – DOM-neutral wrapper that renders the story body while exposing Storyblok edit attributes; metadata pulled via route `generateMetadata`.
 
 Use these as references when building new sections such as grids, testimonials, or hero variations.

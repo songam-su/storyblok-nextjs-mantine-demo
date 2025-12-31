@@ -23,6 +23,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 
 - Renders Storyblok stories through a typed component registry and Mantine.
 - Published routes use ISR (10-minute window) while `/sb-preview` honors draft mode.
+- Storyblok `meta_title` / `meta_description` flow into `<title>` + meta description via `generateMetadata` on published and preview routes.
 - Helper scripts under `.dev/storyblok` regenerate components, datasources, and types.
 
 ## Tech Stack & Features
@@ -36,6 +37,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 
 | Block | Description | Path | Notes |
 | --- | --- | --- | --- |
+| `default-page` | Story-level wrapper that renders nested body bloks without extra layout chrome. | `src/components/Storyblok/DefaultPage/DefaultPage.tsx` | Uses `display: contents` via CSS module to stay DOM-neutral; meta title/description surfaced via `generateMetadata`. |
 | `banner` | Hero-style CTA wrapper with buttons, color & background-image controls. | `src/components/Storyblok/SbBanner/SbBanner.tsx` | Uses Mantine `Paper`, Storyblok color + alignment helpers, supports full-bleed background with constrained inner content. |
 | `button` | Storyblok-configurable CTA rendered as Mantine `Button`. | `src/components/Storyblok/SbButton/SbButton.tsx` | Shares palette utilities; ghost/default variants honor Storyblok color swatches. |
 | `hero` | Media-forward hero that renders Storyblok assets with focal-point aware cropping and buttons. | `src/components/Storyblok/Hero/Hero.tsx` | Uses `getSbImageData` (cropRatio-capable) to honor Storyblok focus points and optional component-defined aspect ratios. |
