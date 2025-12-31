@@ -29,6 +29,7 @@ export const registry = {
   'faq-section': () => import('@/components/Storyblok/FaqSection/FaqSection'),
   'logo-section': () => import('@/components/Storyblok/LogoSection/LogoSection'),
   'headline-segment': () => import('@/components/Storyblok/HeadlineSegment/HeadlineSegment'),
+  'hero-section': () => import('@/components/Storyblok/HeroSection/HeroSection'),
 
   // Components not implemented yet → fallback to placeholder
   'article-overview-page': fallback,
@@ -40,7 +41,6 @@ export const registry = {
   'form-section': fallback,
   'grid-card': fallback,
   'grid-section': fallback,
-  'hero-section': fallback,
   'image-card': fallback,
   'image-text-section': fallback,
   'latest-articles-section': fallback,

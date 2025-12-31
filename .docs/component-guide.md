@@ -56,5 +56,6 @@ Whenever possible, rely on these helpers instead of duplicating alignment or col
 - **FAQ Section (`faq-section`)** – Shows how to compose nested bloks (entries) with Mantine `Accordion`, including edit attributes at the item level.
 - **Default Page (`default-page`)** – DOM-neutral wrapper that renders the story body while exposing Storyblok edit attributes; metadata pulled via route `generateMetadata`.
 - **Headline Segment (`headline-segment`)** – Inline fragment used by headline renderers; applies highlight classes via `getStoryblokHighlightClass`.
+- **Hero Section (`hero-section`)** – Stacked/split hero with palette-aware backgrounds, optional image decoration, and headline segments rendered via `renderHeadlineSegments`.
 
 Use these as references when building new sections such as grids, testimonials, or hero variations.
