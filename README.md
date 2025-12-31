@@ -43,6 +43,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 | `hero` | Media-forward hero that renders Storyblok assets with focal-point aware cropping and buttons. | `src/components/Storyblok/Hero/Hero.tsx` | Uses `getSbImageData` (cropRatio-capable) to honor Storyblok focus points and optional component-defined aspect ratios. |
 | `logo-section` | Responsive grid of logos from a multi-asset field with optional lead. | `src/components/Storyblok/LogoSection/LogoSection.tsx` | Uses `getSbImageData` to respect focal points; displays nothing if no assets and no lead. |
 | `faq-entry`, `faq-section` | Accordion-based FAQ section with Storyblok-managed entries. | `src/components/Storyblok/FaqSection` | Mantine `Accordion` + `Paper`, inherits global spacing system, edit attributes preserved per entry. |
+| `headline-segment` | Inline headline fragment with optional highlight color. | `src/components/Storyblok/HeadlineSegment/HeadlineSegment.tsx` | Used by banner/FAQ headlines to render multi-colored titles via `renderHeadlineSegments`. |
 
 Additional Storyblok blocks can follow the same pattern. See [Component Implementation Guide](.docs/component-guide.md) for conventions, utilities, and checklist.
 

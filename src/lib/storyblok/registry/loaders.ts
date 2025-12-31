@@ -22,11 +22,13 @@ const fallback = async () => ({
 // ✅ Single source of truth for all components
 export const registry = {
   // Implemented components
+  'default-page': () => import('@/components/Storyblok/DefaultPage/DefaultPage'),
   banner: () => import('@/components/Storyblok/SbBanner/SbBanner'),
   button: () => import('@/components/Storyblok/SbButton/SbButton'),
   'faq-entry': () => import('@/components/Storyblok/FaqEntry/FaqEntry'),
   'faq-section': () => import('@/components/Storyblok/FaqSection/FaqSection'),
   'logo-section': () => import('@/components/Storyblok/LogoSection/LogoSection'),
+  'headline-segment': () => import('@/components/Storyblok/HeadlineSegment/HeadlineSegment'),
 
   // Components not implemented yet → fallback to placeholder
   'article-overview-page': fallback,
@@ -34,12 +36,10 @@ export const registry = {
   'banner-reference': fallback,
   category: fallback,
   'contact-form-section': fallback,
-  'default-page': fallback,
   'featured-articles-section': fallback,
   'form-section': fallback,
   'grid-card': fallback,
   'grid-section': fallback,
-  'headline-segment': fallback,
   'hero-section': fallback,
   'image-card': fallback,
   'image-text-section': fallback,
