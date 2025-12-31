@@ -26,6 +26,7 @@ export const registry = {
   button: () => import('@/components/Storyblok/SbButton/SbButton'),
   'faq-entry': () => import('@/components/Storyblok/FaqEntry/FaqEntry'),
   'faq-section': () => import('@/components/Storyblok/FaqSection/FaqSection'),
+  'logo-section': () => import('@/components/Storyblok/LogoSection/LogoSection'),
 
   // Components not implemented yet → fallback to placeholder
   'article-overview-page': fallback,
@@ -43,7 +44,6 @@ export const registry = {
   'image-card': fallback,
   'image-text-section': fallback,
   'latest-articles-section': fallback,
-  'logo-section': fallback,
   'nav-item': fallback,
   'newsletter-form-section': fallback,
   'personalized-section': fallback,
