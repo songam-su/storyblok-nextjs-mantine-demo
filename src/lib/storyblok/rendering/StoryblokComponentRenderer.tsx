@@ -22,9 +22,6 @@ export function StoryblokComponentRenderer({ blok, isPreview }: StoryblokCompone
     return null;
   }
 
-  lazyRegistry.preload('banner');
-  lazyRegistry.preload(key);
-
   const spinner = <Loader size="lg" type="dots" />;
 
   return (
