@@ -1,31 +1,13 @@
-## Component checklist
-
-1. **Type safety** – Import the generated blok interface from `src/lib/storyblok/resources/types/storyblok-components.d.ts` and type your component as `React.FC<SbComponentProps<YourBlok>>`.
-2. **Storyblok edit bridge** – Call `storyblokEditable(blok as any)` and spread the returned attributes on your root element so editors can click-to-edit in the visual editor.
-3. **Preload common blok types** – When you can inspect the story, preload the root blok and the first few body blok component types once (via `lazyRegistry.preload`) to reduce Suspense latency. Avoid per-render preloads inside individual components.
-4. **Layout decision** – Decide whether the blok is full-bleed (`edge-to-edge`) or standard (inherits page-shell width). Apply the helper classes accordingly.
-5. **Spacing** – Use Mantine `Stack`, `Group`, and spacing tokens instead of hard-coded pixel values. Favor `gap` props over manual margins when possible.
-6. **Conditional rendering** – Guard against empty blok fields so unused sections don’t render blank wrappers.
-7. **Buttons/links** – Reuse the shared `Button` component when editors can attach CTAs; it already understands Storyblok button fields and theme colors.
-8. **Testing** – Validate the blok in both published (`/`) and preview (`/sb-preview/...`) routes to ensure draft data and the Storyblok bridge work.
-
-## Examples
-
-...
-# Storyblok Component Implementation Guide
-
-This document captures the conventions introduced while wiring Mantine components to Storyblok bloks. Use it as a checklist whenever you implement a new blok or revisit an existing one.
-
 ## Render tree overview
 
 ```text
 app/(pages)/layout.tsx
 └─ page-shell (outer max-width + padding wrapper)
    └─ page-shell__content (1400px cap + vertical stacking)
-      └─ StoryblokRenderer → StoryblokComponentRenderer → <Your blok>
+  └─ StoryblokRenderer (root blok) → StoryblokComponentRenderer → <Blok component>
 ```
 
-- `StoryblokRenderer` streams blok data from each story body.
+- `StoryblokRenderer` renders the root blok (page) and passes it to `StoryblokComponentRenderer`; page-level bloks (e.g., default-page) render their body children.
 - `StoryblokComponentRenderer` lazy-loads the Mantine component, wraps it with Suspense + ErrorBoundary, and applies `data-blok-*` attributes in preview mode.
 
 ## Layout & spacing rules
@@ -33,7 +15,7 @@ app/(pages)/layout.tsx
 - **Max width:** 1400 px everywhere (`--page-shell-max-width`).
 - **Horizontal gutters:** 16 px `<48em`, 20 px `48–62em`, 24 px `≥62em`. These values live in `src/styles/globals.scss` as CSS variables.
 - **Standard sections:** default to the page-shell width so their background color never touches the viewport on smaller screens.
-- **Edge-to-edge sections:** add the `.edge-to-edge` class to the outer wrapper and wrap inner content in `.edge-to-edge__inner`. Example from `SbBanner`:
+- **Edge-to-edge sections:** add the `.edge-to-edge` class to the outer wrapper and wrap inner content in `.edge-to-edge__inner`. Example from `Banner`:
 
 ```tsx
 <Paper component="section" className={classNames(styles.banner, 'edge-to-edge', backgroundClass)}>
@@ -58,11 +40,12 @@ Whenever possible, rely on these helpers instead of duplicating alignment or col
 
 1. **Type safety** – Import the generated blok interface from `src/lib/storyblok/resources/types/storyblok-components.d.ts` and type your component as `React.FC<SbComponentProps<YourBlok>>`.
 2. **Storyblok edit bridge** – Call `storyblokEditable(blok as any)` and spread the returned attributes on your root element so editors can click-to-edit in the visual editor.
-3. **Layout decision** – Decide whether the blok is full-bleed (`edge-to-edge`) or standard (inherits page-shell width). Apply the helper classes accordingly.
-4. **Spacing** – Use Mantine `Stack`, `Group`, and spacing tokens instead of hard-coded pixel values. Favor `gap` props over manual margins when possible.
-5. **Conditional rendering** – Guard against empty blok fields so unused sections don’t render blank wrappers.
-6. **Buttons/links** – Reuse the shared `Button` component when editors can attach CTAs; it already understands Storyblok button fields and theme colors.
-7. **Testing** – Validate the blok in both published (`/`) and preview (`/sb-preview/...`) routes to ensure draft data and the Storyblok bridge work.
+3. **Preload common blok types** – When you can inspect the story, preload the root blok and the first few body blok component types once (via `lazyRegistry.preload`) to reduce Suspense latency. Avoid per-render preloads inside individual components.
+4. **Layout decision** – Decide whether the blok is full-bleed (`edge-to-edge`) or standard (inherits page-shell width). Apply the helper classes accordingly.
+5. **Spacing** – Use Mantine `Stack`, `Group`, and spacing tokens instead of hard-coded pixel values. Favor `gap` props over manual margins when possible.
+6. **Conditional rendering** – Guard against empty blok fields so unused sections don’t render blank wrappers.
+7. **Buttons/links** – Reuse the shared `Button` component when editors can attach CTAs; it already understands Storyblok button fields and theme colors.
+8. **Testing** – Validate the blok in both published (`/`) and preview (`/sb-preview/...`) routes to ensure draft data and the Storyblok bridge work.
 
 ## Examples
 
