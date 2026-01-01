@@ -1,3 +1,17 @@
+## Component checklist
+
+1. **Type safety** – Import the generated blok interface from `src/lib/storyblok/resources/types/storyblok-components.d.ts` and type your component as `React.FC<SbComponentProps<YourBlok>>`.
+2. **Storyblok edit bridge** – Call `storyblokEditable(blok as any)` and spread the returned attributes on your root element so editors can click-to-edit in the visual editor.
+3. **Preload common blok types** – When you can inspect the story, preload the root blok and the first few body blok component types once (via `lazyRegistry.preload`) to reduce Suspense latency. Avoid per-render preloads inside individual components.
+4. **Layout decision** – Decide whether the blok is full-bleed (`edge-to-edge`) or standard (inherits page-shell width). Apply the helper classes accordingly.
+5. **Spacing** – Use Mantine `Stack`, `Group`, and spacing tokens instead of hard-coded pixel values. Favor `gap` props over manual margins when possible.
+6. **Conditional rendering** – Guard against empty blok fields so unused sections don’t render blank wrappers.
+7. **Buttons/links** – Reuse the shared `Button` component when editors can attach CTAs; it already understands Storyblok button fields and theme colors.
+8. **Testing** – Validate the blok in both published (`/`) and preview (`/sb-preview/...`) routes to ensure draft data and the Storyblok bridge work.
+
+## Examples
+
+...
 # Storyblok Component Implementation Guide
 
 This document captures the conventions introduced while wiring Mantine components to Storyblok bloks. Use it as a checklist whenever you implement a new blok or revisit an existing one.

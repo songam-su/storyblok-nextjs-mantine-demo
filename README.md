@@ -33,6 +33,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 - **Framework**: Next.js 16 App Router with TypeScript.
 - **UI**: Mantine + custom theme tokens.
 - **CMS**: Storyblok (live preview bridge, generated typings, ISR friendly fetching).
+- **Performance**: Lazy-loaded blok components with targeted preloading of the root + first body bloks to reduce Suspense latency.
 - **Tooling**: pnpm, mkcert-powered HTTPS dev server, Storyblok CLI scripts.
 
 ## Component & Layout Highlights
