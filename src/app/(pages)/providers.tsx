@@ -1,11 +1,10 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@/styles/globals.scss';
-import theme from '@/lib/mantine/theme';
 import { StoryblokEditorProvider } from '@/lib/storyblok/context/StoryblokEditorContext';
+import { SiteConfigProvider, SiteThemeProvider } from '@/lib/storyblok/context/SiteConfigContext';
 
 interface PreviewProvidersProps {
   children: ReactNode;
@@ -14,9 +13,9 @@ interface PreviewProvidersProps {
 export default function PublishedProviders({ children }: PreviewProvidersProps) {
   return (
     <StoryblokEditorProvider>
-      <MantineProvider theme={theme} defaultColorScheme="dark">
-        {children}
-      </MantineProvider>
+      <SiteConfigProvider>
+        <SiteThemeProvider>{children}</SiteThemeProvider>
+      </SiteConfigProvider>
     </StoryblokEditorProvider>
   );
 }

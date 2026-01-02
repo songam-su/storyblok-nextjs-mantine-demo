@@ -16,14 +16,9 @@ body {
     sans-serif;
 }
 
-html {
-  scrollbar-gutter: stable;
-  background-color: #05060c;
-}
-
 :root {
   color-scheme: dark;
-  background-color: #05060c;
+  background-color: var(--sb-background, #05060c);
   --page-shell-max-width: 1400px;
   --page-shell-inline-padding-xs: var(--mantine-spacing-md);
   --page-shell-inline-padding-sm: 20px;
@@ -33,9 +28,14 @@ html {
   --page-shell-section-gap: clamp(1.5rem, 4vw, 3rem);
 }
 
+html {
+  scrollbar-gutter: stable;
+  background-color: var(--sb-background, #05060c);
+}
+
 body {
-  background-color: #05060c;
-  color: #fff;
+  background-color: var(--sb-background, #05060c);
+  color: var(--sb-text, #fff);
   min-height: 100vh;
 }
 
