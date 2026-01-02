@@ -1,24 +1,13 @@
 const STORYBLOK_API = 'https://api.storyblok.com/v2/cdn';
 const REVALIDATE_SECONDS = 600; // 10 min
 
-export async function fetchStory(slug: string, version: 'published' | 'draft') {
-  const token =
-    version === 'draft'
-      ? process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN // safe for client-side preview
-      : process.env.STORYBLOK_PREVIEW_TOKEN; // private token for published
+import { getStory, type StoryblokVersion } from '@/lib/storyblok/api/storyblokServer';
 
-  const cache = version === 'published' ? 'force-cache' : 'no-store';
-  const next = version === 'published' ? { revalidate: REVALIDATE_SECONDS } : undefined;
-
-  const res = await fetch(`${STORYBLOK_API}/stories/${slug}?token=${token}&version=${version}`, {
-    cache,
-    next,
-  });
-
-  if (!res.ok) return null;
-
-  const data = await res.json();
-  return data.story;
+export async function fetchStory(slug: string, version: StoryblokVersion) {
+  // Note: App Router route segment caching is controlled by `export const revalidate` in the route.
+  // We still force `no-store` for draft to avoid stale preview data.
+  const fetchOptions: RequestInit | undefined = version === 'draft' ? { cache: 'no-store' } : undefined;
+  return await getStory(slug, { version, fetchOptions });
 }
 
 export async function fetchTheme(version: 'published' | 'draft' = 'published') {

@@ -11,36 +11,39 @@ import type { ISbStoryData } from '@storyblok/react';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import styles from './FeaturedArticlesSection.module.scss';
 
-type ArticleRef = string | ISbStoryData<ArticlePage>;
+type ArticleRef = ISbStoryData<ArticlePage> | string;
+
 type NormalizedArticle = {
   key: string;
   name: string;
   lead?: string;
-  url?: string;
+  url: string;
 };
 
-const normalizeArticle = (item: ArticleRef, index: number): NormalizedArticle | null => {
+const normalizeArticle = (item: ArticleRef | null | undefined, index: number): NormalizedArticle | null => {
   if (!item) return null;
 
   if (typeof item === 'string') {
-    const slug = item.replace(/^\//, '');
-    return {
-      key: `${slug || index}-${index}`,
-      name: slug || `Article ${index + 1}`,
-      lead: undefined as string | undefined,
-      url: slug ? `/${slug}` : undefined,
-    };
+    // If relations aren't resolved, skip rendering this entry.
+    return null;
   }
 
-  const { full_slug, slug, uuid, name, content } = item;
-  const articleContent = (content || {}) as ArticlePage;
-  const rawLead = (articleContent as Record<string, unknown>).lead;
+  const { full_slug, slug, uuid, name, content } = item as ISbStoryData<ArticlePage>;
+  const article = content as ArticlePage | undefined;
+
+  const url = full_slug ? `/${full_slug}` : slug ? `/${slug}` : null;
+  if (!url) return null;
+
+  const metaTitle = article && typeof article.meta_title === 'string' ? article.meta_title : undefined;
+  const headline = article && typeof article.headline === 'string' ? article.headline : undefined;
+  const displayName = metaTitle || headline || name || slug;
+  if (!displayName) return null;
+
+  const rawLead = article ? (article as Record<string, unknown>).lead : undefined;
   const lead = typeof rawLead === 'string' ? rawLead : undefined;
-  const url = full_slug ? `/${full_slug}` : slug ? `/${slug}` : undefined;
-  const displayName = articleContent.headline || name || `Article ${index + 1}`;
 
   return {
-    key: (uuid || articleContent._uid || `${index}`) ?? `${index}`,
+    key: (uuid || article?._uid || slug || `${index}`) ?? `${index}`,
     name: displayName,
     lead,
     url,

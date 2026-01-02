@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { ISbStoryData } from '@storyblok/react';
 import type { StoryblokBridgeConfigV2 } from '@storyblok/react';
 
@@ -9,8 +9,27 @@ export interface UseStoryblokBridgeProps {
   options?: StoryblokBridgeConfigV2;
 }
 
+const DEFAULT_RESOLVE_RELATIONS = [
+  'featured-articles-section.articles',
+  'banner-reference.banners',
+  'article-page.call_to_action',
+  'article-page.categories',
+  'testimonials-section.testimonials',
+];
+
+const DEFAULT_RESOLVE_LINKS: StoryblokBridgeConfigV2['resolveLinks'] = 'story';
+
 export const useStoryblokBridge = (props: UseStoryblokBridgeProps): ISbStoryData => {
   const { initialStory, options = {} } = props;
+
+  // Ensure the bridge resolves relations/links just like the initial fetch
+  const bridgeOptions = useMemo<StoryblokBridgeConfigV2>(() => {
+    return {
+      resolveRelations: DEFAULT_RESOLVE_RELATIONS,
+      resolveLinks: DEFAULT_RESOLVE_LINKS,
+      ...options,
+    };
+  }, [options]);
 
   const [story, setStory] = useState<ISbStoryData>(initialStory);
 
@@ -30,7 +49,7 @@ export const useStoryblokBridge = (props: UseStoryblokBridgeProps): ISbStoryData
 
     function initBridge() {
       if (!window.StoryblokBridge) return;
-      sbBridge = new window.StoryblokBridge(options);
+      sbBridge = new window.StoryblokBridge(bridgeOptions);
       handler = (event: any) => {
         if (event?.story) setStory(event.story);
       };
@@ -48,7 +67,7 @@ export const useStoryblokBridge = (props: UseStoryblokBridgeProps): ISbStoryData
         // For now, this is a no-op.
       }
     };
-  }, [options]);
+  }, [bridgeOptions]);
 
   return story;
 };
