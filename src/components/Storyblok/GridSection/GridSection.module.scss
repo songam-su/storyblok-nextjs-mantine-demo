@@ -1,0 +1,26 @@
+.section {
+  padding: clamp(24px, 4vw, 64px);
+  border-radius: 16px;
+  position: relative;
+}
+
+.header {
+  margin-bottom: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.lead {
+  color: var(--mantine-color-gray-7);
+}
+
+.grid {
+  margin-top: 16px;
+}
+
+.actions {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
