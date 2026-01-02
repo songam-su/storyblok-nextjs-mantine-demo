@@ -34,7 +34,7 @@ export async function POST(req: Request) {
   let payload: StoryblokWebhookPayload;
   try {
     payload = await req.json();
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Invalid JSON payload' }, { status: 400 });
   }
 

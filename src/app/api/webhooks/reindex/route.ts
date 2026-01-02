@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   let payload: AlgoliaWebhookPayload | null = null;
   try {
     payload = await req.json();
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Invalid JSON payload' }, { status: 400 });
   }
 

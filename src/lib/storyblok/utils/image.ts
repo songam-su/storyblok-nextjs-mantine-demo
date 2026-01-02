@@ -26,7 +26,7 @@ export function parseFocus(
   const rawY = parseFloat(parts[1]);
   if (!Number.isFinite(rawX) || !Number.isFinite(rawY)) return null;
 
-  const normalize = (value: number, size?: number | null) => {
+  const normalize = (value: number, _size?: number | null) => {
     if (value > 1) {
       // Storyblok focus values are typically percentages (0-100+); clamp later
       return value / 100;

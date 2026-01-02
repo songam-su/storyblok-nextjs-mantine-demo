@@ -1,7 +1,7 @@
 'use client';
 
 import classNames from 'classnames';
-import { Group, Stack, Text, Title } from '@mantine/core';
+import { Group, Stack, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import Button from '@/components/Storyblok/Button/Button';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
