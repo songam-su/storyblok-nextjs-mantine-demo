@@ -42,6 +42,8 @@ export const registry = {
   'price-card': () => import('@/components/Storyblok/PriceCard/PriceCard'),
   'products-section': () => import('@/components/Storyblok/ProductsSection/ProductsSection'),
   'image-card': () => import('@/components/Storyblok/ImageCard/ImageCard'),
+  testimonial: () => import('@/components/Storyblok/Testimonial/Testimonial'),
+  'testimonials-section': () => import('@/components/Storyblok/TestimonialsSection/TestimonialsSection'),
 
   // Components not implemented yet → fallback to placeholder
   'banner-reference': () => import('@/components/Storyblok/BannerReference/BannerReference'),
@@ -56,5 +58,4 @@ export const registry = {
   'tabbed-content-entry': fallback,
   'tabbed-content-section': fallback,
   testimonial: fallback,
-  'testimonials-section': fallback,
 } satisfies StoryblokComponentRegistry;
