@@ -1,6 +1,6 @@
 # Storyblok Mantine Demo
 
-A Next.js App Router demo that showcases Storyblok-driven page building, Mantine UI theming, preview mode parity, and ISR-friendly published routes.
+A Next.js App Router demo that showcases Storyblok-driven page building, Mantine UI theming, and an enterprise-style integration that keeps published routes ISR/static while still supporting a great Storyblok Visual Editor experience.
 
 ## Table of Contents
 
@@ -8,6 +8,12 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Tech Stack \& Features](#tech-stack--features)
+  - [Enterprise Architecture](#enterprise-architecture)
+    - [Published vs Preview Routes](#published-vs-preview-routes)
+    - [Rendering Chain](#rendering-chain)
+    - [Lazy Component Loading](#lazy-component-loading)
+    - [Relations \& Link Resolution](#relations--link-resolution)
+    - [Editor Navigation Behavior](#editor-navigation-behavior)
   - [Component \& Layout Highlights](#component--layout-highlights)
     - [Layout \& spacing system](#layout--spacing-system)
     - [Shared utilities](#shared-utilities)
@@ -24,7 +30,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 ## Overview
 
 - Renders Storyblok stories through a typed component registry and Mantine.
-- Published routes use ISR (10-minute window) while `/sb-preview` honors draft mode.
+- Published routes use ISR (10-minute window) while `/sb-preview` is dedicated to draft/preview.
 - Storyblok `meta_title` / `meta_description` flow into `<title>` + meta description via `generateMetadata` on published and preview routes.
 - Helper scripts under `.dev/storyblok` regenerate components, datasources, and types.
 
@@ -32,9 +38,83 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 
 - **Framework**: Next.js 16 App Router with TypeScript.
 - **UI**: Mantine + custom theme tokens.
-- **CMS**: Storyblok (live preview bridge, generated typings, ISR friendly fetching).
+- **CMS**: Storyblok (live preview bridge, generated typings).
 - **Performance**: Lazy-loaded blok components with targeted preloading of the root + first body bloks to reduce Suspense latency.
 - **Tooling**: pnpm, mkcert-powered HTTPS dev server, Storyblok CLI scripts.
+
+## Enterprise Architecture
+
+This repo intentionally differs from the “standard” `@storyblok/react` approach in a few key places to optimize for:
+
+- published traffic that is ISR/static and cache-friendly
+- a predictable server-side data layer (relations + deep link fixes)
+- lazy component loading (avoid client-side eager imports)
+- editor-first UX in preview (bridge enabled, no accidental navigation)
+
+### Published vs Preview Routes
+
+- **Published pages**: `src/app/(pages)/[...slug]/page.tsx`
+  - Always fetches `published` stories.
+  - Forced static/ISR: `dynamic = 'force-static'`, `revalidate = 600`.
+- **Preview pages**: `src/app/(preview)/sb-preview/[...slug]/page.tsx`
+  - Always fetches `draft` stories.
+  - Dynamic by design (`force-dynamic`), and enables the Storyblok bridge.
+- **Editor request routing**: `src/middleware.ts`
+  - Requests containing `?_storyblok` / `?_storyblok_tk` are rewritten to `/sb-preview/...`.
+  - This allows the Visual Editor to use published URLs while still hitting the preview+bridge pipeline.
+
+### Rendering Chain
+
+At runtime, rendering is intentionally simple and centralized:
+
+1. Route fetches story via `fetchStory` (`src/lib/storyblok/api/client.ts`).
+2. Page renders `StoryblokRenderer` (`src/lib/storyblok/rendering/StoryblokRenderer.tsx`).
+3. `StoryblokRenderer`:
+   - in preview: attaches the bridge via `useStoryblokBridge` (`src/lib/storyblok/hooks/useStoryblokBridge.tsx`)
+   - selects the root blok (story content) and preloads likely components
+4. `StoryblokComponentRenderer` (`src/lib/storyblok/rendering/StoryblokComponentRenderer.tsx`) picks the React component by blok name and renders it via Suspense.
+
+In preview mode, `StoryblokComponentRenderer` also wraps each block with `storyblokEditable(blok)` attributes (using `display: contents`) so blocks remain clickable/selectable in the Visual Editor even if the component itself doesn’t spread edit props.
+
+### Lazy Component Loading
+
+- Component registry is the single source of truth: `src/lib/storyblok/registry/loaders.ts`
+- Lazy renderer map:
+  - `src/lib/storyblok/registry/lazy.tsx` uses `React.lazy()` over the registry loaders.
+- Small proactive preloading:
+  - `StoryblokRenderer` preloads the root component + the first few body components to reduce Suspense “spinner flashes”.
+
+Important: the refactor intentionally removed `storyblokInit(...)` component registration because it required eagerly importing the full component map on the client, which defeats lazy loading.
+
+### Relations & Link Resolution
+
+This project resolves Storyblok relations and fixes deeply-nested Story links centrally on the server.
+
+- Server data layer: `src/lib/storyblok/api/storyblokServer.ts`
+  - Uses `storyblok-js-client`.
+  - Relations are resolved using `resolve_relations` (see `DEFAULT_RELATIONS`).
+  - Built-in link resolution is disabled (`resolve_links: '0'`) and then Story links are fixed *after* relations resolve by:
+    - traversing the story to collect multilink story UUIDs
+    - fetching those stories via `getStories(by_uuids=...)`
+    - backfilling `cached_url` / `story.full_slug` so links inside resolved relations have correct URLs
+
+Caching behavior:
+
+- Published: route is ISR/static; Storyblok fetches are `force-cache` with `revalidate = 600`.
+- Draft: Storyblok fetches are `no-store` and include `cv` to ensure fresh preview data.
+
+### Editor Navigation Behavior
+
+In the Visual Editor, clicking a link should select a blok — not navigate away.
+
+The app detects editor context via `StoryblokEditorProvider` (`src/lib/storyblok/context/StoryblokEditorContext.tsx`).
+When `isEditor === true`, navigation is prevented via `event.preventDefault()` in components that render real links.
+
+Currently guarded:
+
+- `src/components/Storyblok/Button/Button.tsx`
+- `src/components/Storyblok/FeaturedArticlesSection/FeaturedArticlesSection.tsx`
+- `src/components/Storyblok/NavItem/NavItem.tsx`
 
 ## Component & Layout Highlights
 
@@ -96,7 +176,8 @@ Some Storyblok integrations expect HTTPS (especially inside the visual editor if
 ## Storyblok Visual Editor
 
 - Default visual editor environment: <https://d6a698f5.me.storyblok.com/>.
-- Preview URLs should point to `/sb-preview/<slug>` so the visual editor loads draft content with the live bridge.
+- Preview/editing uses `/sb-preview/<slug>` (draft + bridge).
+- You can also use the normal published URL as the Visual Editor preview URL; the middleware rewrites Storyblok editor requests (those with `_storyblok` params) to `/sb-preview/...` automatically.
 - Storyblok demo space domain: <https://d6a698f5.me.storyblok.com>
 
 ## Environment Variables
