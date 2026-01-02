@@ -6,7 +6,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev -p 3010 --experimental-https --experimental-https-key ./.dev/certs/localhost-key.pem --experimental-https-cert ./.dev/certs/localhost-crt.pem",
-    "dev-setup": "node ./.dev/certs/generate-cert",
+    "dev-setup": "node ./.dev/certs/generate-cert.cjs",
     "sb:build": "storyblok build",
     "sb:generate:blok-union": "node ./.dev/storyblok/generate-union-type.ts",
     "sb:login": "storyblok logout && storyblok login --region eu",
