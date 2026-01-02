@@ -1,0 +1,26 @@
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  display: grid;
+  gap: 8px;
+}
+
+.iconWrap {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+}
+
+.title {
+  margin: 0;
+  color: #fff;
+}
+
+.meta {
+  margin: 0;
+  color: var(--mantine-color-dimmed);
+  line-height: 1.5;
+}

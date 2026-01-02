@@ -44,14 +44,14 @@ export const registry = {
   'image-card': () => import('@/components/Storyblok/ImageCard/ImageCard'),
 
   // Components not implemented yet → fallback to placeholder
-  'banner-reference': fallback,
-  category: fallback,
+  'banner-reference': () => import('@/components/Storyblok/BannerReference/BannerReference'),
+  category: () => import('@/components/Storyblok/Category/Category'),
   'contact-form-section': fallback,
   'form-section': fallback,
   'latest-articles-section': fallback,
   'newsletter-form-section': fallback,
   'personalized-section': fallback,
-  'richtext-youtube': fallback,
+  'richtext-youtube': () => import('@/components/Storyblok/RichtextYoutube/RichtextYoutube'),
   'site-config': fallback,
   'tabbed-content-entry': fallback,
   'tabbed-content-section': fallback,
