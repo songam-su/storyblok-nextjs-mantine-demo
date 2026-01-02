@@ -44,12 +44,12 @@ export const registry = {
   'image-card': () => import('@/components/Storyblok/ImageCard/ImageCard'),
   testimonial: () => import('@/components/Storyblok/Testimonial/Testimonial'),
   'testimonials-section': () => import('@/components/Storyblok/TestimonialsSection/TestimonialsSection'),
+  'form-section': () => import('@/components/Storyblok/Forms/FormSection/FormSection'),
+  'contact-form-section': () => import('@/components/Storyblok/Forms/ContactFormSection/ContactFormSection'),
 
   // Components not implemented yet → fallback to placeholder
   'banner-reference': () => import('@/components/Storyblok/BannerReference/BannerReference'),
   category: () => import('@/components/Storyblok/Category/Category'),
-  'contact-form-section': fallback,
-  'form-section': () => import('@/components/Storyblok/Forms/FormSection'),
   'latest-articles-section': () => import('@/components/Storyblok/LatestArticlesSection/LatestArticlesSection'),
   'newsletter-form-section': fallback,
   'personalized-section': fallback,
