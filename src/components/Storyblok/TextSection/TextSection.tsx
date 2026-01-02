@@ -14,7 +14,9 @@ const TextSection = ({ blok }: SbComponentProps<TextSectionBlok>) => {
   const editable = storyblokEditable(blok as any);
   const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
 
-  const hasHeader = Boolean(blok.headline?.length || blok.lead);
+  const lead = typeof (blok as any)?.lead === 'string' ? ((blok as any).lead as string) : undefined;
+
+  const hasHeader = Boolean(blok.headline?.length || lead);
   const hasText = Boolean(blok.text);
 
   if (!hasHeader && !hasText) {
@@ -31,9 +33,9 @@ const TextSection = ({ blok }: SbComponentProps<TextSectionBlok>) => {
                 {renderHeadlineSegments(blok.headline)}
               </Title>
             ) : null}
-            {blok.lead && (
+            {lead && (
               <Text size="lg" className={styles.lead}>
-                {blok.lead}
+                {lead}
               </Text>
             )}
           </div>

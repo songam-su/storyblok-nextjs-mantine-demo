@@ -11,11 +11,15 @@ import styles from './ProductsSection.module.scss';
 
 const ProductsSection = ({ blok }: SbComponentProps<ProductsSectionBlok>) => {
   const editable = storyblokEditable(blok as any);
-  const backgroundClass = getStoryblokColorClass(blok.plugin as string | undefined); // reuse color if passed
+  const pluginValue = (blok as any)?.plugin;
+  const hasPlugin = Boolean(pluginValue);
+  const backgroundClass = getStoryblokColorClass(
+    typeof pluginValue === 'string' ? pluginValue : undefined,
+  );
 
   const hasHeader = Boolean(blok.headline?.length || blok.lead);
 
-  if (!hasHeader && !blok.plugin) {
+  if (!hasHeader && !hasPlugin) {
     return <section {...editable} className={classNames(styles.section, backgroundClass)} />;
   }
 
@@ -36,7 +40,7 @@ const ProductsSection = ({ blok }: SbComponentProps<ProductsSectionBlok>) => {
         </div>
       )}
 
-      {blok.plugin && (
+      {hasPlugin && (
         <div className={styles.pluginBox}>
           Products will render here from the connected Storyblok plugin or integration.
         </div>
