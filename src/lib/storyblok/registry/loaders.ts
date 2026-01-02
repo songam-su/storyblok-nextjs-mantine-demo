@@ -57,5 +57,4 @@ export const registry = {
   'site-config': fallback,
   'tabbed-content-entry': fallback,
   'tabbed-content-section': fallback,
-  testimonial: fallback,
 } satisfies StoryblokComponentRegistry;
