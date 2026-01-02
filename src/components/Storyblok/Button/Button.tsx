@@ -45,8 +45,10 @@ const Button: React.FC<SbComponentProps<ButtonProps>> = (props) => {
   const { isEditor } = useStoryblokEditor();
   const editableAttributes = storyblokEditable ?? createEditable(blok as any);
 
+  const isNavigableLink = !isEditor && Boolean(href && href !== '#');
+
   const handleClick = useCallback(
-    (event: React.MouseEvent<HTMLAnchorElement>) => {
+    (event: React.MouseEvent<HTMLElement>) => {
       if (isEditor) {
         event.preventDefault();
       }
@@ -58,15 +60,15 @@ const Button: React.FC<SbComponentProps<ButtonProps>> = (props) => {
     <MantineButton
       {...editableAttributes}
       className={buttonClasses}
-      disabled={!href || href === '#'}
+      disabled={!isEditor && (!href || href === '#')}
       size={getStoryblokButtonMantineSize(size)}
       variant={variant}
       data-sb-text-color={textColorKey}
-      component={Link}
-      href={href || '#'}
+      component={isNavigableLink ? (Link as any) : 'button'}
+      {...(isNavigableLink ? { href: href || '#' } : { type: 'button' })}
       onClick={handleClick}
-      target={!isEditor && link?.linktype === 'url' && href && href !== '#' ? '_blank' : undefined}
-      rel={!isEditor && link?.linktype === 'url' && href && href !== '#' ? 'noopener noreferrer' : undefined}
+      target={isNavigableLink && link?.linktype === 'url' ? '_blank' : undefined}
+      rel={isNavigableLink && link?.linktype === 'url' ? 'noopener noreferrer' : undefined}
     >
       {label}
     </MantineButton>
