@@ -3,6 +3,12 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { authMiddleware } from './middleware/auth';
 
+const setPreviewCookies = (res: NextResponse) => {
+  const cookieOpts = { path: '/', sameSite: 'none' as const, secure: true };
+  res.cookies.set('__prerender_bypass', 'true', cookieOpts);
+  res.cookies.set('__next_preview_data', 'true', cookieOpts);
+};
+
 export function proxy(req: NextRequest) {
   // If the request comes from the Storyblok Visual Editor, rewrite to the preview route.
   // This keeps published pages ISR/static for normal traffic while ensuring editor requests
@@ -24,16 +30,14 @@ export function proxy(req: NextRequest) {
     }
 
     const res = NextResponse.rewrite(nextUrl);
-    res.cookies.set('__prerender_bypass', 'true', { path: '/' });
-    res.cookies.set('__next_preview_data', 'true', { path: '/' });
+    setPreviewCookies(res);
     return res;
   }
 
   // Enable draft mode for Storyblok preview routes
   if (req.nextUrl.pathname.startsWith('/sb-preview')) {
     const res = NextResponse.next();
-    res.cookies.set('__prerender_bypass', 'true', { path: '/' });
-    res.cookies.set('__next_preview_data', 'true', { path: '/' });
+    setPreviewCookies(res);
     return res;
   }
 
