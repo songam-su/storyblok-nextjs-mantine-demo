@@ -35,6 +35,7 @@ export const registry = {
   'text-section': () => import('@/components/Storyblok/TextSection/TextSection'),
   'two-columns-section': () => import('@/components/Storyblok/TwoColumnsSection/TwoColumnsSection'),
   'image-text-section': () => import('@/components/Storyblok/ImageTextSection/ImageTextSection'),
+  'nav-item': () => import('@/components/Storyblok/NavItem/NavItem'),
 
   // Components not implemented yet → fallback to placeholder
   'article-overview-page': fallback,
@@ -46,7 +47,6 @@ export const registry = {
   'form-section': fallback,
   'image-card': fallback,
   'latest-articles-section': fallback,
-  'nav-item': fallback,
   'newsletter-form-section': fallback,
   'personalized-section': fallback,
   'price-card': fallback,

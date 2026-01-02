@@ -58,5 +58,6 @@ Whenever possible, rely on these helpers instead of duplicating alignment or col
 - **Text Section (`text-section`)** – Headline/lead plus rich text content, rendered via `renderSbRichText` with palette background support.
 - **Two Columns Section (`two-columns-section`)** – Dual-column content with optional rich text, headline segments, buttons, per-column palette, and decorative accents.
 - **Image Text Section (`image-text-section`)** – Media + copy side-by-side with optional layout reversal (desktop/mobile), palette background, headline segments, buttons, and rich text rendering via `renderSbRichText`.
+- **Nav Item (`nav-item`)** – Multilink-based navigation item used in menus and site config; resolves URLs via `getSbLink` and degrades gracefully when missing href.
 
 Use these as references when building new sections such as grids, testimonials, or hero variations.

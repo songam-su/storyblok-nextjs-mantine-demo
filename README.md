@@ -51,6 +51,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 | `text-section` | Rich text/lead section with optional headline segments and palette background. | `src/components/Storyblok/TextSection/TextSection.tsx` | Uses shared rich-text renderer and headline segments; omits empty wrappers. |
 | `two-columns-section` | Dual-column content with optional buttons and palette backgrounds per column. | `src/components/Storyblok/TwoColumnsSection/TwoColumnsSection.tsx` | Supports per-column decoration color and headline segments; skips empty columns. |
 | `image-text-section` | Side-by-side media + rich text with reversible layout. | `src/components/Storyblok/ImageTextSection/ImageTextSection.tsx` | Supports palette background, focus-aware images, headline segments, buttons, and per-device layout reversal. |
+| `nav-item` | Navigation link used by menus and site config. | `src/components/Storyblok/NavItem/NavItem.tsx` | Uses multilink resolver, preserves edit attributes, falls back to a muted span when missing href. |
 
 Additional Storyblok blocks can follow the same pattern. See [Component Implementation Guide](.docs/component-guide.md) for conventions, utilities, and checklist.
 
