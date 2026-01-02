@@ -4,11 +4,13 @@ import { Text, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import Link from 'next/link';
+import { useCallback } from 'react';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { ArticlePage, FeaturedArticlesSection as FeaturedArticlesSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { ISbStoryData } from '@storyblok/react';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './FeaturedArticlesSection.module.scss';
 
 type ArticleRef = ISbStoryData<ArticlePage> | string;
@@ -53,6 +55,16 @@ const normalizeArticle = (item: ArticleRef | null | undefined, index: number): N
 const FeaturedArticlesSection = ({ blok }: SbComponentProps<FeaturedArticlesSectionBlok>) => {
   const editable = storyblokEditable(blok as any);
   const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
+  const { isEditor } = useStoryblokEditor();
+
+  const handleEditorClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (isEditor) {
+        event.preventDefault();
+      }
+    },
+    [isEditor]
+  );
 
   const articles = Array.isArray(blok.articles) ? blok.articles.filter(Boolean) : [];
   const hasHeader = Boolean(blok.headline?.length || blok.lead);
@@ -88,7 +100,13 @@ const FeaturedArticlesSection = ({ blok }: SbComponentProps<FeaturedArticlesSect
             return (
               <div key={normalized.key} className={styles.card}>
                 <Title order={4} className={styles.cardTitle}>
-                  {normalized.url ? <Link href={normalized.url}>{normalized.name}</Link> : normalized.name}
+                  {normalized.url ? (
+                    <Link href={normalized.url} onClick={handleEditorClick}>
+                      {normalized.name}
+                    </Link>
+                  ) : (
+                    normalized.name
+                  )}
                 </Title>
                 {normalized.lead && <Text size="sm">{normalized.lead}</Text>}
               </div>
