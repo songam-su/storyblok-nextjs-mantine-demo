@@ -19,6 +19,17 @@ const DEFAULT_RESOLVE_RELATIONS = [
 
 const DEFAULT_RESOLVE_LINKS: StoryblokBridgeConfigV2['resolveLinks'] = 'story';
 
+const BRIDGE_HANDLER_REGISTRY_KEY = '__sbBridgeHandlerRegistry';
+
+function getBridgeHandlerRegistry(): Set<string> | null {
+  if (typeof window === 'undefined') return null;
+  const win = window as typeof window & { [BRIDGE_HANDLER_REGISTRY_KEY]?: Set<string> };
+  if (!win[BRIDGE_HANDLER_REGISTRY_KEY]) {
+    win[BRIDGE_HANDLER_REGISTRY_KEY] = new Set<string>();
+  }
+  return win[BRIDGE_HANDLER_REGISTRY_KEY] as Set<string>;
+}
+
 export const useStoryblokBridge = (props: UseStoryblokBridgeProps): ISbStoryData => {
   const { initialStory, options = {} } = props;
 
@@ -32,10 +43,18 @@ export const useStoryblokBridge = (props: UseStoryblokBridgeProps): ISbStoryData
   }, [options]);
 
   const [story, setStory] = useState<ISbStoryData>(initialStory);
+  const handlerKey = useMemo(() => {
+    return JSON.stringify({
+      resolveRelations: bridgeOptions.resolveRelations ?? DEFAULT_RESOLVE_RELATIONS,
+      resolveLinks: bridgeOptions.resolveLinks ?? DEFAULT_RESOLVE_LINKS,
+      events: ['input', 'published', 'change'],
+    });
+  }, [bridgeOptions]);
 
   useEffect(() => {
     let sbBridge: any = null;
     let handler: ((event: any) => void) | null = null;
+    const registry = getBridgeHandlerRegistry();
 
     // Load the bridge script if not present
     if (typeof window !== 'undefined' && !window.StoryblokBridge) {
@@ -49,11 +68,14 @@ export const useStoryblokBridge = (props: UseStoryblokBridgeProps): ISbStoryData
 
     function initBridge() {
       if (!window.StoryblokBridge) return;
+      if (registry?.has(handlerKey)) return; // prevent duplicate handlers during HMR/remounts
+
       sbBridge = new window.StoryblokBridge(bridgeOptions);
       handler = (event: any) => {
         if (event?.story) setStory(event.story);
       };
       sbBridge.on(['input', 'published', 'change'], handler);
+      registry?.add(handlerKey);
     }
 
     if (typeof window !== 'undefined' && window.StoryblokBridge) {
@@ -64,10 +86,10 @@ export const useStoryblokBridge = (props: UseStoryblokBridgeProps): ISbStoryData
       if (sbBridge && handler) {
         // StoryblokBridgeV2 does not provide an off() or removeListener method,
         // so we cannot remove the handler directly. If Storyblok adds this in the future, add it here.
-        // For now, this is a no-op.
+        // For now, this is a no-op. Keep the registry entry to avoid double-registration during HMR.
       }
     };
-  }, [bridgeOptions]);
+  }, [bridgeOptions, handlerKey]);
 
   return story;
 };
