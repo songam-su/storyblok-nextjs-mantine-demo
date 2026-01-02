@@ -1,9 +1,9 @@
-// src/middleware.ts
+// src/proxy.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { authMiddleware } from './middleware/auth';
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   // If the request comes from the Storyblok Visual Editor, rewrite to the preview route.
   // This keeps published pages ISR/static for normal traffic while ensuring editor requests
   // always hit the draft+bridge pipeline.
@@ -47,7 +47,7 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    // Run middleware for all non-static paths so we can rewrite editor requests.
+    // Run proxy for all non-static paths so we can rewrite editor requests.
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 };
