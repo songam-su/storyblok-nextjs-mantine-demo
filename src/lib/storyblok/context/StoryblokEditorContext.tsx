@@ -21,10 +21,6 @@ const detectStoryblokEditor = (): boolean => {
   const isPreviewPath = window.location.pathname.startsWith('/sb-preview');
   if (isPreviewPath && isInIframe) return true;
 
-  const params = new URLSearchParams(window.location.search);
-  if (params.has(STORYBLOK_PREVIEW_QUERY)) return true;
-  if (params.has(STORYBLOK_PREVIEW_TOKEN_QUERY)) return true;
-
   const ancestorOrigins = (window.location as any)?.ancestorOrigins as string[] | undefined;
   if (Array.isArray(ancestorOrigins) && ancestorOrigins.some((o) => typeof o === 'string' && o.includes(STORYBLOK_PREVIEW_HOST))) {
     return true;
