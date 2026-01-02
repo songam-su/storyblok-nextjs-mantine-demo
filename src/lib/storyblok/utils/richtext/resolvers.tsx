@@ -1,4 +1,4 @@
-import { Fragment, JSX } from 'react';
+import React, { Fragment, JSX } from 'react';
 import { renderRichText } from '@storyblok/react';
 import type { StoryblokRichtext } from '@/lib/storyblok/resources/types/storyblok';
 
@@ -50,5 +50,23 @@ export const richTextResolvers = {
 
 export function renderRichTextWithResolvers(richtext?: RichtextInput) {
   if (!richtext) return null;
-  return renderRichText(richtext as any, richTextResolvers as any);
+  const rendered = renderRichText(richtext as any, richTextResolvers as any);
+  if (typeof rendered === 'string') return stripInlineStylesFromString(rendered);
+  return stripInlineStyles(rendered);
+}
+
+// Recursively strip inline style props from React nodes returned by renderRichText
+function stripInlineStyles(node: React.ReactNode): React.ReactNode {
+  if (Array.isArray(node)) return node.map(stripInlineStyles);
+  if (!React.isValidElement(node)) return node;
+
+  const props = node.props as any;
+  const { style, ...rest } = props || {};
+  const cleanedChildren = React.Children.map(props.children, stripInlineStyles);
+  return React.cloneElement(node, rest, cleanedChildren);
+}
+
+// Strip inline style attributes from string output (fallback if renderRichText returns HTML)
+function stripInlineStylesFromString(html: string): string {
+  return html.replace(/style="[^"]*"/gi, '').replace(/style='[^']*'/gi, '');
 }
