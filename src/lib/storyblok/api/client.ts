@@ -1,3 +1,5 @@
+import 'server-only';
+
 const STORYBLOK_API = 'https://api.storyblok.com/v2/cdn';
 const REVALIDATE_SECONDS = 600; // 10 min
 
