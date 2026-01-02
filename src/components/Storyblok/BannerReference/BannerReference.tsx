@@ -17,7 +17,7 @@ const BannerReference = ({ blok }: SbComponentProps<BannerReferenceBlok>) => {
     <div {...editable} className={styles.wrapper}>
       {banners.map((banner) => (
         <div key={banner._uid} className={styles.item}>
-          <Banner blok={banner} _uid={banner._uid} component={banner.component} storyblokEditable={null} />
+          <Banner blok={banner} _uid={banner._uid} component={banner.component} />
         </div>
       ))}
     </div>
