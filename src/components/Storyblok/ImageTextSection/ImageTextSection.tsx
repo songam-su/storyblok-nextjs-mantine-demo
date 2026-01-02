@@ -52,7 +52,7 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
               </Title>
             ) : null}
 
-            {blok.text && <div>{renderSbRichText(blok.text)}</div>}
+            {blok.text && <div className={styles.richtext}>{renderSbRichText(blok.text)}</div>}
 
             {Array.isArray(blok.buttons) && blok.buttons.length > 0 && (
               <div className={styles.actions}>

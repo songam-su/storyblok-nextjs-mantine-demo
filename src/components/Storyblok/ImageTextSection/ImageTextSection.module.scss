@@ -29,6 +29,37 @@
   gap: 10px;
 }
 
+.richtext {
+  color: var(--mantine-color-dimmed);
+
+  :global(.sb-richtext) {
+    color: inherit;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li,
+    a,
+    strong,
+    em {
+      color: inherit;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: #fff;
+    }
+  }
+}
+
 .eyebrow {
   font-weight: 600;
   letter-spacing: 0.01em;

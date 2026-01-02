@@ -92,3 +92,44 @@ body {
 * {
   box-sizing: border-box;
 }
+
+.sb-richtext {
+  color: var(--mantine-color-dimmed);
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  li,
+  a,
+  strong,
+  em {
+    color: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #fff;
+  }
+
+  p,
+  li {
+    line-height: 1.6;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.25rem;
+  }
+}
