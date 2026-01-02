@@ -1,0 +1,27 @@
+.section {
+  padding: 2.5rem 0;
+}
+
+.inner {
+  max-width: 960px;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.lead {
+  color: #4b5563;
+}
+
+.cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.card {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  padding: 1.25rem;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+}

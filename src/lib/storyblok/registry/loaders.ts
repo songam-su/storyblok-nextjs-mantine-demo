@@ -47,12 +47,12 @@ export const registry = {
   'form-section': () => import('@/components/Storyblok/Forms/FormSection/FormSection'),
   'contact-form-section': () => import('@/components/Storyblok/Forms/ContactFormSection/ContactFormSection'),
   'newsletter-form-section': () => import('@/components/Storyblok/Forms/NewsletterFormSection/NewsletterFormSection'),
+  'personalized-section': () => import('@/components/Storyblok/PersonalizedSection/PersonalizedSection'),
 
   // Components not implemented yet → fallback to placeholder
   'banner-reference': () => import('@/components/Storyblok/BannerReference/BannerReference'),
   category: () => import('@/components/Storyblok/Category/Category'),
   'latest-articles-section': () => import('@/components/Storyblok/LatestArticlesSection/LatestArticlesSection'),
-  'personalized-section': fallback,
   'richtext-youtube': () => import('@/components/Storyblok/RichtextYoutube/RichtextYoutube'),
   'site-config': fallback,
   'tabbed-content-entry': () => import('@/components/Storyblok/TabbedContentEntry/TabbedContentEntry'),
