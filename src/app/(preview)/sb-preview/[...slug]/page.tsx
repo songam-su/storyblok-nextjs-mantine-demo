@@ -1,6 +1,5 @@
 import { fetchStory } from '@/lib/storyblok/api/client';
 import StoryblokRenderer from '@/lib/storyblok/rendering/StoryblokRenderer';
-import { resolveStoryblokPreview } from '@/lib/storyblok/utils/preview';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
@@ -30,14 +29,12 @@ export async function generateMetadata(props: PreviewPageProps): Promise<Metadat
 }
 
 export default async function PreviewPage(props: PreviewPageProps) {
-  const [params, searchParams] = await Promise.all([props.params, props.searchParams]);
+  const params = await props.params;
   const slug = params?.slug ? params.slug.join('/') : 'home';
 
-  const isPreview = await resolveStoryblokPreview(searchParams);
-
-  const story = await fetchStory(slug, isPreview ? 'draft' : 'published');
+  const story = await fetchStory(slug, 'draft');
 
   if (!story) notFound();
 
-  return <StoryblokRenderer story={story} isPreview={isPreview} />;
+  return <StoryblokRenderer story={story} isPreview={true} />;
 }

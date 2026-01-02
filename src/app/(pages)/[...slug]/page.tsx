@@ -1,16 +1,15 @@
 import { fetchStory } from '@/lib/storyblok/api/client';
 import StoryblokRenderer from '@/lib/storyblok/rendering/StoryblokRenderer';
-import { resolveStoryblokPreview } from '@/lib/storyblok/utils/preview';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 export const revalidate = 600;
+export const dynamic = 'force-static';
 
 type Awaitable<T> = T | Promise<T>;
 
 type PageProps = {
   params: Awaitable<{ slug?: string[] }>;
-  searchParams?: Awaitable<Record<string, string | string[] | undefined>>;
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -28,19 +27,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function Page({ params, searchParams }: PageProps) {
-  const [resolvedParams, resolvedSearchParams] = await Promise.all([
-    params,
-    searchParams ?? Promise.resolve(undefined),
-  ]);
-
+export default async function Page({ params }: PageProps) {
+  const resolvedParams = await params;
   const slug = resolvedParams?.slug ? resolvedParams.slug.join('/') : 'home';
 
-  const isPreview = await resolveStoryblokPreview(resolvedSearchParams);
-
-  const story = await fetchStory(slug, isPreview ? 'draft' : 'published');
+  // Published pages only. Preview is handled via the dedicated /sb-preview route.
+  const story = await fetchStory(slug, 'published');
 
   if (!story) notFound();
 
-  return <StoryblokRenderer story={story} isPreview={isPreview} />;
+  return <StoryblokRenderer story={story} isPreview={false} />;
 }

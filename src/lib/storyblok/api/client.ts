@@ -6,7 +6,13 @@ import { getStory, type StoryblokVersion } from '@/lib/storyblok/api/storyblokSe
 export async function fetchStory(slug: string, version: StoryblokVersion) {
   // Note: App Router route segment caching is controlled by `export const revalidate` in the route.
   // We still force `no-store` for draft to avoid stale preview data.
-  const fetchOptions: RequestInit | undefined = version === 'draft' ? { cache: 'no-store' } : undefined;
+  const fetchOptions: any =
+    version === 'draft'
+      ? { cache: 'no-store' }
+      : {
+          cache: 'force-cache',
+          next: { revalidate: REVALIDATE_SECONDS },
+        };
   return await getStory(slug, { version, fetchOptions });
 }
 
