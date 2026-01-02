@@ -32,6 +32,7 @@ export const registry = {
   'hero-section': () => import('@/components/Storyblok/HeroSection/HeroSection'),
   'grid-section': () => import('@/components/Storyblok/GridSection/GridSection'),
   'grid-card': () => import('@/components/Storyblok/GridCard/GridCard'),
+  'text-section': () => import('@/components/Storyblok/TextSection/TextSection'),
 
   // Components not implemented yet → fallback to placeholder
   'article-overview-page': fallback,
@@ -55,6 +56,5 @@ export const registry = {
   'tabbed-content-section': fallback,
   testimonial: fallback,
   'testimonials-section': fallback,
-  'text-section': fallback,
   'two-columns-section': fallback,
 } satisfies StoryblokComponentRegistry;

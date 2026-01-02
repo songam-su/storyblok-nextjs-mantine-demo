@@ -55,5 +55,6 @@ Whenever possible, rely on these helpers instead of duplicating alignment or col
 - **Headline Segment (`headline-segment`)** – Inline fragment used by headline renderers; applies highlight classes via `getStoryblokHighlightClass`.
 - **Hero Section (`hero-section`)** – Stacked/split hero with palette-aware backgrounds, optional image decoration, and headline segments rendered via `renderHeadlineSegments`.
 - **Grid Section (`grid-section`)** – Multi-column card grid (1–4 cols) with headline segments, optional lead/CTAs, and `grid-card` children.
+- **Text Section (`text-section`)** – Headline/lead plus rich text content, rendered via `renderSbRichText` with palette background support.
 
 Use these as references when building new sections such as grids, testimonials, or hero variations.
