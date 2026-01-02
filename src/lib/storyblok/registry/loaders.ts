@@ -49,7 +49,7 @@ export const registry = {
   'banner-reference': () => import('@/components/Storyblok/BannerReference/BannerReference'),
   category: () => import('@/components/Storyblok/Category/Category'),
   'contact-form-section': fallback,
-  'form-section': fallback,
+  'form-section': () => import('@/components/Storyblok/Forms/FormSection'),
   'latest-articles-section': () => import('@/components/Storyblok/LatestArticlesSection/LatestArticlesSection'),
   'newsletter-form-section': fallback,
   'personalized-section': fallback,
