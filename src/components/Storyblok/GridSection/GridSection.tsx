@@ -9,10 +9,12 @@ import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadl
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { GridCard as GridCardBlok, GridSection as GridSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './GridSection.module.scss';
 
 const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
   const cols = Math.min(Math.max(parseInt(String(blok.cols ?? '3'), 10) || 3, 1), 4);
 
@@ -61,7 +63,7 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
                 blok={btn}
                 _uid={btn._uid}
                 component={btn.component}
-                storyblokEditable={storyblokEditable(btn as any)}
+                storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
               />
             ))}
           </Group>

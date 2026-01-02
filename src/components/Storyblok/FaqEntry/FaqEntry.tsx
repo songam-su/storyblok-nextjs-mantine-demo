@@ -4,11 +4,13 @@ import { Paper } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { FaqEntry as FaqEntryBlok } from '@/lib/storyblok/resources/types/storyblok-components';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './FaqEntry.module.scss';
 import { FaqEntryContent } from './FaqEntryContent';
 
 const FaqEntry: React.FC<SbComponentProps<FaqEntryBlok>> = ({ blok }) => {
-  const editableAttributes = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editableAttributes = isEditor ? storyblokEditable(blok as any) : undefined;
 
   if (!blok.question && !blok.answer) {
     return null;

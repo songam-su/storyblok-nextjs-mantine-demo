@@ -5,9 +5,11 @@ import { storyblokEditable } from '@storyblok/react';
 import { getStoryblokHighlightClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { HeadlineSegment as HeadlineSegmentBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 
 const HeadlineSegment = ({ blok }: SbComponentProps<HeadlineSegmentBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const highlightClass = blok.highlight && blok.highlight !== 'none' ? getStoryblokHighlightClass(blok.highlight) : undefined;
 
   if (!blok.text) {

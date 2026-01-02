@@ -7,10 +7,12 @@ import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichTex
 import type { PriceCard as PriceCardBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import Button from '@/components/Storyblok/Button/Button';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './PriceCard.module.scss';
 
 const PriceCard = ({ blok }: SbComponentProps<PriceCardBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const hasRichTop = Boolean(blok.text_1);
   const hasRichBottom = Boolean(blok.text_2);
   const hasButtons = Array.isArray(blok.button) && blok.button.length > 0;
@@ -53,7 +55,7 @@ const PriceCard = ({ blok }: SbComponentProps<PriceCardBlok>) => {
                   blok={btn}
                   _uid={btn._uid}
                   component={btn.component}
-                  storyblokEditable={storyblokEditable(btn as any)}
+                  storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
                 />
               );
             })}

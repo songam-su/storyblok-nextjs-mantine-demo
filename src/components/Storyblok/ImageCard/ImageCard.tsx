@@ -8,6 +8,7 @@ import getSbImageData from '@/lib/storyblok/utils/image';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { ImageCard as ImageCardBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './ImageCard.module.scss';
 
 const parseBackground = (value?: string | null) => {
@@ -29,7 +30,8 @@ const parseBackground = (value?: string | null) => {
 };
 
 const ImageCard = ({ blok }: SbComponentProps<ImageCardBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const backgroundStyle = blok.background_color ? parseBackground(blok.background_color as string) : undefined;
   const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
 

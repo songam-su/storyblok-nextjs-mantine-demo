@@ -5,10 +5,12 @@ import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadl
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { LatestArticlesSection as LatestArticlesSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './LatestArticlesSection.module.scss';
 
 const LatestArticlesSection = ({ blok }: SbComponentProps<LatestArticlesSectionBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
   const hasHeader = Boolean(blok.headline?.length || blok.lead);
 

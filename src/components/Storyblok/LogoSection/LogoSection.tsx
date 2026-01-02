@@ -7,10 +7,12 @@ import Image from 'next/image';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { LogoSection as LogoSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import getSbImageData from '@/lib/storyblok/utils/image';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './LogoSection.module.scss';
 
 const LogoSection: React.FC<SbComponentProps<LogoSectionBlok>> = ({ blok }) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const assets = Array.isArray(blok.logos) ? blok.logos : [];
 
   const logos = assets

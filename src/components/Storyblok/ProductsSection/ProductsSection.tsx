@@ -7,10 +7,12 @@ import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadl
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { ProductsSection as ProductsSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './ProductsSection.module.scss';
 
 const ProductsSection = ({ blok }: SbComponentProps<ProductsSectionBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const pluginValue = (blok as any)?.plugin;
   const hasPlugin = Boolean(pluginValue);
   const backgroundClass = getStoryblokColorClass(

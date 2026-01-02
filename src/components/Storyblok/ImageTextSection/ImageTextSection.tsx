@@ -11,10 +11,12 @@ import getSbImageData from '@/lib/storyblok/utils/image';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { ImageTextSection as ImageTextSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './ImageTextSection.module.scss';
 
 const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
   const reverseDesktop = Boolean(blok.reverse_desktop_layout);
   const reverseMobile = Boolean(blok.reverse_mobile_layout);
@@ -64,7 +66,7 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
                       blok={btn}
                       _uid={btn._uid}
                       component={btn.component}
-                      storyblokEditable={storyblokEditable(btn as any)}
+                      storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
                     />
                   );
                 })}

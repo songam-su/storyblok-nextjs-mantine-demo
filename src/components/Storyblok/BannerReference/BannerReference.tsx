@@ -2,11 +2,13 @@ import Banner from '@/components/Storyblok/Banner/Banner';
 import { storyblokEditable } from '@storyblok/react';
 import type { BannerReference as BannerReferenceBlok, Banner as BannerBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './BannerReference.module.scss';
 
 // Renders referenced Banner stories. Falls back to nothing if no valid banners.
 const BannerReference = ({ blok }: SbComponentProps<BannerReferenceBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
 
   const banners = (blok.banners || [])
     .map((item) => (typeof item === 'string' ? null : (item as any)?.content as BannerBlok | undefined))

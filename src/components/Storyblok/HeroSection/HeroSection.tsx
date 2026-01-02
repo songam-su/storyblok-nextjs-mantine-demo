@@ -10,10 +10,12 @@ import getSbImageData from '@/lib/storyblok/utils/image';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { HeroSection as HeroSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './HeroSection.module.scss';
 
 const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
   const accentClass = getStoryblokColorClass(blok.secondary_background_color as string | undefined);
   const isSplit = blok.layout === 'split';
@@ -67,7 +69,7 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
                       blok={button}
                       _uid={button._uid}
                       component={button.component}
-                      storyblokEditable={storyblokEditable(button as any)}
+                      storyblokEditable={isEditor ? storyblokEditable(button as any) : undefined}
                     />
                   );
                 })}

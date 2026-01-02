@@ -8,10 +8,12 @@ import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichTex
 import getSbImageData from '@/lib/storyblok/utils/image';
 import type { ArticlePage as ArticlePageBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './ArticlePage.module.scss';
 
 const ArticlePage = ({ blok }: SbComponentProps<ArticlePageBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const imageData = getSbImageData(blok.image || null);
   const hasImage = Boolean(imageData?.src);
   const categories = Array.isArray(blok.categories) ? blok.categories : [];

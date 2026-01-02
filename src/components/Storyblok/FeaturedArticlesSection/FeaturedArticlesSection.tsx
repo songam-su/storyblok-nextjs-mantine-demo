@@ -53,9 +53,9 @@ const normalizeArticle = (item: ArticleRef | null | undefined, index: number): N
 };
 
 const FeaturedArticlesSection = ({ blok }: SbComponentProps<FeaturedArticlesSectionBlok>) => {
-  const editable = storyblokEditable(blok as any);
-  const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
   const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
+  const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
 
   const handleEditorClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {

@@ -7,6 +7,7 @@ import {
   FaqEntry as FaqEntryBlok,
   FaqSection as FaqSectionBlok,
 } from '@/lib/storyblok/resources/types/storyblok-components';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './FaqSection.module.scss';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 import { FaqEntryContent } from '@/components/Storyblok/FaqEntry/FaqEntryContent';
@@ -14,7 +15,8 @@ import { FaqEntryContent } from '@/components/Storyblok/FaqEntry/FaqEntryContent
 const getAccordionValue = (entry: FaqEntryBlok, index: number) => entry._uid ?? entry.question ?? `faq-${index}`;
 
 const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
-  const editableAttributes = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editableAttributes = isEditor ? storyblokEditable(blok as any) : undefined;
   const entries = blok.faq_entries ?? [];
 
   const hasHeader = Boolean(blok.headline?.length || blok.lead);
@@ -52,7 +54,7 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
             {entries.map((entry, index) => {
               if (!entry) return null;
               const value = getAccordionValue(entry, index);
-              const entryEditableAttributes = storyblokEditable(entry as any);
+              const entryEditableAttributes = isEditor ? storyblokEditable(entry as any) : undefined;
 
               return (
                 <Accordion.Item key={value} value={value} {...entryEditableAttributes}>

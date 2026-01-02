@@ -12,6 +12,7 @@ import styles from './Banner.module.scss';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import { getStoryblokAlignmentMeta } from '@/lib/storyblok/utils/styles/alignment/storyblokAlignment';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 
 const backgroundAlignmentClassMap: Record<'left' | 'center' | 'right', string> = {
   left: styles['background-position-left'],
@@ -24,7 +25,8 @@ type BannerStyleVars = CSSProperties & {
 };
 
 const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
-  const editableAttributes = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editableAttributes = isEditor ? storyblokEditable(blok as any) : undefined;
   const alignment = getStoryblokAlignmentMeta(blok.text_alignment);
   const backgroundKey = typeof blok.background_color === 'string' ? blok.background_color : undefined;
   const backgroundClass = getStoryblokColorClass(backgroundKey);
@@ -84,7 +86,7 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
                   blok={button}
                   _uid={button._uid}
                   component={button.component}
-                  storyblokEditable={storyblokEditable(button as any)}
+                  storyblokEditable={isEditor ? storyblokEditable(button as any) : undefined}
                 />
               ))}
             </Group>

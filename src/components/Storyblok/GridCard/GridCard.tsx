@@ -8,10 +8,12 @@ import Button from '@/components/Storyblok/Button/Button';
 import getSbImageData from '@/lib/storyblok/utils/image';
 import type { GridCard as GridCardBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './GridCard.module.scss';
 
 const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const iconData = getSbImageData(blok.icon || null);
   const showIcon = Boolean(iconData?.src);
   const rowSpanClass = blok.row_span === '2' ? styles.rowSpan2 : undefined;
@@ -71,7 +73,7 @@ const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
                   blok={btn}
                   _uid={btn._uid}
                   component={btn.component}
-                  storyblokEditable={storyblokEditable(btn as any)}
+                  storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
                 />
               );
             })}

@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import styles from './Hero.module.scss';
 import Button from '@/components/Storyblok/Button/Button';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import getSbImageData from '@/lib/storyblok/utils/image';
 
 type HeroBlock = {
@@ -23,7 +24,8 @@ type HeroBlock = {
 };
 
 const Hero: React.FC<SbComponentProps<HeroBlock>> = ({ blok }) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
 
   const imageData = getSbImageData(blok.image || null);
   const hasImage = Boolean(imageData?.src);
@@ -76,7 +78,7 @@ const Hero: React.FC<SbComponentProps<HeroBlock>> = ({ blok }) => {
                       blok={b}
                       _uid={b._uid}
                       component={b.component}
-                      storyblokEditable={storyblokEditable(b as any)}
+                      storyblokEditable={isEditor ? storyblokEditable(b as any) : undefined}
                     />
                   ))}
                 </Group>

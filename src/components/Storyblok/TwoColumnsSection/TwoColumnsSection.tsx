@@ -9,10 +9,12 @@ import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichTex
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { TwoColumnsSection as TwoColumnsSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './TwoColumnsSection.module.scss';
 
 const TwoColumnsSection = ({ blok }: SbComponentProps<TwoColumnsSectionBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
 
   const columns = [
     {
@@ -75,7 +77,7 @@ const TwoColumnsSection = ({ blok }: SbComponentProps<TwoColumnsSectionBlok>) =>
                         blok={btn}
                         _uid={btn._uid}
                         component={btn.component}
-                        storyblokEditable={storyblokEditable(btn as any)}
+                        storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
                       />
                     );
                   })}

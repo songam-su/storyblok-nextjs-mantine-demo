@@ -43,7 +43,7 @@ const Button: React.FC<SbComponentProps<ButtonProps>> = (props) => {
 
   const href = getSbLink(link as StoryblokMultilink);
   const { isEditor } = useStoryblokEditor();
-  const editableAttributes = storyblokEditable ?? createEditable(blok as any);
+  const editableAttributes = isEditor ? storyblokEditable ?? createEditable(blok as any) : undefined;
 
   const isNavigableLink = !isEditor && Boolean(href && href !== '#');
 

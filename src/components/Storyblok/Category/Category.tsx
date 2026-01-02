@@ -3,10 +3,12 @@ import classNames from 'classnames';
 import { storyblokEditable } from '@storyblok/react';
 import type { Category as CategoryBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './Category.module.scss';
 
 const Category = ({ blok }: SbComponentProps<CategoryBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const hasIcon = Boolean(blok.icon?.filename);
 
   return (

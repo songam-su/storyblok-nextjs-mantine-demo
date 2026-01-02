@@ -11,10 +11,10 @@ import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorConte
 import styles from './NavItem.module.scss';
 
 const NavItem = ({ blok }: SbComponentProps<NavItemBlok>) => {
-  const editable = storyblokEditable(blok as any);
+  const { isEditor } = useStoryblokEditor();
+  const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const href = getSbLink(blok.link);
   const label = blok.label || href || 'Link';
-  const { isEditor } = useStoryblokEditor();
 
   const handleEditorClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
