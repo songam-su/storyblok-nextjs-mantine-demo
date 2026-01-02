@@ -15,7 +15,18 @@ export async function fetchStory(slug: string, version: StoryblokVersion) {
           cache: 'force-cache',
           next: { revalidate: REVALIDATE_SECONDS },
         };
-  return await getStory(slug, { version, fetchOptions });
+
+  try {
+    return await getStory(slug, { version, fetchOptions });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : '';
+    const isConfigError = typeof message === 'string' && message.includes('Missing Storyblok');
+
+    if (isConfigError) throw error;
+
+    console.error('fetchStory failed', { slug, version, error });
+    return null;
+  }
 }
 
 export async function fetchTheme(version: 'published' | 'draft' = 'published') {

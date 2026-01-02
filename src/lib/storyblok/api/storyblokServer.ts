@@ -151,35 +151,46 @@ export async function getStory(slug: string, options: { version: StoryblokVersio
   const { version } = options;
   const relations = options.relations ?? DEFAULT_RELATIONS;
 
-  const client = createServerClient(version);
+  try {
+    const client = createServerClient(version);
 
-  // We intentionally disable built-in link resolution and fix links *after* relation resolution.
-  const params: ISbStoryParams = {
-    version,
-    resolve_relations: relations,
-    resolve_links: '0',
-    ...(version === 'draft' ? { cv: Date.now() } : null),
-  };
+    // We intentionally disable built-in link resolution and fix links *after* relation resolution.
+    const params: ISbStoryParams = {
+      version,
+      resolve_relations: relations,
+      resolve_links: '0',
+      ...(version === 'draft' ? { cv: Date.now() } : null),
+    };
 
-  const fetchOptions: ISbCustomFetch | undefined = options.fetchOptions as any;
+    const fetchOptions: ISbCustomFetch | undefined = options.fetchOptions as any;
 
-  const res = await client.getStory(slug, params, fetchOptions);
-  const story = res?.data?.story as ISbStoryData | undefined;
-  if (!story) return null;
+    const res = await client.getStory(slug, params, fetchOptions);
+    const story = res?.data?.story as ISbStoryData | undefined;
+    if (!story) return null;
 
-  // Deep-resolve multilink story URLs throughout the tree (including inside resolved relations).
-  const uuids = new Set<string>();
-  collectMultilinkStoryUuids(story as unknown as JsonValue, uuids);
+    // Deep-resolve multilink story URLs throughout the tree (including inside resolved relations).
+    const uuids = new Set<string>();
+    collectMultilinkStoryUuids(story as unknown as JsonValue, uuids);
 
-  if (uuids.size) {
-    const linkedStories = await fetchStoriesByUuids(client, Array.from(uuids), version, fetchOptions);
-    const byUuid = new Map<string, { full_slug: string }>();
-    for (const s of linkedStories) {
-      if (s?.uuid && s?.full_slug) byUuid.set(s.uuid, { full_slug: s.full_slug });
+    if (uuids.size) {
+      const linkedStories = await fetchStoriesByUuids(client, Array.from(uuids), version, fetchOptions);
+      const byUuid = new Map<string, { full_slug: string }>();
+      for (const s of linkedStories) {
+        if (s?.uuid && s?.full_slug) byUuid.set(s.uuid, { full_slug: s.full_slug });
+      }
+
+      applyMultilinkStoryUrls(story as unknown as JsonValue, byUuid);
     }
 
-    applyMultilinkStoryUrls(story as unknown as JsonValue, byUuid);
-  }
+    return story;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : '';
+    const isConfigError = typeof message === 'string' && message.includes('Missing Storyblok');
 
-  return story;
+    // Bubble up configuration errors; swallow transient fetch issues to avoid user-facing 500s.
+    if (isConfigError) throw error;
+
+    console.error('Storyblok getStory failed', { slug, version, error });
+    return null;
+  }
 }
