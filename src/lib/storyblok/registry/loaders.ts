@@ -55,6 +55,6 @@ export const registry = {
   'personalized-section': fallback,
   'richtext-youtube': () => import('@/components/Storyblok/RichtextYoutube/RichtextYoutube'),
   'site-config': fallback,
-  'tabbed-content-entry': fallback,
-  'tabbed-content-section': fallback,
+  'tabbed-content-entry': () => import('@/components/Storyblok/TabbedContentEntry/TabbedContentEntry'),
+  'tabbed-content-section': () => import('@/components/Storyblok/TabbedContentSection/TabbedContentSection'),
 } satisfies StoryblokComponentRegistry;
