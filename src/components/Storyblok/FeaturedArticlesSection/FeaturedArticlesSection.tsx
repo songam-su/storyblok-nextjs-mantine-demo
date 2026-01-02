@@ -7,15 +7,44 @@ import Link from 'next/link';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { ArticlePage, FeaturedArticlesSection as FeaturedArticlesSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
+import type { ISbStoryData } from '@storyblok/react';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import styles from './FeaturedArticlesSection.module.scss';
 
-const getStoryUrl = (story: any): string | undefined => {
-  if (!story) return undefined;
-  if (typeof story === 'string') return story ? `/${story}` : undefined;
-  if (story.full_slug) return `/${story.full_slug}`;
-  if (story.slug) return `/${story.slug}`;
-  return undefined;
+type ArticleRef = string | ISbStoryData<ArticlePage>;
+type NormalizedArticle = {
+  key: string;
+  name: string;
+  lead?: string;
+  url?: string;
+};
+
+const normalizeArticle = (item: ArticleRef, index: number): NormalizedArticle | null => {
+  if (!item) return null;
+
+  if (typeof item === 'string') {
+    const slug = item.replace(/^\//, '');
+    return {
+      key: `${slug || index}-${index}`,
+      name: slug || `Article ${index + 1}`,
+      lead: undefined as string | undefined,
+      url: slug ? `/${slug}` : undefined,
+    };
+  }
+
+  const { full_slug, slug, uuid, name, content } = item;
+  const articleContent = (content || {}) as ArticlePage;
+  const rawLead = (articleContent as Record<string, unknown>).lead;
+  const lead = typeof rawLead === 'string' ? rawLead : undefined;
+  const url = full_slug ? `/${full_slug}` : slug ? `/${slug}` : undefined;
+  const displayName = articleContent.headline || name || `Article ${index + 1}`;
+
+  return {
+    key: (uuid || articleContent._uid || `${index}`) ?? `${index}`,
+    name: displayName,
+    lead,
+    url,
+  };
 };
 
 const FeaturedArticlesSection = ({ blok }: SbComponentProps<FeaturedArticlesSectionBlok>) => {
@@ -50,16 +79,15 @@ const FeaturedArticlesSection = ({ blok }: SbComponentProps<FeaturedArticlesSect
       {hasArticles && (
         <div className={styles.grid}>
           {articles.map((article, index) => {
-            const url = getStoryUrl(article);
-            const name = (article as any)?.name ?? (article as any)?.headline ?? `Article ${index + 1}`;
-            const key = (article as any)?._uid ?? (article as any)?.uuid ?? index;
+            const normalized = normalizeArticle(article as ArticleRef, index);
+            if (!normalized) return null;
 
             return (
-              <div key={key} className={styles.card}>
+              <div key={normalized.key} className={styles.card}>
                 <Title order={4} className={styles.cardTitle}>
-                  {url ? <Link href={url}>{name}</Link> : name}
+                  {normalized.url ? <Link href={normalized.url}>{normalized.name}</Link> : normalized.name}
                 </Title>
-                {(article as ArticlePage)?.lead && <Text size="sm">{(article as ArticlePage).lead}</Text>}
+                {normalized.lead && <Text size="sm">{normalized.lead}</Text>}
               </div>
             );
           })}

@@ -1,0 +1,15 @@
+.section {
+  padding: clamp(24px, 4vw, 64px);
+  border-radius: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.header {
+  display: grid;
+  gap: 8px;
+}
+
+.lead {
+  color: var(--mantine-color-gray-7);
+}

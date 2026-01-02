@@ -48,7 +48,7 @@ export const registry = {
   category: () => import('@/components/Storyblok/Category/Category'),
   'contact-form-section': fallback,
   'form-section': fallback,
-  'latest-articles-section': fallback,
+  'latest-articles-section': () => import('@/components/Storyblok/LatestArticlesSection/LatestArticlesSection'),
   'newsletter-form-section': fallback,
   'personalized-section': fallback,
   'richtext-youtube': () => import('@/components/Storyblok/RichtextYoutube/RichtextYoutube'),
