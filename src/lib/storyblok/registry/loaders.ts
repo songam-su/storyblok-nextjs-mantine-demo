@@ -36,14 +36,14 @@ export const registry = {
   'two-columns-section': () => import('@/components/Storyblok/TwoColumnsSection/TwoColumnsSection'),
   'image-text-section': () => import('@/components/Storyblok/ImageTextSection/ImageTextSection'),
   'nav-item': () => import('@/components/Storyblok/NavItem/NavItem'),
+  'article-overview-page': () => import('@/components/Storyblok/ArticleOverviewPage/ArticleOverviewPage'),
+  'article-page': () => import('@/components/Storyblok/ArticlePage/ArticlePage'),
+  'featured-articles-section': () => import('@/components/Storyblok/FeaturedArticlesSection/FeaturedArticlesSection'),
 
   // Components not implemented yet → fallback to placeholder
-  'article-overview-page': fallback,
-  'article-page': fallback,
   'banner-reference': fallback,
   category: fallback,
   'contact-form-section': fallback,
-  'featured-articles-section': fallback,
   'form-section': fallback,
   'image-card': fallback,
   'latest-articles-section': fallback,
