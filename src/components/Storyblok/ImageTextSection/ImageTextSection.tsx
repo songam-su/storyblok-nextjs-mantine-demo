@@ -3,6 +3,7 @@
 import classNames from 'classnames';
 import { Stack, Text, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
+import Image from 'next/image';
 import Button from '@/components/Storyblok/Button/Button';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
@@ -75,15 +76,19 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
         {hasImage && (
           <div className={styles.media}>
             <div className={classNames(styles.frame, objectFit === 'contain' && styles.contain)}>
-              <img
+              <Image
                 className={styles.img}
                 src={imageData!.src}
                 alt={imageData!.alt || ''}
+                width={imageData?.width || 1200}
+                height={imageData?.height || 900}
+                sizes="(min-width: 1024px) 600px, 100vw"
                 style={{
+                  width: '100%',
+                  height: 'auto',
                   objectFit,
                   ...(imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : {}),
                 }}
-                loading="lazy"
               />
             </div>
           </div>

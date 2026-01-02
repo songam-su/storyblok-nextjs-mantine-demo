@@ -1,8 +1,9 @@
 'use client';
 
-import { Badge, Stack, Text, Title } from '@mantine/core';
+import { Badge, Stack, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
+import Image from 'next/image';
 import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
 import getSbImageData from '@/lib/storyblok/utils/image';
 import type { ArticlePage as ArticlePageBlok } from '@/lib/storyblok/resources/types/storyblok-components';
@@ -37,11 +38,19 @@ const ArticlePage = ({ blok }: SbComponentProps<ArticlePageBlok>) => {
 
       {hasImage && (
         <div className={styles.media}>
-          <img
+          <Image
             src={imageData!.src}
             alt={imageData!.alt || ''}
-            style={imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : undefined}
-            loading="lazy"
+            width={imageData?.width || 1600}
+            height={imageData?.height || 900}
+            sizes="(min-width: 1024px) 960px, 100vw"
+            style={{
+              width: '100%',
+              height: 'auto',
+              objectFit: 'cover',
+              ...(imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : {}),
+            }}
+            priority={false}
           />
         </div>
       )}

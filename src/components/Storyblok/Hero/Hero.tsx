@@ -4,6 +4,7 @@ import React from 'react';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import { Group, Stack, Text, Title } from '@mantine/core';
+import Image from 'next/image';
 
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import styles from './Hero.module.scss';
@@ -34,12 +35,17 @@ const Hero: React.FC<SbComponentProps<HeroBlock>> = ({ blok }) => {
     <section className={styles.hero} {...editable}>
       {hasImage ? (
         <div className={mediaClasses}>
-          <img
+          <Image
             className={styles.img}
             src={imageData!.src}
             alt={imageData!.alt || ''}
-            style={imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : undefined}
-            loading="eager"
+            fill
+            sizes="100vw"
+            style={{
+              objectFit: cover ? 'cover' : 'contain',
+              ...(imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : {}),
+            }}
+            priority
           />
         </div>
       ) : (

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { storyblokEditable } from '@storyblok/react';
+import Image from 'next/image';
 
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { LogoSection as LogoSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
@@ -28,11 +29,19 @@ const LogoSection: React.FC<SbComponentProps<LogoSectionBlok>> = ({ blok }) => {
         <div className={styles.grid}>
           {logos.map(({ asset, data }, index) => (
             <div className={styles.logo} key={asset?.id ?? index}>
-              <img
+              <Image
                 src={data!.src}
                 alt={data!.alt || ''}
-                loading="lazy"
-                style={data?.objectPosition ? { objectPosition: data.objectPosition } : undefined}
+                width={data?.width || 240}
+                height={data?.height || 120}
+                sizes="160px"
+                style={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                  maxHeight: '64px',
+                  objectFit: 'contain',
+                  ...(data?.objectPosition ? { objectPosition: data.objectPosition } : {}),
+                }}
               />
             </div>
           ))}

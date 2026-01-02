@@ -3,6 +3,7 @@
 import classNames from 'classnames';
 import { Group, Stack, Text, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
+import Image from 'next/image';
 import Button from '@/components/Storyblok/Button/Button';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 import getSbImageData from '@/lib/storyblok/utils/image';
@@ -79,15 +80,17 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
           <div className={styles.media}>
             {showDecoration && <div className={classNames(styles.decoration, accentClass)} />}
             <div className={classNames(styles.imageFrame, imageObjectFit === 'contain' && styles.imageContain)}>
-              <img
+              <Image
                 className={styles.img}
                 src={imageData!.src}
                 alt={imageData!.alt || ''}
+                fill
+                sizes="(min-width: 1024px) 560px, 100vw"
                 style={{
                   objectFit: imageObjectFit,
                   ...(imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : {}),
                 }}
-                loading="eager"
+                priority={!!blok.image}
               />
             </div>
           </div>

@@ -3,6 +3,7 @@
 import { Card, Stack, Text } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
+import Image from 'next/image';
 import Button from '@/components/Storyblok/Button/Button';
 import getSbImageData from '@/lib/storyblok/utils/image';
 import type { GridCard as GridCardBlok } from '@/lib/storyblok/resources/types/storyblok-components';
@@ -37,7 +38,14 @@ const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
       <Stack gap="xs">
         {showIcon && (
           <div className={styles.icon}>
-            <img src={iconData!.src} alt={iconData!.alt || ''} loading="lazy" />
+            <Image
+              src={iconData!.src}
+              alt={iconData!.alt || ''}
+              width={iconData?.width || 64}
+              height={iconData?.height || 64}
+              sizes="64px"
+              style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: iconData?.objectPosition }}
+            />
           </div>
         )}
 
