@@ -1,7 +1,7 @@
 import { fetchStory } from '@/lib/storyblok/api/client';
 import StoryblokRenderer from '@/lib/storyblok/rendering/StoryblokRenderer';
+import { resolveStoryblokPreview } from '@/lib/storyblok/utils/preview';
 import { notFound } from 'next/navigation';
-import { cookies, draftMode } from 'next/headers';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -30,23 +30,10 @@ export async function generateMetadata(props: PreviewPageProps): Promise<Metadat
 }
 
 export default async function PreviewPage(props: PreviewPageProps) {
-  const params = await props.params;
+  const [params, searchParams] = await Promise.all([props.params, props.searchParams]);
   const slug = params?.slug ? params.slug.join('/') : 'home';
 
-  const { isEnabled } = await draftMode();
-
-  const cookieStore = await cookies();
-  const hasPreviewData = Boolean(cookieStore.get('__next_preview_data'));
-  const hasBypass = Boolean(cookieStore.get('__prerender_bypass'));
-  const hasPreviewCookies = hasPreviewData && hasBypass;
-
-  const isPreview = isEnabled || hasPreviewCookies;
-
-  // Debugging logs
-  // console.log('Server isPreview:', isPreview, '| draftMode:', isEnabled, '| cookies:', {
-  //   __next_preview_data: hasPreviewData,
-  //   __prerender_bypass: hasBypass,
-  // });
+  const isPreview = await resolveStoryblokPreview(searchParams);
 
   const story = await fetchStory(slug, isPreview ? 'draft' : 'published');
 
