@@ -28,7 +28,7 @@ const ArticlePage = ({ blok }: SbComponentProps<ArticlePageBlok>) => {
         {categories.length > 0 && (
           <div className={styles.categories}>
             {categories.map((cat, idx) => (
-              <Badge key={cat?.uuid ?? idx} variant="light" color="gray">
+              <Badge key={typeof cat === 'string' ? idx : cat?.uuid ?? idx} variant="light" color="gray">
                 {typeof cat === 'string' ? cat : cat?.name || cat?.slug || 'Category'}
               </Badge>
             ))}

@@ -48,7 +48,7 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
             {cards.map((card, index) => {
               if (!card) return null;
               if (card.component !== 'grid-card') return null; // ignore unimplemented card types for now
-              return <GridCard key={card._uid ?? `card-${index}`} blok={card as GridCardBlok} />;
+              return <GridCard key={card._uid ?? `card-${index}`} blok={card as GridCardBlok} _uid={card._uid} component={card.component} />;
             })}
           </SimpleGrid>
         )}
