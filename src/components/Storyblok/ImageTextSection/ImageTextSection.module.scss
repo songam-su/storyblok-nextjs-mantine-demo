@@ -85,6 +85,8 @@
 .frame {
   position: relative;
   width: 100%;
+  max-height: min(78vh, 600px);
+  aspect-ratio: 4 / 3;
   border-radius: 12px;
   overflow: hidden;
   background: var(--mantine-color-gray-1);
