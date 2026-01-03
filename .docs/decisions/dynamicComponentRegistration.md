@@ -1,68 +1,36 @@
-# Why Use Dynamic Component Registration with Strong Typing in Next.js App Router?
+# Dynamic Component Registration (Decision Record)
 
-The decision to use **dynamic component registration with strong typing** (via Storyblok’s generated types) instead of a simple static import for `storyblokInit` in a Next.js App Router project comes down to several architectural and maintainability benefits:
-
----
-
-## ✅ 1. App Router + Server Components Compatibility
-
-In **Next.js 16 with App Router**:
-
-- `layout.tsx` and `page.tsx` are **server components**.
-- Downstream components can be **client** or **hybrid**.
-
-### Why Static Imports Are Problematic
-
-If you use **static imports** for all Storyblok components in `storyblokInit`, you:
-
-- Force those imports into the **server layer**.
-- **Increase bundle size** unnecessarily.
-- Break **tree-shaking** for client-only components.
-
-### Why Dynamic Registration Helps
-
-Dynamic registration allows you to **load only the components needed for the current story**, reducing overhead.
+We load Storyblok bloks through a lazy, typed registry instead of static imports. This keeps server output lean, lets client-only bloks stay client, and stays in sync with Storyblok schemas.
 
 ---
 
-## ✅ 2. Strong Typing from Generated Types
+## Why
 
-Storyblok’s `storyblok pull` generates:
-
-- `storyblok-components.d.ts`
-- `datasources.json`
-
-### Benefits of Dynamic Registration + TypeScript Types
-
-- **Type-safe props** for each component.
-- Prevent **runtime errors** caused by mismatched schema vs component props.
-
-Static imports don’t leverage these generated types effectively because they’re **hardcoded**.
+- App Router + server components: static-importing every blok drags client code into the server graph and bloats render time.
+- Bundle hygiene: lazy imports pull only what the current story needs; Suspense keeps UX smooth.
+- Type safety: generated `storyblok-components.d.ts` keeps props aligned with the CMS schema.
+- Editor velocity: new bloks can ship without touching a monolithic `storyblokInit`; the registry maps type → component in one place.
 
 ---
 
-## ✅ 3. Scalability for Large Spaces
+## How we do it
 
-If you have **dozens of components**:
-
-- **Static registration** → Import all components upfront.
-
-- **Static registration** → Import all components upfront.
-- **Dynamic registration** → Resolve components **only when needed**.
-
-This is especially important for **ISR/SSG** and **preview mode**, where you want **minimal overhead**.
+- Lazy registry (`src/lib/storyblok/registry/lazy.tsx`) resolves by `blok.component` and dynamically imports the React module.
+- `StoryblokComponentRenderer` wraps each blok in Suspense + ErrorBoundary and adds `storyblokEditable` in preview.
+- Preload only when helpful (e.g., root blok + a few common children) to cut first Suspense flashes; avoid per-render preloads.
+- Shared helpers (headline segments, rich text, link sanitizer, palette/alignment utils) keep components thin.
 
 ---
 
-## ✅ 4. Better Integration with Storyblok Visual Editor
+## Alternatives considered
 
-Dynamic registration works seamlessly with the **Storyblok Bridge** for live updates:
-
-- When editors add new components, you **don’t need to redeploy** or manually update `storyblokInit`.
-- Your **dynamic resolver** can handle it automatically.
+- **Static registration** in `storyblokInit`: rejected—bundles every blok into server render, hurts tree-shaking, and couples deployment to schema changes.
+- **Hybrid (static core + dynamic rest)**: acceptable for legacy, but the fully lazy registry is simpler and keeps behavior consistent across preview/published.
 
 ---
 
-### TL;DR
+## Operational notes
 
-Dynamic registration + strong typing = **better performance, scalability, type safety, and editor experience**.
+- Keep the registry aligned with generated types (`.docs/diagrams` and `storyblok-components.d.ts`).
+- When adding a blok: define schema in Storyblok, pull types, add component, add registry entry, and (optionally) add a preload hint.
+- Preview/published both use the same registry; draft mode only changes fetch params, not component resolution.
