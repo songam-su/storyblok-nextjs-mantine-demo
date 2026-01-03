@@ -11,7 +11,7 @@ describe('Storyblok revalidate webhook', () => {
   const secret = 'testsecret';
 
   beforeEach(() => {
-    (revalidatePath as vi.Mock).mockReset();
+    vi.mocked(revalidatePath).mockReset();
     process.env.STORYBLOK_WEBHOOK_SECRET = secret;
   });
 

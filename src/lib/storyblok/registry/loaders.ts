@@ -48,7 +48,7 @@ export const registry = {
   'contact-form-section': () => import('@/components/Storyblok/Forms/ContactFormSection/ContactFormSection'),
   'newsletter-form-section': () => import('@/components/Storyblok/Forms/NewsletterFormSection/NewsletterFormSection'),
   'personalized-section': () => import('@/components/Storyblok/PersonalizedSection/PersonalizedSection'),
-  'site-config': () => import('@/components/Storyblok/SiteConfig/SiteConfig'),
+  'site-config': (() => import('@/components/Storyblok/SiteConfig/SiteConfig')) as TypedLoader<'site-config'>,
 
   // Components not implemented yet → fallback to placeholder
   'banner-reference': () => import('@/components/Storyblok/BannerReference/BannerReference'),
