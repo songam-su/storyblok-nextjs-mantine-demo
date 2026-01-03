@@ -33,6 +33,8 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 - Published routes use ISR (10-minute window) while `/sb-preview` is dedicated to draft/preview.
 - Storyblok `meta_title` / `meta_description` flow into `<title>` + meta description via `generateMetadata` on published and preview routes.
 - Helper scripts under `.dev/storyblok` regenerate components, datasources, and types.
+- Site chrome (header/footer) and theming are driven by a Storyblok `site-config` story, including CSS vars for background/text and Mantine theme overrides.
+- Default typography stack is Inter/Segoe UI/system to keep headings and body copy consistent across all blok components.
 
 ## Tech Stack & Features
 
@@ -125,13 +127,20 @@ Currently guarded:
 | `button` | Storyblok-configurable CTA rendered as Mantine `Button`. | `src/components/Storyblok/Button/Button.tsx` | Shares palette utilities; ghost/default variants honor Storyblok color swatches. |
 | `hero-section` | Layout-aware hero with stacked/split variants, optional image decoration, and headline segments. | `src/components/Storyblok/HeroSection/HeroSection.tsx` | Supports Storyblok palette for background/accent, centers text by default, respects focus points and aspect toggles. |
 | `grid-section` | Configurable grid of cards with optional lead and CTAs. | `src/components/Storyblok/GridSection/GridSection.tsx` | Supports Storyblok palette, headline segments, and `grid-card` children; caps columns between 1–4. |
+| `grid-card` | Grid cell with optional image, icon, CTA, background image. | `src/components/Storyblok/GridCard/GridCard.tsx` | Light-themed by default; background images get a lightening overlay for contrast, no-image cards get a soft fill. |
 | `logo-section` | Responsive grid of logos from a multi-asset field with optional lead. | `src/components/Storyblok/LogoSection/LogoSection.tsx` | Uses `getSbImageData` to respect focal points; displays nothing if no assets and no lead. |
 | `faq-entry`, `faq-section` | Accordion-based FAQ section with Storyblok-managed entries. | `src/components/Storyblok/FaqSection` | Mantine `Accordion` + `Paper`, inherits global spacing system, edit attributes preserved per entry. |
 | `headline-segment` | Inline headline fragment with optional highlight color. | `src/components/Storyblok/HeadlineSegment/HeadlineSegment.tsx` | Used by banner/FAQ headlines to render multi-colored titles via `renderHeadlineSegments`. |
+| `tabbed-content-section` / `tabbed-content-entry` | Tabs with rich content cards. | `src/components/Storyblok/TabbedContentSection/TabbedContentSection.tsx` | Light pill tabs, full-card links, and light cards by default. |
+| `testimonials-section` / `testimonial` | Cards for quotes + person meta. | `src/components/Storyblok/TestimonialsSection/TestimonialsSection.tsx` | Uses light surfaces/borders with hover lift; respects site text colors. |
+| `featured-articles-section` | Grid of linked articles. | `src/components/Storyblok/FeaturedArticlesSection/FeaturedArticlesSection.tsx` | Full-card links, consistent heights, light surfaces with hover lift. |
+| `form-section`, `contact-form-section`, `newsletter-form-section` | CTA/lead + form shell. | `src/components/Storyblok/Forms/*` | Light-friendly surfaces, accessible label/placeholder contrast; newsletter has accent button styling. |
 | `text-section` | Rich text/lead section with optional headline segments and palette background. | `src/components/Storyblok/TextSection/TextSection.tsx` | Uses shared rich-text renderer and headline segments; omits empty wrappers. |
 | `two-columns-section` | Dual-column content with optional buttons and palette backgrounds per column. | `src/components/Storyblok/TwoColumnsSection/TwoColumnsSection.tsx` | Supports per-column decoration color and headline segments; skips empty columns. |
 | `image-text-section` | Side-by-side media + rich text with reversible layout. | `src/components/Storyblok/ImageTextSection/ImageTextSection.tsx` | Supports palette background, focus-aware images, headline segments, buttons, and per-device layout reversal. |
 | `nav-item` | Navigation link used by menus and site config. | `src/components/Storyblok/NavItem/NavItem.tsx` | Uses multilink resolver, preserves edit attributes, falls back to a muted span when missing href. |
+| `personalized-section` | Wrapper that swaps child bloks based on visitor state. | `src/components/Storyblok/PersonalizedSection/PersonalizedSection.tsx` | Supports new/returning visitor branches with arbitrary child bloks. |
+| `site-config` | Story-level config for theme, header, footer. | `src/components/Storyblok/SiteConfig/SiteConfig.tsx` | Normalizes colors/fonts into CSS vars + Mantine theme; shows editor badge only in Visual Editor. |
 
 Additional Storyblok blocks can follow the same pattern. See [Component Implementation Guide](.docs/component-guide.md) for conventions, utilities, and checklist.
 
@@ -141,6 +150,7 @@ Additional Storyblok blocks can follow the same pattern. See [Component Implemen
 - Responsive gutters: `16px (xs) / 20px (sm) / 24px (md+)`, controlled by CSS variables in `src/styles/globals.scss`.
 - Edge-to-edge sections: apply `.edge-to-edge` on the outer wrapper plus `.edge-to-edge__inner` around the textual content to keep full-bleed backgrounds with constrained typography.
 - Standard sections (e.g., FAQ) compute their width with `min(1400px, 100% - 2 * gutter)` so background colors never touch the viewport on smaller screens.
+- Site chrome: header/footer come from the Storyblok `site-config` story and are rendered in the shared layouts for published and preview routes.
 
 ### Shared utilities
 
