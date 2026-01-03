@@ -11,14 +11,55 @@
 }
 
 .lead {
-  color: #4b5563;
+  color: color-mix(in srgb, var(--sb-text, #111) 72%, transparent);
   margin-bottom: 1rem;
 }
 
 .formCard {
   padding: 1.25rem;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
   border-radius: 14px;
-  background: #fff;
+  background: #ffffff !important;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  color: var(--sb-text, #111);
+
+  :global(.mantine-Paper-root) {
+    background-color: inherit;
+  }
+
+  :global(.mantine-TextInput-label) {
+    color: color-mix(in srgb, var(--sb-text, #111) 82%, transparent);
+    font-weight: 600;
+  }
+
+  :global(.mantine-TextInput-input) {
+    background: #f8fafc;
+    border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.1));
+    color: var(--sb-text, #111);
+  }
+
+  :global(.mantine-TextInput-input:focus) {
+    border-color: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 28%, transparent);
+  }
+
+  :global(.mantine-TextInput-input::placeholder) {
+    color: color-mix(in srgb, var(--sb-text, #111) 55%, transparent);
+  }
+
+  :global(.mantine-Button-root) {
+    background: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
+    color: #fff;
+    border: 1px solid var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
+  }
+
+  :global(.mantine-Button-root:hover) {
+    background: color-mix(in srgb, var(--sb-accent, #1d63c5) 88%, #ffffff);
+    border-color: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
+  }
+}
+
+.helper {
+  color: color-mix(in srgb, var(--sb-text, #111) 65%, transparent);
 }

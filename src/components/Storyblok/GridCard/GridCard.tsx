@@ -19,8 +19,9 @@ const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
   const rowSpanClass = blok.row_span === '2' ? styles.rowSpan2 : undefined;
   const hasBorder = Boolean(blok.border);
 
-  const backgroundStyle = blok.background_image?.filename
-    ? { backgroundImage: `url(${blok.background_image.filename})` }
+  const hasBackgroundImage = Boolean(blok.background_image?.filename);
+  const backgroundStyle = hasBackgroundImage
+    ? { backgroundImage: `url(${blok.background_image!.filename})` }
     : undefined;
 
   const hasContent = Boolean(blok.label || blok.bold_text || blok.text || (blok.button?.length ?? 0) > 0 || showIcon);
@@ -32,7 +33,12 @@ const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
   return (
     <Card
       {...editable}
-      className={classNames(styles.card, rowSpanClass, hasBorder && styles.withBorder, backgroundStyle && styles.backgroundImage)}
+      className={classNames(
+        styles.card,
+        rowSpanClass,
+        hasBorder && styles.withBorder,
+        hasBackgroundImage ? styles.backgroundImage : styles.noImage,
+      )}
       style={backgroundStyle}
       shadow="sm"
       padding="lg"

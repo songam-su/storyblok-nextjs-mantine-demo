@@ -24,13 +24,13 @@ export function StoryblokComponentRenderer({ blok, isPreview }: StoryblokCompone
   }
 
   const spinner = <Loader size="lg" type="dots" />;
-  const editableAttributes = isPreview ? storyblokEditable(blok as any) : undefined;
+  const editableAttributes = isPreview && blok?._editable ? storyblokEditable(blok as any) : undefined;
 
   return (
     <ErrorBoundary>
       <Suspense fallback={spinner}>
         {isPreview ? (
-          <div {...editableAttributes} style={{ display: 'contents' }}>
+          <div {...editableAttributes} style={{ display: 'contents' }} suppressHydrationWarning>
             <Component blok={blok} />
           </div>
         ) : (

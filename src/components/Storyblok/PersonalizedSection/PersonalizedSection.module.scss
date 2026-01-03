@@ -9,7 +9,7 @@
 }
 
 .lead {
-  color: #4b5563;
+  color: color-mix(in srgb, var(--sb-text, #111) 72%, transparent);
 }
 
 .cards {
@@ -19,9 +19,9 @@
 }
 
 .card {
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
   border-radius: 16px;
   padding: 1.25rem;
-  background: #fff;
+  background: var(--sb-surface, #ffffff);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
 }

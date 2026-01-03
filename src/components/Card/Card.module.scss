@@ -1,17 +1,17 @@
 .button {
   //   background-color: var(--mantine-color-blue-6);
-  border: 1px solid #eaeaea;
+  border: 1px solid var(--sb-border, #eaeaea);
   margin: 1rem;
   padding: 1.5rem;
   border-radius: 10px;
   text-align: left;
-  color: black;
+  color: var(--sb-text, #111);
   max-width: 300px;
   transition: all 0.3s ease-in-out;
 
   &:hover {
-    border-color: #0070f3;
-    color: #0070f3;
+    border-color: var(--sb-accent, #0070f3);
+    color: var(--sb-accent, #0070f3);
   }
 }
 

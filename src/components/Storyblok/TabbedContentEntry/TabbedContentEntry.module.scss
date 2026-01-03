@@ -4,10 +4,17 @@
   flex-direction: column;
   gap: 0.75rem;
   padding: 1.25rem;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
   border-radius: 16px;
-  background: #fff;
+  background: #ffffff !important;
+  color: var(--sb-text, #111) !important;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+}
+
+:global(.mantine-Card-root.TabbedContentEntry-module-scss-module__1bVeMq__card),
+:global(.mantine-Paper-root.TabbedContentEntry-module-scss-module__1bVeMq__card) {
+  background-color: #ffffff !important;
+  color: var(--sb-text, #111) !important;
 }
 
 .headline {
@@ -16,7 +23,7 @@
 }
 
 .richtext {
-  color: #4b5563;
+  color: color-mix(in srgb, var(--sb-text, #111) 78%, transparent);
   font-size: 0.98rem;
 }
 
@@ -26,5 +33,5 @@
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  background: #f3f4f6;
+  background: #f5f7fa;
 }

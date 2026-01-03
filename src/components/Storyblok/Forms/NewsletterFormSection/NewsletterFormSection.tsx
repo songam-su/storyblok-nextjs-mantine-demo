@@ -70,7 +70,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
 
         <Paper className={styles.formCard} withBorder={false} shadow="sm" component="form" onSubmit={handleSubmit}>
           <Stack gap="md">
-            <Text c="dimmed" size="sm">
+            <Text className={styles.helper} size="sm">
               Get updates in your inbox.
             </Text>
             <TextInput label="Email" type="email" name="email" required placeholder="you@example.com" />

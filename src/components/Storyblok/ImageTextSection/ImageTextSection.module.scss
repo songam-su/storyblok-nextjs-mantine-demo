@@ -55,7 +55,7 @@
     h4,
     h5,
     h6 {
-      color: #fff;
+      color: var(--sb-headline-color, var(--sb-text, #111));
     }
   }
 }
@@ -67,7 +67,7 @@
 }
 
 .lead {
-  color: var(--mantine-color-gray-7);
+  color: color-mix(in srgb, var(--sb-text, #111) 72%, transparent);
 }
 
 .actions {

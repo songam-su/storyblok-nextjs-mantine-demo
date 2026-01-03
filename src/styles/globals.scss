@@ -17,8 +17,8 @@ body {
 }
 
 :root {
-  color-scheme: dark;
-  background-color: var(--sb-background, #05060c);
+  color-scheme: light;
+  background-color: var(--sb-background, #f8f9fb);
   --page-shell-max-width: 1400px;
   --page-shell-inline-padding-xs: var(--mantine-spacing-md);
   --page-shell-inline-padding-sm: 20px;
@@ -26,25 +26,20 @@ body {
   --page-shell-inline-padding: var(--page-shell-inline-padding-xs);
   --page-shell-block-padding: clamp(2rem, 6vw, 4rem);
   --page-shell-section-gap: clamp(1.5rem, 4vw, 3rem);
+  --sb-surface: color-mix(in srgb, var(--sb-background, #f8f9fb) 92%, #ffffff);
+  --sb-surface-strong: color-mix(in srgb, var(--sb-background, #f0f2f5) 80%, #ffffff);
+  --sb-border: color-mix(in srgb, var(--sb-text, #0d0d0d) 12%, transparent);
 }
 
 html {
   scrollbar-gutter: stable;
-  background-color: var(--sb-background, #05060c);
+  background-color: var(--sb-background, #f8f9fb);
 }
 
 body {
-  background-color: var(--sb-background, #05060c);
-  color: var(--sb-text, #fff);
+  background-color: var(--sb-background, #f8f9fb);
+  color: var(--sb-text, #111);
   min-height: 100vh;
-}
-
-.page-shell {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  padding: var(--page-shell-block-padding) var(--page-shell-inline-padding);
 }
 
 .page-shell__content {
@@ -116,7 +111,7 @@ body {
   h4,
   h5,
   h6 {
-    color: #fff;
+    color: var(--sb-headline-color, var(--sb-text, #111));
   }
 
   p,

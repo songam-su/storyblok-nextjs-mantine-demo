@@ -97,18 +97,31 @@ const FeaturedArticlesSection = ({ blok }: SbComponentProps<FeaturedArticlesSect
             const normalized = normalizeArticle(article as ArticleRef, index);
             if (!normalized) return null;
 
-            return (
-              <div key={normalized.key} className={styles.card}>
+            const content = (
+              <div className={styles.card}>
                 <Title order={4} className={styles.cardTitle}>
-                  {normalized.url ? (
-                    <Link href={normalized.url} onClick={handleEditorClick}>
-                      {normalized.name}
-                    </Link>
-                  ) : (
-                    normalized.name
-                  )}
+                  {normalized.name}
                 </Title>
                 {normalized.lead && <Text size="sm">{normalized.lead}</Text>}
+              </div>
+            );
+
+            if (normalized.url) {
+              return (
+                <Link
+                  key={normalized.key}
+                  href={normalized.url}
+                  onClick={handleEditorClick}
+                  className={styles.cardLink}
+                >
+                  {content}
+                </Link>
+              );
+            }
+
+            return (
+              <div key={normalized.key} className={styles.cardWrapper}>
+                {content}
               </div>
             );
           })}

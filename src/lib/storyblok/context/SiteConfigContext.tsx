@@ -1,13 +1,13 @@
 'use client';
 
 import { MantineProvider, MantineThemeOverride } from '@mantine/core';
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import baseTheme from '@/lib/mantine/theme';
 import type { SiteConfig as SiteConfigBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 
 const DEFAULT_RADIUS = baseTheme.defaultRadius ?? 'md';
 const DEFAULT_BACKGROUND = baseTheme.other?.backgroundLight ?? '#05060c';
-const DEFAULT_TEXT_ON_BACKGROUND = baseTheme.other?.textOnLight ?? '#ffffff';
+const DEFAULT_TEXT_ON_BACKGROUND = baseTheme.other?.textOnLight ?? '#212121';
 
 export type SiteConfigContent = SiteConfigBlok & {
   primary_highlight_color?: string;
@@ -75,6 +75,34 @@ export const normalizeSiteConfig = (blok?: SiteConfigContent): NormalizedSiteCon
 
 const toMantinePalette = (color?: string) => (color ? new Array(10).fill(color) : undefined);
 
+const hexToRgb = (value?: string): [number, number, number] | null => {
+  if (!value || typeof value !== 'string') return null;
+  const hex = value.trim().replace('#', '');
+  if (!/^([0-9a-f]{3}|[0-9a-f]{6})$/i.test(hex)) return null;
+
+  const normalized = hex.length === 3 ? hex.split('').map((c) => c + c).join('') : hex;
+  const num = parseInt(normalized, 16);
+  const r = (num >> 16) & 255;
+  const g = (num >> 8) & 255;
+  const b = num & 255;
+  return [r, g, b];
+};
+
+const getReadableTextColor = (background?: string): string | undefined => {
+  const rgb = hexToRgb(background);
+  if (!rgb) return undefined;
+
+  // WCAG relative luminance
+  const [r, g, b] = rgb.map((v) => {
+    const c = v / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+  // Choose text color that maximizes contrast against the background.
+  return luminance > 0.55 ? '#0d0d0d' : '#ffffff';
+};
+
 export const applyConfigToTheme = (config?: NormalizedSiteConfig): MantineThemeOverride => {
   const palette = config?.useCustomColors ? toMantinePalette(config.primary) : undefined;
   const backgroundLight = config?.useCustomColors && config.background ? config.background : DEFAULT_BACKGROUND;
@@ -116,10 +144,19 @@ export const applyConfigToTheme = (config?: NormalizedSiteConfig): MantineThemeO
   } satisfies MantineThemeOverride;
 };
 
-export const SiteConfigProvider = ({ children }: { children: React.ReactNode }) => {
-  const [config, setConfigState] = useState<NormalizedSiteConfig | undefined>();
+export const SiteConfigProvider = ({ children, initialConfig }: { children: React.ReactNode; initialConfig?: SiteConfigContent }) => {
+  const initialNormalized = useMemo(() => normalizeSiteConfig(initialConfig), [initialConfig]);
+  const [config, setConfigState] = useState<NormalizedSiteConfig | undefined>(initialNormalized);
 
   const theme = useMemo(() => applyConfigToTheme(config), [config]);
+
+  useEffect(() => {
+    if (!config) {
+      resetCssVariables();
+      return;
+    }
+    applyCssVariables(config);
+  }, [config]);
 
   const setConfig = useCallback((value?: NormalizedSiteConfig) => {
     setConfigState(value);
@@ -162,6 +199,8 @@ export const applyCssVariables = (config?: NormalizedSiteConfig) => {
   const headline = config?.coloredHeadlines ? accent ?? config?.primary : undefined;
   const radius = config?.disableRoundedCorners ? '0px' : undefined;
 
+  const textColor = getReadableTextColor(background) ?? DEFAULT_TEXT_ON_BACKGROUND;
+
   if (background) {
     root.style.setProperty('--sb-background', background);
     document.body.style.backgroundColor = background;
@@ -172,7 +211,7 @@ export const applyCssVariables = (config?: NormalizedSiteConfig) => {
     document.documentElement.style.backgroundColor = DEFAULT_BACKGROUND;
   }
 
-  root.style.setProperty('--sb-text', DEFAULT_TEXT_ON_BACKGROUND);
+  root.style.setProperty('--sb-text', textColor);
 
   if (accent) {
     root.style.setProperty('--sb-accent', accent);

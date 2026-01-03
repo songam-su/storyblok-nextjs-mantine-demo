@@ -1,8 +1,8 @@
 .section {
   border-radius: var(--mantine-radius-sm);
-  background-color: rgba(10, 12, 24, 0.8);
+  background-color: var(--sb-surface, rgba(255, 255, 255, 0.02));
   padding: clamp(1.5rem, 4vw, 3rem);
-  color: var(--mantine-color-white);
+  color: var(--sb-text, #111);
   width: min(var(--page-shell-max-width), calc(100% - (2 * var(--page-shell-inline-padding))));
   margin: 0 auto;
 }
@@ -14,7 +14,7 @@
 }
 
 .lead {
-  color: var(--mantine-color-gray-4);
+  color: color-mix(in srgb, var(--sb-text, #111) 70%, transparent);
   font-size: 1.05rem;
 }
 
@@ -23,8 +23,8 @@
 
   :global(.mantine-Accordion-item) {
     border-radius: var(--mantine-radius-sm);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+    background: var(--sb-surface, rgba(255, 255, 255, 0.02));
     overflow: hidden;
   }
 
@@ -33,13 +33,13 @@
   }
 
   :global(.mantine-Accordion-control) {
-    color: var(--mantine-color-white);
+    color: var(--sb-text, #111);
     font-weight: 600;
     font-size: 1.1rem;
   }
 
   :global(.mantine-Accordion-panel) {
-    color: var(--mantine-color-gray-3);
+    color: color-mix(in srgb, var(--sb-text, #111) 75%, transparent);
     padding-top: 0;
   }
 }

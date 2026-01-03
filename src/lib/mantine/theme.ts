@@ -1,7 +1,10 @@
 // src/lib/mantine/theme.ts
 import { createTheme, MantineTheme } from '@mantine/core';
 
+const FONT_STACK = 'Inter, "Segoe UI", system-ui, -apple-system, sans-serif';
+
 const theme = createTheme({
+  fontFamily: FONT_STACK,
   primaryColor: 'neonIceDark',
   primaryShade: { light: 4, dark: 6 },
   colors: {
@@ -153,6 +156,7 @@ const theme = createTheme({
   black: '#212121',
   white: '#ffffff',
   headings: {
+    fontFamily: FONT_STACK,
     fontWeight: '600',
     sizes: {
       h1: { fontSize: '3.5rem', lineHeight: '1.1' },
