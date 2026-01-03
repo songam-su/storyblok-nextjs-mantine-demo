@@ -1,0 +1,16 @@
+sequenceDiagram
+  participant Route as Route (page.tsx)
+  participant Renderer as StoryblokRenderer
+  participant CompR as StoryblokComponentRenderer
+  participant Registry as Lazy Registry
+  participant BlokComp as Blok Component
+
+  Route->>Renderer: story.content.body[]
+  loop for each blok
+    Renderer->>CompR: render blok
+    CompR->>Registry: resolve blok.component
+    Registry-->>CompR: dynamic import (lazy)
+    CompR->>BlokComp: render within Suspense + ErrorBoundary
+    BlokComp-->>CompR: React tree w/ storyblokEditable attrs (preview only)
+    CompR-->>Renderer: rendered blok
+  end
