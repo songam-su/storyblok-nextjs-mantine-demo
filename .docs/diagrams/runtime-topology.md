@@ -1,10 +1,10 @@
 # Runtime Topology — Published vs Preview
 
-Purpose: visualize runtime components (Next.js App Router, CDN/edge cache) and how published vs preview traffic flows.
+Purpose: visualize runtime components (Next.js App Router, CDN/edge cache) and how published vs preview traffic flow.
 
 Notes
-- Published: uses ISR (~10 min) on CDN/edge; Storyblok CDN/API backs data fetches.
-- Preview: Storyblok Visual Editor iframe + preview cookie; no ISR caching, always fresh draft fetch.
+- Published: ISR (~10 min) on CDN/edge; Storyblok CDN/API backs data fetches.
+- Preview: Visual Editor iframe + preview cookie; no ISR, always fresh draft fetch.
 - Webhooks invalidate published cache via /api/webhooks/revalidate.
 
 ```mermaid

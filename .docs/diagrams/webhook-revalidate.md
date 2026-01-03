@@ -1,6 +1,6 @@
 # Webhook Revalidation Sequence
 
-Purpose: illustrate Storyblok publish/update webhook handling, signature/timestamp checks, slug collection, and Next.js revalidation calls.
+Purpose: illustrate Storyblok publish/update webhook handling, signature/timestamp checks, slug collection, and Next.js revalidation.
 
 Notes
 - Webhook hits `/api/webhooks/revalidate?secret=...` with headers `x-storyblok-signature` (HMAC SHA1) and `x-storyblok-request-timestamp`.

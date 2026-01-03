@@ -5,7 +5,7 @@ Purpose: show how rendering is protected when a blok or registry import fails, e
 Notes
 - StoryblokComponentRenderer wraps each blok in Suspense + ErrorBoundary.
 - Errors are contained to the blok; the page continues rendering.
-- Preview still keeps editable attrs where possible.
+- Preview keeps editable attrs where possible.
 
 ```mermaid
 flowchart TB

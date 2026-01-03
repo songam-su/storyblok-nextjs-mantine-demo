@@ -1,6 +1,6 @@
 # Storyblok Component Resolution & Rendering Chain
 
-Purpose: show how a fetched Storyblok story becomes rendered React components with lazy registry, Suspense, and edit attributes.
+Purpose: show how a fetched Storyblok story becomes rendered React components through the lazy registry, Suspense, and edit attributes.
 
 Notes
 - Server fetches story JSON; StoryblokRenderer walks `content.body`.
