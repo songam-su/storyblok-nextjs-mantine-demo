@@ -1,14 +1,23 @@
+# Component Implementation Guide
+
+This guide covers conventions for implementing Storyblok **bloks** (components) in this repository.
+
+Related docs:
+
+- Project overview and setup: [`README.md`](../README.md)
+- Adapting to your own Storyblok space: [`docs/Implementation-Guide.md`](../docs/Implementation-Guide.md)
+
 ## Render tree overview
 
 ```text
 app/(pages)/layout.tsx
 └─ page-shell (outer max-width + padding wrapper)
-   └─ page-shell__content (1400px cap + vertical stacking)
-  └─ StoryblokRenderer (root blok) → StoryblokComponentRenderer → <Blok component>
+  └─ page-shell__content (1400px cap + vertical stacking)
+    └─ StoryblokRenderer (root blok) → StoryblokComponentRenderer → <Blok React component>
 ```
 
 - `StoryblokRenderer` renders the root blok (page) and passes it to `StoryblokComponentRenderer`; page-level bloks (e.g., default-page) render their body children.
-- `StoryblokComponentRenderer` lazy-loads the Mantine component, wraps it with Suspense + ErrorBoundary, and applies `data-blok-*` attributes in preview mode.
+- `StoryblokComponentRenderer` lazy-loads the component, wraps it with Suspense + ErrorBoundary, and applies `storyblokEditable` attributes in preview mode (via a `display: contents` wrapper).
 
 ## Layout & spacing rules
 
@@ -39,7 +48,7 @@ Whenever possible, rely on these helpers instead of duplicating alignment or col
 ## Component checklist
 
 1. **Type safety** – Import the generated blok interface from `src/lib/storyblok/resources/types/storyblok-components.d.ts` and type your component as `React.FC<SbComponentProps<YourBlok>>`.
-2. **Storyblok edit bridge** – Call `storyblokEditable(blok as any)` and spread the returned attributes on your root element so editors can click-to-edit in the visual editor.
+2. **Visual Editor editability** – In this repo, `StoryblokComponentRenderer` applies `storyblokEditable(blok)` automatically in preview mode, so most components do **not** need to spread edit props themselves. Only apply custom edit attributes if you have a special case (for example, multiple independently editable roots).
 3. **Preload common blok types** – When you can inspect the story, preload the root blok and the first few body blok component types once (via `lazyRegistry.preload`) to reduce Suspense latency. Avoid per-render preloads inside individual components.
 4. **Layout decision** – Decide whether the blok is full-bleed (`edge-to-edge`) or standard (inherits page-shell width). Apply the helper classes accordingly.
 5. **Spacing** – Use Mantine `Stack`, `Group`, and spacing tokens instead of hard-coded pixel values. Favor `gap` props over manual margins when possible.

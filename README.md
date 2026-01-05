@@ -7,6 +7,9 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 - [Storyblok Mantine Demo](#storyblok-mantine-demo)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
+  - [Purpose](#purpose)
+  - [Disclaimer](#disclaimer)
+  - [What's Included (and What's Not)](#whats-included-and-whats-not)
   - [Tech Stack \& Features](#tech-stack--features)
   - [Enterprise Architecture](#enterprise-architecture)
     - [Published vs Preview Routes](#published-vs-preview-routes)
@@ -36,9 +39,32 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
 - Site chrome (header/footer) and theming are driven by a Storyblok `site-config` story, including CSS vars for background/text and Mantine theme overrides.
 - Default typography stack is Inter/Segoe UI/system to keep headings and body copy consistent across all blok components.
 
+## Purpose
+
+- Showcase stack feasibility for stakeholders.
+- Provide a clean starting point for teams adopting Storyblok + Next.js + Mantine.
+- Not a drop-in production site; adapt this for your own Storyblok space.
+
+## Disclaimer
+
+This repository provides an **enterprise-grade boilerplate** integrating a **Storyblok demo space**, **Next.js**, and **Mantine UI**. It is intended as a **starting point** and **proof of concept** demonstrating feasibility of the stack — not a ready-made, production site.
+
+- **Not a final implementation**: You must adapt components, content models, and configuration for a **clean, new Storyblok space** you own.
+- **No secrets**: The repository does not include operational credentials. Example environment variables are provided via `.env.example`.
+- **No warranty**: Provided "as is" without warranties of any kind. Use at your own risk; review security, performance, and compliance needs before production.
+
+For a guided adaptation, see [docs/Implementation-Guide.md](docs/Implementation-Guide.md).
+
+## What's Included (and What's Not)
+
+- ✅ Integration patterns (routing, preview, component registry, performance-minded defaults)
+- ✅ Example bloks/components mapped from a demo space
+- ❌ Production credentials (see `.env.example`)
+- ❌ A ready-to-ship site (replace demo models/content for your space)
+
 ## Tech Stack & Features
 
-- **Framework**: Next.js 16 App Router with TypeScript.
+- **Framework**: Next.js App Router with TypeScript.
 - **UI**: Mantine + custom theme tokens.
 - **CMS**: Storyblok (live preview bridge, generated typings).
 - **Performance**: Lazy-loaded blok components with targeted preloading of the root + first body bloks to reduce Suspense latency.
@@ -76,7 +102,7 @@ At runtime, rendering is intentionally simple and centralized:
    - selects the root blok (story content) and preloads likely components
 4. `StoryblokComponentRenderer` (`src/lib/storyblok/rendering/StoryblokComponentRenderer.tsx`) picks the React component by blok name and renders it via Suspense.
 
-In preview mode, `StoryblokComponentRenderer` also wraps each block with `storyblokEditable(blok)` attributes (using `display: contents`) so blocks remain clickable/selectable in the Visual Editor even if the component itself doesn’t spread edit props.
+In preview mode, `StoryblokComponentRenderer` also wraps each blok with `storyblokEditable(blok)` attributes (using `display: contents`) so bloks remain clickable/selectable in the Visual Editor even if the component itself doesn’t spread edit props.
 
 ### Lazy Component Loading
 
@@ -120,7 +146,7 @@ Currently guarded:
 
 ## Component & Layout Highlights
 
-| Block | Description | Path | Notes |
+| Blok | Description | Path | Notes |
 | --- | --- | --- | --- |
 | `default-page` | Story-level wrapper that renders nested body bloks without extra layout chrome. | `src/components/Storyblok/DefaultPage/DefaultPage.tsx` | Uses `display: contents` via CSS module to stay DOM-neutral; meta title/description surfaced via `generateMetadata`. |
 | `banner` | Hero-style CTA wrapper with buttons, color & background-image controls. | `src/components/Storyblok/Banner/Banner.tsx` | Uses Mantine `Paper`, Storyblok color + alignment helpers, supports full-bleed background with constrained inner content. |
@@ -142,7 +168,7 @@ Currently guarded:
 | `personalized-section` | Wrapper that swaps child bloks based on visitor state. | `src/components/Storyblok/PersonalizedSection/PersonalizedSection.tsx` | Supports new/returning visitor branches with arbitrary child bloks. |
 | `site-config` | Story-level config for theme, header, footer. | `src/components/Storyblok/SiteConfig/SiteConfig.tsx` | Normalizes colors/fonts into CSS vars + Mantine theme; shows editor badge only in Visual Editor. |
 
-Additional Storyblok blocks can follow the same pattern. See [Component Implementation Guide](.docs/component-guide.md) for conventions, utilities, and checklist.
+Additional Storyblok bloks can follow the same pattern. See [Component Implementation Guide](.docs/component-guide.md) for conventions, utilities, and checklist.
 
 ### Layout & spacing system
 
@@ -164,18 +190,19 @@ Additional Storyblok blocks can follow the same pattern. See [Component Implemen
 ## Getting Started
 
 1. Install dependencies: `pnpm install`.
-2. Copy `.env.local` from the provided sample and fill in Storyblok tokens + secrets.
-3. Run the dev server (HTTP): `pnpm dev`. For HTTPS, see [Local SSL Setup](#local-ssl-setup).
-4. Visit `http://localhost:3000` for published content or `/sb-preview/...` for draft mode.
+2. Copy `.env.example` to `.env.local` and fill in the required Storyblok tokens + secrets.
+3. Generate local HTTPS certs once: `pnpm dev-setup` (see [Local SSL Setup](#local-ssl-setup)).
+4. Run the dev server: `pnpm dev`.
+5. Visit `https://localhost:3010` for published content or `/sb-preview/...` for draft mode.
 
 ## Testing
 
 - Unit: `pnpm test` (Vitest, uses alias `@` → `src/`, specs in `tests/unit`).
-- E2E: `pnpm cy:open` / `pnpm cy:run` (Cypress config at `tests/e2e/cypress.config.ts`, specs in `tests/e2e/specs`). Set `CYPRESS_BASE_URL` if not using the default `http://localhost:3010`.
+- E2E: `pnpm cy:open` / `pnpm cy:run` (Cypress config at `tests/e2e/cypress.config.ts`, specs in `tests/e2e/specs`). Set `CYPRESS_BASE_URL` if your dev server URL differs (for example, `https://localhost:3010`).
 
 ## Local SSL Setup
 
-Some Storyblok integrations expect HTTPS (especially inside the visual editor iframe).
+Some Storyblok integrations expect HTTPS (especially inside the Visual Editor iframe).
 
 1. Install mkcert globally:
    - Windows: `choco install mkcert`
@@ -185,7 +212,7 @@ Some Storyblok integrations expect HTTPS (especially inside the visual editor if
 
 ## Storyblok Visual Editor
 
-- Default visual editor environment: <https://d6a698f5.me.storyblok.com/>.
+- Default Visual Editor environment: <https://d6a698f5.me.storyblok.com/>.
 - Preview/editing uses `/sb-preview/<slug>` (draft + bridge).
 - You can also use the normal published URL as the Visual Editor preview URL; the middleware rewrites Storyblok editor requests (those with `_storyblok` params) to `/sb-preview/...` automatically.
 - Storyblok demo space domain: <https://d6a698f5.me.storyblok.com>
