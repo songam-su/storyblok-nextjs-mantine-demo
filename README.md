@@ -29,6 +29,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
     - [ISR cache bust](#isr-cache-bust)
     - [Algolia reindex (scaffold)](#algolia-reindex-scaffold)
   - [Future Enhancements](#future-enhancements)
+  - [License](#license)
 
 ## Overview
 
@@ -250,3 +251,9 @@ Some Storyblok integrations expect HTTPS (especially inside the Visual Editor if
 - Wire `fetchTheme('draft')` into preview layouts for Storyblok-driven theming.
 - Implement Algolia indexing, including partial updates and retry logic.
 - Consolidate webhook handlers under `/api/webhooks/*` if additional integrations are introduced.
+
+## License
+
+This repository is licensed under the GNU General Public License version 3, or any later version. See [LICENSE](LICENSE) for the full text.
+
+For third-party notices, see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
