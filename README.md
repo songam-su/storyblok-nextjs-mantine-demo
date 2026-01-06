@@ -202,6 +202,16 @@ Additional Storyblok bloks can follow the same pattern. See [Component Implement
 - Unit: `pnpm test` (Vitest, uses alias `@` → `src/`, specs in `tests/unit`).
 - E2E: `pnpm cy:open` / `pnpm cy:run` (Cypress config at `tests/e2e/cypress.config.ts`, specs in `tests/e2e/specs`). Set `CYPRESS_BASE_URL` if your dev server URL differs (for example, `https://localhost:3010`).
 
+## Known Warnings
+
+### React peer dependency warning (React <= 18)
+
+When installing dependencies you may see a pnpm peer dependency warning similar to:
+
+- `@mantine/next` → `@mantine/ssr` → `html-react-parser@1.x` expects `react <= 18`, but this repo uses React 19.
+
+This is currently a **warning only** in this project (build + tests pass). Track it for future upgrades; if you hit runtime issues in the SSR integration, the most likely fixes are upgrading the Mantine SSR/Next packages to versions that officially support React 19, or pinning React to 18.
+
 ## Local SSL Setup
 
 Some Storyblok integrations expect HTTPS (especially inside the Visual Editor iframe).
