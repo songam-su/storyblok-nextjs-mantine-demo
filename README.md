@@ -230,6 +230,12 @@ Some Storyblok integrations expect HTTPS (especially inside the Visual Editor if
 | `STORYBLOK_WEBHOOK_SECRET`            | Shared secret for ISR webhook authentication.                     | Server |
 | `ALGOLIA_WEBHOOK_SECRET`              | Shared secret for the Algolia scaffold endpoint.                  | Server |
 
+Additional:
+
+| Variable   | Description                                                                 | Scope  |
+| ---------- | --------------------------------------------------------------------------- | ------ |
+| `SITE_URL` | Canonical base URL for metadata (used for `metadataBase`, OG URLs, etc.).   | Server |
+
 > Tip: Secrets can be reused across webhooks, but rotating them independently keeps integrations isolated.
 
 ## Webhooks

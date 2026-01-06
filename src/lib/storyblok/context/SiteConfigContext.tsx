@@ -1,6 +1,6 @@
 'use client';
 
-import { MantineProvider, MantineThemeOverride } from '@mantine/core';
+import { MantineProvider, MantineThemeOverride, type MantineColorsTuple } from '@mantine/core';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import baseTheme from '@/lib/mantine/theme';
 import type { SiteConfig as SiteConfigBlok } from '@/lib/storyblok/resources/types/storyblok-components';
@@ -73,7 +73,12 @@ export const normalizeSiteConfig = (blok?: SiteConfigContent): NormalizedSiteCon
   };
 };
 
-const toMantinePalette = (color?: string) => (color ? new Array(10).fill(color) : undefined);
+const toMantinePalette = (color?: string): MantineColorsTuple | undefined => {
+  if (!color) return undefined;
+
+  // Mantine expects a 10-shade tuple.
+  return [color, color, color, color, color, color, color, color, color, color] as MantineColorsTuple;
+};
 
 const hexToRgb = (value?: string): [number, number, number] | null => {
   if (!value || typeof value !== 'string') return null;

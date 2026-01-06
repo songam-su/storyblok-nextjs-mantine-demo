@@ -3,6 +3,20 @@ import Header from '@/components/SiteChrome/Header/Header';
 import Footer from '@/components/SiteChrome/Footer/Footer';
 import { fetchStory } from '@/lib/storyblok/api/client';
 import type { SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContext';
+import { METADATA_BASE } from '@/lib/site/siteUrl';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  metadataBase: METADATA_BASE,
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const siteConfigStory = await fetchStory('site-config', 'published');
