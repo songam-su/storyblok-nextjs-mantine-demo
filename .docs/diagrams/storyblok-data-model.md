@@ -3,6 +3,7 @@
 Purpose: map core content types and how pages compose them.
 
 Notes
+
 - Focused on page composition and shared config; not exhaustive of every field.
 
 ```mermaid

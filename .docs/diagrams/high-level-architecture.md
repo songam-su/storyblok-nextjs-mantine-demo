@@ -3,6 +3,7 @@
 End-to-end view of content flow, runtime paths, theming, and freshness.
 
 Key ideas
+
 - Storyblok as the source of truth; Visual Editor for preview with live Bridge events.
 - Next.js App Router segments for published and preview, sharing providers (SiteConfig, Mantine, editor context).
 - CDN/Edge for ISR-cached published traffic; preview bypasses cache.
