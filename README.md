@@ -1,11 +1,26 @@
 # Storyblok Mantine Demo
 
+[![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
+![Storyblok](https://img.shields.io/badge/Storyblok-CMS-blue?logo=storyblok)
+![Mantine](https://img.shields.io/badge/Mantine-UI-purple)
+
 A Next.js App Router demo that showcases Storyblok-driven page building, Mantine UI theming, and an enterprise-style integration that keeps published routes ISR/static while still supporting a great Storyblok Visual Editor experience.
+
+## About This Project
+
+A modern Next.js demo integrating Storyblok CMS and Mantine UI, showcasing enterprise-grade architecture patterns, ISR/static rendering, and Visual Editor support. Built with TypeScript for maintainability and optimized for performance.
+
+## Why This Matters
+
+This project demonstrates how to build scalable, CMS-driven applications using modern frameworks and a design system. It highlights patterns that matter in real teams: performance-first rendering (ISR/static where possible), a clean server-side content layer, and an editor-friendly preview workflow that supports fast iteration without sacrificing production stability.
 
 ## Table of Contents
 
 - [Storyblok Mantine Demo](#storyblok-mantine-demo)
   - [Table of Contents](#table-of-contents)
+  - [About This Project](#about-this-project)
+  - [Why This Matters](#why-this-matters)
   - [Overview](#overview)
   - [Purpose](#purpose)
   - [Disclaimer](#disclaimer)
