@@ -1,6 +1,6 @@
 import PreviewProviders from './providers';
-import Header from '@/components/SiteChrome/Header/Header';
-import Footer from '@/components/SiteChrome/Footer/Footer';
+import Header from '@/components/chrome/Header/Header';
+import Footer from '@/components/chrome/Footer/Footer';
 import { fetchStory } from '@/lib/storyblok/api/client';
 import type { SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContext';
 import { METADATA_BASE } from '@/lib/site/siteUrl';

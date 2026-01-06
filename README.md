@@ -25,6 +25,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
   - [Local SSL Setup](#local-ssl-setup)
   - [Storyblok Visual Editor](#storyblok-visual-editor)
   - [Environment Variables](#environment-variables)
+  - [Indexing / SEO (Demo Subdomain)](#indexing--seo-demo-subdomain)
   - [Webhooks](#webhooks)
     - [ISR cache bust](#isr-cache-bust)
     - [Algolia reindex (scaffold)](#algolia-reindex-scaffold)
