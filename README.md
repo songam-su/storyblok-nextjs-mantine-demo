@@ -236,6 +236,16 @@ Additional:
 | ---------- | --------------------------------------------------------------------------- | ------ |
 | `SITE_URL` | Canonical base URL for metadata (used for `metadataBase`, OG URLs, etc.).   | Server |
 
+## Indexing / SEO (Demo Subdomain)
+
+This repository is commonly deployed as a **demo** on a subdomain. If you intend for the demo to be publicly accessible but **not indexed** by search engines (recommended for boilerplate/demo content), the app enforces:
+
+- `robots.txt` route via `src/app/robots.ts` (disallows `/sb-preview/*` and `/api/*`)
+- Global `noindex, nofollow` via Next.js metadata on the published + preview layouts
+- `X-Robots-Tag: noindex, nofollow` response header (configured in `next.config.mjs`) as defense-in-depth
+
+If you want the site to be indexed, remove/adjust these rules before launch.
+
 > Tip: Secrets can be reused across webhooks, but rotating them independently keeps integrations isolated.
 
 ## Webhooks

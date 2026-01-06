@@ -18,7 +18,6 @@ This captures how we structure the Storyblok-powered Next.js App Router build, w
 
 - `(pages)/` — Published site (ISR, public token).
 - `(preview)/sb-preview/` — Draft/visual editor preview (preview token + Bridge).
-- `(sub-domain-a)/` — Experimental/custom domain segment.
 - `api/` — Preview/exit-preview + webhooks (revalidate, reindex).
 
 Each segment uses `layout.tsx` (server) + `providers.tsx` (client) to apply theme, globals, Storyblok editor context, and the SiteConfigProvider.
