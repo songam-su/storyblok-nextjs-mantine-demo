@@ -1,0 +1,16 @@
+.navItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  color: inherit;
+}
+
+.navItem:hover {
+  text-decoration: underline;
+}
+
+.placeholder {
+  opacity: 0.65;
+}

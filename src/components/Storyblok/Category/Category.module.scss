@@ -1,0 +1,26 @@
+.card {
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  border-radius: 12px;
+  padding: 16px;
+  background: var(--sb-surface, rgba(255, 255, 255, 0.02));
+  display: grid;
+  gap: 8px;
+}
+
+.iconWrap {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+}
+
+.title {
+  margin: 0;
+  color: var(--sb-text, #111);
+}
+
+.meta {
+  margin: 0;
+  color: color-mix(in srgb, var(--sb-text, #111) 70%, transparent);
+  line-height: 1.5;
+}

@@ -1,0 +1,44 @@
+.section {
+  position: relative;
+  padding: clamp(24px, 4vw, 64px);
+  border-radius: 16px;
+  display: grid;
+  gap: clamp(16px, 3vw, 32px);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.column {
+  position: relative;
+  padding: clamp(16px, 3vw, 28px);
+  border-radius: 12px;
+  display: grid;
+  gap: 12px;
+  background: var(--mantine-color-gray-0);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+}
+
+.content {
+  display: grid;
+  gap: 10px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.decoration {
+  position: absolute;
+  inset: auto 12% -12% auto;
+  width: 120px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  filter: blur(18px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.title {
+  margin: 0;
+}

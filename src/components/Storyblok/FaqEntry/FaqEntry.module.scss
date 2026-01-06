@@ -1,0 +1,23 @@
+.entry {
+  padding: var(--mantine-spacing-lg);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  background-color: var(--sb-surface, rgba(255, 255, 255, 0.02));
+  color: var(--sb-text, #111);
+}
+
+.question {
+  font-size: clamp(1.125rem, 1.2vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.answer {
+  color: color-mix(in srgb, var(--sb-text, #111) 75%, transparent);
+  font-size: 1rem;
+  line-height: 1.6;
+
+  :global(p + p) {
+    margin-top: var(--mantine-spacing-sm);
+  }
+}

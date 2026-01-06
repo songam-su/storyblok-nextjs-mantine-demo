@@ -1,0 +1,8 @@
+.wrapper {
+  display: grid;
+  gap: clamp(12px, 2vw, 20px);
+}
+
+.item {
+  width: 100%;
+}

@@ -1,20 +1,27 @@
 {
   "private": true,
+  "license": "GPL-3.0-or-later",
   "version": "0.1.0",
   "name": "my-storyblok-demo",
+  "type": "module",
   "scripts": {
     "build": "next build",
     "dev": "next dev -p 3010 --experimental-https --experimental-https-key ./.dev/certs/localhost-key.pem --experimental-https-cert ./.dev/certs/localhost-crt.pem",
-    "dev-setup": "node ./.dev/certs/generate-cert",
+    "dev-setup": "node ./.dev/certs/generate-cert.cjs",
     "sb:build": "storyblok build",
+    "sb:generate:blok-union": "node ./.dev/storyblok/generate-union-type.ts",
     "sb:login": "storyblok logout && storyblok login --region eu",
     "sb:logout": "storyblok logout",
-    "sb:pull": "node ./.dev/storyblok/pull-resources.mjs",
+    "sb:pull": "node ./.dev/storyblok/pull-resources.mjs && npm run sb:generate:blok-union",
     "sb:pull-components": "node ./.dev/storyblok/pull-components.mjs",
     "sb:pull-datasources": "node ./.dev/storyblok/pull-datasources.mjs",
     "sb:pull-languages": "node ./.dev/storyblok/pull-languages.mjs",
-    "sb:pull-types": "node ./.dev/storyblok/pull-types.mjs",
+    "sb:pull-types": "node ./.dev/storyblok/pull-types.mjs && npm run sb:generate:blok-union",
     "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "cy:open": "cypress open --config-file tests/e2e/cypress.config.ts",
+    "cy:run": "cypress run --config-file tests/e2e/cypress.config.ts",
     "vercel": "vercel env pull"
   },
   "dependencies": {
@@ -36,12 +43,18 @@
     "sass": "^1.94.2",
     "search-insights": "^2.17.3",
     "storyblok-js-client": "^7.1.6",
+    "styled-jsx": "^5.1.7",
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.3",
+    "@next/eslint-plugin-next": "^16.1.1",
     "@types/node": "24.10.1",
     "@types/react": "19.2.6",
     "@types/react-dom": "19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.51.0",
+    "@typescript-eslint/parser": "^8.51.0",
+    "cypress": "^13.13.2",
     "dotenv": "^17.2.3",
     "eslint": "^9.39.1",
     "eslint-config-mantine": "^4.0.3",
@@ -49,9 +62,12 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.0.0",
     "prettier": "3.6.2",
     "storyblok": "^4.7.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "^2.1.4"
   },
   "sideEffects": [
     "*.scss"

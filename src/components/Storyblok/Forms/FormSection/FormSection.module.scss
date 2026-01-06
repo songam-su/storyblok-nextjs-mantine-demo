@@ -1,0 +1,24 @@
+.section {
+  padding: 2.5rem 0;
+}
+
+.wrapper {
+  max-width: 760px;
+}
+
+.headline {
+  margin-bottom: 0.5rem;
+}
+
+.lead {
+  color: color-mix(in srgb, var(--sb-text, #111) 72%, transparent);
+  margin-bottom: 1rem;
+}
+
+.formCard {
+  padding: 1.5rem;
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  border-radius: 16px;
+  background: var(--sb-surface, #ffffff);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+}

@@ -1,0 +1,32 @@
+@use './utils/ghostHover' as ghostHover;
+
+.button {
+  border-radius: var(--mantine-radius-sm);
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+  border: 1px solid transparent;
+  background-color: var(--sb-color-bg, var(--sb-color-default-bg));
+  color: var(--sb-color-text, var(--sb-color-default-text));
+  --sb-button-ghost-hover-text: var(--sb-text, var(--sb-color-text, var(--sb-color-default-text)));
+}
+
+.button[data-sb-text-color='white'] {
+  --sb-button-ghost-hover-text: #0d0d0d;
+}
+
+.button[data-sb-text-color='primary-dark'] {
+  --sb-button-ghost-hover-text: #ffffff;
+}
+
+.button:not(.is-ghost):hover {
+  background-color: var(--sb-color-bg-hover, var(--sb-color-bg, var(--sb-color-default-bg)));
+}
+
+.is-ghost {
+  background-color: transparent;
+  border: 1px solid currentColor;
+
+  @include ghostHover.hover-styles;
+}

@@ -1,0 +1,60 @@
+.section {
+  padding: clamp(24px, 4vw, 64px);
+  border-radius: 16px;
+  display: grid;
+  gap: 20px;
+}
+
+.header {
+  display: grid;
+  gap: 10px;
+}
+
+.lead {
+  color: color-mix(in srgb, var(--sb-text, #111) 72%, transparent);
+}
+
+.grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.card {
+  border-radius: 12px;
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  padding: 16px 18px;
+  display: grid;
+  gap: 10px;
+  min-height: 84px;
+  height: 100%;
+  background: var(--sb-surface, #ffffff);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+}
+
+.cardTitle {
+  margin: 0;
+  color: var(--sb-text, #0f172a);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 20%, transparent);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+}
+
+.card:focus-within {
+  outline: 2px solid color-mix(in srgb, var(--sb-accent, #1d63c5) 40%, transparent);
+  outline-offset: 3px;
+}
+
+.cardLink {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+
+.cardWrapper {
+  display: block;
+}

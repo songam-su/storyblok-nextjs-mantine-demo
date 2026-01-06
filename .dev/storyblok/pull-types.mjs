@@ -26,7 +26,7 @@ try {
   console.log('Pulling Storyblok components...');
   execSync(`storyblok components --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
 
-  console.log('Pulling Storyblok TypeScript types...');
+  console.log('Pulling Storyblok types...');
   execSync(`storyblok types --space ${spaceId} --path ${resourcesPath} generate`, { stdio: 'inherit' });
 
   console.log('✅ Pull components and types complete. Moving files...');

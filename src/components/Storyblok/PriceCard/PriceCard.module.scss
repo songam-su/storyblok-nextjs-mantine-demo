@@ -1,0 +1,41 @@
+.card {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--mantine-color-gray-0);
+  border: 1px solid var(--mantine-color-gray-3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.popular {
+  border: 1px solid var(--mantine-color-primary-6, #1c7ed6);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+}
+
+.badge {
+  justify-self: start;
+}
+
+.header {
+  display: grid;
+  gap: 6px;
+}
+
+.price {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 800;
+  margin: 0;
+}
+
+.body {
+  display: grid;
+  gap: 10px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}

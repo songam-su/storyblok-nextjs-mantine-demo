@@ -14,7 +14,7 @@ const resourcesPath = `./src/lib/storyblok/resources/`;
 try {
   console.log('Pulling Storyblok languages...');
   execSync(`storyblok languages --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
-  console.log('✅ Types generated successfully!');
+  console.log('✅ Languages resources successfully!');
 } catch (error) {
   console.error('❌ Error executing commands:', error.message);
   process.exit(1);

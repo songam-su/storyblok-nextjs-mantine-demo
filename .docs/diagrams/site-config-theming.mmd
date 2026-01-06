@@ -1,0 +1,17 @@
+flowchart LR
+  SB[Storyblok CDN/API
+  site-config story] --> Fetch[Fetch in layout/page
+  (published or draft)]
+  Fetch --> Normalize[Normalize theme
+  colors/fonts -> CSS vars + Mantine theme]
+  Normalize --> Provider[SiteConfigProvider + MantineProvider
+  (sets CSS vars, theme)]
+  Provider --> Header[Header/Footer render
+  nav items via NavItem]
+  Provider --> Sections[Page sections
+  (grid, tabs, testimonials, forms, etc.)]
+  Nav[NavItem
+  multilink + getSbLink] --> Header
+  CFG[Palette tokens
+  text/background/accents] -.-> Sections
+  CFG -.-> Header
