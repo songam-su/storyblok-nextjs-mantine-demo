@@ -12,6 +12,7 @@ A Next.js App Router demo that showcases Storyblok-driven page building, Mantine
   - [What's Included (and What's Not)](#whats-included-and-whats-not)
   - [Tech Stack \& Features](#tech-stack--features)
   - [Enterprise Architecture](#enterprise-architecture)
+    - [Architecture Diagram](#architecture-diagram)
     - [Published vs Preview Routes](#published-vs-preview-routes)
     - [Rendering Chain](#rendering-chain)
     - [Lazy Component Loading](#lazy-component-loading)
@@ -81,6 +82,66 @@ This repo intentionally differs from the “standard” `@storyblok/react` appro
 - lazy component loading (avoid client-side eager imports)
 - editor-first UX in preview (bridge enabled, no accidental navigation)
 
+### Architecture Diagram
+
+```mermaid
+flowchart LR
+  %% High-level architecture: published ISR/static + dedicated preview pipeline.
+
+  subgraph Client[Client]
+    Browser[User browser]
+    Editor[Storyblok Visual Editor (iframe)]
+  end
+
+  subgraph Next[Next.js App Router]
+    Proxy[Edge request proxy\nsrc/proxy.ts]
+
+    PubRoute[Published pages\napp/(pages)/[...slug]]
+    PrevRoute[Preview pages\napp/(preview)/sb-preview/[...slug]]
+
+    ApiPreview[GET /api/preview\nEnable draftMode + redirect]
+    ApiExit[GET /api/exit-preview\nDisable draftMode]
+
+    ApiRevalidate[POST /api/webhooks/revalidate\nVerify signature + revalidatePath]
+    ApiReindex[POST /api/webhooks/reindex\n(Scaffold)]
+
+    FetchStory[fetchStory\nlib/storyblok/api/client.ts]
+    Renderer[StoryblokRenderer\nregistry + lazy loading]
+    Components[Blok components\nsrc/components/Storyblok/*]
+
+    Auth[JWT auth middleware\nsrc/middleware/auth.ts]
+  end
+
+  subgraph Storyblok[Storyblok]
+    CDN[(CDN Content API)]
+    Webhook[Publish/Unpublish webhook]
+  end
+
+  %% Request routing
+  Browser --> Proxy
+  Editor -->|?_storyblok / ?_storyblok_tk| Proxy
+  Proxy -->|rewrite to /sb-preview/*| PrevRoute
+  Proxy -->|normal traffic| PubRoute
+
+  %% Preview control
+  Browser -->|enter preview| ApiPreview --> PrevRoute
+  Browser -->|exit preview| ApiExit --> PubRoute
+
+  %% Rendering + data fetching
+  PubRoute --> FetchStory --> CDN
+  PrevRoute --> FetchStory --> CDN
+  PubRoute --> Renderer
+  PrevRoute --> Renderer
+  Renderer --> Components
+
+  %% Webhooks for cache invalidation and (future) indexing
+  Webhook -->|POST| ApiRevalidate --> PubRoute
+  Webhook -->|POST (optional)| ApiReindex
+
+  %% Auth example
+  Proxy -->|/dashboard/*| Auth
+```
+
 ### Published vs Preview Routes
 
 - **Published pages**: `src/app/(pages)/[...slug]/page.tsx`
@@ -92,6 +153,8 @@ This repo intentionally differs from the “standard” `@storyblok/react` appro
 - **Editor request routing**: `src/middleware.ts`
   - Requests containing `?_storyblok` / `?_storyblok_tk` are rewritten to `/sb-preview/...`.
   - This allows the Visual Editor to use published URLs while still hitting the preview+bridge pipeline.
+
+> Note: In this repo, that request-routing logic lives in `src/proxy.ts` (Next.js middleware-style handler + matcher).
 
 ### Rendering Chain
 

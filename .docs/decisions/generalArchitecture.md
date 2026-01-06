@@ -56,3 +56,11 @@ Each segment uses `layout.tsx` (server) + `providers.tsx` (client) to apply them
 - Typed, lazy Storyblok registry with Suspense/ErrorBoundary around each blok.
 - ISR for published, draft mode for preview, webhooks to revalidate on publish.
 - Shared helpers for links, colors, typography, and headline/richtext rendering.
+
+---
+
+## Diagrams
+
+- [.docs/diagrams/architecture/project-architecture.md](../diagrams/architecture/project-architecture.md)
+- [.docs/diagrams/architecture/rendering-and-theming.md](../diagrams/architecture/rendering-and-theming.md)
+- [.docs/diagrams/architecture/content-freshness-and-preview.md](../diagrams/architecture/content-freshness-and-preview.md)
