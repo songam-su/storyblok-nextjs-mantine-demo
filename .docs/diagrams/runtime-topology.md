@@ -11,9 +11,9 @@ Notes
 ```mermaid
 flowchart TB
   subgraph Published Flow
-    U[End User] --> CDN[CDN/Edge\nISR cache]
+    U[End User] --> CDN["CDN/Edge<br/>ISR cache"]
     CDN -- hit --> U
-    CDN -- miss --> NX[Next.js App\nApp Router]
+    CDN -- miss --> NX["Next.js App<br/>App Router"]
     NX --> SB[Storyblok CDN/API]
     SB --> NX
     NX --> CDN
@@ -21,15 +21,15 @@ flowchart TB
   end
 
   subgraph Preview Flow
-    VE[Storyblok Visual Editor\niframe] --> PR[Preview Route\n/api/preview sets cookie]
-    PR --> SB2[Storyblok CDN/API\n(draft mode)]
+    VE["Storyblok Visual Editor<br/>iframe"] --> PR["Preview Route<br/>/api/preview sets cookie"]
+    PR --> SB2["Storyblok CDN/API<br/>(draft mode)"]
     SB2 --> PR
     VE -. Storyblok Bridge events .-> PR
   end
 
-  SB -. publish/update webhook .-> WH[/api/webhooks/revalidate\nHMAC + timestamp/]
+  SB -. publish/update webhook .-> WH["/api/webhooks/revalidate<br/>HMAC + timestamp"]
   WH -. calls .-> RV[revalidatePath(slugs)]
 
-  SB -. fetch .-> CFG[site-config story\nheader/footer/theme]
+  SB -. fetch .-> CFG["site-config story<br/>header/footer/theme"]
   CFG -. vars .-> NX
 ```

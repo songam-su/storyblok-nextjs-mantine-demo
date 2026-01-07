@@ -11,20 +11,12 @@ Notes
 
 ```mermaid
 flowchart LR
-  SB[Storyblok CDN/API
-  site-config story] --> Fetch[Fetch in layout/page
-  (published or draft)]
-  Fetch --> Normalize[Normalize theme
-  colors/fonts -> CSS vars + Mantine theme]
-  Normalize --> Provider[SiteConfigProvider + MantineProvider
-  (sets CSS vars, theme)]
-  Provider --> Header[Header/Footer render
-  nav items via NavItem]
-  Provider --> Sections[Page sections
-  (grid, tabs, testimonials, forms, etc.)]
-  Nav[NavItem
-  multilink + getSbLink] --> Header
-  CFG[Palette tokens
-  text/background/accents] -.-> Sections
+  SB["Storyblok CDN/API<br/>site-config story"] --> Fetch["Fetch in layout/page<br/>(published or draft)"]
+  Fetch --> Normalize["Normalize theme<br/>colors/fonts -> CSS vars + Mantine theme"]
+  Normalize --> Provider["SiteConfigProvider + MantineProvider<br/>(sets CSS vars, theme)"]
+  Provider --> Header["Header/Footer render<br/>nav items via NavItem"]
+  Provider --> Sections["Page sections<br/>(grid, tabs, testimonials, forms, etc.)"]
+  Nav["NavItem<br/>multilink + getSbLink"] --> Header
+  CFG["Palette tokens<br/>text/background/accents"] -.-> Sections
   CFG -.-> Header
 ```

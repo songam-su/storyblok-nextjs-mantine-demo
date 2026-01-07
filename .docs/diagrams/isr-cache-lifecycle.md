@@ -12,8 +12,7 @@ flowchart LR
   U[User request] --> CDN[CDN/Edge cache]
   CDN -- hit (fresh) --> U
   CDN -- miss/stale --> NX[Next.js render]
-  NX --> SB[Storyblok CDN/API
-  published content]
+  NX --> SB["Storyblok CDN/API<br/>published content"]
   SB --> NX
   NX --> CDN
   CDN --> U

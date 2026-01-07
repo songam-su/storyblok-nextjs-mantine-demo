@@ -30,17 +30,37 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
   return (
     <section {...editable} className={classNames(styles.section, backgroundClass)}>
       <Stack gap="md">
-        {hasHeader && (
-          <div className={styles.header}>
-            {blok.headline?.length ? (
-              <Title order={2} fw={800}>
-                {renderHeadlineSegments(blok.headline)}
-              </Title>
-            ) : null}
-            {blok.lead && (
-              <Text size="lg" className={styles.lead}>
-                {blok.lead}
-              </Text>
+        {(hasHeader || buttons.length > 0) && (
+          <div className={styles.headerRow}>
+            {hasHeader ? (
+              <div className={styles.header}>
+                {blok.headline?.length ? (
+                  <Title order={2} fw={800}>
+                    {renderHeadlineSegments(blok.headline)}
+                  </Title>
+                ) : null}
+                {blok.lead && (
+                  <Text size="lg" className={styles.lead}>
+                    {blok.lead}
+                  </Text>
+                )}
+              </div>
+            ) : (
+              <div />
+            )}
+
+            {buttons.length > 0 && (
+              <Group className={styles.actions} gap="sm">
+                {buttons.map((btn) => (
+                  <Button
+                    key={btn._uid}
+                    blok={btn}
+                    _uid={btn._uid}
+                    component={btn.component}
+                    storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
+                  />
+                ))}
+              </Group>
             )}
           </div>
         )}
@@ -55,19 +75,6 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
           </SimpleGrid>
         )}
 
-        {buttons.length > 0 && (
-          <Group className={styles.actions} gap="sm">
-            {buttons.map((btn) => (
-              <Button
-                key={btn._uid}
-                blok={btn}
-                _uid={btn._uid}
-                component={btn.component}
-                storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
-              />
-            ))}
-          </Group>
-        )}
       </Stack>
     </section>
   );

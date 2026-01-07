@@ -10,19 +10,10 @@ Notes
 
 ```mermaid
 flowchart LR
-  Dev[Local Dev
-HTTPS self-signed
-.env.local] --> Staging[Staging/Preview
-ENV: Storyblok preview token]
-  Staging --> Prod[Production
-ENV: Storyblok tokens]
+  Dev["Local Dev<br/>HTTPS self-signed<br/>.env.local"] --> Staging["Staging/Preview<br/>ENV: Storyblok preview token"]
+  Staging --> Prod["Production<br/>ENV: Storyblok tokens"]
 
-  Secrets[Env vars:
-NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN
-STORYBLOK_PREVIEW_TOKEN
-STORYBLOK_THEME_TOKEN
-STORYBLOK_WEBHOOK_SECRET
-SITE_URL] -.-> Dev
+  Secrets["Env vars:<br/>NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN<br/>STORYBLOK_PREVIEW_TOKEN<br/>STORYBLOK_THEME_TOKEN<br/>STORYBLOK_WEBHOOK_SECRET<br/>SITE_URL"] -.-> Dev
   Secrets -.-> Staging
   Secrets -.-> Prod
 

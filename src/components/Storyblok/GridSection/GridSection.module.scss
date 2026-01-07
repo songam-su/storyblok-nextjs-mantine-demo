@@ -4,10 +4,28 @@
   position: relative;
 }
 
-.header {
+.headerRow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 2rem;
   margin-bottom: 12px;
+}
+
+@media (min-width: 48em) {
+  .headerRow {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+.header {
   display: grid;
   gap: 8px;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .lead {
@@ -19,8 +37,18 @@
 }
 
 .actions {
-  margin-top: 16px;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  justify-content: center;
+  width: 100%;
+  padding-top: 0;
+}
+
+@media (min-width: 48em) {
+  .actions {
+    justify-content: flex-end;
+    width: auto;
+    padding-top: 0.7rem;
+  }
 }

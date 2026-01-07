@@ -14,24 +14,18 @@ flowchart TB
   subgraph CMS
     SB[Storyblok CDN/API]
     VE[Storyblok Visual Editor]
-    CFG[site-config story
-  (theme, header/footer, nav)]
+    CFG["site-config story<br/>(theme, header/footer, nav)"]
   end
 
   subgraph Runtime
-    APP[Next.js App Router
-  (layouts + providers)]
-    RENDER[Storyblok Renderer
-  (lazy registry + Suspense/ErrorBoundary)]
-    THEME[Mantine Theme + CSS vars
-  from site-config]
-    BRIDGE[Storyblok Bridge
-  (live updates in preview)]
+    APP["Next.js App Router<br/>(layouts + providers)"]
+    RENDER["Storyblok Renderer<br/>(lazy registry + Suspense/ErrorBoundary)"]
+    THEME["Mantine Theme + CSS vars<br/>from site-config"]
+    BRIDGE["Storyblok Bridge<br/>(live updates in preview)"]
   end
 
   subgraph Delivery
-    CDN[CDN/Edge
-  ISR cache]
+    CDN["CDN/Edge<br/>ISR cache"]
     USERS[End Users]
     EDITORS[Editors (preview iframe)]
   end

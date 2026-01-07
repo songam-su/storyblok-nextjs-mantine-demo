@@ -12,16 +12,16 @@ Notes
 
 ```mermaid
 flowchart LR
-  U[End User\nBrowser]
-  CDN[CDN / Edge\nISR cache]
-  NX[Next.js App\nApp Router]
+  U["End User<br/>Browser"]
+  CDN["CDN / Edge<br/>ISR cache"]
+  NX["Next.js App<br/>App Router"]
   SB[Storyblok CDN/API]
-  VE[Storyblok Visual Editor\nPreview iframe]
-  PR[Preview route\n/api/preview + cookie]
-  EP[/api/exit-preview/\nclear preview]
-  WH[/api/webhooks/revalidate\nHMAC + timestamp/]
-  RV[revalidatePath\n(invalidate slugs)]
-  CFG[site-config story\nheader/footer/theme]
+  VE["Storyblok Visual Editor<br/>Preview iframe"]
+  PR["Preview route<br/>/api/preview + cookie"]
+  EP["/api/exit-preview/<br/>clear preview"]
+  WH["/api/webhooks/revalidate<br/>HMAC + timestamp"]
+  RV["revalidatePath<br/>(invalidate slugs)"]
+  CFG["site-config story<br/>header/footer/theme"]
 
   U --> CDN
   CDN -- hit --> U

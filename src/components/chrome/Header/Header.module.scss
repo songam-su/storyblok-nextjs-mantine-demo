@@ -35,16 +35,16 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   margin-left: auto;
   flex: 1 1 auto;
   min-width: 0;
+  padding: 0 2.3rem;
 }
 
 .navList {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 1.65rem;
   flex-wrap: wrap;
 }
 

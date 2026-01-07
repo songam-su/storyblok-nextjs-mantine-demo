@@ -27,15 +27,15 @@ const NavItem = ({ blok }: SbComponentProps<NavItemBlok>) => {
 
   if (!href || href === '#') {
     return (
-      <span {...editable} className={classNames(styles.navItem, styles.placeholder)}>
-        {label}
+      <span {...editable} className={classNames(styles.navItem, styles.placeholder)} data-label={label}>
+        <span className={styles.label}>{label}</span>
       </span>
     );
   }
 
   return (
-    <Link {...editable} href={href} className={styles.navItem} onClick={handleEditorClick}>
-      {label}
+    <Link {...editable} href={href} className={styles.navItem} data-label={label} onClick={handleEditorClick}>
+      <span className={styles.label}>{label}</span>
     </Link>
   );
 };

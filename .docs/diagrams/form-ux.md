@@ -9,15 +9,9 @@ Notes
 
 ```mermaid
 flowchart LR
-  CFG[Site-config theme vars
-  text/background/accent] --> Theme[Mantine theme
-  + CSS vars]
-  Theme --> FormSection[Form sections
-  (contact/newsletter)]
-  FormSection --> Inputs[Inputs + labels
-  accessible contrast]
-  FormSection --> Buttons[Buttons
-  ghost/default/accent]
-  Buttons --> Hover[Hover/focus states
-  light-friendly]
+  CFG["Site-config theme vars<br/>text/background/accent"] --> Theme["Mantine theme<br/>+ CSS vars"]
+  Theme --> FormSection["Form sections<br/>(contact/newsletter)"]
+  FormSection --> Inputs["Inputs + labels<br/>accessible contrast"]
+  FormSection --> Buttons["Buttons<br/>ghost/default/accent"]
+  Buttons --> Hover["Hover/focus states<br/>light-friendly"]
 ```
