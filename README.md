@@ -136,7 +136,7 @@ flowchart LR
   %% Request routing
   Browser --> Proxy
   Editor -->|?_storyblok or ?_storyblok_tk| Proxy
-  Proxy -->|rewrite to /sb-preview/*| PrevRoute
+  Proxy -->|rewrite to /sb-preview/…| PrevRoute
   Proxy -->|normal traffic| PubRoute
 
   %% Preview control
@@ -152,7 +152,7 @@ flowchart LR
 
   %% Webhooks for cache invalidation and (future) indexing
   Webhook -->|POST| ApiRevalidate --> PubRoute
-  Webhook -->|POST (optional)| ApiReindex
+  Webhook -->|POST optional| ApiReindex
 
   %% Auth example
   Proxy -->|/dashboard/...| Auth
