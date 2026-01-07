@@ -43,12 +43,14 @@ const Footer = () => {
       <div className={styles.inner}>
         <div className={styles.top}>
           {(footerHeadline.length || about) && (
-            <div>
+            <div className={styles.content}>
               {footerHeadline.length ? <div className={styles.headline}>{renderHeadlineSegments(footerHeadline)}</div> : null}
               {about ? <div className={styles.about}>{renderSbRichText(about)}</div> : null}
             </div>
           )}
-
+      
+          
+          <div className={styles.navColumns}>
           {nav1.length ? (
             <div className={styles.navColumn}>
               {(raw as any)?.footer_nav_1_headline && <div className={styles.navTitle}>{(raw as any)?.footer_nav_1_headline}</div>}
@@ -81,6 +83,7 @@ const Footer = () => {
               </div>
             </div>
           ) : null}
+        </div>
         </div>
 
         {social.length ? (

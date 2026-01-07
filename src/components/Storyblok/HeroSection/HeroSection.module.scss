@@ -1,22 +1,19 @@
 .section {
   position: relative;
   overflow: hidden;
-  border-radius: 16px;
-  padding: clamp(24px, 4vw, 64px);
+  border-radius: 0;
+  padding: clamp(24px, 4vw, 64px) 0;
+  background-color: var(--sb-surface, #fff);
 }
 
 .inner {
-  display: grid;
-  gap: clamp(16px, 3vw, 32px);
-  align-items: center;
-}
-
-.layoutSplit {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.layoutStacked {
-  grid-template-columns: 1fr;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: clamp(16px, 3vw, 44px);
+  padding-bottom: clamp(40px, 8vw, 120px);
+  min-height: clamp(320px, 46vw, 520px);
 }
 
 .copy {
@@ -26,20 +23,43 @@
 }
 
 .eyebrow {
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  opacity: 0.8;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  opacity: 1;
+  color: var(--sb-color-bg, var(--sb-accent, var(--mantine-color-primary-6, #1d63c5)));
+  font-size: clamp(2.45rem, 5.6vw, 3.85rem);
+  line-height: 1.05;
 }
 
 .headline {
   margin: 0;
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   letter-spacing: -0.01em;
-  font-weight: 800;
+  font-weight: 800 !important;
+  line-height: 1.05;
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+
+  // Mantine Title derives sizing from CSS variables that may be set inline.
+  // Set them here so all HeroSection h1s look consistent.
+  --title-fw: 800 !important;
+  --title-lh: 1.05 !important;
+  --title-fz: clamp(2.1rem, 5vw, 3.4rem) !important;
+}
+
+// Mantine wraps Title content in inner Text spans; ensure they inherit the headline treatment.
+.headline :global(.mantine-Text-root),
+.headline :global(.mantine-Text-root) span,
+.headline span {
+  font-size: clamp(2.1rem, 5vw, 3.4rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.01em !important;
 }
 
 .lead {
   color: var(--mantine-color-gray-7);
+  margin-top: var(--mantine-spacing-xl);
+  margin-bottom: var(--mantine-spacing-xl);
 }
 
 .actions {
@@ -48,38 +68,51 @@
   gap: 12px;
 }
 
-.media {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 260px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+.hasBackgroundImage {
+  background-image: var(--sb-hero-image, none);
+  background-position: var(--sb-hero-position, center);
+  background-repeat: no-repeat;
+  background-size: var(--sb-hero-size, cover);
 }
 
-.imageFrame {
-  position: relative;
-  width: min(560px, 100%);
-  aspect-ratio: 4 / 3;
-  display: block;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
-  background: var(--mantine-color-gray-1);
+.backgroundCover {
+  --sb-hero-size: cover;
 }
 
-.img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
-  display: block;
+.backgroundContain {
+  --sb-hero-size: contain;
 }
 
-.imageContain .img {
-  object-fit: contain;
-  background: var(--mantine-color-gray-0);
+.contentBox {
+  width: min(530px, 100%);
+  margin-right: auto !important;
+  margin-left: 0 !important;
+  padding: clamp(18px, 3vw, 28px);
+  border-radius: 14px;
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  background: color-mix(in srgb, var(--sb-surface, #ffffff) 94%, transparent);
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.14);
+  backdrop-filter: blur(6px);
+
+  --sb-hero-cta-bg: var(--mantine-color-bubblegumPink-6);
+  --sb-hero-cta-bg-hover: var(--mantine-color-bubblegumPink-5);
+  --sb-color-bg: var(--sb-hero-cta-bg);
+  --sb-color-bg-hover: var(--sb-hero-cta-bg-hover);
+}
+
+
+.contentBox :global(.mantine-Text-root),
+.contentBox :global(.mantine-Title-root) {
+  color: var(--sb-text, #111);
+}
+
+.contentBox .lead {
+  color: color-mix(in srgb, var(--sb-text, #111) 86%, transparent);
+}
+
+.contentBox :global(.mantine-Button-root) {
+  box-shadow: none;
 }
 
 .decoration {
@@ -91,6 +124,7 @@
   opacity: 0.4;
   filter: blur(24px);
   pointer-events: none;
+  z-index: 0;
 }
 
 .alignCenter {
@@ -99,4 +133,9 @@
 
 .alignCenter .actions {
   justify-content: center;
+}
+
+.inner > :not(.decoration) {
+  position: relative;
+  z-index: 1;
 }

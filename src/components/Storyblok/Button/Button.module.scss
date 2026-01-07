@@ -20,6 +20,24 @@
   --sb-button-ghost-hover-text: #ffffff;
 }
 
+// Consistent mapping for this specific Storyblok configuration:
+// bg = 'white' + text = 'primary-dark' should render as a bubblegum CTA.
+.button[data-sb-bg-color='white'][data-sb-text-color='primary-dark'] {
+  --sb-color-bg: var(--mantine-color-bubblegumPink-6);
+  --sb-color-bg-hover: var(--mantine-color-bubblegumPink-5);
+  --sb-color-text: var(--mantine-color-white);
+}
+
+.button[data-sb-bg-color='primary-highlight'][data-sb-text-color='primary-dark'],
+.button[data-sb-bg-color='highlight-1'][data-sb-text-color='primary-dark'],
+.button[data-sb-bg-color='highlight-2'][data-sb-text-color='primary-dark'],
+.button[data-sb-bg-color='highlight-3'][data-sb-text-color='primary-dark'],
+.button[data-sb-bg-color='color_1'][data-sb-text-color='primary-dark'],
+.button[data-sb-bg-color='color_2'][data-sb-text-color='primary-dark'],
+.button[data-sb-bg-color='color_3'][data-sb-text-color='primary-dark'] {
+  --sb-color-text: var(--mantine-color-white);
+}
+
 .button:not(.is-ghost):hover {
   background-color: var(--sb-color-bg-hover, var(--sb-color-bg, var(--sb-color-default-bg)));
 }

@@ -17,20 +17,37 @@
 .grid {
   display: grid;
   gap: 18px;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+@media (min-width: 48em) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(240px, 320px));
+    justify-content: center;
+  }
+}
+
+@media (min-width: 62em) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    justify-content: stretch;
+  }
 }
 
 .card {
   border-radius: 12px;
   border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
   padding: 16px 18px;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 10px;
-  min-height: 84px;
-  height: 100%;
+  flex: 1;
+  aspect-ratio: 5 / 3;
   background: var(--sb-surface, #ffffff);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
-  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+  transition: background-color 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
 }
 
 .cardTitle {
@@ -39,9 +56,9 @@
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 20%, transparent);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+  border-color: color-mix(in srgb, var(--sb-text, #111) 24%, transparent);
+  background-color: color-mix(in srgb, var(--mantine-color-neonIceLight-6) 10%, var(--sb-surface, #ffffff));
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.07);
 }
 
 .card:focus-within {
@@ -52,9 +69,11 @@
 .cardLink {
   color: inherit;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: stretch;
 }
 
 .cardWrapper {
-  display: block;
+  display: flex;
+  align-items: stretch;
 }
