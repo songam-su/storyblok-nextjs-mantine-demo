@@ -1,10 +1,30 @@
 .navItem {
-  display: inline-flex;
+  display: inline-grid;
   align-items: center;
-  gap: 6px;
   font-weight: 600;
   text-decoration: none;
   color: inherit;
+  white-space: nowrap;
+}
+
+/*
+  Prevent layout shift when hover switches to font-weight: 700.
+  We reserve the bold text width by overlaying an invisible bold duplicate
+  in the same grid cell.
+*/
+.navItem::after {
+  content: attr(data-label);
+  font-weight: 700;
+  visibility: hidden;
+  pointer-events: none;
+  grid-row: 1;
+  grid-column: 1;
+  white-space: nowrap;
+}
+
+.label {
+  grid-row: 1;
+  grid-column: 1;
 }
 
 .navItem:hover {

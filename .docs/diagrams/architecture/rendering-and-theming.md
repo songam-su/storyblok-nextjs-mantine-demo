@@ -5,32 +5,32 @@ Focus: how Storyblok bloks become React UI (Mantine), and how site-config drives
 ```mermaid
 flowchart TB
   subgraph Route[App Router Route]
-    Page[page.tsx\n(published or preview)]
-    Meta[generateMetadata\n(meta_title/meta_description)]
+    Page["page.tsx<br/>(published or preview)"]
+    Meta["generateMetadata<br/>(meta_title/meta_description)"]
   end
 
   subgraph Data[Server Data Layer]
-    Fetch[fetchStory\nlib/storyblok/api/client.ts]
-    Server[getStory + relations/link fixes\nlib/storyblok/api/storyblokServer.ts]
+    Fetch["fetchStory<br/>lib/storyblok/api/client.ts"]
+    Server["getStory + relations/link fixes<br/>lib/storyblok/api/storyblokServer.ts"]
   end
 
   subgraph Render[Rendering Layer]
-    SBRenderer[StoryblokRenderer\nlib/storyblok/rendering/StoryblokRenderer.tsx]
-    CompRenderer[StoryblokComponentRenderer\nlib/storyblok/rendering/StoryblokComponentRenderer.tsx]
-    Registry[Lazy registry\nlib/storyblok/registry/*]
+    SBRenderer["StoryblokRenderer<br/>lib/storyblok/rendering/StoryblokRenderer.tsx"]
+    CompRenderer["StoryblokComponentRenderer<br/>lib/storyblok/rendering/StoryblokComponentRenderer.tsx"]
+    Registry["Lazy registry<br/>lib/storyblok/registry/*"]
     Boundary[Per-blok Suspense + ErrorBoundary]
   end
 
   subgraph Theme[Theming]
-    SiteConfig[site-config story\n(Storyblok content model)]
-    Provider[SiteConfigProvider\n+ Mantine Provider]
-    CssVars[CSS variables\n+ Mantine theme overrides]
-    Chrome[Header/Footer\ncomponents/chrome/*]
+    SiteConfig["site-config story<br/>(Storyblok content model)"]
+    Provider["SiteConfigProvider<br/>+ Mantine Provider"]
+    CssVars["CSS variables<br/>+ Mantine theme overrides"]
+    Chrome["Header/Footer<br/>components/chrome/*"]
   end
 
   subgraph UI[Blok UI Components]
     Bloks[src/components/Storyblok/*]
-    Utils[Shared helpers\n(richtext, links, colors, spacing)]
+    Utils["Shared helpers<br/>(richtext, links, colors, spacing)"]
   end
 
   Page --> Fetch --> Server
@@ -48,7 +48,7 @@ flowchart TB
   CssVars --> Bloks
 
   %% Preview-only behavior
-  Preview[Preview mode]\n(bridge + editable attrs)
+  Preview["Preview mode<br/>(bridge + editable attrs)"]
   Preview -. enable useStoryblokBridge .-> SBRenderer
   Preview -. storyblokEditable wrapper .-> CompRenderer
 ```

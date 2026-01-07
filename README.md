@@ -112,22 +112,22 @@ flowchart LR
   end
 
   subgraph Next[Next.js App Router]
-    Proxy[Edge request proxy\nsrc/proxy.ts]
+    Proxy["Edge request proxy<br/>src/proxy.ts"]
 
-    PubRoute[Published pages\napp/(pages)/[...slug]]
-    PrevRoute[Preview pages\napp/(preview)/sb-preview/[...slug]]
+    PubRoute["Published pages<br/>app/(pages)/[...slug]"]
+    PrevRoute["Preview pages<br/>app/(preview)/sb-preview/[...slug]"]
 
-    ApiPreview[GET /api/preview\nEnable draftMode + redirect]
-    ApiExit[GET /api/exit-preview\nDisable draftMode]
+    ApiPreview["GET /api/preview<br/>Enable draftMode + redirect"]
+    ApiExit["GET /api/exit-preview<br/>Disable draftMode"]
 
-    ApiRevalidate[POST /api/webhooks/revalidate\nVerify signature + revalidatePath]
-    ApiReindex[POST /api/webhooks/reindex\n(Scaffold)]
+    ApiRevalidate["POST /api/webhooks/revalidate<br/>Verify signature + revalidatePath"]
+    ApiReindex["POST /api/webhooks/reindex<br/>(Scaffold)"]
 
-    FetchStory[fetchStory\nlib/storyblok/api/client.ts]
-    Renderer[StoryblokRenderer\nregistry + lazy loading]
-    Components[Blok components\nsrc/components/Storyblok/*]
+    FetchStory["fetchStory<br/>lib/storyblok/api/client.ts"]
+    Renderer["StoryblokRenderer<br/>registry + lazy loading"]
+    Components["Blok components<br/>src/components/Storyblok/*"]
 
-    Auth[JWT auth middleware\nsrc/middleware/auth.ts]
+    Auth["JWT auth middleware<br/>src/middleware/auth.ts"]
   end
 
   subgraph Storyblok[Storyblok]
@@ -168,11 +168,9 @@ flowchart LR
 - **Preview pages**: `src/app/(preview)/sb-preview/[...slug]/page.tsx`
   - Always fetches `draft` stories.
   - Dynamic by design (`force-dynamic`), and enables the Storyblok bridge.
-- **Editor request routing**: `src/middleware.ts`
+- **Editor request routing**: `src/proxy.ts`
   - Requests containing `?_storyblok` / `?_storyblok_tk` are rewritten to `/sb-preview/...`.
   - This allows the Visual Editor to use published URLs while still hitting the preview+bridge pipeline.
-
-> Note: In this repo, that request-routing logic lives in `src/proxy.ts` (Next.js middleware-style handler + matcher).
 
 ### Rendering Chain
 

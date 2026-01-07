@@ -8,26 +8,19 @@ Notes
 
 ```mermaid
 flowchart TB
-  SC[site-config
-(theme, header, footer, nav items)]
-  Page[page story
-(default-page)]
+  SC["site-config<br/>(theme, header, footer, nav items)"]
+  Page["page story<br/>(default-page)"]
   Body[body (bloks array)]
 
   Page --> Body
-  SC --> Header[header nav
-(nav-item list)]
+  SC --> Header["header nav<br/>(nav-item list)"]
   SC --> Footer[footer nav + meta]
-  SC --> Theme[theme tokens
-(CSS vars + Mantine)]
+  SC --> Theme["theme tokens<br/>(CSS vars + Mantine)"]
 
   subgraph Sections
-    Grid[grid-section
--> grid-card*]
-    Tabs[tabbed-content-section
--> tabbed-content-entry*]
-    Testimonial[testimonials-section
--> testimonial*]
+    Grid["grid-section<br/>→ grid-card*"]
+    Tabs["tabbed-content-section<br/>→ tabbed-content-entry*"]
+    Testimonial["testimonials-section<br/>→ testimonial*"]
     Featured[featured-articles-section]
     Forms[form-section / contact-form-section / newsletter-form-section]
     Text[text-section]
@@ -36,10 +29,8 @@ flowchart TB
     Hero[hero-section]
     Logo[logo-section]
     Banner[banner]
-    Faq[faq-section
--> faq-entry*]
-    Personalized[personalized-section
-(branching children)]
+    Faq["faq-section<br/>→ faq-entry*"]
+    Personalized["personalized-section<br/>(branching children)"]
   end
 
   Body --> Grid

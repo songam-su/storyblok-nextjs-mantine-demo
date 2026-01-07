@@ -9,13 +9,10 @@ Notes
 
 ```mermaid
 flowchart LR
-  SB[Storyblok
-  multilink field] --> NavItem[NavItem component]
-  NavItem --> Resolver[getSbLink
-  (sanitize, strip invalid)]
+  SB["Storyblok<br/>multilink field"] --> NavItem[NavItem component]
+  NavItem --> Resolver["getSbLink<br/>(sanitize, strip invalid)"]
   Resolver -- valid --> Href[href + target + rel]
   Resolver -- invalid --> Fallback[Muted span / no prefetch]
-  Href --> Anchor[Anchor/Button
-  prefetch off for placeholders]
+  Href --> Anchor["Anchor/Button<br/>prefetch off for placeholders"]
   Fallback --> Anchor
 ```

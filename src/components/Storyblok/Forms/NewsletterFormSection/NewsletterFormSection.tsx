@@ -68,12 +68,29 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
           </Stack>
         )}
 
-        <Paper className={styles.formCard} withBorder={false} shadow="sm" component="form" onSubmit={handleSubmit}>
+        <Paper
+          className={styles.formCard}
+          withBorder={false}
+          shadow="sm"
+          component="form"
+          onSubmit={handleSubmit}
+          data-lpignore="true"
+          data-1p-ignore="true"
+        >
           <Stack gap="md">
             <Text className={styles.helper} size="sm">
               Get updates in your inbox.
             </Text>
-            <TextInput label="Email" type="email" name="email" required placeholder="you@example.com" />
+            <TextInput
+              label="Email"
+              type="email"
+              name="email"
+              required
+              placeholder="you@example.com"
+              autoComplete="email"
+              data-lpignore="true"
+              data-1p-ignore="true"
+            />
             {renderButtons()}
           </Stack>
         </Paper>

@@ -3,6 +3,20 @@
   gap: clamp(12px, 2vw, 20px);
 }
 
+// Manual override: force BannerReference CTAs to a consistent colorway.
+// Rest: Neon Ice. Hover: darker Bubblegum Pink.
+.wrapper :global([data-sb-bg-color][data-sb-text-color]) {
+  background-color: var(--mantine-color-neonIceDark-6) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+}
+
+.wrapper :global([data-sb-bg-color][data-sb-text-color]:hover) {
+  background-color: var(--mantine-color-neonIceDark-5) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+}
+
 .item {
   width: 100%;
 }

@@ -11,19 +11,19 @@ flowchart LR
   end
 
   subgraph Next[Next.js App Router]
-    Proxy[Request proxy / middleware-style routing\nsrc/proxy.ts]
+    Proxy["Request proxy / middleware-style routing<br/>src/proxy.ts"]
 
-    Pub[(Published routes)\napp/(pages)/[...slug]]
-    Prev[(Preview routes)\napp/(preview)/sb-preview/[...slug]]
+    Pub[("Published routes<br/>app/(pages)/[...slug]")]
+    Prev[("Preview routes<br/>app/(preview)/sb-preview/[...slug]")]
 
-    ApiPreview[/GET /api/preview\nEnable draftMode + redirect to /sb-preview/]
-    ApiExit[/GET /api/exit-preview\nDisable draftMode + redirect/]
+    ApiPreview[/GET /api/preview<br/>Enable draftMode + redirect to /sb-preview/]
+    ApiExit[/GET /api/exit-preview<br/>Disable draftMode + redirect/]
 
-    Renderer[StoryblokRenderer\n+ component registry + lazy loading]
-    Theme[SiteConfigProvider\nCSS vars + Mantine theme]
+    Renderer["StoryblokRenderer<br/>+ component registry + lazy loading"]
+    Theme["SiteConfigProvider<br/>CSS vars + Mantine theme"]
 
-    Webhook[/POST /api/webhooks/revalidate\nVerify signature + revalidatePath/]
-    Auth[Auth middleware (example)\nsrc/middleware/auth.ts]
+    Webhook[/POST /api/webhooks/revalidate<br/>Verify signature + revalidatePath/]
+    Auth["Auth middleware (example)<br/>src/middleware/auth.ts"]
   end
 
   subgraph CMS[Storyblok]
