@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Stack, Text, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 import Button from '@/components/Storyblok/Button/Button';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
@@ -21,15 +22,35 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
   const reverseDesktop = Boolean(blok.reverse_desktop_layout);
   const reverseMobile = Boolean(blok.reverse_mobile_layout);
 
+  const copyRef = useRef<HTMLDivElement | null>(null);
+  const [copyHeight, setCopyHeight] = useState<number | null>(null);
+
   const imageData = getSbImageData(blok.image || null);
   const hasImage = Boolean(imageData?.src);
-  const objectFit = blok.preserve_image_aspect_ratio ? 'contain' : 'cover';
+  const preserveAspectRatio = Boolean(blok.preserve_image_aspect_ratio);
 
   const hasBody = Boolean(blok.eyebrow || blok.headline?.length || blok.text || (blok.buttons?.length ?? 0) > 0);
 
   if (!hasBody && !hasImage) {
     return <section {...editable} className={classNames(styles.section, backgroundClass)} />;
   }
+
+  useEffect(() => {
+    const element = copyRef.current;
+    if (!element) return;
+
+    const update = () => {
+      const nextHeight = element.getBoundingClientRect().height;
+      setCopyHeight(Number.isFinite(nextHeight) ? nextHeight : null);
+    };
+
+    update();
+
+    const ro = new ResizeObserver(update);
+    ro.observe(element);
+
+    return () => ro.disconnect();
+  }, [blok._uid]);
 
   return (
     <section {...editable} className={classNames(styles.section, backgroundClass)}>
@@ -41,7 +62,7 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
         )}
       >
         {hasBody && (
-          <Stack gap="sm" className={styles.copy}>
+          <Stack gap="sm" className={styles.copy} ref={copyRef}>
             {blok.eyebrow && (
               <Text size="sm" className={styles.eyebrow} c="dimmed">
                 {blok.eyebrow}
@@ -49,7 +70,7 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
             )}
 
             {blok.headline?.length ? (
-              <Title order={2} fw={800}>
+              <Title order={2}>
                 {renderHeadlineSegments(blok.headline)}
               </Title>
             ) : null}
@@ -76,8 +97,15 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
         )}
 
         {hasImage && (
-          <div className={styles.media}>
-            <div className={classNames(styles.frame, objectFit === 'contain' && styles.contain)}>
+          <div
+            className={styles.media}
+            style={
+              copyHeight
+                ? ({ ['--imageText-copy-height' as any]: `${copyHeight}px` } as React.CSSProperties)
+                : undefined
+            }
+          >
+            <div className={classNames(styles.frame, preserveAspectRatio && styles.contain)}>
               <Image
                 className={styles.img}
                 src={imageData!.src}
@@ -87,8 +115,7 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
                 sizes="(min-width: 1024px) 600px, 100vw"
                 style={{
                   width: '100%',
-                  height: 'auto',
-                  objectFit,
+                  height: '100%',
                   ...(imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : {}),
                 }}
               />

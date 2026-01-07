@@ -46,7 +46,7 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
         )}
 
         {cards.length > 0 && (
-          <SimpleGrid cols={cols} spacing="lg" className={styles.grid}>
+          <SimpleGrid cols={{ base: 1, sm: (cols / 2) + cols % 2, lg: cols }} spacing="lg" className={styles.grid}>
             {cards.map((card, index) => {
               if (!card) return null;
               if (card.component !== 'grid-card') return null; // ignore unimplemented card types for now

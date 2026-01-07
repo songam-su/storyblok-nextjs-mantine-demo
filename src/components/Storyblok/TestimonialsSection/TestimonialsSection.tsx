@@ -32,32 +32,34 @@ const TestimonialsSection = ({ blok }: SbComponentProps<TestimonialsSectionBlok>
 
   return (
     <section className={styles.section} {...editable}>
-      <Stack gap="md" className={styles.header}>
-        {blok.headline?.length ? (
-          <Title order={2} fw={800} size="h2">
-            {renderHeadlineSegments(blok.headline)}
-          </Title>
-        ) : null}
+      <div className={styles.inner}>
+        <Stack gap="md" className={styles.header}>
+          {blok.headline?.length ? (
+            <Title order={2} fw={800} size="h2">
+              {renderHeadlineSegments(blok.headline)}
+            </Title>
+          ) : null}
 
-        {blok.lead && (
-          <Text size="lg" className={styles.lead}>
-            {blok.lead}
-          </Text>
+          {blok.lead && (
+            <Text size="lg" className={styles.lead}>
+              {blok.lead}
+            </Text>
+          )}
+        </Stack>
+
+        {hasTestimonials && (
+          <SimpleGrid
+            className={styles.grid}
+            cols={{ base: 1, sm: 2, lg: 3 }}
+            spacing="lg"
+            verticalSpacing="xl"
+          >
+            {testimonials.map((testimonial) => (
+              <Testimonial key={testimonial._uid} blok={testimonial} _uid={testimonial._uid} component="testimonial" />
+            ))}
+          </SimpleGrid>
         )}
-      </Stack>
-
-      {hasTestimonials && (
-        <SimpleGrid
-          className={styles.grid}
-          cols={{ base: 1, sm: 2, lg: 3 }}
-          spacing="lg"
-          verticalSpacing="xl"
-        >
-          {testimonials.map((testimonial) => (
-            <Testimonial key={testimonial._uid} blok={testimonial} _uid={testimonial._uid} component="testimonial" />
-          ))}
-        </SimpleGrid>
-      )}
+      </div>
     </section>
   );
 };

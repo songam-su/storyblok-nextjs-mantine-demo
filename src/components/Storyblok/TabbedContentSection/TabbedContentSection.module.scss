@@ -27,25 +27,33 @@
   }
 
   :global(.mantine-Tabs-tab) {
-    border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+    border: 2px solid transparent;
     background: var(--sb-surface, #fff);
     color: var(--sb-text, #111);
     transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
   }
 
-  :global(.mantine-Tabs-tab:hover) {
+  :global(.mantine-Tabs-tab:not([data-active='true']):hover) {
     background: var(--sb-surface-strong, #f3f4f6);
-    border-color: color-mix(in srgb, var(--sb-text, #111) 16%, transparent);
+    border-color: color-mix(
+      in srgb,
+      var(--sb-accent, var(--mantine-color-primary-6, #1d63c5)) 55%,
+      var(--sb-border, rgba(0, 0, 0, 0.12))
+    );
+    // box-shadow: 0 10px 22px rgba(2, 6, 23, 0.12);
+    border-width:2px;
   }
 
   :global(.mantine-Tabs-tab[data-active='true']) {
     background: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
     color: #fff;
     border-color: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
-    box-shadow: 0 6px 18px color-mix(in srgb, var(--sb-accent, #1d63c5) 28%, transparent);
+    // box-shadow: 0 6px 18px color-mix(in srgb, var(--sb-accent, #1d63c5) 28%, transparent);
   }
 
   :global(.mantine-Tabs-tab[data-active='true']:hover) {
-    background: color-mix(in srgb, var(--sb-accent, #1d63c5) 85%, #fff);
+    background: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
+    border-color: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
+    // box-shadow: 0 6px 18px color-mix(in srgb, var(--sb-accent, #1d63c5) 50%, transparent);
   }
 }

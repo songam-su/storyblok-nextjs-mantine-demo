@@ -20,7 +20,13 @@ const Testimonial = ({ blok }: SbComponentProps<TestimonialBlok>) => {
   if (!hasBody) return null;
 
   return (
-    <Card className={classNames(styles.card)} withBorder={false} radius="lg" shadow="sm" {...editable}>
+    <Card
+      className={classNames(styles.card, { [styles.hasQuote]: Boolean(blok.quote) })}
+      withBorder={false}
+      radius="lg"
+      shadow="sm"
+      {...editable}
+    >
       {blok.quote && (
         <Text className={styles.quote}>“{blok.quote}”</Text>
       )}

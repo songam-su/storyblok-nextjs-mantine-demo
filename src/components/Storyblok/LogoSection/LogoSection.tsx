@@ -9,6 +9,7 @@ import { LogoSection as LogoSectionBlok } from '@/lib/storyblok/resources/types/
 import getSbImageData from '@/lib/storyblok/utils/image';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './LogoSection.module.scss';
+import { Title } from '@mantine/core';
 
 const LogoSection: React.FC<SbComponentProps<LogoSectionBlok>> = ({ blok }) => {
   const { isEditor } = useStoryblokEditor();
@@ -25,7 +26,7 @@ const LogoSection: React.FC<SbComponentProps<LogoSectionBlok>> = ({ blok }) => {
 
   return (
     <section className={styles.section} {...editable}>
-      {blok.lead && <p className={styles.lead}>{blok.lead}</p>}
+      {blok.lead && <Title order={2} className={styles.lead}>{blok.lead}</Title>}
 
       {logos.length > 0 && (
         <div className={styles.grid}>

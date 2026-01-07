@@ -54,6 +54,78 @@
   gap: 0.5rem;
 }
 
+.mobileMenuControl {
+  display: none;
+  margin-left: auto;
+  color: var(--sb-text, #111);
+
+  :global(.mantine-Burger-burger) {
+    background-color: var(--sb-text, #111) !important;
+  }
+
+  :global(.mantine-Burger-burger)::before,
+  :global(.mantine-Burger-burger)::after {
+    background-color: var(--sb-text, #111) !important;
+  }
+}
+
+.drawerBrand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+}
+
+.drawerContent {
+  background: var(--sb-background, #ffffff);
+  color-scheme: light;
+  color: var(--sb-text, #111);
+}
+
+.drawerHeader {
+  border-bottom: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  background: var(--sb-background, #ffffff);
+  color: var(--sb-text, #111);
+
+  :global(.mantine-Drawer-title) {
+    color: var(--sb-text, #111);
+  }
+
+  :global(.mantine-CloseButton-root) {
+    color: var(--sb-text, #111);
+  }
+}
+
+.drawerBody {
+  padding-top: 0.75rem;
+  background: var(--sb-background, #ffffff);
+  color: var(--sb-text, #111);
+}
+
+.mobileNavList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+
+  :global(.navItem) {
+    display: block;
+    width: 100%;
+    font-size: 1.05rem;
+    color: var(--sb-text, #111);
+  }
+}
+
+.mobileActions {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  :global(button) {
+    width: 100%;
+  }
+}
+
 .placeholder {
   opacity: 0.7;
   font-size: 0.9rem;
@@ -65,5 +137,21 @@
 
   :global(.navItem) {
     color: var(--sb-text, #111);
+  }
+}
+
+@media (max-width: 48em) {
+  .inner {
+    gap: 0.75rem;
+  }
+
+  .nav,
+  .actions {
+    display: none;
+  }
+
+  .mobileMenuControl {
+    display: flex;
+    align-items: center;
   }
 }

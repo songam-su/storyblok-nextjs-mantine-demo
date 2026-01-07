@@ -18,10 +18,12 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
   const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
   const accentClass = getStoryblokColorClass(blok.secondary_background_color as string | undefined);
   const textAlign = blok.text_alignment === 'left' ? 'left' : 'center';
+  const isStackedLayout = blok.layout === 'stacked';
 
   const imageData = getSbImageData(blok.image || null);
   const hasImage = Boolean(imageData?.src);
   const imageObjectFit = blok.preserve_image_aspect_ratio ? 'contain' : 'cover';
+  const stackedImageObjectFit = isStackedLayout ? 'cover' : imageObjectFit;
 
   const showDecoration = Boolean(blok.image_decoration && accentClass);
 
@@ -46,17 +48,27 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
         'edge-to-edge',
         backgroundClass,
         textAlign === 'center' && styles.alignCenter,
-        hasImage && styles.hasBackgroundImage,
-        hasImage && (imageObjectFit === 'contain' ? styles.backgroundContain : styles.backgroundCover),
+        !isStackedLayout && hasImage && styles.hasBackgroundImage,
+        !isStackedLayout && hasImage && (imageObjectFit === 'contain' ? styles.backgroundContain : styles.backgroundCover),
       )}
       style={heroStyle}
     >
       <div className="edge-to-edge__inner">
-        <div className={styles.inner}>
+        <div className={classNames(styles.inner, isStackedLayout && styles.stacked)}>
           {showDecoration && <div className={classNames(styles.decoration, accentClass)} />}
 
+          {isStackedLayout && hasImage && (
+            <div
+              className={classNames(
+                styles.stackedImage,
+                stackedImageObjectFit === 'contain' ? styles.stackedImageContain : styles.stackedImageCover
+              )}
+              aria-hidden="true"
+            />
+          )}
+
           {hasBody && (
-            <div className={styles.contentBox}>
+            <div className={classNames(styles.contentBox, isStackedLayout && styles.contentBoxStacked)}>
               <Stack gap="md" className={styles.copy} style={{ textAlign }}>
                 {blok.eyebrow && (
                   <Text size="sm" className={styles.eyebrow}>
