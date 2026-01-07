@@ -104,14 +104,12 @@ This repo intentionally differs from the “standard” `@storyblok/react` appro
 
 ```mermaid
 flowchart LR
-  %% High-level architecture: published ISR/static + dedicated preview pipeline.
-
-  subgraph Client[Client]
-    Browser[User browser]
-    Editor[Storyblok Visual Editor (iframe)]
+  subgraph Client["Client"]
+    Browser["User browser"]
+    Editor["Storyblok Visual Editor<br/>iframe"]
   end
 
-  subgraph Next[Next.js App Router]
+  subgraph Next["Next.js App Router"]
     Proxy["Edge request proxy<br/>src/proxy.ts"]
 
     PubRoute["Published pages<br/>app/(pages)/[...slug]"]
@@ -130,14 +128,14 @@ flowchart LR
     Auth["JWT auth middleware<br/>src/middleware/auth.ts"]
   end
 
-  subgraph Storyblok[Storyblok]
-    CDN[(CDN Content API)]
-    Webhook[Publish/Unpublish webhook]
+  subgraph Storyblok["Storyblok"]
+    CDN["CDN Content API"]
+    Webhook["Publish/Unpublish webhook"]
   end
 
   %% Request routing
   Browser --> Proxy
-  Editor -->|?_storyblok / ?_storyblok_tk| Proxy
+  Editor -->|?_storyblok or ?_storyblok_tk| Proxy
   Proxy -->|rewrite to /sb-preview/*| PrevRoute
   Proxy -->|normal traffic| PubRoute
 
@@ -157,7 +155,7 @@ flowchart LR
   Webhook -->|POST (optional)| ApiReindex
 
   %% Auth example
-  Proxy -->|/dashboard/*| Auth
+  Proxy -->|/dashboard/...| Auth
 ```
 
 ### Published vs Preview Routes
