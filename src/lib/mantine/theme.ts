@@ -1,5 +1,5 @@
 // src/lib/mantine/theme.ts
-import { createTheme, MantineTheme } from '@mantine/core';
+import { createTheme } from '@mantine/core';
 
 const FONT_STACK = 'Inter, "Segoe UI", system-ui, -apple-system, sans-serif';
 
@@ -162,16 +162,6 @@ const theme = createTheme({
       h1: { fontSize: '3.5rem', lineHeight: '1.1' },
       h2: { fontSize: '2.8rem', lineHeight: '1.15' },
       // …
-    },
-  },
-  components: {
-    Paper: {
-      styles: (theme: MantineTheme) => ({
-        root: {
-          backgroundColor: theme.other?.backgroundDark ?? 'transparent',
-          color: theme.other?.textOnDark ?? theme.white,
-        },
-      }),
     },
   },
   other: {
