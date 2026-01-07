@@ -65,3 +65,31 @@ Before going live, review:
 - Security and compliance requirements for your org
 
 This repo is provided "as is" and should be treated as a starting point, not a final production implementation.
+
+## 7) Troubleshooting
+
+### Hydration mismatch in dev (LastPass / password managers)
+
+**Symptoms**
+
+- Next.js shows a recoverable error: “Hydration failed because the server rendered HTML didn't match the client”.
+- The error stack often points into Mantine input components (e.g. `TextInput`).
+- The diff can include an unexpected node like `data-lastpass-icon-root`.
+
+**Root cause**
+
+Some browser extensions (notably password managers like LastPass) inject DOM nodes into inputs before React hydrates.
+That injected markup is not present in the server-rendered HTML, causing a mismatch.
+
+**Mitigation in this repo**
+
+We opt the newsletter form and its email input out of password-manager injection by adding ignore attributes:
+
+- `data-lpignore="true"` (LastPass)
+- `data-1p-ignore="true"` (1Password)
+
+See the implementation in [src/components/Storyblok/Forms/NewsletterFormSection/NewsletterFormSection.tsx](../src/components/Storyblok/Forms/NewsletterFormSection/NewsletterFormSection.tsx).
+
+**If you still see it**
+
+- Disable the extension for `localhost` (most reliable), or test in a clean profile/incognito without extensions.
