@@ -180,7 +180,7 @@ export const SiteThemeProvider = ({ children }: { children: React.ReactNode }) =
   const { theme } = useSiteConfig();
 
   return (
-    <MantineProvider theme={theme} defaultColorScheme="dark">
+    <MantineProvider theme={theme} defaultColorScheme="light">
       {children}
     </MantineProvider>
   );

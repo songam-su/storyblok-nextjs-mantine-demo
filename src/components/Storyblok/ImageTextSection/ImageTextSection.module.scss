@@ -5,28 +5,41 @@
 }
 
 .inner {
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   gap: clamp(16px, 3vw, 32px);
-  align-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.reverseDesktop {
-  direction: rtl;
-}
-
-.reverseDesktop > * {
-  direction: ltr;
+  align-items: stretch;
 }
 
 .reverseMobile {
-  display: flex;
   flex-direction: column-reverse;
+}
+
+@media (min-width: 48em) {
+  .inner {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .reverseDesktop {
+    flex-direction: row-reverse;
+  }
+
+  .frame {
+    height: calc(var(--imageText-copy-height, 360px) + 6rem);
+    max-height: none;
+    aspect-ratio: auto;
+  }
 }
 
 .copy {
   display: grid;
   gap: 10px;
+  flex: 1 1 0;
+  max-width: none;
+  min-width: 0;
 }
 
 .richtext {
@@ -64,6 +77,8 @@
   font-weight: 600;
   letter-spacing: 0.01em;
   opacity: 0.8;
+  padding-top: 10px;
+  margin-bottom: -6px;
 }
 
 .lead {
@@ -79,14 +94,16 @@
 
 .media {
   position: relative;
-  width: 100%;
+  width: auto;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .frame {
   position: relative;
   width: 100%;
   max-height: min(78vh, 600px);
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 4;
   border-radius: 12px;
   overflow: hidden;
   background: var(--mantine-color-gray-1);
@@ -102,6 +119,7 @@
 }
 
 .contain .img {
-  object-fit: contain;
-  background: var(--mantine-color-gray-0);
+  /* Prefer a filled/cropped presentation for this component's tall/stacked layouts. */
+  object-fit: cover;
+  background: transparent;
 }

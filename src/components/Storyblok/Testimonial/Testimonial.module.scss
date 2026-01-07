@@ -1,13 +1,21 @@
 .card {
-  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.8rem;
   padding: 1.5rem;
-  background: var(--sb-surface, #ffffff);
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: var(--sb-text, #111827) !important;
   border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  min-height: 160px;
+  @media (min-width: 768px) {
+    min-height: 180px;    
+  }
+  @media (min-width: 1200px) {
+    min-height: 200px;    
+  }
 }
 
 .quote {
@@ -15,12 +23,18 @@
   line-height: 1.6;
   font-style: italic;
   color: var(--sb-text, #111827);
+  margin: 0;
 }
 
 .meta {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  justify-content: flex-start;
+}
+
+.hasQuote .meta {
+  margin-top: auto;
 }
 
 .name {

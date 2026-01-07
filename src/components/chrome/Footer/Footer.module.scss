@@ -17,7 +17,7 @@
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));  
 
   
-  @media (min-width: 48em) {
+  @media (min-width: 768px) {
   display: flex;
   flex-direction: row;
   }
@@ -33,7 +33,7 @@
   margin: 0 auto 2.5rem;
   text-align: center;;
 
-  @media (min-width: 48em) {
+  @media (min-width: 768px) {
     max-width: unset;
     margin: 0;
     text-align: left;
@@ -69,7 +69,7 @@
   justify-content: center;
   margin: 0 auto;
 
-  @media (min-width: 48em) {
+  @media (min-width: 768px) {
     gap: 3rem;
     margin-left: auto;
     margin-right:auto;
@@ -83,7 +83,7 @@
   width: 120px;
   text-align: center;
 
-  @media (min-width: 48em) {
+  @media (min-width: 768px) {
     max-width: 200px;
   }
 

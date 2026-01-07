@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Stack, Text } from '@mantine/core';
+import { Card, px, Stack, Text } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -43,7 +43,7 @@ const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
       shadow="sm"
       padding="lg"
     >
-      <Stack gap="xs">
+      <Stack gap="xs" ta="center" justify="space-between">
         {showIcon && (
           <div className={styles.icon}>
             <Image
@@ -64,7 +64,7 @@ const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
         )}
 
         {blok.bold_text && (
-          <Text fw={600}>{blok.bold_text}</Text>
+          <Text fw={700} fz={px(21)}>{blok.bold_text}</Text>
         )}
 
         {blok.text && <Text>{blok.text}</Text>}

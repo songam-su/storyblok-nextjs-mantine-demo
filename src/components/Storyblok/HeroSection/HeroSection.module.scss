@@ -2,7 +2,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 0;
-  padding: clamp(24px, 4vw, 64px) 0;
+  padding: 0 0 clamp(24px, 4vw, 64px) 0;
   background-color: var(--sb-surface, #fff);
 }
 
@@ -16,6 +16,37 @@
   min-height: clamp(320px, 46vw, 520px);
 }
 
+.stacked {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: stretch;
+  align-items: start;
+  gap: clamp(16px, 3vw, 28px);
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: unset;
+}
+
+.stackedImage {
+  width: 100%;
+  justify-self: stretch;
+  border-radius: 16px;
+  overflow: hidden;
+  background-image: var(--sb-hero-image, none);
+  background-position: var(--sb-hero-position, center);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: clamp(240px, 38vw, 520px);
+}
+
+.stackedImageCover {
+  background-size: cover;
+}
+
+.stackedImageContain {
+  background-size: contain;
+}
+
 .copy {
   display: grid;
   gap: 12px;
@@ -23,11 +54,11 @@
 }
 
 .eyebrow {
-  font-weight: 900;
+  font-weight: 500;
   letter-spacing: -0.01em;
   opacity: 1;
   color: var(--sb-color-bg, var(--sb-accent, var(--mantine-color-primary-6, #1d63c5)));
-  font-size: clamp(2.45rem, 5.6vw, 3.85rem);
+  font-size: clamp(1.45rem, 3.6vw, 1.85rem);
   line-height: 1.05;
 }
 
@@ -50,7 +81,7 @@
 .headline :global(.mantine-Text-root),
 .headline :global(.mantine-Text-root) span,
 .headline span {
-  font-size: clamp(2.1rem, 5vw, 3.4rem) !important;
+  font-size: clamp(2.1rem, 2.5vw, 3.4rem) !important;
   font-weight: 800 !important;
   line-height: 1.05 !important;
   letter-spacing: -0.01em !important;
@@ -58,8 +89,8 @@
 
 .lead {
   color: var(--mantine-color-gray-7);
-  margin-top: var(--mantine-spacing-xl);
-  margin-bottom: var(--mantine-spacing-xl);
+  margin-top: var(--mantine-spacing-lg);
+  margin-bottom: var(--mantine-spacing-lg);
 }
 
 .actions {
@@ -99,6 +130,15 @@
   --sb-hero-cta-bg-hover: var(--mantine-color-bubblegumPink-5);
   --sb-color-bg: var(--sb-hero-cta-bg);
   --sb-color-bg-hover: var(--sb-hero-cta-bg-hover);
+}
+
+.contentBoxStacked {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  backdrop-filter: none;
 }
 
 

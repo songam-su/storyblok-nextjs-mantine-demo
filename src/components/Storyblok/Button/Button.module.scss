@@ -12,10 +12,6 @@
   --sb-button-ghost-hover-text: var(--sb-text, var(--sb-color-text, var(--sb-color-default-text)));
 }
 
-.button[data-sb-text-color='white'] {
-  --sb-button-ghost-hover-text: #0d0d0d;
-}
-
 .button[data-sb-text-color='primary-dark'] {
   --sb-button-ghost-hover-text: #ffffff;
 }
@@ -38,6 +34,18 @@
   --sb-color-text: var(--mantine-color-white);
 }
 
+// Fix contrast for the common Storyblok CTA configuration:
+// bg='primary-dark' + text='white' + style='ghost'
+// Rest: dark outline/text. Hover: subtle accent tint.
+.button.is-ghost[data-sb-bg-color='primary-dark'][data-sb-text-color='white'] {
+  --sb-button-ghost-hover-bg: color-mix(in srgb, var(--sb-accent, #1d63c5) 88%, #fff);
+  --sb-button-ghost-hover-border: var(
+    --sb-accent,
+    var(--mantine-color-primary-6, #1d63c5)
+  );
+  --sb-button-ghost-hover-text: var(--mantine-color-white);
+}
+
 .button:not(.is-ghost):hover {
   background-color: var(--sb-color-bg-hover, var(--sb-color-bg, var(--sb-color-default-bg)));
 }
@@ -45,6 +53,13 @@
 .is-ghost {
   background-color: transparent;
   border: 1px solid currentColor;
+  color: var(--sb-button-ghost-rest-color, var(--sb-color-bg, var(--sb-color-default-bg)));
 
   @include ghostHover.hover-styles;
+}
+
+// For ghost buttons, the outline/text should usually follow the configured background color.
+// When the configured background is white, fall back to the configured text color for contrast.
+.button.is-ghost[data-sb-bg-color='white'] {
+  --sb-button-ghost-rest-color: var(--sb-color-text, var(--sb-color-default-text));
 }
