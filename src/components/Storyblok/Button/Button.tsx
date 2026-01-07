@@ -63,6 +63,7 @@ const Button: React.FC<SbComponentProps<ButtonProps>> = (props) => {
       disabled={!isEditor && (!href || href === '#')}
       size={getStoryblokButtonMantineSize(size)}
       variant={variant}
+      data-sb-bg-color={backgroundColorKey}
       data-sb-text-color={textColorKey}
       component={isNavigableLink ? (Link as any) : 'button'}
       {...(isNavigableLink ? { href: href || '#' } : { type: 'button' })}

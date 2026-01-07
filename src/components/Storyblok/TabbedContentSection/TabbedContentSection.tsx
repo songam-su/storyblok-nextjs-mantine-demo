@@ -23,37 +23,39 @@ const TabbedContentSection = ({ blok }: SbComponentProps<TabbedContentSectionBlo
 
   return (
     <section className={styles.section} {...editable}>
-      <Stack gap="md" className={styles.header}>
-        {blok.headline?.length ? (
-          <Title order={2} fw={800} size="h2">
-            {renderHeadlineSegments(blok.headline)}
-          </Title>
-        ) : null}
+      <div className={styles.inner}>
+        <Stack gap="md" className={styles.header}>
+          {blok.headline?.length ? (
+            <Title order={2} fw={800} size="h2">
+              {renderHeadlineSegments(blok.headline)}
+            </Title>
+          ) : null}
 
-        {blok.lead && (
-          <Text size="lg" className={styles.lead}>
-            {blok.lead}
-          </Text>
-        )}
-      </Stack>
+          {blok.lead && (
+            <Text size="lg" className={styles.lead}>
+              {blok.lead}
+            </Text>
+          )}
+        </Stack>
 
-      {hasEntries && (
-        <Tabs className={styles.tabs} defaultValue={entries[0]._uid || '0'} variant="pills">
-          <Tabs.List>
+        {hasEntries && (
+          <Tabs className={styles.tabs} defaultValue={entries[0]._uid || '0'} variant="pills">
+            <Tabs.List>
+              {entries.map((entry) => (
+                <Tabs.Tab key={entry._uid} value={entry._uid}>
+                  {entry.headline || 'Untitled'}
+                </Tabs.Tab>
+              ))}
+            </Tabs.List>
+
             {entries.map((entry) => (
-              <Tabs.Tab key={entry._uid} value={entry._uid}>
-                {entry.headline || 'Untitled'}
-              </Tabs.Tab>
+              <Tabs.Panel key={entry._uid} value={entry._uid} pt="md">
+                <TabbedContentEntry blok={entry} _uid={entry._uid} component="tabbed-content-entry" />
+              </Tabs.Panel>
             ))}
-          </Tabs.List>
-
-          {entries.map((entry) => (
-            <Tabs.Panel key={entry._uid} value={entry._uid} pt="md">
-              <TabbedContentEntry blok={entry} _uid={entry._uid} component="tabbed-content-entry" />
-            </Tabs.Panel>
-          ))}
-        </Tabs>
-      )}
+          </Tabs>
+        )}
+      </div>
     </section>
   );
 };

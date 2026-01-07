@@ -1,9 +1,11 @@
 .section {
-  padding: 2.5rem 0;
+  position: relative;
+  padding: clamp(24px, 4vw, 64px);
 }
 
 .wrapper {
-  max-width: 640px;
+  width: min(640px, 100%);
+  margin: 0 auto;
 }
 
 .headline {

@@ -3,7 +3,6 @@
 import classNames from 'classnames';
 import { Group, Stack, Text, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
-import Image from 'next/image';
 import Button from '@/components/Storyblok/Button/Button';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 import getSbImageData from '@/lib/storyblok/utils/image';
@@ -18,7 +17,6 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
   const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
   const accentClass = getStoryblokColorClass(blok.secondary_background_color as string | undefined);
-  const isSplit = blok.layout === 'split';
   const textAlign = blok.text_alignment === 'left' ? 'left' : 'center';
 
   const imageData = getSbImageData(blok.image || null);
@@ -33,70 +31,71 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
     return <section {...editable} className={classNames(styles.section, backgroundClass)} />;
   }
 
+  const heroStyle = (hasImage
+    ? {
+        '--sb-hero-image': `url(${imageData!.src})`,
+        '--sb-hero-position': imageData?.objectPosition || 'center',
+      }
+    : undefined) as React.CSSProperties | undefined;
+
   return (
     <section
       {...editable}
-      className={classNames(styles.section, backgroundClass, textAlign === 'center' && styles.alignCenter)}
+      className={classNames(
+        styles.section,
+        'edge-to-edge',
+        backgroundClass,
+        textAlign === 'center' && styles.alignCenter,
+        hasImage && styles.hasBackgroundImage,
+        hasImage && (imageObjectFit === 'contain' ? styles.backgroundContain : styles.backgroundCover),
+      )}
+      style={heroStyle}
     >
-      <div className={classNames(styles.inner, isSplit ? styles.layoutSplit : styles.layoutStacked)}>
-        {hasBody && (
-          <Stack gap="xs" className={styles.copy} style={{ textAlign }}>
-            {blok.eyebrow && (
-              <Text size="sm" className={styles.eyebrow} c="dimmed">
-                {blok.eyebrow}
-              </Text>
-            )}
+      <div className="edge-to-edge__inner">
+        <div className={styles.inner}>
+          {showDecoration && <div className={classNames(styles.decoration, accentClass)} />}
 
-            {blok.headline?.length ? (
-              <Title order={1} className={styles.headline} fw={800} size="h1">
-                {renderHeadlineSegments(blok.headline)}
-              </Title>
-            ) : null}
+          {hasBody && (
+            <div className={styles.contentBox}>
+              <Stack gap="md" className={styles.copy} style={{ textAlign }}>
+                {blok.eyebrow && (
+                  <Text size="sm" className={styles.eyebrow}>
+                    {blok.eyebrow}
+                  </Text>
+                )}
 
-            {blok.text && (
-              <Text size="lg" className={styles.lead}>
-                {blok.text}
-              </Text>
-            )}
+                {blok.headline?.length ? (
+                  <Title order={1} className={styles.headline} fw={800} size="h1">
+                    {renderHeadlineSegments(blok.headline)}
+                  </Title>
+                ) : null}
 
-            {Array.isArray(blok.buttons) && blok.buttons.length > 0 && (
-              <Group gap="sm" className={styles.actions} justify={textAlign === 'center' ? 'center' : 'flex-start'}>
-                {blok.buttons.map((button) => {
-                  if (!button) return null;
-                  return (
-                    <Button
-                      key={button._uid}
-                      blok={button}
-                      _uid={button._uid}
-                      component={button.component}
-                      storyblokEditable={isEditor ? storyblokEditable(button as any) : undefined}
-                    />
-                  );
-                })}
-              </Group>
-            )}
-          </Stack>
-        )}
+                {blok.text && (
+                  <Text size="lg" className={styles.lead}>
+                    {blok.text}
+                  </Text>
+                )}
 
-        {hasImage && (
-          <div className={styles.media}>
-            {showDecoration && <div className={classNames(styles.decoration, accentClass)} />}
-            <div className={classNames(styles.imageFrame, imageObjectFit === 'contain' && styles.imageContain)}>
-              <Image
-                className={styles.img}
-                src={imageData!.src}
-                alt={imageData!.alt || ''}
-                fill
-                sizes="(min-width: 1024px) 560px, 100vw"
-                style={{
-                  objectFit: imageObjectFit,
-                  ...(imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : {}),
-                }}
-                priority={!!blok.image}
-              />
+                {Array.isArray(blok.buttons) && blok.buttons.length > 0 && (
+                  <Group gap="sm" className={styles.actions} justify={textAlign === 'center' ? 'center' : 'flex-start'}>
+                    {blok.buttons.map((button) => {
+                      if (!button) return null;
+                      return (
+                        <Button
+                          key={button._uid}
+                          blok={button}
+                          _uid={button._uid}
+                          component={button.component}
+                          storyblokEditable={isEditor ? storyblokEditable(button as any) : undefined}
+                        />
+                      );
+                    })}
+                  </Group>
+                )}
+              </Stack>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </section>
   );

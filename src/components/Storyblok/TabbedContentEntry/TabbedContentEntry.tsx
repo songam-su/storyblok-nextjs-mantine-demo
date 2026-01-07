@@ -2,7 +2,7 @@
 
 import { Card, Stack, Text } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
-import Image from 'next/image';
+import classNames from 'classnames';
 import Button from '@/components/Storyblok/Button/Button';
 import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
 import getSbImageData from '@/lib/storyblok/utils/image';
@@ -20,21 +20,18 @@ const TabbedContentEntry = ({ blok }: SbComponentProps<TabbedContentEntryBlok>) 
   const hasBody = Boolean(hasImage || blok.headline || blok.description || (blok.button?.length ?? 0) > 0);
   if (!hasBody) return null;
 
-  return (
-    <Card className={styles.card} {...editable} withBorder={false} shadow="sm" radius="lg">
-      <Stack gap="sm">
-        {hasImage && (
-          <div className={styles.media}>
-            <Image
-              src={image!.src}
-              alt={image!.alt || blok.headline || 'Tabbed entry image'}
-              fill
-              sizes="(min-width: 1024px) 360px, 100vw"
-              style={{ objectFit: 'cover', objectPosition: image?.objectPosition || 'center' }}
-            />
-          </div>
-        )}
+  const backgroundStyle = hasImage ? { backgroundImage: `url(${image!.src})` } : undefined;
 
+  return (
+    <Card
+      className={classNames(styles.card, hasImage ? styles.backgroundImage : styles.noImage)}
+      style={backgroundStyle}
+      {...editable}
+      withBorder={false}
+      shadow="sm"
+      radius="lg"
+    >
+      <Stack gap="sm">
         {blok.headline && <Text className={styles.headline}>{blok.headline}</Text>}
 
         {blok.description && <div className={styles.richtext}>{renderSbRichText(blok.description)}</div>}

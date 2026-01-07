@@ -12,34 +12,113 @@
 }
 
 .top {
-  display: grid;
+  display: gap;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));  
+
+  
+  @media (min-width: 48em) {
+  display: flex;
+  flex-direction: row;
+  }
+
+}
+
+.content {
+  flex: .5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 520px;
+  margin: 0 auto 2.5rem;
+  text-align: center;;
+
+  @media (min-width: 48em) {
+    max-width: unset;
+    margin: 0;
+    text-align: left;
+  }
 }
 
 .headline {
   color: var(--sb-headline-color, var(--sb-text, #111));
+  font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.headline :global(.mantine-Text-root),
+.headline :global(.mantine-Text-root) span,
+.headline span {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  color: inherit;
 }
 
 .about {
   color: var(--sb-text, #111);
 }
 
+.navColumns {
+  display: flex;
+  gap: 4rem;
+  flex: 1;
+  justify-content: center;
+  margin: 0 auto;
+
+  @media (min-width: 48em) {
+    gap: 3rem;
+    margin-left: auto;
+    margin-right:auto;
+  }
+}
+
 .navColumn {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
+  width: 120px;
+  text-align: center;
+
+  @media (min-width: 48em) {
+    max-width: 200px;
+  }
+
+  a {
+    margin: 0 auto;
+
+    &:hover {
+      font-weight: 700;
+      color: neonIce;
+    }
+  }
 }
 
 .navTitle {
-  font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 0.01em;
+  font-weight: 600;
+  font-size: .9rem;
+  letter-spacing: 0.125em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--sb-text, #111) 60%, transparent);
+  padding-bottom: .4rem;
 }
 
 .navList {
   display: grid;
   gap: 0.35rem;
+
+  :global(.navItem) {
+    font-weight: 600;
+    color: color-mix(in srgb, var(--sb-text, #111) 86%, transparent);
+  }
+
+  :global(.navItem:hover) {
+    color: var(--sb-text, #111);
+    text-decoration: underline;
+  }
 
   :global(.navItem:hover) {
     text-decoration: none;
