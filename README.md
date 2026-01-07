@@ -5,6 +5,8 @@
 ![Storyblok](https://img.shields.io/badge/Storyblok-CMS-blue?logo=storyblok)
 ![Mantine](https://img.shields.io/badge/Mantine-UI-purple)
 
+Quick links: [Live demo](https://storyblok-demo.andrewcaperton.me) · [Implementation guide](docs/Implementation-Guide.md) · [Getting started](#getting-started) · [Contact](#contact)
+
 A Next.js App Router demo that showcases Storyblok-driven page building, Mantine UI theming, and an enterprise-style integration that keeps published routes ISR/static while still supporting a great Storyblok Visual Editor experience.
 
 ## About This Project
@@ -46,6 +48,7 @@ This project demonstrates how to build scalable, CMS-driven applications using m
     - [ISR cache bust](#isr-cache-bust)
     - [Algolia reindex (scaffold)](#algolia-reindex-scaffold)
   - [Future Enhancements](#future-enhancements)
+  - [Contact](#contact)
   - [License](#license)
 
 ## Overview
@@ -356,6 +359,10 @@ If you want the site to be indexed, remove/adjust these rules before launch.
 - Wire `fetchTheme('draft')` into preview layouts for Storyblok-driven theming.
 - Implement Algolia indexing, including partial updates and retry logic.
 - Consolidate webhook handlers under `/api/webhooks/*` if additional integrations are introduced.
+
+## Contact
+
+Questions or feedback: [andrew@andrewcaperton.me](mailto:andrew@andrewcaperton.me)
 
 ## License
 
