@@ -55,6 +55,12 @@ To keep ISR pages fresh on publish/unpublish/move:
 - Configure the Storyblok webhook to call `POST /api/webhooks/revalidate?secret=...`.
 - Set `STORYBLOK_WEBHOOK_SECRET` in `.env.local`.
 
+Optional:
+
+- This repo also includes a scaffold endpoint for future Algolia indexing: `POST /api/webhooks/reindex?secret=...`.
+- It is intentionally not a full Algolia integration (no Algolia client, no indexing logic, no search UI). It only validates `ALGOLIA_WEBHOOK_SECRET` and echoes the payload.
+- Only configure this webhook in Storyblok if you plan to implement indexing later.
+
 ## 6) Production readiness checklist (high level)
 
 Before going live, review:

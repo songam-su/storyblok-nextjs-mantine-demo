@@ -20,9 +20,9 @@ This project demonstrates how to build scalable, CMS-driven applications using m
 ## Table of Contents
 
 - [Storyblok Mantine Demo](#storyblok-mantine-demo)
-  - [Table of Contents](#table-of-contents)
   - [About This Project](#about-this-project)
   - [Why This Matters](#why-this-matters)
+  - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Purpose](#purpose)
   - [Disclaimer](#disclaimer)
@@ -40,6 +40,8 @@ This project demonstrates how to build scalable, CMS-driven applications using m
     - [Shared utilities](#shared-utilities)
   - [Getting Started](#getting-started)
   - [Testing](#testing)
+  - [Known Warnings](#known-warnings)
+    - [React peer dependency warning (React \<= 18)](#react-peer-dependency-warning-react--18)
   - [Local SSL Setup](#local-ssl-setup)
   - [Storyblok Visual Editor](#storyblok-visual-editor)
   - [Environment Variables](#environment-variables)
@@ -338,17 +340,23 @@ If you want the site to be indexed, remove/adjust these rules before launch.
 
 ## Webhooks
 
+Important:
+
+- These endpoints do nothing on their own — you must create/enable matching webhooks in your Storyblok space (including the Storyblok demo space) for events to be sent to your app.
+- If you're using the demo space “as-is”, webhook configuration is typically the only Storyblok-side change required for this repo’s ISR revalidation integration.
+
 ### ISR cache bust
 
 - Endpoint: `POST /api/webhooks/revalidate?secret=STORYBLOK_WEBHOOK_SECRET`.
-- Subscribe Storyblok “Story published / unpublished / moved / deleted” events to this URL.
+- In Storyblok: subscribe “Story published / unpublished / moved / deleted” events to this URL.
 - Payload parsing collects the primary slug plus alternates/cached URLs and calls `revalidatePath` to purge ISR cache immediately.
 
 ### Algolia reindex (scaffold)
 
 - Endpoint: `POST /api/webhooks/reindex?secret=ALGOLIA_WEBHOOK_SECRET`.
+- In Storyblok (optional): subscribe events to this URL only if you plan to implement indexing later.
 - Currently validates the secret and echoes the payload; hook in Algolia indexing later.
-- Recommended Storyblok events: publish/unpublish/move once the search pipeline is live.
+- Recommended events once the search pipeline is live: publish/unpublish/move.
 
 ## Future Enhancements
 
