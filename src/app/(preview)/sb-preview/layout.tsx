@@ -5,6 +5,7 @@ import { fetchStory } from '@/lib/storyblok/api/client';
 import type { SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContext';
 import { METADATA_BASE } from '@/lib/site/siteUrl';
 import type { Metadata } from 'next';
+import ScrollToTop from '../../ScrollToTop';
 
 export const metadata: Metadata = {
   metadataBase: METADATA_BASE,
@@ -28,6 +29,7 @@ export default async function PreviewLayout({ children }: { children: React.Reac
         <PreviewProviders siteConfig={siteConfig}>
           <div className="page-shell">
             <div className="page-shell__content">
+              <ScrollToTop />
               <Header />
               <main>{children}</main>
               <Footer />
