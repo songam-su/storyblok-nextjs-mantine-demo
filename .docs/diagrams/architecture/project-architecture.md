@@ -2,6 +2,13 @@
 
 Focus: Next.js App Router + Storyblok + Mantine. This diagram intentionally omits hosting/domains.
 
+Notes
+
+- Published route: `app/(pages)/...` (ISR/static)
+- Preview route: `app/(preview)/sb-preview/...` (draft + bridge)
+- Editor requests are rewritten to preview via `src/proxy.ts`
+- Publish events should call `/api/webhooks/revalidate`
+
 ```mermaid
 flowchart LR
   %% Core systems
@@ -11,19 +18,19 @@ flowchart LR
   end
 
   subgraph Next[Next.js App Router]
-    Proxy["Request proxy / middleware-style routing<br/>src/proxy.ts"]
+    Proxy["Request proxy (src/proxy.ts)"]
 
-    Pub[("Published routes<br/>app/(pages)/[...slug]")]
-    Prev[("Preview routes<br/>app/(preview)/sb-preview/[...slug]")]
+    Pub["Published routes"]
+    Prev["Preview routes"]
 
-    ApiPreview[/GET /api/preview<br/>Enable draftMode + redirect to /sb-preview/]
-    ApiExit[/GET /api/exit-preview<br/>Disable draftMode + redirect/]
+    ApiPreview["GET /api/preview"]
+    ApiExit["GET /api/exit-preview"]
 
-    Renderer["StoryblokRenderer<br/>+ component registry + lazy loading"]
-    Theme["SiteConfigProvider<br/>CSS vars + Mantine theme"]
+    Renderer["StoryblokRenderer (registry + lazy loading)"]
+    Theme["SiteConfigProvider (CSS vars + Mantine theme)"]
 
-    Webhook[/POST /api/webhooks/revalidate<br/>Verify signature + revalidatePath/]
-    Auth["Auth middleware (example)<br/>src/middleware/auth.ts"]
+    Webhook["POST /api/webhooks/revalidate"]
+    Auth["Auth middleware example (src/middleware/auth.ts)"]
   end
 
   subgraph CMS[Storyblok]
@@ -34,25 +41,26 @@ flowchart LR
 
   %% Entry points
   U --> Proxy
-  E -->|?_storyblok / ?_storyblok_tk| Proxy
+  E --> Proxy
 
   %% Routing decisions
-  Proxy -->|rewrite to /sb-preview/*| Prev
-  Proxy -->|normal published navigation| Pub
-  Proxy -->|/dashboard/* (example)| Auth
+  Proxy --> Prev
+  Proxy --> Pub
+  Proxy --> Auth
 
   %% Preview control endpoints
   U --> ApiPreview --> Prev
   U --> ApiExit --> Pub
 
   %% Data + render pipeline
-  Pub -->|fetch published story| SB
-  Prev -->|fetch draft story| SB
+  Pub --> SB
+  Prev --> SB
   SB --> Renderer
   Theme --> Renderer
   Pub --> Renderer
   Prev --> Renderer
-  VE -. live updates .-> Renderer
+  VE -.-> Renderer
 
   %% Freshness
   PubHook --> Webhook
+```
