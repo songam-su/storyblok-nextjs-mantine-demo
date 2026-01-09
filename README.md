@@ -116,6 +116,12 @@ To render them in VS Code:
 
 Note: the built-in Markdown preview may show Mermaid blocks as plain text unless you have a Mermaid-capable Markdown preview extension installed.
 
+### Documentation
+
+- Docs index: [docs/README.md](docs/README.md)
+- Enterprise architecture deep dive: [docs/README-enterprise.md](docs/README-enterprise.md)
+- Implementation guide (adapting to your own Storyblok space): [docs/guides/implementation-guide.md](docs/guides/implementation-guide.md)
+
 ## Enterprise Architecture
 
 This repo intentionally differs from the “standard” `@storyblok/react` approach in a few key places to optimize for:
@@ -127,126 +133,42 @@ This repo intentionally differs from the “standard” `@storyblok/react` appro
 
 ### Architecture Diagram
 
-```mermaid
-flowchart LR
-  subgraph Client["Client"]
-    Browser["User browser"]
-    Editor["Storyblok Visual Editor<br/>iframe"]
-  end
+The canonical architecture diagrams live under `docs/`:
 
-  subgraph Next["Next.js App Router"]
-    Proxy["Edge request proxy<br/>src/proxy.ts"]
-
-    PubRoute["Published pages<br/>app/(pages)/[...slug]"]
-    PrevRoute["Preview pages<br/>app/(preview)/sb-preview/[...slug]"]
-
-    ApiPreview["GET /api/preview<br/>Enable draftMode + redirect"]
-    ApiExit["GET /api/exit-preview<br/>Disable draftMode"]
-
-    ApiRevalidate["POST /api/webhooks/revalidate<br/>Verify signature + revalidatePath"]
-    ApiReindex["POST /api/webhooks/reindex<br/>(Scaffold)"]
-
-    FetchStory["fetchStory<br/>lib/storyblok/api/client.ts"]
-    Renderer["StoryblokRenderer<br/>registry + lazy loading"]
-    Components["Blok components<br/>src/components/Storyblok/*"]
-
-    Auth["JWT auth middleware<br/>src/middleware/auth.ts"]
-  end
-
-  subgraph Storyblok["Storyblok"]
-    CDN["CDN Content API"]
-    Webhook["Publish/Unpublish webhook"]
-  end
-
-  %% Request routing
-  Browser --> Proxy
-  Editor -->|?_storyblok or ?_storyblok_tk| Proxy
-  Proxy -->|rewrite to /sb-preview/…| PrevRoute
-  Proxy -->|normal traffic| PubRoute
-
-  %% Preview control
-  Browser -->|enter preview| ApiPreview --> PrevRoute
-  Browser -->|exit preview| ApiExit --> PubRoute
-
-  %% Rendering + data fetching
-  PubRoute --> FetchStory --> CDN
-  PrevRoute --> FetchStory --> CDN
-  PubRoute --> Renderer
-  PrevRoute --> Renderer
-  Renderer --> Components
-
-  %% Webhooks for cache invalidation and (future) indexing
-  Webhook -->|POST| ApiRevalidate --> PubRoute
-  Webhook -->|POST optional| ApiReindex
-
-  %% Auth example
-  Proxy -->|/dashboard/...| Auth
-```
+- Enterprise architecture index: [docs/README-enterprise.md](docs/README-enterprise.md)
+- Tech stack overview: [docs/architecture/project-architecture.md](docs/architecture/project-architecture.md)
+- High-level architecture diagram: [docs/architecture/high-level-architecture.md](docs/architecture/high-level-architecture.md)
+- Runtime topology diagram: [docs/architecture/runtime-topology.md](docs/architecture/runtime-topology.md)
+- Published vs preview flow: [docs/architecture/published-vs-preview.md](docs/architecture/published-vs-preview.md)
 
 ### Published vs Preview Routes
 
-- **Published pages**: `src/app/(pages)/[...slug]/page.tsx`
-  - Always fetches `published` stories.
-  - Forced static/ISR: `dynamic = 'force-static'`, `revalidate = 600`.
-- **Preview pages**: `src/app/(preview)/sb-preview/[...slug]/page.tsx`
-  - Always fetches `draft` stories.
-  - Dynamic by design (`force-dynamic`), and enables the Storyblok bridge.
-- **Editor request routing**: `src/proxy.ts`
-  - Requests containing `?_storyblok` / `?_storyblok_tk` are rewritten to `/sb-preview/...`.
-  - This allows the Visual Editor to use published URLs while still hitting the preview+bridge pipeline.
+See the dedicated doc: [docs/architecture/published-vs-preview.md](docs/architecture/published-vs-preview.md).
 
 ### Rendering Chain
 
-At runtime, rendering is intentionally simple and centralized:
-
-1. Route fetches story via `fetchStory` (`src/lib/storyblok/api/client.ts`).
-2. Page renders `StoryblokRenderer` (`src/lib/storyblok/rendering/StoryblokRenderer.tsx`).
-3. `StoryblokRenderer`:
-   - in preview: attaches the bridge via `useStoryblokBridge` (`src/lib/storyblok/hooks/useStoryblokBridge.tsx`)
-   - selects the root blok (story content) and preloads likely components
-4. `StoryblokComponentRenderer` (`src/lib/storyblok/rendering/StoryblokComponentRenderer.tsx`) picks the React component by blok name and renders it via Suspense.
-
-In preview mode, `StoryblokComponentRenderer` also wraps each blok with `storyblokEditable(blok)` attributes (using `display: contents`) so bloks remain clickable/selectable in the Visual Editor even if the component itself doesn’t spread edit props.
+- Rendering + theming overview: [docs/architecture/rendering-and-theming.md](docs/architecture/rendering-and-theming.md)
+- Component resolution (registry + lazy loading): [docs/reference/component-resolution.md](docs/reference/component-resolution.md)
 
 ### Lazy Component Loading
 
-- Component registry is the single source of truth: `src/lib/storyblok/registry/loaders.ts`
-- Lazy renderer map:
-  - `src/lib/storyblok/registry/lazy.tsx` uses `React.lazy()` over the registry loaders.
-- Small proactive preloading:
-  - `StoryblokRenderer` preloads the root component + the first few body components to reduce Suspense “spinner flashes”.
-
-Important: the refactor intentionally removed `storyblokInit(...)` component registration because it required eagerly importing the full component map on the client, which defeats lazy loading.
+- Decision record (why + tradeoffs): [docs/decisions/dynamicComponentRegistration.md](docs/decisions/dynamicComponentRegistration.md)
+- Component resolution details: [docs/reference/component-resolution.md](docs/reference/component-resolution.md)
 
 ### Relations & Link Resolution
 
-This project resolves Storyblok relations and fixes deeply-nested Story links centrally on the server.
+See the dedicated docs:
 
-- Server data layer: `src/lib/storyblok/api/storyblokServer.ts`
-  - Uses `storyblok-js-client`.
-  - Relations are resolved using `resolve_relations` (see `DEFAULT_RELATIONS`).
-  - Built-in link resolution is disabled (`resolve_links: '0'`) and then Story links are fixed _after_ relations resolve by:
-    - traversing the story to collect multilink story UUIDs
-    - fetching those stories via `getStories(by_uuids=...)`
-    - backfilling `cached_url` / `story.full_slug` so links inside resolved relations have correct URLs
-
-Caching behavior:
-
-- Published: route is ISR/static; Storyblok fetches are `force-cache` with `revalidate = 600`.
-- Draft: Storyblok fetches are `no-store` and include `cv` to ensure fresh preview data.
+- Link resolution behavior: [docs/reference/navigation-link-resolution.md](docs/reference/navigation-link-resolution.md)
+- Storyblok model + relations: [docs/reference/storyblok-data-model.md](docs/reference/storyblok-data-model.md)
+- Freshness model (ISR vs preview): [docs/architecture/content-freshness-and-preview.md](docs/architecture/content-freshness-and-preview.md)
 
 ### Editor Navigation Behavior
 
-In the Visual Editor, clicking a link should select a blok — not navigate away.
+See the dedicated docs:
 
-The app detects editor context via `StoryblokEditorProvider` (`src/lib/storyblok/context/StoryblokEditorContext.tsx`).
-When `isEditor === true`, navigation is prevented via `event.preventDefault()` in components that render real links.
-
-Currently guarded:
-
-- `src/components/Storyblok/Button/Button.tsx`
-- `src/components/Storyblok/FeaturedArticlesSection/FeaturedArticlesSection.tsx`
-- `src/components/Storyblok/NavItem/NavItem.tsx`
+- Preview live update + editor context: [docs/reference/preview-live-update.md](docs/reference/preview-live-update.md)
+- Link behavior and safety: [docs/reference/navigation-link-resolution.md](docs/reference/navigation-link-resolution.md)
 
 ## Component & Layout Highlights
 

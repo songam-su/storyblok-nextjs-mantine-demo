@@ -1,6 +1,9 @@
-# Technical Documentation for the Enterprise Framework
+# Enterprise Architecture (Deep Dive)
 
-This README focuses on architecture, flows, and extension patterns for the Storyblok + Next.js (App Router) + Mantine framework. The root README can remain install-focused; use this one for system understanding and onboarding.
+This document is the canonical deep-dive for architecture, flows, and extension patterns for the Storyblok + Next.js (App Router) + Mantine framework.
+
+- Start page for all docs: [README.md](README.md)
+- Repo overview + quickstart: [../README.md](../README.md)
 
 ## Overview
 
@@ -10,12 +13,13 @@ This README focuses on architecture, flows, and extension patterns for the Story
 - Delivery: Published uses ISR (~10 min) at CDN/edge; preview bypasses cache and reflects drafts instantly.
 - Freshness: Webhooks invalidate ISR via `revalidatePath`; preview cookie controls draft mode.
 
-## Architecture (pick SVG/PNG or Mermaid as needed)
+## Architecture (diagrams)
 
-- High-level architecture: see [diagrams/high-level-architecture.md](architecture/high-level-architecture.md).
-- System context: see [diagrams/system-context.md](architecture/system-context.md).
-- Runtime topology (published vs preview): see [diagrams/runtime-topology.md](architecture/runtime-topology.md).
-- Published vs preview flow (focused): see [diagrams/published-vs-preview.md](architecture/published-vs-preview.md).
+- High-level architecture: [architecture/high-level-architecture.md](architecture/high-level-architecture.md)
+- System context: [architecture/system-context.md](architecture/system-context.md)
+- Runtime topology (published vs preview): [architecture/runtime-topology.md](architecture/runtime-topology.md)
+- Published vs preview flow (focused): [architecture/published-vs-preview.md](architecture/published-vs-preview.md)
+- Tech stack (what runs where): [architecture/project-architecture.md](architecture/project-architecture.md)
 
 ### Viewing Mermaid diagrams in VS Code
 
@@ -26,25 +30,25 @@ These diagrams are authored as Mermaid fenced blocks (e.g. ` ```mermaid `). To v
 
 ## Rendering Pipeline
 
-- Blok resolution: Storyblok JSON → lazy registry → Suspense + ErrorBoundary → editable attributes in preview. Diagram: [diagrams/component-resolution.md](reference/component-resolution.md).
-- Error containment: see [diagrams/error-boundaries.md](reference/error-boundaries.md).
+- Blok resolution: Storyblok JSON → lazy registry → Suspense + ErrorBoundary → editable attributes in preview. See [reference/component-resolution.md](reference/component-resolution.md).
+- Error containment: see [reference/error-boundaries.md](reference/error-boundaries.md).
 
 ## Theming & Chrome
 
-- Site-config story normalizes colors/fonts into CSS vars + Mantine theme; header/footer/nav come from site-config bloks (links sanitized with getSbLink). Diagram: [diagrams/site-config-theming.md](reference/site-config-theming.md).
-- Form/light UX: see [diagrams/form-ux.md](reference/form-ux.md).
-- Link safety: [diagrams/navigation-link-resolution.md](reference/navigation-link-resolution.md).
-- Images/focal points: [diagrams/image-handling.md](reference/image-handling.md).
+- Site-config story normalizes colors/fonts into CSS vars + Mantine theme; header/footer/nav come from site-config bloks (links sanitized with getSbLink). See [reference/site-config-theming.md](reference/site-config-theming.md).
+- Form/light UX: see [reference/form-ux.md](reference/form-ux.md).
+- Link safety: [reference/navigation-link-resolution.md](reference/navigation-link-resolution.md).
+- Images/focal points: [reference/image-handling.md](reference/image-handling.md).
 
 ## Data Freshness & Preview
 
-- ISR lifecycle: [diagrams/isr-cache-lifecycle.md](reference/isr-cache-lifecycle.md).
-- Webhook verification and revalidation: [diagrams/webhook-revalidate.md](reference/webhook-revalidate.md).
-- Preview/editor live updates: [diagrams/preview-live-update.md](reference/preview-live-update.md).
+- ISR lifecycle: [reference/isr-cache-lifecycle.md](reference/isr-cache-lifecycle.md)
+- Webhook verification and revalidation: [reference/webhook-revalidate.md](reference/webhook-revalidate.md)
+- Preview/editor live updates: [reference/preview-live-update.md](reference/preview-live-update.md)
 
 ## Content Model & Components
 
-- Key Storyblok bloks and composition: [diagrams/storyblok-data-model.md](reference/storyblok-data-model.md).
+- Key Storyblok bloks and composition: [reference/storyblok-data-model.md](reference/storyblok-data-model.md).
 - Registry pattern: lazy typed registry (see decision record [decisions/dynamicComponentRegistration.md](decisions/dynamicComponentRegistration.md)).
 - How to add a blok:
   1. Define schema in Storyblok; pull generated types.
@@ -54,7 +58,7 @@ These diagrams are authored as Mermaid fenced blocks (e.g. ` ```mermaid `). To v
 
 ## Environments & Ops
 
-- Env/secrets and HTTPS dev: [diagrams/deployment-envs.md](reference/deployment-envs.md).
+- Env/secrets and HTTPS dev: [reference/deployment-envs.md](reference/deployment-envs.md).
 - Published uses public token + ISR; preview uses preview token + draft fetch; webhooks secured by HMAC + timestamp + shared secret.
 
 ## Testing
