@@ -9,6 +9,31 @@ Related docs:
 - Project overview and setup: [`README.md`](../README.md)
 - Conventions for implementing bloks: [`guides/components/component-guide.md`](components/component-guide.md)
 
+## Storyblok setup checklist (fast path)
+
+- [ ] Create a new Storyblok space (or clone models from the demo space).
+- [ ] Create tokens:
+  - [ ] `STORYBLOK_PREVIEW_TOKEN` (server-side fetching)
+  - [ ] `NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN` (client-side bridge)
+  - [ ] (Optional) `STORYBLOK_THEME_TOKEN`
+  - [ ] (Optional) `NEXT_PUBLIC_STORYBLOK_PUBLIC_TOKEN`
+
+- [ ] Set your Visual Editor preview URL:
+  - Use the published URL (recommended). Editor requests are rewritten into `/sb-preview/...` by `src/proxy.ts`.
+
+- [ ] Configure webhooks (recommended):
+  - [ ] Publish/unpublish/move/delete → `POST /api/webhooks/revalidate?secret=...`
+  - [ ] Set `STORYBLOK_WEBHOOK_SECRET` in `.env.local` / Vercel env.
+  - [ ] (Optional scaffold) `POST /api/webhooks/reindex?secret=...` + `ALGOLIA_WEBHOOK_SECRET`
+
+- [ ] Log in and sync schemas/types:
+  - [ ] `pnpm sb:login` (region is EU by default; change if needed)
+  - [ ] `pnpm sb:pull`
+
+- [ ] Verify preview end-to-end:
+  - [ ] Run `pnpm dev-setup` then `pnpm dev` (HTTPS)
+  - [ ] Open a story in the Visual Editor and confirm changes live-update
+
 ## 1) Create your Storyblok space
 
 - Create a new Storyblok space in your organization.

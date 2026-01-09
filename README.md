@@ -1,7 +1,7 @@
 # Storyblok Mantine Demo
 
 [![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
+![Next.js](https://img.shields.io/badge/Next.js-16.x-black?logo=next.js)
 ![Storyblok](https://img.shields.io/badge/Storyblok-CMS-blue?logo=storyblok)
 ![Mantine](https://img.shields.io/badge/Mantine-UI-purple)
 
@@ -40,13 +40,16 @@ This project demonstrates how to build scalable, CMS-driven applications using m
   - [Component \& Layout Highlights](#component--layout-highlights)
     - [Layout \& spacing system](#layout--spacing-system)
     - [Shared utilities](#shared-utilities)
+  - [Prerequisites](#prerequisites)
   - [Getting Started](#getting-started)
+  - [Key Scripts](#key-scripts)
   - [Testing](#testing)
   - [Known Warnings](#known-warnings)
     - [React peer dependency warning (React \<= 18)](#react-peer-dependency-warning-react--18)
   - [Local SSL Setup](#local-ssl-setup)
   - [Storyblok Visual Editor](#storyblok-visual-editor)
   - [Environment Variables](#environment-variables)
+  - [Deploying on Vercel (short)](#deploying-on-vercel-short)
   - [Indexing / SEO (Demo Subdomain)](#indexing--seo-demo-subdomain)
   - [Webhooks](#webhooks)
     - [ISR cache bust](#isr-cache-bust)
@@ -121,6 +124,17 @@ Note: the built-in Markdown preview may show Mermaid blocks as plain text unless
 - Docs index: [docs/README.md](docs/README.md)
 - Enterprise architecture deep dive: [docs/README-enterprise.md](docs/README-enterprise.md)
 - Implementation guide (adapting to your own Storyblok space): [docs/guides/implementation-guide.md](docs/guides/implementation-guide.md)
+- Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Security policy: [SECURITY.md](SECURITY.md)
+
+## Prerequisites
+
+- Node.js (LTS recommended)
+- pnpm
+- Local HTTPS support (this repo runs `pnpm dev` with Next.js experimental HTTPS)
+  - Run `pnpm dev-setup` once to generate local certs
+  - If you don’t already have it, install and trust mkcert (see [Local SSL Setup](#local-ssl-setup))
+- A Storyblok account + space (or access to the demo space used by this repo)
 
 ## Enterprise Architecture
 
@@ -221,6 +235,22 @@ Additional Storyblok bloks can follow the same pattern. See [Component Implement
 4. Run the dev server: `pnpm dev`.
 5. Visit `https://localhost:3010` for published content or `/sb-preview/...` for draft mode.
 
+## Key Scripts
+
+| Command           | What it does                                                                  |
+| ----------------- | ----------------------------------------------------------------------------- |
+| `pnpm dev-setup`  | Generates local HTTPS certs under `.dev/certs/`                               |
+| `pnpm dev`        | Runs Next.js dev server on `https://localhost:3010` using the generated certs |
+| `pnpm build`      | Builds the Next.js app                                                        |
+| `pnpm start`      | Runs the production server (after `pnpm build`)                               |
+| `pnpm test`       | Runs unit tests (Vitest)                                                      |
+| `pnpm test:watch` | Runs unit tests in watch mode                                                 |
+| `pnpm cy:open`    | Opens Cypress (E2E) UI                                                        |
+| `pnpm cy:run`     | Runs Cypress E2E headlessly                                                   |
+| `pnpm sb:login`   | Logs into Storyblok CLI (region EU by default)                                |
+| `pnpm sb:pull`    | Pulls Storyblok resources and regenerates types                               |
+| `pnpm vercel`     | Pulls Vercel env vars into a local `.env` file                                |
+
 ## Testing
 
 - Unit: `pnpm test` (Vitest, uses alias `@` → `src/`, specs in `tests/unit`).
@@ -253,13 +283,45 @@ Some Storyblok integrations expect HTTPS (especially inside the Visual Editor if
 - You can also use the normal published URL as the Visual Editor preview URL; the middleware rewrites Storyblok editor requests (those with `_storyblok` params) to `/sb-preview/...` automatically.
 - Storyblok demo space domain: <https://d6a698f5.me.storyblok.com>
 
+### Preview troubleshooting (compact)
+
+For a more complete checklist, see: [docs/guides/troubleshooting.md](docs/guides/troubleshooting.md).
+
+If preview isn’t behaving as expected, these are the common culprits:
+
+- **HTTPS / iframe issues**: ensure local HTTPS is set up (`pnpm dev-setup`) and your browser trusts the cert (see [Local SSL Setup](#local-ssl-setup) and [docs/reference/deployment-envs.md](docs/reference/deployment-envs.md)).
+- **Wrong route**: published vs preview behavior is intentionally split; see [docs/architecture/published-vs-preview.md](docs/architecture/published-vs-preview.md).
+- **Bridge not updating**: confirm the Storyblok Bridge is active and the page is in preview context; see [docs/reference/preview-live-update.md](docs/reference/preview-live-update.md).
+- **ISR not updating after publish**: confirm webhook configuration + secret; see [docs/reference/webhook-revalidate.md](docs/reference/webhook-revalidate.md).
+
 ## Environment Variables
+
+### Required vs optional (at a glance)
+
+- **Required (local dev + deployment)**
+  - `NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN`
+  - `STORYBLOK_PREVIEW_TOKEN`
+- **Recommended (production-quality metadata)**
+  - `SITE_URL` (used for canonical URLs and OpenGraph)
+- **Required if you enable ISR webhook revalidation**
+  - `STORYBLOK_WEBHOOK_SECRET`
+- **Optional / future scaffold**
+  - `ALGOLIA_WEBHOOK_SECRET` (only if you wire up the reindex webhook)
+- **Optional / depends on your usage**
+  - `NEXT_PUBLIC_STORYBLOK_PUBLIC_TOKEN` (only if you ever do client-side published requests)
+  - `STORYBLOK_PUBLIC_TOKEN` (recommended if you want a separate published token)
+  - `STORYBLOK_THEME_TOKEN` (only if you fetch theme separately)
+  - `STORYBLOK_REGION` (only if you need a region override)
+  - `STORYBLOK_SPACE_ID` (Storyblok CLI tooling)
 
 | Variable                              | Description                                                       | Scope  |
 | ------------------------------------- | ----------------------------------------------------------------- | ------ |
 | `NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN` | Public token for client-side bridge preview requests.             | Client |
 | `NEXT_PUBLIC_STORYBLOK_PUBLIC_TOKEN`  | Public token for client-side published requests (if ever needed). | Client |
+| `NEXT_PUBLIC_SITE_URL`                | Optional site base URL fallback (metadata + client access).       | Client |
+| `STORYBLOK_PUBLIC_TOKEN`              | Token for server-side published requests.                         | Server |
 | `STORYBLOK_PREVIEW_TOKEN`             | Private token for server-side fetches (`fetchStory`).             | Server |
+| `STORYBLOK_REGION`                    | Region override for Storyblok client (for non-default regions).   | Server |
 | `STORYBLOK_THEME_TOKEN`               | Token for server-side theme fetching (`fetchTheme`).              | Server |
 | `STORYBLOK_SPACE_ID`                  | Space identifier for Storyblok CLI tooling.                       | Server |
 | `STORYBLOK_WEBHOOK_SECRET`            | Shared secret for ISR webhook authentication.                     | Server |
@@ -270,6 +332,15 @@ Additional:
 | Variable   | Description                                                               | Scope  |
 | ---------- | ------------------------------------------------------------------------- | ------ |
 | `SITE_URL` | Canonical base URL for metadata (used for `metadataBase`, OG URLs, etc.). | Server |
+
+## Deploying on Vercel (short)
+
+- Set required env vars in Vercel (see [Environment Variables](#environment-variables)).
+- Optional local sync: run `pnpm vercel` to pull env vars locally.
+- Webhooks: if you want ISR invalidation on publish/unpublish, configure your Storyblok webhook to call `POST /api/webhooks/revalidate` on your deployed domain.
+- Observability: Vercel Analytics + Speed Insights are already mounted in `src/app/(pages)/layout.tsx` and will report when deployed on Vercel.
+
+For the full architecture + operational model, start at [docs/README-enterprise.md](docs/README-enterprise.md).
 
 ## Indexing / SEO (Demo Subdomain)
 

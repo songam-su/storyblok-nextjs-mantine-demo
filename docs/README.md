@@ -6,11 +6,14 @@ Use this folder as the canonical home for technical docs.
 
 - Repo overview + setup: [../README.md](../README.md)
 - Enterprise architecture index: [README-enterprise.md](README-enterprise.md)
+- Contributing: [../CONTRIBUTING.md](../CONTRIBUTING.md)
+- Security policy: [../SECURITY.md](../SECURITY.md)
 
 ## Guides (how to)
 
 - Adapting this repo to your own Storyblok space: [guides/implementation-guide.md](guides/implementation-guide.md)
 - Implementing new Storyblok bloks (components): [guides/components/component-guide.md](guides/components/component-guide.md)
+- Troubleshooting (preview, HTTPS, webhooks): [guides/troubleshooting.md](guides/troubleshooting.md)
 
 ## Architecture (system shape)
 
