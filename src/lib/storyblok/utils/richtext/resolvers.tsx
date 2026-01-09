@@ -1,5 +1,6 @@
 import React, { Fragment, JSX } from 'react';
 import { renderRichText } from '@storyblok/react';
+import Link from 'next/link';
 import type { StoryblokRichtext } from '@/lib/storyblok/resources/types/storyblok';
 
 type MarkRenderer = (children: React.ReactNode, props?: any) => React.ReactNode;
@@ -14,13 +15,32 @@ const sanitizeLinkProps = (props: any = {}) => {
   return { href, target, rel, title } as const;
 };
 
+const isInternalHref = (href: unknown): href is string => {
+  if (typeof href !== 'string') return false;
+  if (!href.startsWith('/')) return false;
+  // treat protocol-relative URLs as external
+  if (href.startsWith('//')) return false;
+  return true;
+};
+
 // Theme-friendly elements without inline styles
 const TextMark: MarkRenderer = (children) => <Fragment>{children}</Fragment>;
 const BoldMark: MarkRenderer = (children) => <strong>{children}</strong>;
 const ItalicMark: MarkRenderer = (children) => <em>{children}</em>;
-const LinkComponent: MarkRenderer = (children, props) => (
-  <a {...sanitizeLinkProps(stripStyleProps(props))}>{children}</a>
-);
+const LinkComponent: MarkRenderer = (children, props) => {
+  const linkProps = sanitizeLinkProps(stripStyleProps(props));
+
+  // Use Next.js client navigation for internal links.
+  if (isInternalHref(linkProps.href)) {
+    return (
+      <Link href={linkProps.href} target={linkProps.target} rel={linkProps.rel} title={linkProps.title}>
+        {children}
+      </Link>
+    );
+  }
+
+  return <a {...linkProps}>{children}</a>;
+};
 
 const Paragraph = ({ children }: { children: React.ReactNode }) => <p className="sb-rt-paragraph">{children}</p>;
 const Heading = ({ level, children }: { level: number; children: React.ReactNode }) => {
