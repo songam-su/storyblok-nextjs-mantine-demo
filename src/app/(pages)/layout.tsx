@@ -6,6 +6,8 @@ import type { SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContex
 import { METADATA_BASE } from '@/lib/site/siteUrl';
 import type { Metadata } from 'next';
 import ScrollToTop from '../ScrollToTop';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
   metadataBase: METADATA_BASE,
@@ -33,6 +35,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <Header />
               <main>{children}</main>
               <Footer />
+              <SpeedInsights />
+              <Analytics />
             </div>
           </div>
         </PublishedProviders>

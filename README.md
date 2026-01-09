@@ -92,6 +92,16 @@ For a guided adaptation, see [docs/Implementation-Guide.md](docs/Implementation-
 - **CMS**: Storyblok (live preview bridge, generated typings).
 - **Performance**: Lazy-loaded blok components with targeted preloading of the root + first body bloks to reduce Suspense latency.
 - **Tooling**: pnpm, mkcert-powered HTTPS dev server, Storyblok CLI scripts.
+- **Observability**: Vercel Speed Insights + Vercel Analytics (wired in `src/app/(pages)/layout.tsx`).
+
+### Auto-formatting (VS Code)
+
+This repo includes workspace defaults to keep formatting consistent:
+
+- Format on save via Prettier (`.vscode/settings.json` + `prettier.config.js`).
+- ESLint is configured for linting; fix-on-save is set to `"explicit"` by default (only runs when you explicitly invoke it).
+
+Recommended extensions are listed in `.vscode/extensions.json`.
 
 ## Enterprise Architecture
 
@@ -202,7 +212,7 @@ This project resolves Storyblok relations and fixes deeply-nested Story links ce
 - Server data layer: `src/lib/storyblok/api/storyblokServer.ts`
   - Uses `storyblok-js-client`.
   - Relations are resolved using `resolve_relations` (see `DEFAULT_RELATIONS`).
-  - Built-in link resolution is disabled (`resolve_links: '0'`) and then Story links are fixed *after* relations resolve by:
+  - Built-in link resolution is disabled (`resolve_links: '0'`) and then Story links are fixed _after_ relations resolve by:
     - traversing the story to collect multilink story UUIDs
     - fetching those stories via `getStories(by_uuids=...)`
     - backfilling `cached_url` / `story.full_slug` so links inside resolved relations have correct URLs
@@ -227,27 +237,27 @@ Currently guarded:
 
 ## Component & Layout Highlights
 
-| Blok | Description | Path | Notes |
-| --- | --- | --- | --- |
-| `default-page` | Story-level wrapper that renders nested body bloks without extra layout chrome. | `src/components/Storyblok/DefaultPage/DefaultPage.tsx` | Uses `display: contents` via CSS module to stay DOM-neutral; meta title/description surfaced via `generateMetadata`. |
-| `banner` | Hero-style CTA wrapper with buttons, color & background-image controls. | `src/components/Storyblok/Banner/Banner.tsx` | Uses Mantine `Paper`, Storyblok color + alignment helpers, supports full-bleed background with constrained inner content. |
-| `button` | Storyblok-configurable CTA rendered as Mantine `Button`. | `src/components/Storyblok/Button/Button.tsx` | Shares palette utilities; ghost/default variants honor Storyblok color swatches. |
-| `hero-section` | Layout-aware hero with stacked/split variants, optional image decoration, and headline segments. | `src/components/Storyblok/HeroSection/HeroSection.tsx` | Supports Storyblok palette for background/accent, centers text by default, respects focus points and aspect toggles. |
-| `grid-section` | Configurable grid of cards with optional lead and CTAs. | `src/components/Storyblok/GridSection/GridSection.tsx` | Supports Storyblok palette, headline segments, and `grid-card` children; caps columns between 1–4. |
-| `grid-card` | Grid cell with optional image, icon, CTA, background image. | `src/components/Storyblok/GridCard/GridCard.tsx` | Light-themed by default; background images get a lightening overlay for contrast, no-image cards get a soft fill. |
-| `logo-section` | Responsive grid of logos from a multi-asset field with optional lead. | `src/components/Storyblok/LogoSection/LogoSection.tsx` | Uses `getSbImageData` to respect focal points; displays nothing if no assets and no lead. |
-| `faq-entry`, `faq-section` | Accordion-based FAQ section with Storyblok-managed entries. | `src/components/Storyblok/FaqSection` | Mantine `Accordion` + `Paper`, inherits global spacing system, edit attributes preserved per entry. |
-| `headline-segment` | Inline headline fragment with optional highlight color. | `src/components/Storyblok/HeadlineSegment/HeadlineSegment.tsx` | Used by banner/FAQ headlines to render multi-colored titles via `renderHeadlineSegments`. |
-| `tabbed-content-section` / `tabbed-content-entry` | Tabs with rich content cards. | `src/components/Storyblok/TabbedContentSection/TabbedContentSection.tsx` | Light pill tabs, full-card links, and light cards by default. |
-| `testimonials-section` / `testimonial` | Cards for quotes + person meta. | `src/components/Storyblok/TestimonialsSection/TestimonialsSection.tsx` | Uses light surfaces/borders with hover lift; respects site text colors. |
-| `featured-articles-section` | Grid of linked articles. | `src/components/Storyblok/FeaturedArticlesSection/FeaturedArticlesSection.tsx` | Full-card links, consistent heights, light surfaces with hover lift. |
-| `form-section`, `contact-form-section`, `newsletter-form-section` | CTA/lead + form shell. | `src/components/Storyblok/Forms/*` | Light-friendly surfaces, accessible label/placeholder contrast; newsletter has accent button styling. |
-| `text-section` | Rich text/lead section with optional headline segments and palette background. | `src/components/Storyblok/TextSection/TextSection.tsx` | Uses shared rich-text renderer and headline segments; omits empty wrappers. |
-| `two-columns-section` | Dual-column content with optional buttons and palette backgrounds per column. | `src/components/Storyblok/TwoColumnsSection/TwoColumnsSection.tsx` | Supports per-column decoration color and headline segments; skips empty columns. |
-| `image-text-section` | Side-by-side media + rich text with reversible layout. | `src/components/Storyblok/ImageTextSection/ImageTextSection.tsx` | Supports palette background, focus-aware images, headline segments, buttons, and per-device layout reversal. |
-| `nav-item` | Navigation link used by menus and site config. | `src/components/Storyblok/NavItem/NavItem.tsx` | Uses multilink resolver, preserves edit attributes, falls back to a muted span when missing href. |
-| `personalized-section` | Wrapper that swaps child bloks based on visitor state. | `src/components/Storyblok/PersonalizedSection/PersonalizedSection.tsx` | Supports new/returning visitor branches with arbitrary child bloks. |
-| `site-config` | Story-level config for theme, header, footer. | `src/components/Storyblok/SiteConfig/SiteConfig.tsx` | Normalizes colors/fonts into CSS vars + Mantine theme; shows editor badge only in Visual Editor. |
+| Blok                                                              | Description                                                                                      | Path                                                                           | Notes                                                                                                                     |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `default-page`                                                    | Story-level wrapper that renders nested body bloks without extra layout chrome.                  | `src/components/Storyblok/DefaultPage/DefaultPage.tsx`                         | Uses `display: contents` via CSS module to stay DOM-neutral; meta title/description surfaced via `generateMetadata`.      |
+| `banner`                                                          | Hero-style CTA wrapper with buttons, color & background-image controls.                          | `src/components/Storyblok/Banner/Banner.tsx`                                   | Uses Mantine `Paper`, Storyblok color + alignment helpers, supports full-bleed background with constrained inner content. |
+| `button`                                                          | Storyblok-configurable CTA rendered as Mantine `Button`.                                         | `src/components/Storyblok/Button/Button.tsx`                                   | Shares palette utilities; ghost/default variants honor Storyblok color swatches.                                          |
+| `hero-section`                                                    | Layout-aware hero with stacked/split variants, optional image decoration, and headline segments. | `src/components/Storyblok/HeroSection/HeroSection.tsx`                         | Supports Storyblok palette for background/accent, centers text by default, respects focus points and aspect toggles.      |
+| `grid-section`                                                    | Configurable grid of cards with optional lead and CTAs.                                          | `src/components/Storyblok/GridSection/GridSection.tsx`                         | Supports Storyblok palette, headline segments, and `grid-card` children; caps columns between 1–4.                        |
+| `grid-card`                                                       | Grid cell with optional image, icon, CTA, background image.                                      | `src/components/Storyblok/GridCard/GridCard.tsx`                               | Light-themed by default; background images get a lightening overlay for contrast, no-image cards get a soft fill.         |
+| `logo-section`                                                    | Responsive grid of logos from a multi-asset field with optional lead.                            | `src/components/Storyblok/LogoSection/LogoSection.tsx`                         | Uses `getSbImageData` to respect focal points; displays nothing if no assets and no lead.                                 |
+| `faq-entry`, `faq-section`                                        | Accordion-based FAQ section with Storyblok-managed entries.                                      | `src/components/Storyblok/FaqSection`                                          | Mantine `Accordion` + `Paper`, inherits global spacing system, edit attributes preserved per entry.                       |
+| `headline-segment`                                                | Inline headline fragment with optional highlight color.                                          | `src/components/Storyblok/HeadlineSegment/HeadlineSegment.tsx`                 | Used by banner/FAQ headlines to render multi-colored titles via `renderHeadlineSegments`.                                 |
+| `tabbed-content-section` / `tabbed-content-entry`                 | Tabs with rich content cards.                                                                    | `src/components/Storyblok/TabbedContentSection/TabbedContentSection.tsx`       | Light pill tabs, full-card links, and light cards by default.                                                             |
+| `testimonials-section` / `testimonial`                            | Cards for quotes + person meta.                                                                  | `src/components/Storyblok/TestimonialsSection/TestimonialsSection.tsx`         | Uses light surfaces/borders with hover lift; respects site text colors.                                                   |
+| `featured-articles-section`                                       | Grid of linked articles.                                                                         | `src/components/Storyblok/FeaturedArticlesSection/FeaturedArticlesSection.tsx` | Full-card links, consistent heights, light surfaces with hover lift.                                                      |
+| `form-section`, `contact-form-section`, `newsletter-form-section` | CTA/lead + form shell.                                                                           | `src/components/Storyblok/Forms/*`                                             | Light-friendly surfaces, accessible label/placeholder contrast; newsletter has accent button styling.                     |
+| `text-section`                                                    | Rich text/lead section with optional headline segments and palette background.                   | `src/components/Storyblok/TextSection/TextSection.tsx`                         | Uses shared rich-text renderer and headline segments; omits empty wrappers.                                               |
+| `two-columns-section`                                             | Dual-column content with optional buttons and palette backgrounds per column.                    | `src/components/Storyblok/TwoColumnsSection/TwoColumnsSection.tsx`             | Supports per-column decoration color and headline segments; skips empty columns.                                          |
+| `image-text-section`                                              | Side-by-side media + rich text with reversible layout.                                           | `src/components/Storyblok/ImageTextSection/ImageTextSection.tsx`               | Supports palette background, focus-aware images, headline segments, buttons, and per-device layout reversal.              |
+| `nav-item`                                                        | Navigation link used by menus and site config.                                                   | `src/components/Storyblok/NavItem/NavItem.tsx`                                 | Uses multilink resolver, preserves edit attributes, falls back to a muted span when missing href.                         |
+| `personalized-section`                                            | Wrapper that swaps child bloks based on visitor state.                                           | `src/components/Storyblok/PersonalizedSection/PersonalizedSection.tsx`         | Supports new/returning visitor branches with arbitrary child bloks.                                                       |
+| `site-config`                                                     | Story-level config for theme, header, footer.                                                    | `src/components/Storyblok/SiteConfig/SiteConfig.tsx`                           | Normalizes colors/fonts into CSS vars + Mantine theme; shows editor badge only in Visual Editor.                          |
 
 Additional Storyblok bloks can follow the same pattern. See [Component Implementation Guide](.docs/component-guide.md) for conventions, utilities, and checklist.
 
@@ -322,9 +332,9 @@ Some Storyblok integrations expect HTTPS (especially inside the Visual Editor if
 
 Additional:
 
-| Variable   | Description                                                                 | Scope  |
-| ---------- | --------------------------------------------------------------------------- | ------ |
-| `SITE_URL` | Canonical base URL for metadata (used for `metadataBase`, OG URLs, etc.).   | Server |
+| Variable   | Description                                                               | Scope  |
+| ---------- | ------------------------------------------------------------------------- | ------ |
+| `SITE_URL` | Canonical base URL for metadata (used for `metadataBase`, OG URLs, etc.). | Server |
 
 ## Indexing / SEO (Demo Subdomain)
 
@@ -357,6 +367,11 @@ Important:
 - In Storyblok (optional): subscribe events to this URL only if you plan to implement indexing later.
 - Currently validates the secret and echoes the payload; hook in Algolia indexing later.
 - Recommended events once the search pipeline is live: publish/unpublish/move.
+
+Note: This repo does **not** include Algolia indexing yet. When you implement a real Algolia pipeline, you will typically add additional dependencies such as:
+
+- `algoliasearch` for indexing/query operations
+- `search-insights` for Algolia Insights (click/conversion analytics)
 
 ## Future Enhancements
 

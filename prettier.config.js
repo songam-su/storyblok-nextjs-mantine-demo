@@ -1,5 +1,3 @@
-import tailwindPlugin from 'prettier-plugin-tailwindcss';
-
 export default {
   endOfLine: 'auto',
   printWidth: 120,
@@ -8,6 +6,4 @@ export default {
   tabWidth: 2,
   trailingComma: 'es5',
   useTabs: false,
-  plugins: [tailwindPlugin],
-  tailwindFunctions: ['clsx', 'cn'],
 };

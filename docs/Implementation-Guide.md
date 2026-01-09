@@ -61,6 +61,13 @@ Optional:
 - It is intentionally not a full Algolia integration (no Algolia client, no indexing logic, no search UI). It only validates `ALGOLIA_WEBHOOK_SECRET` and echoes the payload.
 - Only configure this webhook in Storyblok if you plan to implement indexing later.
 
+When you implement Algolia for real, you will typically add additional dependencies such as:
+
+- `algoliasearch` for indexing and query operations
+- `search-insights` for Algolia Insights (click/conversion analytics)
+
+`search-insights` is **not** related to Vercel Analytics / Speed Insights.
+
 ## 6) Production readiness checklist (high level)
 
 Before going live, review:
@@ -70,9 +77,30 @@ Before going live, review:
 - Performance (image sizing, component loading, third-party scripts)
 - Security and compliance requirements for your org
 
+## 7) Vercel observability
+
+This repo includes:
+
+- Vercel Speed Insights: `@vercel/speed-insights` via `<SpeedInsights />`
+- Vercel Analytics: `@vercel/analytics` via `<Analytics />`
+
+Both are currently mounted in the published layout: `src/app/(pages)/layout.tsx`.
+
+## 8) Auto-formatting (VS Code)
+
+Workspace settings in `.vscode/settings.json` enable:
+
+- Format on save using the Prettier VS Code extension (`esbenp.prettier-vscode`) and `prettier.config.js`.
+- ESLint validation, with fix-on-save configured as `"explicit"` by default.
+
+If you want ESLint to auto-fix on every save, change:
+
+- `"source.fixAll.eslint": "explicit"` → `true`
+- `"source.organizeImports": "explicit"` → `true`
+
 This repo is provided "as is" and should be treated as a starting point, not a final production implementation.
 
-## 7) Troubleshooting
+## 9) Troubleshooting
 
 ### Hydration mismatch in dev (LastPass / password managers)
 
