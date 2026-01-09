@@ -7,7 +7,7 @@ Use this guide to adapt the project to a **clean Storyblok space you own**.
 Related docs:
 
 - Project overview and setup: [`README.md`](../README.md)
-- Conventions for implementing bloks: [`.docs/component-guide.md`](../.docs/component-guide.md)
+- Conventions for implementing bloks: [`guides/components/component-guide.md`](components/component-guide.md)
 
 ## 1) Create your Storyblok space
 
@@ -122,7 +122,7 @@ We opt the newsletter form and its email input out of password-manager injection
 - `data-lpignore="true"` (LastPass)
 - `data-1p-ignore="true"` (1Password)
 
-See the implementation in [src/components/Storyblok/Forms/NewsletterFormSection/NewsletterFormSection.tsx](../src/components/Storyblok/Forms/NewsletterFormSection/NewsletterFormSection.tsx).
+See the implementation in [src/components/Storyblok/Forms/NewsletterFormSection/NewsletterFormSection.tsx](../../src/components/Storyblok/Forms/NewsletterFormSection/NewsletterFormSection.tsx).
 
 #### If you still see it
 

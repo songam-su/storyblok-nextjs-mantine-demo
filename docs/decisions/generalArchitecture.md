@@ -61,6 +61,6 @@ Each segment uses `layout.tsx` (server) + `providers.tsx` (client) to apply them
 
 ## Diagrams
 
-- [.docs/diagrams/architecture/project-architecture.md](../diagrams/architecture/project-architecture.md)
-- [.docs/diagrams/architecture/rendering-and-theming.md](../diagrams/architecture/rendering-and-theming.md)
-- [.docs/diagrams/architecture/content-freshness-and-preview.md](../diagrams/architecture/content-freshness-and-preview.md)
+- [../architecture/project-architecture.md](../architecture/project-architecture.md)
+- [../architecture/rendering-and-theming.md](../architecture/rendering-and-theming.md)
+- [../architecture/content-freshness-and-preview.md](../architecture/content-freshness-and-preview.md)

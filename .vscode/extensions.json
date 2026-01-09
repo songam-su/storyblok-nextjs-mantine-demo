@@ -1,7 +1,3 @@
 {
-    "recommendations": [
-        "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint",
-        "bierner.markdown-mermaid"
-    ]
+  "recommendations": ["esbenp.prettier-vscode", "dbaeumer.vscode-eslint", "bierner.markdown-mermaid"]
 }

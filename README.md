@@ -5,7 +5,7 @@
 ![Storyblok](https://img.shields.io/badge/Storyblok-CMS-blue?logo=storyblok)
 ![Mantine](https://img.shields.io/badge/Mantine-UI-purple)
 
-Quick links: [Live demo](https://storyblok-demo.andrewcaperton.me) · [Implementation guide](docs/Implementation-Guide.md) · [Getting started](#getting-started) · [Contact](#contact)
+Quick links: [Live demo](https://storyblok-demo.andrewcaperton.me) · [Implementation guide](docs/guides/implementation-guide.md) · [Getting started](#getting-started) · [Contact](#contact)
 
 A Next.js App Router demo that showcases Storyblok-driven page building, Mantine UI theming, and an enterprise-style integration that keeps published routes ISR/static while still supporting a great Storyblok Visual Editor experience.
 
@@ -28,6 +28,8 @@ This project demonstrates how to build scalable, CMS-driven applications using m
   - [Disclaimer](#disclaimer)
   - [What's Included (and What's Not)](#whats-included-and-whats-not)
   - [Tech Stack \& Features](#tech-stack--features)
+    - [Auto-formatting (VS Code)](#auto-formatting-vs-code)
+    - [Mermaid diagrams (VS Code)](#mermaid-diagrams-vs-code)
   - [Enterprise Architecture](#enterprise-architecture)
     - [Architecture Diagram](#architecture-diagram)
     - [Published vs Preview Routes](#published-vs-preview-routes)
@@ -76,7 +78,7 @@ This repository provides an **enterprise-grade boilerplate** integrating a **Sto
 - **No secrets**: The repository does not include operational credentials. Example environment variables are provided via `.env.example`.
 - **No warranty**: Provided "as is" without warranties of any kind. Use at your own risk; review security, performance, and compliance needs before production.
 
-For a guided adaptation, see [docs/Implementation-Guide.md](docs/Implementation-Guide.md).
+For a guided adaptation, see [docs/guides/implementation-guide.md](docs/guides/implementation-guide.md).
 
 ## What's Included (and What's Not)
 
@@ -270,7 +272,7 @@ Currently guarded:
 | `personalized-section`                                            | Wrapper that swaps child bloks based on visitor state.                                           | `src/components/Storyblok/PersonalizedSection/PersonalizedSection.tsx`         | Supports new/returning visitor branches with arbitrary child bloks.                                                       |
 | `site-config`                                                     | Story-level config for theme, header, footer.                                                    | `src/components/Storyblok/SiteConfig/SiteConfig.tsx`                           | Normalizes colors/fonts into CSS vars + Mantine theme; shows editor badge only in Visual Editor.                          |
 
-Additional Storyblok bloks can follow the same pattern. See [Component Implementation Guide](.docs/component-guide.md) for conventions, utilities, and checklist.
+Additional Storyblok bloks can follow the same pattern. See [Component Implementation Guide](docs/guides/components/component-guide.md) for conventions, utilities, and checklist.
 
 ### Layout & spacing system
 

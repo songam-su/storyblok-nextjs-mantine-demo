@@ -14,7 +14,7 @@ flowchart LR
   %% Core systems
   subgraph Client[Clients]
     U[Users]
-    E[Editors (Storyblok Visual Editor)]
+    E["Editors (Storyblok Visual Editor)"]
   end
 
   subgraph Next[Next.js App Router]

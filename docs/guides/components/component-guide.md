@@ -4,8 +4,8 @@ This guide covers conventions for implementing Storyblok **bloks** (components) 
 
 Related docs:
 
-- Project overview and setup: [`README.md`](../README.md)
-- Adapting to your own Storyblok space: [`docs/Implementation-Guide.md`](../docs/Implementation-Guide.md)
+- Project overview and setup: [`README.md`](../../README.md)
+- Adapting to your own Storyblok space: [`docs/guides/implementation-guide.md`](../implementation-guide.md)
 
 ## Render tree overview
 
@@ -28,20 +28,18 @@ app/(pages)/layout.tsx
 
 ```tsx
 <Paper component="section" className={classNames(styles.banner, 'edge-to-edge', backgroundClass)}>
-  <div className="edge-to-edge__inner">
-    {/* text/buttons constrained to 1400px + gutters */}
-  </div>
+  <div className="edge-to-edge__inner">{/* text/buttons constrained to 1400px + gutters */}</div>
 </Paper>
 ```
 
 ## Shared utilities
 
-| Helper | Location | Purpose |
-| --- | --- | --- |
-| `getStoryblokColorClass` | `src/lib/storyblok/utils/styles/color/storyblokColorUtils.ts` | Returns the SCSS module class that maps Storyblok color pickers to CSS custom properties. |
+| Helper                      | Location                                                         | Purpose                                                                                       |
+| --------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `getStoryblokColorClass`    | `src/lib/storyblok/utils/styles/color/storyblokColorUtils.ts`    | Returns the SCSS module class that maps Storyblok color pickers to CSS custom properties.     |
 | `getStoryblokAlignmentMeta` | `src/lib/storyblok/utils/styles/alignment/storyblokAlignment.ts` | Converts alignment select fields into `textAlign`, `justifyContent`, and `alignItems` values. |
-| `renderHeadlineSegments` | `src/components/Storyblok/utils/renderHeadlineSegments.tsx` | Builds highlighted headlines from the segment array editors manage. |
-| `renderSbRichText` | `src/components/Storyblok/utils/renderSbRichText.tsx` | Renders rich-text fields consistently with typography defaults. |
+| `renderHeadlineSegments`    | `src/components/Storyblok/utils/renderHeadlineSegments.tsx`      | Builds highlighted headlines from the segment array editors manage.                           |
+| `renderSbRichText`          | `src/components/Storyblok/utils/renderSbRichText.tsx`            | Renders rich-text fields consistently with typography defaults.                               |
 
 Whenever possible, rely on these helpers instead of duplicating alignment or color logic inside each blok.
 

@@ -31,6 +31,6 @@ We load Storyblok bloks through a lazy, typed registry instead of static imports
 
 ## Operational notes
 
-- Keep the registry aligned with generated types (`.docs/diagrams` and `storyblok-components.d.ts`).
+- Keep the registry aligned with generated types (`docs/diagrams` and `storyblok-components.d.ts`).
 - When adding a blok: define schema in Storyblok, pull types, add component, add registry entry, and (optionally) add a preload hint.
 - Preview/published both use the same registry; draft mode only changes fetch params, not component resolution.
