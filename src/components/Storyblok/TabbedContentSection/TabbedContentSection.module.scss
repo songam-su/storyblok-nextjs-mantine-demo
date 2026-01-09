@@ -21,16 +21,28 @@
   margin-top: 1.5rem;
 
   :global(.mantine-Tabs-list) {
-    gap: 0.5rem;
+    gap: 12px;
     display: flex;
     flex-wrap: wrap;
   }
 
   :global(.mantine-Tabs-tab) {
-    border: 2px solid transparent;
+    border: 1px solid transparent;
+    border-radius: var(--mantine-radius-sm);
+    padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
     background: var(--sb-surface, #fff);
     color: var(--sb-text, #111);
+    font-weight: 600;
+    font-size: var(--mantine-font-size-lg);
+    line-height: 1.2;
     transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+  }
+
+  // Mantine may wrap tab text in inner elements; ensure typography inherits consistently.
+  :global(.mantine-Tabs-tab) :is(span, .mantine-Text-root) {
+    font-weight: inherit;
+    font-size: inherit;
+    line-height: inherit;
   }
 
   :global(.mantine-Tabs-tab:not([data-active='true']):hover) {
@@ -41,7 +53,6 @@
       var(--sb-border, rgba(0, 0, 0, 0.12))
     );
     // box-shadow: 0 10px 22px rgba(2, 6, 23, 0.12);
-    border-width:2px;
   }
 
   :global(.mantine-Tabs-tab[data-active='true']) {

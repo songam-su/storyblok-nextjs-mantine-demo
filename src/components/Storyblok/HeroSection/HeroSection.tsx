@@ -1,15 +1,15 @@
 'use client';
 
-import classNames from 'classnames';
-import { Group, Stack, Text, Title } from '@mantine/core';
-import { storyblokEditable } from '@storyblok/react';
 import Button from '@/components/Storyblok/Button/Button';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type { HeroSection as HeroSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import getSbImageData from '@/lib/storyblok/utils/image';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
-import type { HeroSection as HeroSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import { Group, Stack, Text, Title } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
+import classNames from 'classnames';
 import styles from './HeroSection.module.scss';
 
 const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
@@ -23,7 +23,7 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
   const imageData = getSbImageData(blok.image || null);
   const hasImage = Boolean(imageData?.src);
   const imageObjectFit = blok.preserve_image_aspect_ratio ? 'contain' : 'cover';
-  const stackedImageObjectFit = isStackedLayout ? 'cover' : imageObjectFit;
+  const stackedImageObjectFit = imageObjectFit;
 
   const showDecoration = Boolean(blok.image_decoration && accentClass);
 
