@@ -1,29 +1,41 @@
-# Storyblok Component Resolution & Rendering Chain
+# Component Registry
 
-Purpose: show how a fetched Storyblok story becomes rendered React components through the lazy registry, Suspense, and edit attributes.
-
-Notes
-
-- Server fetches story JSON; StoryblokRenderer walks `content.body`.
-- StoryblokComponentRenderer resolves blok type from lazy registry, dynamically imports the component, wraps with Suspense + ErrorBoundary.
-- storyblokEditable attributes are applied in preview/visual editor to enable click-to-edit.
-- Mantine theme + SiteConfig vars already applied by providers/layout.
+Purpose: show how Storyblok bloks are resolved to React components via the lazy registry, then rendered using Mantine and theme tokens.
 
 ```mermaid
-sequenceDiagram
-  participant Route as Route (page.tsx)
-  participant Renderer as StoryblokRenderer
-  participant CompR as StoryblokComponentRenderer
-  participant Registry as Lazy Registry
-  participant BlokComp as Blok Component
+flowchart TB
+%% Component registry: Storyblok blok -> registry -> React component -> Mantine UI
 
-  Route->>Renderer: story.content.body[]
-  loop for each blok
-    Renderer->>CompR: render blok
-    CompR->>Registry: resolve blok.component
-    Registry-->>CompR: dynamic import (lazy)
-    CompR->>BlokComp: render within Suspense + ErrorBoundary
-    BlokComp-->>CompR: React tree w/ storyblokEditable attrs (preview only)
-    CompR-->>Renderer: rendered blok
-  end
+SBJSON["Storyblok story JSON<br/>(story.content + body bloks)"]
+
+ROUTE["Route (page.tsx)<br/>fetchStory -> story"]
+RENDERER["StoryblokRenderer<br/>(preload root + first body bloks)"]
+COMP_RENDERER["StoryblokComponentRenderer<br/>(Suspense + ErrorBoundary)<br/>+ storyblokEditable in preview"]
+
+REGISTRY["Component registry<br/>(loaders.ts + lazy.tsx)"]
+
+BLOK["Blok { component: string, _uid, props... }"]
+
+REACT_COMP["React component<br/>(src/components/Storyblok/*)"]
+MANTINE["Mantine primitives<br/>(Button, Paper, Grid, etc.)"]
+THEME["Theme layer<br/>(SiteConfigProvider -> CSS vars + Mantine theme)"]
+
+%% Flow
+SBJSON --> ROUTE --> RENDERER
+RENDERER --> BLOK --> COMP_RENDERER
+
+COMP_RENDERER -->|resolve blok.component| REGISTRY
+REGISTRY -->|React.lazy dynamic import| REACT_COMP
+
+THEME --> REACT_COMP
+REACT_COMP --> MANTINE
+
+%% Notes as nodes
+NOTE1["Goal: keep bundle lean<br/>(lazy load bloks)"]
+NOTE2["Goal: keep editor usable<br/>(editable attrs + bridge)"]
+NOTE3["Goal: keep UI consistent<br/>(theme tokens applied everywhere)"]
+
+REGISTRY --- NOTE1
+COMP_RENDERER --- NOTE2
+THEME --- NOTE3
 ```

@@ -1,60 +1,76 @@
-# Architecture — Storyblok + Next.js (App Router) + Mantine
+# SNMUI Architecture
 
-End-to-end view of content flow, runtime paths, theming, and freshness.
-
-Key ideas
-
-- Storyblok as the source of truth; Visual Editor for preview with live Bridge events.
-- Next.js App Router segments for published and preview, sharing providers (SiteConfig, Mantine, editor context).
-- CDN/Edge for ISR-cached published traffic; preview bypasses cache.
-- Webhooks to invalidate ISR; site-config drives chrome/theme tokens.
+High-level view of the Storyblok + Next.js (App Router) + Mantine UI framework.
 
 ```mermaid
 flowchart TB
-  subgraph CMS
-    SB[Storyblok CDN/API]
-    VE[Storyblok Visual Editor]
-    CFG["site-config story<br/>(theme, header/footer, nav)"]
-  end
+%% SNMUI = Storyblok + Next.js + Mantine UI
 
-  subgraph Runtime
-    APP["Next.js App Router<br/>(layouts + providers)"]
-    RENDER["Storyblok Renderer<br/>(lazy registry + Suspense/ErrorBoundary)"]
-    THEME["Mantine Theme + CSS vars<br/>from site-config"]
-    BRIDGE["Storyblok Bridge<br/>(live updates in preview)"]
-  end
+subgraph SB[Storyblok]
+SB_CDN[(CDN Content API)]
+SB_VE[(Visual Editor + Bridge)]
+SB_WH[(Webhooks: publish/unpublish/move)]
+SB_MODELS["Component schemas + content models<br/>(demo space template)"]
+end
 
-  subgraph Delivery
-    CDN["CDN/Edge<br/>ISR cache"]
-    USERS[End Users]
-    EDITORS[Editors (preview iframe)]
-  end
+subgraph NX["Next.js App<br/>(App Router)"]
+NX_PROXY["Request proxy / rewrite<br/>(src/proxy.ts)"]
 
-  %% Published flow
-  USERS --> CDN
-  CDN -->|hit| USERS
-  CDN -->|miss| APP
-  APP --> SB
-  SB --> APP
-  APP --> RENDER
-  RENDER --> CDN
-  CDN --> USERS
+NX_PUB["Published routes<br/>(app/(pages)/...)<br/>ISR/static"]
+NX_PREV["Preview routes<br/>(app/(preview)/sb-preview/...)<br/>draft + bridge"]
 
-  %% Preview flow
-  VE --> EDITORS
-  EDITORS --> APP
-  APP -->|draft| SB
-  SB --> APP
-  APP --> RENDER
-  BRIDGE -. live updates .-> APP
+NX_API_PREVIEW["GET /api/preview<br/>(draftMode enable + redirect)"]
+NX_API_EXIT["GET /api/exit-preview<br/>(draftMode disable)"]
 
-  %% Theming / chrome
-  SB --> CFG
-  CFG --> THEME
-  THEME --> APP
-  THEME --> RENDER
+NX_API_REVALIDATE["POST /api/webhooks/revalidate<br/>(HMAC + timestamp -> revalidatePath)"]
 
-  %% Webhooks / freshness
-  SB -. publish/update webhook .-> WH[/api/webhooks/revalidate]
-  WH -. revalidatePath .-> CDN
+NX_FETCH["Server content layer<br/>(fetchStory + relations/link normalization)"]
+NX_RENDER["StoryblokRenderer<br/>(registry + lazy loading)"]
+end
+
+subgraph UI[Mantine UI Layer]
+M_THEME["Site theme + tokens<br/>(SiteConfigProvider -> CSS vars + Mantine theme)"]
+M_COMP["Mantine components<br/>(Button, Paper, Grid, etc.)"]
+end
+
+subgraph CLIENT[Browser]
+USER[End user]
+EDITOR["Editor iframe<br/>(Storyblok)"]
+end
+
+%% Primary flows
+USER --> NX_PROXY
+EDITOR --> NX_PROXY
+
+%% Editor detection -> preview route
+NX_PROXY --> NX_PUB
+NX_PROXY --> NX_PREV
+
+%% Preview control
+USER --> NX_API_PREVIEW --> NX_PREV
+USER --> NX_API_EXIT --> NX_PUB
+
+%% Data fetches
+NX_PUB --> NX_FETCH --> SB_CDN
+NX_PREV --> NX_FETCH --> SB_CDN
+
+%% Rendering
+NX_PUB --> NX_RENDER --> M_COMP
+NX_PREV --> NX_RENDER --> M_COMP
+M_THEME --> NX_RENDER
+
+%% Live updates in Visual Editor
+SB_VE -.-> NX_PREV
+
+%% Freshness
+SB_WH --> NX_API_REVALIDATE --> NX_PUB
+
+%% Feature annotations (as lightweight nodes)
+F1["Feature: Published stays cache-friendly<br/>(ISR/static + on-demand revalidate)"]
+F2["Feature: Preview stays editor-friendly<br/>(draft + bridge + no-store)"]
+F3["Feature: UI consistency<br/>(theme + chrome driven by site-config)"]
+
+NX_PUB --- F1
+NX_PREV --- F2
+M_THEME --- F3
 ```

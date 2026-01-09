@@ -10,7 +10,7 @@ Notes
 flowchart TB
   SC["site-config<br/>(theme, header, footer, nav items)"]
   Page["page story<br/>(default-page)"]
-  Body[body (bloks array)]
+  Body["body<br/>(bloks array)"]
 
   Page --> Body
   SC --> Header["header nav<br/>(nav-item list)"]

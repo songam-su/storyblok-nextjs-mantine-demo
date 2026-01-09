@@ -16,6 +16,13 @@ This README focuses on architecture, flows, and extension patterns for the Story
 - System context: see [.docs/diagrams/system-context.md](.docs/diagrams/system-context.md).
 - Runtime topology (published vs preview): see [.docs/diagrams/runtime-topology.md](.docs/diagrams/runtime-topology.md).
 
+### Viewing Mermaid diagrams in VS Code
+
+These diagrams are authored as Mermaid fenced blocks (e.g. ` ```mermaid `). To view them rendered (not as plain text) in VS Code:
+
+1. Install the recommended extension `bierner.markdown-mermaid` (it’s in `.vscode/extensions.json`).
+2. Open a diagram Markdown file and run **Markdown: Open Preview to the Side**.
+
 ## Rendering Pipeline
 
 - Blok resolution: Storyblok JSON → lazy registry → Suspense + ErrorBoundary → editable attributes in preview. Diagram: [.docs/diagrams/component-resolution.md](.docs/diagrams/component-resolution.md).

@@ -1,35 +1,51 @@
-# Runtime Topology — Published vs Preview
+# Published vs Preview — Request Flow
 
-Purpose: visualize runtime components (Next.js App Router, CDN/edge cache) and how published vs preview traffic flow.
-
-Notes
-
-- Published: ISR (~10 min) on CDN/edge; Storyblok CDN/API backs data fetches.
-- Preview: Visual Editor iframe + preview cookie; no ISR, always fresh draft fetch.
-- Webhooks invalidate published cache via /api/webhooks/revalidate.
+Purpose: show the split between published (ISR/static) and preview (draft + bridge), including routing and cache invalidation.
 
 ```mermaid
-flowchart TB
-  subgraph Published Flow
-    U[End User] --> CDN["CDN/Edge<br/>ISR cache"]
-    CDN -- hit --> U
-    CDN -- miss --> NX["Next.js App<br/>App Router"]
-    NX --> SB[Storyblok CDN/API]
-    SB --> NX
-    NX --> CDN
-    NX --> U
-  end
+flowchart LR
+%% Focus: show the split between published (ISR/static) and preview (draft + bridge)
 
-  subgraph Preview Flow
-    VE["Storyblok Visual Editor<br/>iframe"] --> PR["Preview Route<br/>/api/preview sets cookie"]
-    PR --> SB2["Storyblok CDN/API<br/>(draft mode)"]
-    SB2 --> PR
-    VE -. Storyblok Bridge events .-> PR
-  end
+subgraph IN[Incoming Request]
+RQ[Browser request]
+end
 
-  SB -. publish/update webhook .-> WH["/api/webhooks/revalidate<br/>HMAC + timestamp"]
-  WH -. calls .-> RV[revalidatePath(slugs)]
+subgraph ROUTING[Routing]
+PROXY["Proxy rewrite<br/>(src/proxy.ts)"]
+DETECT["Detect editor context<br/>(_storyblok/_storyblok_tk OR /sb-preview)"]
+end
 
-  SB -. fetch .-> CFG["site-config story<br/>header/footer/theme"]
-  CFG -. vars .-> NX
+subgraph PUB["Published Path<br/>(performance-first)"]
+PUB_ROUTE["Route: app/(pages)/...<br/>force-static + revalidate window"]
+PUB_FETCH["fetchStory(slug, 'published')<br/>force-cache"]
+PUB_RENDER["Render with StoryblokRenderer<br/>(bridge OFF)"]
+ISR[(ISR/Static cache)]
+end
+
+subgraph PREV["Preview Path<br/>(editor-first)"]
+PREV_ROUTE["Route: app/(preview)/sb-preview/...<br/>force-dynamic"]
+PREV_FETCH["fetchStory(slug, 'draft')<br/>no-store + cv"]
+PREV_RENDER["Render with StoryblokRenderer<br/>(bridge ON)"]
+VE[(Storyblok Visual Editor)]
+end
+
+subgraph HOOKS[Freshness]
+WH["Storyblok webhook event"]
+REVALIDATE["POST /api/webhooks/revalidate<br/>verify signature + revalidatePath"]
+end
+
+RQ --> PROXY --> DETECT
+
+DETECT -->|published traffic| PUB_ROUTE
+DETECT -->|editor traffic| PREV_ROUTE
+
+%% Published
+PUB_ROUTE --> PUB_FETCH --> PUB_RENDER --> ISR
+
+%% Preview
+PREV_ROUTE --> PREV_FETCH --> PREV_RENDER
+VE -.-> PREV_RENDER
+
+%% Webhook
+WH --> REVALIDATE --> ISR
 ```

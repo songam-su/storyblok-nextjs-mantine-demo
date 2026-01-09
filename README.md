@@ -103,6 +103,17 @@ This repo includes workspace defaults to keep formatting consistent:
 
 Recommended extensions are listed in `.vscode/extensions.json`.
 
+### Mermaid diagrams (VS Code)
+
+Many docs in this repo include Mermaid diagrams (fenced blocks like ` ```mermaid `).
+
+To render them in VS Code:
+
+- Install the recommended extension `bierner.markdown-mermaid` (listed in `.vscode/extensions.json`).
+- Open a Markdown file and run **Markdown: Open Preview to the Side**.
+
+Note: the built-in Markdown preview may show Mermaid blocks as plain text unless you have a Mermaid-capable Markdown preview extension installed.
+
 ## Enterprise Architecture
 
 This repo intentionally differs from the “standard” `@storyblok/react` approach in a few key places to optimize for:
