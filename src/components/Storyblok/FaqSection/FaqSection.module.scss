@@ -13,6 +13,15 @@
   margin: 0 auto;
 }
 
+.title {
+  letter-spacing: -0.01em;
+
+  // Mantine Title sizing comes from CSS variables; set them here so the heading reads more like a CTA.
+  --title-fw: 800 !important;
+  --title-fz: clamp(1.9rem, 3.2vw, 2.35rem) !important;
+  --title-lh: 1.12 !important;
+}
+
 .lead {
   color: color-mix(in srgb, var(--sb-text, #111) 70%, transparent);
   font-size: 1.05rem;
@@ -38,8 +47,46 @@
     font-size: 1.1rem;
   }
 
+  // Mantine renders the question text inside an inner label span.
+  // Style it directly so it doesn't look "thin" even when Mantine changes control styles.
+  :global(.mantine-Accordion-label) {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  // When an entry is open, give the question a subtle accent tint.
+  :global(.mantine-Accordion-item[data-active='true'] .mantine-Accordion-label) {
+    color: color-mix(
+      in srgb,
+      var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 22%,
+      var(--sb-text, #111)
+    );
+  }
+
+  // When an entry is open, keep a subtle tint on the header even when not hovered.
+  :global(.mantine-Accordion-item[data-active='true'] .mantine-Accordion-control) {
+    background: color-mix(
+      in srgb,
+      var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 8%,
+      var(--sb-surface, #fff)
+    );
+  }
+
+  // Add a more visually appealing hover state for questions (open or closed).
+  :global(.mantine-Accordion-item .mantine-Accordion-control:hover) {
+    background: color-mix(
+      in srgb,
+      var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 16%,
+      var(--sb-surface, #fff)
+    );
+  }
+
   :global(.mantine-Accordion-panel) {
-    color: color-mix(in srgb, var(--sb-text, #111) 75%, transparent);
-    padding-top: 0;
+    color: var(--sb-text, #111);
+  }
+
+  :global(.mantine-Accordion-content) {
+    padding-top: var(--mantine-spacing-sm) !important;
+    padding-bottom: var(--mantine-spacing-sm) !important;
   }
 }

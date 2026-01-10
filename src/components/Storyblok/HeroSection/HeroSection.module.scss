@@ -99,6 +99,15 @@
   gap: 12px;
 }
 
+// Hero-specific CTA override:
+// In the provided home-page example, the secondary CTA is configured as bg='white' + text='primary-dark'.
+// Force that combination to render as a bubblegum CTA in the Hero only.
+.actions :global([data-sb-bg-color='white'][data-sb-text-color='primary-dark']) {
+  --sb-color-bg: var(--mantine-color-bubblegumPink-6) !important;
+  --sb-color-bg-hover: var(--mantine-color-bubblegumPink-5) !important;
+  --sb-color-text: var(--mantine-color-white) !important;
+}
+
 
 .hasBackgroundImage {
   background-image: var(--sb-hero-image, none);
@@ -125,11 +134,6 @@
   background: color-mix(in srgb, var(--sb-surface, #ffffff) 94%, transparent);
   box-shadow: 0 12px 32px rgba(2, 6, 23, 0.14);
   backdrop-filter: blur(6px);
-
-  --sb-hero-cta-bg: var(--mantine-color-bubblegumPink-6);
-  --sb-hero-cta-bg-hover: var(--mantine-color-bubblegumPink-5);
-  --sb-color-bg: var(--sb-hero-cta-bg);
-  --sb-color-bg-hover: var(--sb-hero-cta-bg-hover);
 }
 
 .contentBoxStacked {

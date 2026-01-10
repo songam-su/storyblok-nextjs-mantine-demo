@@ -13,9 +13,17 @@
 }
 
 .answer {
-  color: color-mix(in srgb, var(--sb-text, #111) 75%, transparent);
+  color: color-mix(in srgb, var(--sb-text, #111) 80%, transparent);
   font-size: 1rem;
   line-height: 1.6;
+
+  :global(.sb-richtext) {
+    color: inherit !important;
+  }
+
+  :global(.sb-richtext) :is(p, span, li, a, strong, em) {
+    color: inherit !important;
+  }
 
   :global(p + p) {
     margin-top: var(--mantine-spacing-sm);

@@ -52,13 +52,20 @@
   :global(.mantine-Button-root) {
     background: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
     color: #fff;
-    border: 1px solid var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
+    border: 0;
     box-shadow: 0 10px 20px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
   }
 
   :global(.mantine-Button-root:hover) {
     background: color-mix(in srgb, var(--sb-accent, #1d63c5) 88%, #ffffff);
-    border-color: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
+    border-color: transparent;
+  }
+
+  :global(.mantine-Button-root:focus),
+  :global(.mantine-Button-root:focus-visible) {
+    outline: none;
+    border-color: transparent;
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
   }
 }
 
