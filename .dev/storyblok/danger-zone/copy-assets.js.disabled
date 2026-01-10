@@ -1,0 +1,351 @@
+import axios from 'axios';
+import crypto from 'crypto';
+import FormData from 'form-data';
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+
+/**
+ * Full-control Asset Copier for Storyblok:
+ * - Lists asset folders + assets from "assetOrigin" space (e.g., original demo)
+ * - Downloads binaries via the CDN filename
+ * - Uploads to TARGET via the 3-step Management API flow (sign → S3 → finish)
+ * - Updates asset metadata and rewrites asset references in TARGET stories
+ *
+ * References:
+ * - Region-specific Management API v1 base URLs (US/EU/CA/AU/CN)  [Docs]
+ * - Upload workflow: signed response → S3 multipart/form-data → finish_upload  [Docs]
+ * - Asset Folders & Assets endpoints (list/create/update)  [Docs]
+ * - Update Story endpoint for reference rewrite  [Docs]
+ */
+
+// ---------- Region-aware base URL (Management API v1) ----------
+function regionBase(region) {
+  switch ((region || '').toLowerCase()) {
+    case 'us':
+      return 'https://api-us.storyblok.com/v1';
+    case 'eu':
+      return 'https://mapi.storyblok.com/v1';
+    case 'ca':
+      return 'https://api-ca.storyblok.com/v1';
+    case 'ap':
+      return 'https://api-ap.storyblok.com/v1';
+    case 'cn':
+      return 'https://app.storyblokchina.cn/v1';
+    default:
+      throw new Error(`Unsupported REGION: ${region}`);
+  }
+}
+
+// ---------- Retry helper for 429/5xx ----------
+async function withRetry(fn, { tries = 6, baseMs = 500 } = {}) {
+  let attempt = 0;
+  while (true) {
+    try {
+      return await fn();
+    } catch (err) {
+      const status = err?.response?.status;
+      if (attempt + 1 >= tries || !(status === 429 || (status >= 500 && status <= 599))) {
+        throw err;
+      }
+      const wait = baseMs * Math.pow(2, attempt);
+      await new Promise((r) => setTimeout(r, wait));
+      attempt++;
+    }
+  }
+}
+
+// ---------- Public factory ----------
+export function createAssetCopier({ source, target, assetOrigin, behavior }) {
+  // Content source client (not used for assets, but kept for consistency)
+  const src = axios.create({
+    baseURL: regionBase(source.region),
+    headers: { Authorization: source.token, 'Content-Type': 'application/json' },
+  });
+
+  // Target client (uploads + story updates happen here)
+  const tgt = axios.create({
+    baseURL: regionBase(target.region),
+    headers: { Authorization: target.token, 'Content-Type': 'application/json' },
+  });
+
+  // Asset origin client (lists folders/assets from demo or another space)
+  const origin = axios.create({
+    baseURL: regionBase(assetOrigin?.region || source.region),
+    headers: { Authorization: assetOrigin?.token || source.token, 'Content-Type': 'application/json' },
+  });
+  const originSpaceId = assetOrigin?.id || source.id;
+
+  // ---------- Asset folders (LIST from origin, CREATE in target) ----------
+  async function listOriginAssetFolders() {
+    const res = await withRetry(() => origin.get(`/spaces/${originSpaceId}/asset_folders`));
+    return res.data?.asset_folders || res.data || [];
+  }
+
+  async function listTargetAssetFolders() {
+    const res = await withRetry(() => tgt.get(`/spaces/${target.id}/asset_folders`));
+    return res.data?.asset_folders || res.data || [];
+  }
+
+  async function createTargetAssetFolder(payload) {
+    const res = await withRetry(() => tgt.post(`/spaces/${target.id}/asset_folders`, { asset_folder: payload }));
+    return res.data?.asset_folder || res.data;
+  }
+
+  async function ensureTargetAssetFolders() {
+    const srcFolders = await listOriginAssetFolders();
+    const tgtFolders = await listTargetAssetFolders();
+    const byNameParent = new Map(tgtFolders.map((f) => [`${f.parent_id}:${f.name}`, f]));
+    const idMap = new Map(); // originFolderId -> targetFolderId
+
+    // Shallow → deep
+    const ordered = [...srcFolders].sort((a, b) => a.parent_id - b.parent_id);
+    for (const f of ordered) {
+      const key = `${f.parent_id}:${f.name}`;
+      const exists = byNameParent.get(key);
+      if (exists) {
+        idMap.set(f.id, exists.id);
+        continue;
+      }
+
+      if (behavior.dryRun) {
+        idMap.set(f.id, f.id);
+        console.log(`[DRY][ASSET FOLDER] Would create: ${f.name} (parent=${f.parent_id})`);
+        continue;
+      }
+
+      const created = await createTargetAssetFolder({ name: f.name, parent_id: f.parent_id || 0 });
+      idMap.set(f.id, created.id);
+      byNameParent.set(key, created);
+      console.log(`[ASSET FOLDER] Created: ${f.name}`);
+    }
+    return idMap;
+  }
+
+  // ---------- Assets (LIST from origin, DOWNLOAD via CDN, UPLOAD to target) ----------
+  async function listOriginAssetsPaged() {
+    const out = [];
+    let page = 1;
+    const perPage = behavior.perPage;
+    while (true) {
+      const res = await withRetry(() =>
+        origin.get(`/spaces/${originSpaceId}/assets`, { params: { page, per_page: perPage } })
+      );
+      const arr = res.data?.assets || res.data || [];
+      if (arr.length === 0) break;
+      out.push(...arr);
+      page++;
+    }
+    return out;
+  }
+
+  function ensureDir(dir) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
+  async function downloadAssetBinary(filenameUrl, destDir) {
+    ensureDir(destDir);
+    const hash = crypto.createHash('sha1').update(filenameUrl).digest('hex');
+    const ext = path.extname(filenameUrl.split('?')[0]) || '';
+    const local = path.join(destDir, `${hash}${ext}`);
+
+    if (fs.existsSync(local)) return local;
+
+    const writer = fs.createWriteStream(local);
+    const res = await withRetry(() => axios.get(filenameUrl, { responseType: 'stream' }));
+    await new Promise((resolve, reject) => {
+      res.data.pipe(writer);
+      writer.on('finish', resolve);
+      writer.on('error', reject);
+    });
+
+    return local;
+  }
+
+  // --- Asset upload: (1) sign/init -> (2) S3 multipart -> (3) finish ---
+  async function initAssetUpload({ filename, contentType, size, assetFolderId }) {
+    const payload = {
+      filename,
+      size,
+      content_type: contentType,
+      asset_folder_id: assetFolderId || null,
+      validate_upload: behavior.validateUpload ? 1 : 0,
+    };
+    const res = await withRetry(() => tgt.post(`/spaces/${target.id}/assets`, payload));
+    return res.data; // { id, post_url, fields:{...}, ... }
+  }
+
+  async function uploadToS3(signed, localPath) {
+    const form = new FormData();
+    for (const [k, v] of Object.entries(signed.fields || {})) form.append(k, v);
+    form.append('file', fs.createReadStream(localPath));
+    const res = await withRetry(() =>
+      axios.post(signed.post_url, form, {
+        headers: form.getHeaders(),
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+      })
+    );
+    return res.status;
+  }
+
+  async function finishAssetUpload(id) {
+    const res = await withRetry(() => tgt.get(`/spaces/${target.id}/assets/${id}/finish_upload`));
+    return res.status;
+  }
+
+  async function updateTargetAsset(id, patch) {
+    const res = await withRetry(() => tgt.put(`/spaces/${target.id}/assets/${id}`, { asset: patch }));
+    return res.data?.asset || res.data;
+  }
+
+  // ---------- Story rewrite in TARGET ----------
+  function rewriteAssetsInContent(content, { idMap, filenameMap }) {
+    if (!content || typeof content !== 'object') return content;
+
+    const seen = new WeakSet();
+    const idLookup = new Map(Object.entries(idMap || {}));
+    const fnLookup = new Map(Object.entries(filenameMap || {}));
+
+    const walk = (node) => {
+      if (!node || typeof node !== 'object') return;
+      if (seen.has(node)) return;
+      seen.add(node);
+
+      if (Array.isArray(node)) {
+        for (let i = 0; i < node.length; i++) {
+          const v = node[i];
+          if (typeof v === 'number' && idLookup.has(String(v))) node[i] = Number(idLookup.get(String(v)));
+          else if (typeof v === 'string' && fnLookup.has(v)) node[i] = fnLookup.get(v);
+          else walk(v);
+        }
+      } else {
+        for (const [k, v] of Object.entries(node)) {
+          if (typeof v === 'number' && idLookup.has(String(v))) node[k] = Number(idLookup.get(String(v)));
+          else if (typeof v === 'string' && fnLookup.has(v)) node[k] = fnLookup.get(v);
+          else walk(v);
+        }
+      }
+    };
+
+    const clone = JSON.parse(JSON.stringify(content));
+    walk(clone);
+    return clone;
+  }
+
+  async function listTargetStoriesPaged() {
+    const out = [];
+    let page = 1;
+    const perPage = behavior.perPage;
+    while (true) {
+      const res = await withRetry(() =>
+        tgt.get(`/spaces/${target.id}/stories`, { params: { page, per_page: perPage } })
+      );
+      const arr = res.data?.stories || res.data || [];
+      if (arr.length === 0) break;
+      out.push(...arr);
+      page++;
+    }
+    return out;
+  }
+
+  async function getTargetStoryFull(id) {
+    const res = await withRetry(() => tgt.get(`/spaces/${target.id}/stories/${id}`));
+    return res.data?.story || res.data;
+  }
+
+  async function updateTargetStory(id, payload) {
+    const res = await withRetry(() => tgt.put(`/spaces/${target.id}/stories/${id}`, { story: payload, publish: 0 }));
+    return res.data?.story || res.data;
+  }
+
+  // ---------- Public: copyAssets ----------
+  async function copyAssets() {
+    console.log(`Assets: start | DRY_RUN=${behavior.dryRun}`);
+    const tempRoot = behavior.downloadDir || path.join(os.tmpdir(), 'storyblok-assets');
+    fs.mkdirSync(tempRoot, { recursive: true });
+
+    // Folders
+    const folderIdMap = await ensureTargetAssetFolders();
+
+    // Assets
+    const originAssets = await listOriginAssetsPaged();
+    console.log(`Assets: origin has ${originAssets.length} assets`);
+
+    const idMap = {}; // origin asset id -> target asset id
+    const filenameMap = {}; // origin filename -> target filename
+
+    // Concurrency
+    const queue = [...originAssets];
+    const workers = Math.max(1, Number(behavior.concurrency || 2));
+
+    async function worker() {
+      while (queue.length > 0) {
+        const a = queue.shift();
+        const local = await downloadAssetBinary(a.filename, tempRoot);
+        const stat = fs.statSync(local);
+
+        if (behavior.dryRun) {
+          console.log(`[DRY][ASSET] Would upload: ${a.filename}`);
+          idMap[a.id] = a.id;
+          filenameMap[a.filename] = a.filename;
+          continue;
+        }
+
+        // 1) sign/init
+        const signed = await initAssetUpload({
+          filename: path.basename(a.filename.split('?')[0]),
+          contentType: a.content_type || 'application/octet-stream',
+          size: stat.size,
+          assetFolderId: folderIdMap.get(a.asset_folder_id) || null,
+        });
+
+        // 2) upload to S3
+        await uploadToS3(signed, local);
+
+        // 3) finish (if validation enabled)
+        if (behavior.validateUpload) await finishAssetUpload(signed.id);
+
+        // Patch metadata (title, alt, tags, folder)
+        const patched = await updateTargetAsset(signed.id, {
+          title: a.title ?? null,
+          alt: a.alt ?? null,
+          asset_folder_id: folderIdMap.get(a.asset_folder_id) || null,
+          tags: a.tag_list || [],
+        });
+
+        idMap[a.id] = patched.id;
+        filenameMap[a.filename] = patched.filename;
+        console.log(`[ASSET] Uploaded: ${a.filename} -> ${patched.filename}`);
+      }
+    }
+
+    await Promise.all(Array.from({ length: workers }, worker));
+
+    // Rewrite references in TARGET stories
+    console.log('Assets: rewriting references in target stories...');
+    const tgtStoriesLight = await listTargetStoriesPaged();
+    for (const s of tgtStoriesLight) {
+      const full = await getTargetStoryFull(s.id);
+      if (full.is_folder) continue;
+
+      const rewritten = rewriteAssetsInContent(full.content, { idMap, filenameMap });
+      const changed = JSON.stringify(rewritten) !== JSON.stringify(full.content);
+      if (!changed) continue;
+
+      await updateTargetStory(full.id, {
+        name: full.name,
+        slug: full.slug,
+        parent_id: full.parent_id ?? 0,
+        is_startpage: !!full.is_startpage,
+        content: rewritten,
+      });
+      console.log(`[ASSET REF] Updated story: ${full.full_slug}`);
+    }
+
+    console.log('Assets: complete.');
+    return { idMap, filenameMap };
+  }
+
+  return { copyAssets };
+}
