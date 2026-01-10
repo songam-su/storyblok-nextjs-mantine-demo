@@ -1,0 +1,300 @@
+import axios from 'axios';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Region-aware Management API base URL (v1)
+const regionBase = (region) => {
+  switch ((region || '').toLowerCase()) {
+    case 'us':
+      return 'https://api-us.storyblok.com/v1';
+    case 'eu':
+      return 'https://mapi.storyblok.com/v1';
+    case 'ca':
+      return 'https://api-ca.storyblok.com/v1';
+    case 'ap':
+      return 'https://api-ap.storyblok.com/v1';
+    case 'cn':
+      return 'https://app.storyblokchina.cn/v1';
+    default:
+      throw new Error(`Unsupported REGION: ${region}`);
+  }
+};
+
+const cfg = {
+  source: {
+    id: process.env.SOURCE_SPACE_ID,
+    region: process.env.SOURCE_REGION,
+    token: process.env.SOURCE_TOKEN,
+  },
+  target: {
+    id: process.env.TARGET_SPACE_ID,
+    region: process.env.TARGET_REGION,
+    token: process.env.TARGET_TOKEN,
+  },
+  behavior: {
+    dryRun: String(process.env.DRY_RUN || 'false').toLowerCase() === 'true',
+    publishMode: process.env.PUBLISH_MODE || 'published-with-changes', // none|published-with-changes|all
+    perPage: 100,
+  },
+};
+
+const src = axios.create({
+  baseURL: regionBase(cfg.source.region),
+  headers: { Authorization: cfg.source.token },
+});
+const tgt = axios.create({
+  baseURL: regionBase(cfg.target.region),
+  headers: { Authorization: cfg.target.token },
+});
+
+//preflight check
+
+// --- add near your other helpers ---
+
+async function listComponents(client, spaceId) {
+  const res = await withRetry(() => client.get(`/spaces/${spaceId}/components`));
+  return res.data?.components || res.data || [];
+}
+
+async function updateComponentInTarget(componentId, patch) {
+  // PUT /v1/spaces/:space_id/components/:id  { component: { ... } }
+  const res = await withRetry(() =>
+    tgt.put(`/spaces/${cfg.target.id}/components/${componentId}`, { component: patch })
+  );
+  return res.data?.component || res.data;
+}
+
+// Build the set of root component names used at the top-level of stories in SOURCE
+async function collectRootComponentNamesFromStories() {
+  const names = new Set();
+  let page = 1;
+  while (true) {
+    const res = await withRetry(() =>
+      src.get(`/spaces/${cfg.source.id}/stories`, { params: { page, per_page: cfg.behavior.perPage } })
+    ); // Management API "Retrieve Multiple Stories" (paged) [5](https://github.com/jungvonmatt/storyblok-migrations)
+
+    const list = res.data?.stories || [];
+    if (list.length === 0) break;
+
+    // Fetch full stories to get full content (root component name)
+    for (const s of list) {
+      const full = await withRetry(() => src.get(`/spaces/${cfg.source.id}/stories/${s.id}`)); // "Retrieve One Story" [6](https://npm.io/package/storyblok-backup)
+      const rootName = full?.data?.story?.content?.component;
+      if (typeof rootName === 'string' && rootName.trim()) names.add(rootName.trim());
+    }
+    page++;
+  }
+  return names;
+}
+
+async function ensureRootComponentsForTopLevelStories() {
+  console.log('Preflight: ensuring root components in TARGET match SOURCE usage...');
+
+  const [targetComponents, rootNames] = await Promise.all([
+    listComponents(tgt, cfg.target.id),
+    collectRootComponentNamesFromStories(),
+  ]);
+
+  const targetByName = new Map(targetComponents.map((c) => [c.name, c]));
+  let updated = 0;
+
+  for (const name of rootNames) {
+    const tComp = targetByName.get(name);
+    if (!tComp) {
+      // If the component is missing entirely, your earlier CLI push should have created it.
+      // If you want, you can auto-create here; for now we warn:
+      console.warn(`⚠ Root component "${name}" not found in target; ensure components were pushed.`);
+      continue;
+    }
+    if (!tComp.is_root) {
+      if (cfg.behavior.dryRun) {
+        console.log(`[DRY] Would set is_root=true for component "${name}"`);
+      } else {
+        await updateComponentInTarget(tComp.id, { is_root: true });
+        console.log(`Set is_root=true for component "${name}"`);
+      }
+      updated++;
+    }
+  }
+  console.log(`Preflight done. Root flags updated: ${updated}`);
+}
+await ensureRootComponentsForTopLevelStories();
+
+// Retrying helper for 429/5xx
+async function withRetry(fn, { tries = 5, baseMs = 500 } = {}) {
+  let attempt = 0;
+  while (true) {
+    try {
+      return await fn();
+    } catch (err) {
+      const status = err?.response?.status;
+      if (attempt + 1 >= tries || !(status === 429 || (status >= 500 && status <= 599))) throw err;
+      const wait = baseMs * Math.pow(2, attempt);
+      await new Promise((r) => setTimeout(r, wait));
+      attempt++;
+    }
+  }
+}
+
+/**
+ * List ALL stories (lightweight; no full content). Pagination.
+ * GET /v1/spaces/:space_id/stories?page=&per_page=
+ */
+async function listAllSourceStories() {
+  const out = [];
+  let page = 1;
+  while (true) {
+    const url = `/spaces/${cfg.source.id}/stories`;
+    const params = { page, per_page: cfg.behavior.perPage };
+    const res = await withRetry(() => src.get(url, { params }));
+    const arr = res.data?.stories || res.data || [];
+    if (arr.length === 0) break;
+    out.push(...arr);
+    page++;
+  }
+  return out;
+}
+
+/**
+ * Retrieve the full story object (with content)
+ * GET /v1/spaces/:space_id/stories/:story_id
+ */
+async function getFullStory(id) {
+  const url = `/spaces/${cfg.source.id}/stories/${id}`;
+  const res = await withRetry(() => src.get(url));
+  return res.data?.story || res.data;
+}
+
+/**
+ * See if target has a story by full_slug
+ * GET /v1/spaces/:target_id/stories?by_slugs=<full_slug>
+ */
+async function findTargetStoryBySlug(fullSlug) {
+  const url = `/spaces/${cfg.target.id}/stories`;
+  const params = { by_slugs: fullSlug };
+  const res = await withRetry(() => tgt.get(url, { params }));
+  const list = res.data?.stories || res.data || [];
+  return list[0] || null;
+}
+
+/**
+ * Create / Update target story
+ */
+async function createTargetStory(payload, { publish = 0 } = {}) {
+  const url = `/spaces/${cfg.target.id}/stories`;
+  const data = { story: payload, publish };
+  const res = await withRetry(() => tgt.post(url, data));
+  return res.data?.story || res.data;
+}
+
+async function updateTargetStory(id, payload, { publish = 0 } = {}) {
+  const url = `/spaces/${cfg.target.id}/stories/${id}`;
+  const data = { story: payload, publish };
+  const res = await withRetry(() => tgt.put(url, data));
+  return res.data?.story || res.data;
+}
+
+/**
+ * Rewrite UUID references in content (generic)
+ */
+function rewriteUuidsInContent(content, uuidMap) {
+  if (!content || typeof content !== 'object') return content;
+  const seen = new WeakSet();
+
+  const walk = (node) => {
+    if (node && typeof node === 'object') {
+      if (seen.has(node)) return;
+      seen.add(node);
+
+      if (Array.isArray(node)) {
+        for (let i = 0; i < node.length; i++) {
+          const val = node[i];
+          if (typeof val === 'string' && uuidMap[val]) {
+            node[i] = uuidMap[val];
+          } else {
+            walk(val);
+          }
+        }
+      } else {
+        for (const [k, v] of Object.entries(node)) {
+          if (typeof v === 'string' && uuidMap[v]) {
+            node[k] = uuidMap[v];
+          } else {
+            walk(v);
+          }
+        }
+      }
+    }
+  };
+
+  walk(content);
+  return content;
+}
+
+async function main() {
+  console.log(`Cloning ALL stories | DRY_RUN=${cfg.behavior.dryRun}`);
+
+  // 1) Pull all source stories (no full content)
+  const srcList = await listAllSourceStories();
+  console.log(`Found ${srcList.length} total stories in source space`);
+
+  // 2) Build UUID mapping as we clone
+  const uuidMap = new Map(); // sourceUUID -> targetUUID
+
+  // Sort: ensure parent folders / shorter slugs first
+  const sorted = srcList
+    .map((s) => ({ id: s.id, full_slug: s.full_slug, name: s.name }))
+    .sort((a, b) => a.full_slug.length - b.full_slug.length);
+
+  // 3) Iterate and clone
+  for (const meta of sorted) {
+    const srcStory = await getFullStory(meta.id);
+
+    // Prepare payload
+    const payload = {
+      name: srcStory.name,
+      slug: srcStory.slug,
+      parent_id: srcStory.parent_id, // if folder IDs differ, slug paths still keep hierarchy
+      is_startpage: srcStory.is_startpage || false,
+      content: JSON.parse(JSON.stringify(srcStory.content)),
+    };
+
+    // UUID rewrite for references
+    payload.content = rewriteUuidsInContent(payload.content, Object.fromEntries(uuidMap.entries()));
+
+    // Publish mode
+    const publishFlag = cfg.behavior.publishMode === 'none' ? 0 : 1;
+
+    // Check if exists in target
+    const existing = await findTargetStoryBySlug(srcStory.full_slug);
+
+    if (cfg.behavior.dryRun) {
+      console.log(`[DRY] ${existing ? 'UPDATE' : 'CREATE'} -> ${srcStory.full_slug}`);
+      // still record an optimistic UUID mapping to help later items
+      if (srcStory.uuid) uuidMap.set(srcStory.uuid, existing?.uuid || srcStory.uuid);
+      continue;
+    }
+
+    let tgtStory;
+    if (existing) {
+      tgtStory = await updateTargetStory(existing.id, payload, { publish: publishFlag });
+      console.log(`Updated: ${srcStory.full_slug}`);
+    } else {
+      tgtStory = await createTargetStory(payload, { publish: publishFlag });
+      console.log(`Created: ${srcStory.full_slug}`);
+    }
+
+    // Record mapping
+    const srcUuid = srcStory.uuid;
+    const tgtUuid = tgtStory.uuid || existing?.uuid;
+    if (srcUuid && tgtUuid) uuidMap.set(srcUuid, tgtUuid);
+  }
+
+  console.log('Done. UUID mappings created:', uuidMap.size);
+}
+
+main().catch((err) => {
+  console.error('Clone failed:', err?.response?.data || err);
+  process.exit(1);
+});
