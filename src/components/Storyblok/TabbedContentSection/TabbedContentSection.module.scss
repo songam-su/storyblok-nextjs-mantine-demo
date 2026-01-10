@@ -46,13 +46,12 @@
   }
 
   :global(.mantine-Tabs-tab:not([data-active='true']):hover) {
-    background: var(--sb-surface-strong, #f3f4f6);
-    border-color: color-mix(
+    background: color-mix(
       in srgb,
-      var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 55%,
-      var(--sb-border, rgba(0, 0, 0, 0.12))
+      var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 16%,
+      var(--sb-surface, #fff)
     );
-    // box-shadow: 0 10px 22px rgba(2, 6, 23, 0.12);
+    border-color: transparent;
   }
 
   :global(.mantine-Tabs-tab[data-active='true']) {

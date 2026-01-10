@@ -32,7 +32,7 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
         {hasHeader && (
           <Stack gap="sm" className={styles.header}>
             {blok.headline?.length && (
-              <Title order={2} fw={700} size="h2">
+              <Title order={2} fw={800} size="h2" className={styles.title}>
                 {renderHeadlineSegments(blok.headline)}
               </Title>
             )}
