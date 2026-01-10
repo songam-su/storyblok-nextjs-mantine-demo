@@ -36,8 +36,7 @@
     "src/components/Storyblok/StoryblokDynamicProvider.tsx.disabled",
     "src/app/(preview)/sb-preview/layout.tsx",
     "src/app/(preview)/sb-preview/[...slug]/page.tsx",
-    "src/middleware/auth.ts",
-    ".dev/storyblok/generate-union-type.ts"
+    "src/middleware/auth.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".dev/**"]
 }

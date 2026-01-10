@@ -1,4 +1,3 @@
-// .dev/storyblok/pull-types.mjs
 import { execSync } from 'child_process';
 import dotenv from 'dotenv';
 import { existsSync } from 'fs';

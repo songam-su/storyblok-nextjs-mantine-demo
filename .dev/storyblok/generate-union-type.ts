@@ -1,9 +1,9 @@
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 const projectRoot = path.resolve(process.cwd());
 const inputFile = path.join(projectRoot, 'src', 'lib', 'storyblok', 'resources', 'types', 'storyblok-components.d.ts');
-const outputDir = path.join(projectRoot, 'src', 'lib', 'storyblok', 'registry', 'unutilized');
+const outputDir = path.join(projectRoot, 'src', 'lib', 'storyblok', 'registry');
 const outputFile = path.join(outputDir, 'StoryblokBlok.ts');
 
 // ✅ Ensure directory exists
