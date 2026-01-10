@@ -4,7 +4,7 @@
   padding: clamp(1.5rem, 4vw, 3rem);
   color: var(--sb-text, #111);
   width: min(var(--page-shell-max-width), calc(100% - (2 * var(--page-shell-inline-padding))));
-  margin: 0 auto;
+  margin: 4rem auto;
 }
 
 .header {
@@ -56,11 +56,7 @@
 
   // When an entry is open, give the question a subtle accent tint.
   :global(.mantine-Accordion-item[data-active='true'] .mantine-Accordion-label) {
-    color: color-mix(
-      in srgb,
-      var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 22%,
-      var(--sb-text, #111)
-    );
+    color: color-mix(in srgb, var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 22%, var(--sb-text, #111));
   }
 
   // When an entry is open, keep a subtle tint on the header even when not hovered.
