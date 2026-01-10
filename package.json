@@ -25,6 +25,7 @@
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest watch",
+    "typecheck:dev": "tsc -p ./.dev/tsconfig.json --noEmit",
     "cy:open": "cypress open --config-file tests/e2e/cypress.config.ts",
     "cy:run": "cypress run --config-file tests/e2e/cypress.config.ts",
     "vercel": "vercel env pull"

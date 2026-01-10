@@ -1,4 +1,3 @@
-// .dev/storyblok/helpers/move-files.mjs
 import { existsSync, mkdirSync, readdirSync, renameSync, rmdirSync } from 'fs';
 import path from 'path';
 
