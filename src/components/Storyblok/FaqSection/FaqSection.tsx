@@ -1,16 +1,16 @@
 'use client';
 
-import { storyblokEditable } from '@storyblok/react';
-import { Accordion, Paper, Stack, Text, Title } from '@mantine/core';
-import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { FaqEntryContent } from '@/components/Storyblok/FaqEntry/FaqEntryContent';
+import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import {
   FaqEntry as FaqEntryBlok,
   FaqSection as FaqSectionBlok,
 } from '@/lib/storyblok/resources/types/storyblok-components';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { Accordion, Paper, Stack, Text, Title } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
 import styles from './FaqSection.module.scss';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
-import { FaqEntryContent } from '@/components/Storyblok/FaqEntry/FaqEntryContent';
 
 const getAccordionValue = (entry: FaqEntryBlok, index: number) => entry._uid ?? entry.question ?? `faq-${index}`;
 
@@ -27,7 +27,7 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
   }
 
   return (
-    <Paper component="section" className={styles.section} radius="sm" shadow="lg" {...editableAttributes}>
+    <Paper component="section" className={styles.section} radius="sm" {...editableAttributes}>
       <Stack gap="xl">
         {hasHeader && (
           <Stack gap="sm" className={styles.header}>
