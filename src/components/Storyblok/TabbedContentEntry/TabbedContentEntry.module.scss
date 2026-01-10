@@ -33,7 +33,6 @@
   color: inherit;
 }
 
-
 .backgroundImage {
   background-size: cover;
   background-position: center;
@@ -48,7 +47,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, var(--mantine-color-gray-2) 80%, transparent);
+  background: color-mix(in srgb, var(--mantine-color-gray-2) 90%, transparent);
   z-index: 0;
 }
 

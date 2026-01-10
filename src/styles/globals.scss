@@ -89,10 +89,10 @@ body {
 }
 
 .mantine-Title-root[data-order='2'] {
-  --title-fz: 24px !important;
+  --title-fz: 32px !important;
   --title-lh: 1.12 !important;
   --title-fw: 700 !important;
-  font-size: 24px !important;
+  font-size: 32px !important;
   font-weight: 700 !important;
   letter-spacing: -0.01em;
   color: var(--mantine-color-neonIceDark-5, var(--mantine-color-primary-6, #1d63c5)) !important;
@@ -100,7 +100,7 @@ body {
 
 /* Mantine sometimes wraps Title content in an inner Text/span; enforce the same treatment there too. */
 .mantine-Title-root[data-order='2'] :is(span, .mantine-Text-root) {
-  font-size: 24px !important;
+  font-size: 32px !important;
   font-weight: 700 !important;
   color: var(--mantine-color-neonIceDark-5, var(--mantine-color-primary-6, #1d63c5)) !important;
 }
