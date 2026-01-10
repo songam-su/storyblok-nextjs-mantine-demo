@@ -3,7 +3,12 @@
   "license": "GPL-3.0-or-later",
   "version": "0.1.0",
   "name": "my-storyblok-demo",
+  "packageManager": "pnpm@10.22.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=10.0.0"
+  },
   "scripts": {
     "build": "next build",
     "dev": "next dev -p 3010 --experimental-https --experimental-https-key ./.dev/certs/localhost-key.pem --experimental-https-cert ./.dev/certs/localhost-crt.pem",
@@ -25,30 +30,27 @@
     "vercel": "vercel env pull"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
     "@mantine/core": "^8.3.8",
     "@mantine/hooks": "^8.3.8",
-    "@mantine/next": "^6.0.22",
     "@storyblok/js": "^4.4.1",
     "@storyblok/react": "^5.4.18",
-    "@tanstack/react-query": "^5.90.10",
-    "@vercel/speed-insights": "^1.2.0",
+    "@tanstack/react-query": "^5.90.16",
+    "@vercel/analytics": "^1.6.1",
+    "@vercel/speed-insights": "^1.3.1",
     "classnames": "^2.5.1",
     "html-react-parser": "^5.2.10",
-    "next": "latest",
-    "nuqs": "^2.8.1",
+    "next": "^16.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-hook-form": "^7.66.1",
+    "react-hook-form": "^7.70.0",
     "sass": "^1.94.2",
-    "search-insights": "^2.17.3",
+    "server-only": "^0.0.1",
     "storyblok-js-client": "^7.1.6",
-    "styled-jsx": "^5.1.7",
-    "zod": "^4.1.12"
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
-    "@next/eslint-plugin-next": "^16.1.1",
+    "@next/eslint-plugin-next": "^16.0.0",
     "@types/node": "24.10.1",
     "@types/react": "19.2.6",
     "@types/react-dom": "19.2.3",
@@ -58,7 +60,7 @@
     "dotenv": "^17.2.3",
     "eslint": "^9.39.1",
     "eslint-config-mantine": "^4.0.3",
-    "eslint-config-next": "^16.0.3",
+    "eslint-config-next": "^16.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
@@ -66,6 +68,7 @@
     "globals": "^17.0.0",
     "prettier": "3.6.2",
     "storyblok": "^4.7.0",
+    "storyblok-generate-ts": "^2.2.0",
     "typescript": "5.9.3",
     "vitest": "^2.1.4"
   },

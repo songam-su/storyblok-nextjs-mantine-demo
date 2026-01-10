@@ -1,14 +1,14 @@
 'use client';
 
-import { Card, px, Stack, Text } from '@mantine/core';
+import Button from '@/components/Storyblok/Button/Button';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type { GridCard as GridCardBlok } from '@/lib/storyblok/resources/types/storyblok-components';
+import getSbImageData from '@/lib/storyblok/utils/image';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { Card, Flex, px, Stack, Text } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import Image from 'next/image';
-import Button from '@/components/Storyblok/Button/Button';
-import getSbImageData from '@/lib/storyblok/utils/image';
-import type { GridCard as GridCardBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './GridCard.module.scss';
 
 const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
@@ -37,34 +37,45 @@ const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
         styles.card,
         rowSpanClass,
         hasBorder && styles.withBorder,
-        hasBackgroundImage ? styles.backgroundImage : styles.noImage,
+        hasBackgroundImage ? styles.backgroundImage : styles.noImage
       )}
       style={backgroundStyle}
       shadow="sm"
       padding="lg"
     >
       <Stack gap="xs" ta="center" justify="space-between">
-        {showIcon && (
-          <div className={styles.icon}>
-            <Image
-              src={iconData!.src}
-              alt={iconData!.alt || ''}
-              width={iconData?.width || 64}
-              height={iconData?.height || 64}
-              sizes="64px"
-              style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: iconData?.objectPosition }}
-            />
-          </div>
-        )}
+        <Flex gap="xs" ta="center" justify="space-between" dir="column">
+          {showIcon && (
+            <div className={styles.icon}>
+              <Image
+                src={iconData!.src}
+                alt={iconData!.alt || ''}
+                width={iconData?.width || 64}
+                height={iconData?.height || 64}
+                sizes="64px"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  objectPosition: iconData?.objectPosition,
+                }}
+              />
+            </div>
+          )}
 
-        {blok.label && (
-          <Text size="lg" fw={700} className={styles.boldText}>
-            {blok.label}
-          </Text>
-        )}
+          {blok.label && (
+            <Flex justify="center" align="center" mb={showIcon ? px(8) : 0} mx="auto" pr={showIcon ? px(64) : 0}>
+              <Text size="lg" fw={700} className={styles.boldText}>
+                {blok.label}
+              </Text>
+            </Flex>
+          )}
+        </Flex>
 
         {blok.bold_text && (
-          <Text fw={700} fz={px(21)}>{blok.bold_text}</Text>
+          <Text fw={700} fz={px(21)}>
+            {blok.bold_text}
+          </Text>
         )}
 
         {blok.text && <Text>{blok.text}</Text>}

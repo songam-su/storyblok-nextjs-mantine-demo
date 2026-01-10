@@ -1,11 +1,13 @@
-import PublishedProviders from './providers';
-import Header from '@/components/chrome/Header/Header';
 import Footer from '@/components/chrome/Footer/Footer';
+import Header from '@/components/chrome/Header/Header';
+import { METADATA_BASE } from '@/lib/site/siteUrl';
 import { fetchStory } from '@/lib/storyblok/api/client';
 import type { SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContext';
-import { METADATA_BASE } from '@/lib/site/siteUrl';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import ScrollToTop from '../ScrollToTop';
+import PublishedProviders from './providers';
 
 export const metadata: Metadata = {
   metadataBase: METADATA_BASE,
@@ -33,6 +35,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <Header />
               <main>{children}</main>
               <Footer />
+              <SpeedInsights />
+              <Analytics />
             </div>
           </div>
         </PublishedProviders>
