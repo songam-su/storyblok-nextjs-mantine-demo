@@ -29,6 +29,12 @@
   margin: 0;
 }
 
+.perMonth {
+  font-weight: 600;
+  font-size: 1.8rem;
+  color: var(--mantine-color-gray-8);
+}
+
 .body {
   display: grid;
   gap: 10px;
@@ -38,4 +44,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.bottomRichText > div {
+  color: var(--sb-text, #111);
+
+  p {
+    margin: 0.25rem 0;
+  }
 }

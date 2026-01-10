@@ -1,14 +1,30 @@
 'use client';
 
+import Button from '@/components/Storyblok/Button/Button';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type { PriceCard as PriceCardBlok } from '@/lib/storyblok/resources/types/storyblok-components';
+import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { Badge, Stack, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
-import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
-import type { PriceCard as PriceCardBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import Button from '@/components/Storyblok/Button/Button';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './PriceCard.module.scss';
+
+const formatMonthlyPrice = (value: unknown) => {
+  const numericValue = typeof value === 'string' ? Number(value) : value;
+  if (typeof numericValue !== 'number' || !Number.isFinite(numericValue)) return String(value);
+
+  const formatted = new Intl.NumberFormat('en-US', {
+    maximumFractionDigits: numericValue % 1 === 0 ? 0 : 2,
+  }).format(numericValue);
+
+  return (
+    <>
+      ${formatted}
+      <span className={styles.perMonth}>/month</span>
+    </>
+  );
+};
 
 const PriceCard = ({ blok }: SbComponentProps<PriceCardBlok>) => {
   const { isEditor } = useStoryblokEditor();
@@ -36,10 +52,8 @@ const PriceCard = ({ blok }: SbComponentProps<PriceCardBlok>) => {
           </Title>
         )}
 
-        {blok.price && (
-          <p className={styles.price}>
-            {blok.price}
-          </p>
+        {blok.price !== null && blok.price !== undefined && blok.price !== '' && (
+          <p className={styles.price}>{formatMonthlyPrice(blok.price)}</p>
         )}
       </Stack>
 
@@ -61,7 +75,7 @@ const PriceCard = ({ blok }: SbComponentProps<PriceCardBlok>) => {
             })}
           </div>
         )}
-        {hasRichBottom && <div>{renderSbRichText(blok.text_2)}</div>}
+        {hasRichBottom && <div className={styles.bottomRichText}>{renderSbRichText(blok.text_2)}</div>}
       </div>
     </article>
   );

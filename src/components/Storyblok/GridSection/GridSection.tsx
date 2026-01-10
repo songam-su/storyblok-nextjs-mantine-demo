@@ -1,15 +1,20 @@
 'use client';
 
+import Button from '@/components/Storyblok/Button/Button';
+import GridCard from '@/components/Storyblok/GridCard/GridCard';
+import PriceCard from '@/components/Storyblok/PriceCard/PriceCard';
+import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type {
+  GridCard as GridCardBlok,
+  GridSection as GridSectionBlok,
+  PriceCard as PriceCardBlok,
+} from '@/lib/storyblok/resources/types/storyblok-components';
+import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { Group, SimpleGrid, Stack, Text, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
-import Button from '@/components/Storyblok/Button/Button';
-import GridCard from '@/components/Storyblok/GridCard/GridCard';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
-import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
-import type { GridCard as GridCardBlok, GridSection as GridSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './GridSection.module.scss';
 
 const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
@@ -66,15 +71,36 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
         )}
 
         {cards.length > 0 && (
-          <SimpleGrid cols={{ base: 1, sm: (cols / 2) + cols % 2, lg: cols }} spacing="lg" className={styles.grid}>
+          <SimpleGrid cols={{ base: 1, sm: cols / 2 + (cols % 2), lg: cols }} spacing="lg" className={styles.grid}>
             {cards.map((card, index) => {
               if (!card) return null;
-              if (card.component !== 'grid-card') return null; // ignore unimplemented card types for now
-              return <GridCard key={card._uid ?? `card-${index}`} blok={card as GridCardBlok} _uid={card._uid} component={card.component} />;
+
+              if (card.component === 'grid-card') {
+                return (
+                  <GridCard
+                    key={card._uid ?? `card-${index}`}
+                    blok={card as GridCardBlok}
+                    _uid={card._uid}
+                    component={card.component}
+                  />
+                );
+              }
+
+              if (card.component === 'price-card') {
+                return (
+                  <PriceCard
+                    key={card._uid ?? `card-${index}`}
+                    blok={card as PriceCardBlok}
+                    _uid={card._uid}
+                    component={card.component}
+                  />
+                );
+              }
+
+              return null;
             })}
           </SimpleGrid>
         )}
-
       </Stack>
     </section>
   );
