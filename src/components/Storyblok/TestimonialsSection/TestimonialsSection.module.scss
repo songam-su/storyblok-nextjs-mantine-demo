@@ -1,17 +1,22 @@
 .section {
   width: min(var(--page-shell-max-width), 100%);
   margin: 0 auto;
-  padding: clamp(24px, 4vw, 64px);
+  padding: var(--page-shell-section-padding);
 }
 
 .inner {
   max-width: 100%;
   margin: 0;
   padding: 0;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-  max-width: 800px;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .lead {
@@ -20,4 +25,11 @@
 
 .grid {
   margin-top: 1.5rem;
+  align-items: stretch;
+}
+
+@media (min-width: 75em) {
+  .grid {
+    align-items: center;
+  }
 }

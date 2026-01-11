@@ -56,6 +56,8 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
             radius="lg"
             chevronPosition="right"
             defaultValue={getAccordionValue(entries[0], 0)}
+            mt="1rem"
+            mx={{ base: 0, md: '4rem', xl: '0' }}
           >
             {entries.map((entry, index) => {
               if (!entry) return null;

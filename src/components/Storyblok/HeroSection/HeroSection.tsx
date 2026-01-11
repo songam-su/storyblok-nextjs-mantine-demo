@@ -33,12 +33,14 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
     return <section {...editable} className={classNames(styles.section, backgroundClass)} />;
   }
 
-  const heroStyle = (hasImage
-    ? {
-        '--sb-hero-image': `url(${imageData!.src})`,
-        '--sb-hero-position': imageData?.objectPosition || 'center',
-      }
-    : undefined) as React.CSSProperties | undefined;
+  const heroStyle = (
+    hasImage
+      ? {
+          '--sb-hero-image': `url(${imageData!.src})`,
+          '--sb-hero-position': imageData?.objectPosition || 'center',
+        }
+      : undefined
+  ) as React.CSSProperties | undefined;
 
   return (
     <section
@@ -49,23 +51,15 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
         backgroundClass,
         textAlign === 'center' && styles.alignCenter,
         !isStackedLayout && hasImage && styles.hasBackgroundImage,
-        !isStackedLayout && hasImage && (imageObjectFit === 'contain' ? styles.backgroundContain : styles.backgroundCover),
+        !isStackedLayout &&
+          hasImage &&
+          (imageObjectFit === 'contain' ? styles.backgroundContain : styles.backgroundCover)
       )}
       style={heroStyle}
     >
       <div className="edge-to-edge__inner">
         <div className={classNames(styles.inner, isStackedLayout && styles.stacked)}>
           {showDecoration && <div className={classNames(styles.decoration, accentClass)} />}
-
-          {isStackedLayout && hasImage && (
-            <div
-              className={classNames(
-                styles.stackedImage,
-                stackedImageObjectFit === 'contain' ? styles.stackedImageContain : styles.stackedImageCover
-              )}
-              aria-hidden="true"
-            />
-          )}
 
           {hasBody && (
             <div className={classNames(styles.contentBox, isStackedLayout && styles.contentBoxStacked)}>
@@ -106,6 +100,16 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
                 )}
               </Stack>
             </div>
+          )}
+
+          {isStackedLayout && hasImage && (
+            <div
+              className={classNames(
+                styles.stackedImage,
+                stackedImageObjectFit === 'contain' ? styles.stackedImageContain : styles.stackedImageCover
+              )}
+              aria-hidden="true"
+            />
           )}
         </div>
       </div>

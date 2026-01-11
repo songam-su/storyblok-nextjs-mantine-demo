@@ -1,18 +1,18 @@
 'use client';
 
-import classNames from 'classnames';
-import { Stack, Text, Title } from '@mantine/core';
-import { storyblokEditable } from '@storyblok/react';
-import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
 import Button from '@/components/Storyblok/Button/Button';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
-import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
-import getSbImageData from '@/lib/storyblok/utils/image';
-import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
-import type { ImageTextSection as ImageTextSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type { ImageTextSection as ImageTextSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
+import getSbImageData from '@/lib/storyblok/utils/image';
+import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
+import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { Stack, Text, Title } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
+import classNames from 'classnames';
+import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 import styles from './ImageTextSection.module.scss';
 
 const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
@@ -62,18 +62,16 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
         )}
       >
         {hasBody && (
-          <Stack gap="sm" className={styles.copy} ref={copyRef}>
-            {blok.eyebrow && (
-              <Text size="sm" className={styles.eyebrow} c="dimmed">
-                {blok.eyebrow}
-              </Text>
-            )}
+          <Stack gap="24px" className={styles.copy} ref={copyRef}>
+            <div className={styles.headline}>
+              {blok.eyebrow && (
+                <Text size="sm" className={styles.eyebrow} c="dimmed">
+                  {blok.eyebrow}
+                </Text>
+              )}
 
-            {blok.headline?.length ? (
-              <Title order={2}>
-                {renderHeadlineSegments(blok.headline)}
-              </Title>
-            ) : null}
+              {blok.headline?.length ? <Title order={2}>{renderHeadlineSegments(blok.headline)}</Title> : null}
+            </div>
 
             {blok.text && <div className={styles.richtext}>{renderSbRichText(blok.text)}</div>}
 

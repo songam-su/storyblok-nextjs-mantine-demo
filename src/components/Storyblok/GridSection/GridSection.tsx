@@ -2,12 +2,14 @@
 
 import Button from '@/components/Storyblok/Button/Button';
 import GridCard from '@/components/Storyblok/GridCard/GridCard';
+import ImageCard from '@/components/Storyblok/ImageCard/ImageCard';
 import PriceCard from '@/components/Storyblok/PriceCard/PriceCard';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type {
   GridCard as GridCardBlok,
   GridSection as GridSectionBlok,
+  ImageCard as ImageCardBlok,
   PriceCard as PriceCardBlok,
 } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
@@ -25,8 +27,14 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
 
   const cards = Array.isArray(blok.cards) ? blok.cards.filter(Boolean) : [];
   const buttons = Array.isArray(blok.button) ? blok.button.filter(Boolean) : [];
-  const hasHeader = Boolean(blok.headline?.length || blok.lead);
-  const hasContent = hasHeader || cards.length > 0 || buttons.length > 0;
+  const headlineSegments = Array.isArray(blok.headline)
+    ? blok.headline.filter((segment) => Boolean(segment?.text?.trim()))
+    : [];
+  const hasHeadline = headlineSegments.length > 0;
+  const hasLead = typeof blok.lead === 'string' && blok.lead.trim().length > 0;
+  const hasHeader = hasHeadline || hasLead;
+  const hasHeaderRow = hasHeader || buttons.length > 0;
+  const hasContent = hasHeaderRow || cards.length > 0;
 
   if (!hasContent) {
     return <section {...editable} className={classNames(styles.section, backgroundClass)} />;
@@ -34,17 +42,17 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
 
   return (
     <section {...editable} className={classNames(styles.section, backgroundClass)}>
-      <Stack gap="md">
-        {(hasHeader || buttons.length > 0) && (
+      <Stack gap={hasHeaderRow && cards.length > 0 ? 'md' : 0}>
+        {hasHeaderRow && (
           <div className={styles.headerRow}>
             {hasHeader ? (
               <div className={styles.header}>
-                {blok.headline?.length ? (
+                {hasHeadline ? (
                   <Title order={2} fw={800}>
-                    {renderHeadlineSegments(blok.headline)}
+                    {renderHeadlineSegments(headlineSegments)}
                   </Title>
                 ) : null}
-                {blok.lead && (
+                {hasLead && (
                   <Text size="lg" className={styles.lead}>
                     {blok.lead}
                   </Text>
@@ -71,7 +79,12 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
         )}
 
         {cards.length > 0 && (
-          <SimpleGrid cols={{ base: 1, sm: cols / 2 + (cols % 2), lg: cols }} spacing="lg" className={styles.grid}>
+          <SimpleGrid
+            cols={{ base: 1, sm: Math.ceil(cols / 2), lg: cols }}
+            spacing="lg"
+            className={styles.grid}
+            mx={{ base: 0, md: '4rem', lg: '0' }}
+          >
             {cards.map((card, index) => {
               if (!card) return null;
 
@@ -91,6 +104,17 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
                   <PriceCard
                     key={card._uid ?? `card-${index}`}
                     blok={card as PriceCardBlok}
+                    _uid={card._uid}
+                    component={card.component}
+                  />
+                );
+              }
+
+              if (card.component === 'image-card') {
+                return (
+                  <ImageCard
+                    key={card._uid ?? `card-${index}`}
+                    blok={card as ImageCardBlok}
                     _uid={card._uid}
                     component={card.component}
                   />

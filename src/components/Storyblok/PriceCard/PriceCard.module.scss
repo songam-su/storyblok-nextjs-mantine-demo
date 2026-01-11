@@ -6,16 +6,19 @@
   border-radius: 16px;
   background: var(--mantine-color-gray-0);
   border: 1px solid var(--mantine-color-gray-3);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
 }
 
 .popular {
-  border: 1px solid var(--mantine-color-primary-6, #1c7ed6);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(var(--mantine-color-primary-6-rgb, 28, 126, 214), 0.33);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.07);
 }
 
 .badge {
   justify-self: start;
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
 }
 
 .header {
@@ -37,7 +40,39 @@
 
 .body {
   display: grid;
-  gap: 10px;
+  gap: 1rem;
+
+  p {
+    margin: 0.5rem 0;
+  }
+
+  --pricecard-feature-accent: var(--mantine-color-neonIceDark-6, #1d63c5);
+
+  :global(ul) {
+    list-style: none;
+    padding-left: 0;
+    margin: 0.5rem 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  :global(ul > li) {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    line-height: 1.4;
+  }
+
+  :global(ul > li::before) {
+    content: '✓';
+    flex: 0 0 16px;
+    width: 16px;
+    line-height: 1;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--pricecard-feature-accent);
+    margin-top: 0.4em;
+  }
 }
 
 .actions {

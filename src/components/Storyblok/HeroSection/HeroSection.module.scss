@@ -2,8 +2,9 @@
   position: relative;
   overflow: hidden;
   border-radius: 0;
-  padding: 0 0 clamp(24px, 4vw, 64px) 0;
+  padding: 0 0 var(--page-shell-section-padding) 0;
   background-color: var(--sb-surface, #fff);
+  margin-top: 30px;
 }
 
 .inner {
@@ -64,7 +65,12 @@
 
 .headline {
   margin: 0;
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
   letter-spacing: -0.01em;
   font-weight: 800 !important;
   line-height: 1.05;
@@ -90,7 +96,6 @@
 .lead {
   color: var(--mantine-color-gray-7);
   margin-top: var(--mantine-spacing-lg);
-  margin-bottom: var(--mantine-spacing-lg);
 }
 
 .actions {
@@ -108,7 +113,6 @@
   --sb-color-text: var(--mantine-color-white) !important;
 }
 
-
 .hasBackgroundImage {
   background-image: var(--sb-hero-image, none);
   background-position: var(--sb-hero-position, center);
@@ -125,7 +129,7 @@
 }
 
 .contentBox {
-  width: min(530px, 100%);
+  width: min(540px, 100%);
   margin-right: auto !important;
   margin-left: 0 !important;
   padding: clamp(18px, 3vw, 28px);
@@ -144,7 +148,6 @@
   background: transparent;
   backdrop-filter: none;
 }
-
 
 .contentBox :global(.mantine-Text-root),
 .contentBox :global(.mantine-Title-root) {

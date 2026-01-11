@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 1.8rem;
   padding: 1.5rem;
+  height: 100%;
   background: #ffffff !important;
   background-color: #ffffff !important;
   color: var(--sb-text, #111827) !important;
@@ -10,11 +11,15 @@
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
   min-height: 160px;
-  @media (min-width: 768px) {
-    min-height: 180px;    
+  @media (min-width: 48em) {
+    min-height: 180px;
+    flex-grow: 1;
+    justify-content: space-between;
   }
-  @media (min-width: 1200px) {
-    min-height: 200px;    
+  @media (min-width: 75em) {
+    min-height: 200px;
+    flex-grow: 1;
+    justify-content: space-between;
   }
 }
 
@@ -35,6 +40,17 @@
 
 .hasQuote .meta {
   margin-top: auto;
+}
+
+@media (min-width: 64em) {
+  .card {
+    height: auto;
+    min-height: unset;
+  }
+
+  .hasQuote .meta {
+    margin-top: 0;
+  }
 }
 
 .name {
