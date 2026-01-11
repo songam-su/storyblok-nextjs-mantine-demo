@@ -1,11 +1,11 @@
 .section {
   width: 100%;
-  padding: 2rem 1rem;
   box-sizing: border-box;
 
-  @media (min-width: 75em) {
-    padding: 4rem 1.25rem;
-  }
+  // padding: 2rem 1rem;
+  // @media (min-width: 75em) {
+  padding: 4rem 1.25rem;
+  // }
 }
 
 .lead[data-order='2'] {
