@@ -1,5 +1,5 @@
 .section {
-  padding: clamp(24px, 4vw, 64px);
+  padding: var(--page-shell-section-padding);
   display: grid;
   gap: 16px;
 }
@@ -13,6 +13,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  > div > span {
+    font-size: 18px !important;
+    letter-spacing: 0.5px !important;
+    color: var(--mantine-color-bubblegumPink-6) !important;
+  }
 }
 
 .media {
@@ -21,6 +26,8 @@
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   background: var(--mantine-color-gray-1);
+  width: 50%;
+  margin: 1rem auto 2rem;
 }
 
 .media img {

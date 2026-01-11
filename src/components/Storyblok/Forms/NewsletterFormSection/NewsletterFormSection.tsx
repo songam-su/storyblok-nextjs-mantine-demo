@@ -1,13 +1,13 @@
 'use client';
 
-import { useCallback } from 'react';
-import { Button as MantineButton, Paper, Stack, Text, TextInput, Title } from '@mantine/core';
-import { storyblokEditable } from '@storyblok/react';
 import Button from '@/components/Storyblok/Button/Button';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { NewsletterFormSection as NewsletterFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import { Button as MantineButton, Paper, Stack, Text, TextInput, Title } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
+import { useCallback } from 'react';
 import styles from './NewsletterFormSection.module.scss';
 
 const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionBlok>) => {
@@ -82,6 +82,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
               Get updates in your inbox.
             </Text>
             <TextInput
+              className={styles.input}
               label="Email"
               type="email"
               name="email"

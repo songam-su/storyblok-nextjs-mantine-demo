@@ -1,30 +1,37 @@
 .section {
   border-radius: var(--mantine-radius-sm);
   background-color: var(--sb-surface, rgba(255, 255, 255, 0.02));
-  padding: clamp(1.5rem, 4vw, 3rem);
+  padding: var(--page-shell-section-padding);
   color: var(--sb-text, #111);
-  width: min(var(--page-shell-max-width), calc(100% - (2 * var(--page-shell-inline-padding))));
-  margin: 0 auto;
+  width: 100%;
+}
+
+.headerRow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 2rem;
+  margin-bottom: 1rem;
 }
 
 .header {
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto;
+  display: grid;
+  gap: 8px;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
-.title {
-  letter-spacing: -0.01em;
-
-  // Mantine Title sizing comes from CSS variables; set them here so the heading reads more like a CTA.
-  --title-fw: 800 !important;
-  --title-fz: clamp(1.9rem, 3.2vw, 2.35rem) !important;
-  --title-lh: 1.12 !important;
+@media (min-width: 48em) {
+  .headerRow {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
 }
 
 .lead {
-  color: color-mix(in srgb, var(--sb-text, #111) 70%, transparent);
-  font-size: 1.05rem;
+  color: var(--mantine-color-gray-7);
 }
 
 .accordion {
@@ -56,11 +63,7 @@
 
   // When an entry is open, give the question a subtle accent tint.
   :global(.mantine-Accordion-item[data-active='true'] .mantine-Accordion-label) {
-    color: color-mix(
-      in srgb,
-      var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 22%,
-      var(--sb-text, #111)
-    );
+    color: color-mix(in srgb, var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 22%, var(--sb-text, #111));
   }
 
   // When an entry is open, keep a subtle tint on the header even when not hovered.

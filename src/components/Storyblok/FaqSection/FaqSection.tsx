@@ -1,16 +1,16 @@
 'use client';
 
-import { storyblokEditable } from '@storyblok/react';
-import { Accordion, Paper, Stack, Text, Title } from '@mantine/core';
-import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { FaqEntryContent } from '@/components/Storyblok/FaqEntry/FaqEntryContent';
+import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import {
   FaqEntry as FaqEntryBlok,
   FaqSection as FaqSectionBlok,
 } from '@/lib/storyblok/resources/types/storyblok-components';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { Accordion, Paper, Stack, Text, Title } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
 import styles from './FaqSection.module.scss';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
-import { FaqEntryContent } from '@/components/Storyblok/FaqEntry/FaqEntryContent';
 
 const getAccordionValue = (entry: FaqEntryBlok, index: number) => entry._uid ?? entry.question ?? `faq-${index}`;
 
@@ -27,21 +27,27 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
   }
 
   return (
-    <Paper component="section" className={styles.section} radius="sm" shadow="lg" {...editableAttributes}>
-      <Stack gap="xl">
+    <Paper component="section" className={styles.section} radius="sm" {...editableAttributes}>
+      <Stack>
         {hasHeader && (
-          <Stack gap="sm" className={styles.header}>
-            {blok.headline?.length && (
-              <Title order={2} fw={800} size="h2" className={styles.title}>
-                {renderHeadlineSegments(blok.headline)}
-              </Title>
+          <div className={styles.headerRow}>
+            {hasHeader ? (
+              <div className={styles.header}>
+                {blok.headline?.length ? (
+                  <Title order={2} fw={800}>
+                    {renderHeadlineSegments(blok.headline)}
+                  </Title>
+                ) : null}
+                {blok.lead && (
+                  <Text size="lg" className={styles.lead}>
+                    {blok.lead}
+                  </Text>
+                )}
+              </div>
+            ) : (
+              <div />
             )}
-            {blok.lead && (
-              <Text size="lg" className={styles.lead}>
-                {blok.lead}
-              </Text>
-            )}
-          </Stack>
+          </div>
         )}
 
         {hasEntries && (
@@ -50,6 +56,8 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
             radius="lg"
             chevronPosition="right"
             defaultValue={getAccordionValue(entries[0], 0)}
+            mt="1rem"
+            mx={{ base: 0, md: '4rem', xl: '0' }}
           >
             {entries.map((entry, index) => {
               if (!entry) return null;

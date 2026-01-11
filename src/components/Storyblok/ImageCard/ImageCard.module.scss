@@ -1,26 +1,81 @@
 .card {
   position: relative;
   display: grid;
-  gap: 10px;
-  padding: 16px;
   border-radius: 14px;
   background: var(--mantine-color-gray-0);
   border: 1px solid var(--mantine-color-gray-3);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+
+  margin: 0 auto;
+  width: 80%;
+  max-width: 720px;
+}
+
+// SimpleGrid uses `spacing="lg"` which maps to `--mantine-spacing-lg` for row/column gaps.
+// Add extra block margin below 75em so ImageCards visually get "double" row gap
+// without changing the GridSection implementation.
+@media (max-width: 74.999em) {
+  .card {
+    margin-block-end: var(--mantine-spacing-lg);
+  }
+}
+
+@media (min-width: 75em) {
+  .card {
+    margin-block-end: 0;
+  }
+}
+
+.card + .card {
+  // margin-top: 1rem;
+
+  @media (min-width: 75em) {
+    // margin-top: 0;
+  }
+}
+
+@media (min-width: 48em) {
+  .card {
+    max-width: unset;
+    width: calc(100% - 1rem);
+  }
+}
+
+@media (min-width: 75em) {
+  .card {
+    max-width: 560px;
+    width: calc(100% - 3rem);
+  }
 }
 
 .imageFrame {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   overflow: hidden;
-  background: var(--mantine-color-gray-1);
+  background: var(--sb-color-bg, var(--mantine-color-gray-1));
+  padding-top: clamp(24px, 6vw, 48px);
+}
+
+.imageInner {
+  position: relative;
+  width: 100%;
+  height: clamp(280px, 42vw, 360px);
 }
 
 .img {
   object-fit: cover;
   object-position: 50% 50%;
+}
+
+.content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .label {

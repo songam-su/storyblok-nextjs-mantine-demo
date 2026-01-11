@@ -1,5 +1,5 @@
 .section {
-  padding: clamp(24px, 4vw, 64px);
+  padding: var(--page-shell-section-padding);
   border-radius: 16px;
   position: relative;
 }
@@ -10,7 +10,7 @@
   align-items: stretch;
   justify-content: flex-start;
   gap: 2rem;
-  margin-bottom: 12px;
+  margin-bottom: 1rem;
 }
 
 @media (min-width: 48em) {

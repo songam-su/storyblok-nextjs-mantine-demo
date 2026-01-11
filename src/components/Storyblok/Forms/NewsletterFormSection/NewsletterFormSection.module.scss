@@ -1,6 +1,6 @@
 .section {
   position: relative;
-  padding: clamp(24px, 4vw, 64px);
+  padding: var(--page-shell-section-padding);
 }
 
 .wrapper {
@@ -9,7 +9,7 @@
 }
 
 .headline {
-  margin-bottom: 0.5rem;
+  margin: 0 1rem 2rem;
 }
 
 .lead {
@@ -42,7 +42,7 @@
 
   :global(.mantine-TextInput-input:focus) {
     border-color: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 28%, transparent);
+    //box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 28%, transparent);
   }
 
   :global(.mantine-TextInput-input::placeholder) {
@@ -53,7 +53,7 @@
     background: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
     color: #fff;
     border: 0;
-    box-shadow: 0 10px 20px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
+    //box-shadow: 0 10px 20px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
   }
 
   :global(.mantine-Button-root:hover) {
@@ -65,7 +65,15 @@
   :global(.mantine-Button-root:focus-visible) {
     outline: none;
     border-color: transparent;
-    box-shadow: 0 10px 20px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
+    //box-shadow: 0 10px 20px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
+  }
+}
+
+.input {
+  margin-bottom: 1rem;
+
+  > :first-child {
+    margin-bottom: 0.75rem;
   }
 }
 

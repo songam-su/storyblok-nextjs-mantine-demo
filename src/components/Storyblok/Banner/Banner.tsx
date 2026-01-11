@@ -1,18 +1,18 @@
 'use client';
 
-import { storyblokEditable } from '@storyblok/react';
+import { Banner } from '@/lib/storyblok/resources/types/storyblok-components';
 import { Group, Paper, Stack, Text, Title } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import React, { CSSProperties } from 'react';
-import { Banner } from '@/lib/storyblok/resources/types/storyblok-components';
 
-import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import Button from '@/components/Storyblok/Button/Button';
-import styles from './Banner.module.scss';
-import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
-import { getStoryblokAlignmentMeta } from '@/lib/storyblok/utils/styles/alignment/storyblokAlignment';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import { getStoryblokAlignmentMeta } from '@/lib/storyblok/utils/styles/alignment/storyblokAlignment';
+import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
+import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import styles from './Banner.module.scss';
 
 const backgroundAlignmentClassMap: Record<'left' | 'center' | 'right', string> = {
   left: styles['background-position-left'],
@@ -65,7 +65,7 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
       style={bannerInlineStyle}
       {...editableAttributes}
     >
-      <div className="edge-to-edge__inner">
+      <div className={'edge-to-edge__inner ' + styles.inner}>
         <Stack gap="md" align={alignment.alignItems} style={{ textAlign: alignment.textAlign }}>
           {hasHeadline && (
             <Title order={1} fw={700} size="h1">

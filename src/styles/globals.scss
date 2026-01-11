@@ -26,6 +26,7 @@ body {
   --page-shell-inline-padding: var(--page-shell-inline-padding-xs);
   --page-shell-block-padding: clamp(2rem, 6vw, 4rem);
   --page-shell-section-gap: clamp(1.5rem, 4vw, 3rem);
+  --page-shell-section-padding: clamp(24px, 4vw, 64px);
   --sb-surface: color-mix(in srgb, var(--sb-background, #f8f9fb) 92%, #ffffff);
   --sb-surface-strong: color-mix(in srgb, var(--sb-background, #f0f2f5) 80%, #ffffff);
   --sb-border: color-mix(in srgb, var(--sb-text, #0d0d0d) 12%, transparent);
@@ -46,7 +47,6 @@ body {
   width: min(var(--page-shell-max-width), 100%);
   display: flex;
   flex-direction: column;
-  gap: var(--page-shell-section-gap);
   margin: 0 auto;
 }
 
@@ -89,10 +89,10 @@ body {
 }
 
 .mantine-Title-root[data-order='2'] {
-  --title-fz: 24px !important;
+  --title-fz: 32px !important;
   --title-lh: 1.12 !important;
   --title-fw: 700 !important;
-  font-size: 24px !important;
+  font-size: 32px !important;
   font-weight: 700 !important;
   letter-spacing: -0.01em;
   color: var(--mantine-color-neonIceDark-5, var(--mantine-color-primary-6, #1d63c5)) !important;
@@ -100,7 +100,7 @@ body {
 
 /* Mantine sometimes wraps Title content in an inner Text/span; enforce the same treatment there too. */
 .mantine-Title-root[data-order='2'] :is(span, .mantine-Text-root) {
-  font-size: 24px !important;
+  font-size: 32px !important;
   font-weight: 700 !important;
   color: var(--mantine-color-neonIceDark-5, var(--mantine-color-primary-6, #1d63c5)) !important;
 }
