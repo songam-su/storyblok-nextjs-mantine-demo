@@ -23,6 +23,96 @@
   font-size: 1.125rem;
 }
 
+.categories {
+  /* Mantine SegmentedControl root background (defaults to a gray). */
+  --sc-background: var(--mantine-color-neonIceDark-1);
+  /* Use a non-white pill so separators keep consistent contrast while resizing. */
+  --sc-color: var(--mantine-color-neonIceDark-0);
+  /* Match project button geometry/typography. */
+  --sc-radius: var(--mantine-radius-sm);
+  --sc-font-size: var(--mantine-font-size-md);
+  --sc-padding: calc(0.5rem * var(--mantine-scale)) calc(1.375rem * var(--mantine-scale));
+  --sb-category-root-padding: calc(0.5rem * var(--mantine-scale)); /* 8px */
+  --sb-category-pill-gap: calc(0.5rem * var(--mantine-scale)); /* 8px */
+  /* Item divider when `withItemsBorders` is enabled. */
+  --separator-color: var(--mantine-color-neonIceDark-3);
+  --sb-category-divider-width: calc(0.0625rem * var(--mantine-scale)); /* 1.5px @ 16px root */
+  background-color: var(--mantine-color-neonIceDark-1);
+  padding: var(--sb-category-root-padding);
+  column-gap: var(--sb-category-pill-gap);
+
+  /*
+    Mantine sets `--separator-color` on the control element itself in light/dark mode.
+    Override it there so the `::before` divider actually changes.
+  */
+  :global(.mantine-SegmentedControl-control) {
+    --separator-color: var(--mantine-color-neonIceDark-3);
+  }
+
+  :global(.mantine-SegmentedControl-control)::before {
+    /* Mantine default is ~1px; make all dividers match the thicker one you're seeing. */
+    width: var(--sb-category-divider-width);
+    /* Center the divider inside the new 8px gap. */
+    inset-inline-start: calc(var(--sb-category-pill-gap) / -2);
+  }
+
+  :global(.mantine-SegmentedControl-label) {
+    font-weight: 600;
+    font-size: var(--mantine-font-size-md);
+    border-radius: var(--mantine-radius-sm);
+  }
+
+  /* Match Select dropdown hover color for non-active pills. */
+  :global(.mantine-SegmentedControl-label):where(:not([data-disabled], [data-active], [data-read-only])):hover {
+    background-color: var(--mantine-color-gray-0);
+  }
+}
+
+.categoriesSelect {
+  /* Wrapper class for layout only; visuals are applied via Select `classNames` below. */
+}
+
+.categoriesSelectInput {
+  background-color: var(--mantine-color-neonIceDark-1);
+  border-color: var(--mantine-color-neonIceDark-3);
+  color: var(--mantine-color-graphite-9);
+}
+
+.categoriesSelectInput::placeholder {
+  color: var(--mantine-color-graphite-7);
+}
+
+.categoriesSelectInput:focus {
+  border-color: var(--mantine-color-neonIceDark-4);
+}
+
+.categoriesSelectSection {
+  color: var(--mantine-color-graphite-7);
+}
+
+.categoriesSelectDropdown {
+  background-color: var(--mantine-color-neonIceDark-1);
+  border: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.categoriesSelectOption {
+  color: var(--mantine-color-graphite-9);
+}
+
+/* Hovered option */
+.categoriesSelectOption[data-combobox-active] {
+  background-color: var(--mantine-color-neonIceDark-0);
+}
+
+/* Selected option */
+.categoriesSelectOption[data-combobox-selected],
+.categoriesSelectOption[data-selected] {
+  background-color: var(--mantine-color-neonIceDark-0);
+  color: var(--mantine-color-graphite-9);
+  font-weight: 600;
+}
+
 .main {
   max-width: min(var(--page-shell-max-width), 100%);
   margin: 0 auto;
@@ -30,4 +120,11 @@
 
 .grid {
   align-items: stretch;
+  margin: 0 10%;
+}
+
+@media (min-width: 62em) {
+  .grid {
+    margin: 0;
+  }
 }

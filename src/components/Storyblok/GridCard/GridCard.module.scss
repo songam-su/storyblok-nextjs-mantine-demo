@@ -12,6 +12,16 @@
     transform 150ms ease,
     box-shadow 150ms ease,
     border-color 150ms ease;
+
+  margin: 0 auto;
+  width: 80%;
+  max-width: unset;
+}
+
+@media (min-width: 48em) {
+  .card {
+    width: 100%;
+  }
 }
 
 /* Ensure overrides apply when Mantine adds inline dark backgrounds on the same element */

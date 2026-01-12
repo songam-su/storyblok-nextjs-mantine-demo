@@ -87,10 +87,7 @@ const ImageCard = ({ blok }: SbComponentProps<ImageCardBlok>) => {
               alt={imageData!.alt || ''}
               fill
               sizes="(min-width: 768px) 320px, 100vw"
-              style={{
-                objectFit: 'cover',
-                ...(imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : {}),
-              }}
+              style={imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : undefined}
             />
           </div>
         </div>

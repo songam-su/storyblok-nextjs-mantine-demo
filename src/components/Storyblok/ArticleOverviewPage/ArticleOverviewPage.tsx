@@ -4,7 +4,8 @@ import ArticleCard from '@/components/Storyblok/ArticleCard/ArticleCard';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ArticleOverviewPage as ArticleOverviewPageBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { SegmentedControl, SimpleGrid, Text, TextInput, Title } from '@mantine/core';
+import { SegmentedControl, Select, SimpleGrid, Text, TextInput, Title } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { storyblokEditable } from '@storyblok/react';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './ArticleOverviewPage.module.scss';
@@ -40,6 +41,7 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
   const [data, setData] = useState<ApiResponse | null>(null);
   const [query, setQuery] = useState('');
   const [categoryKey, setCategoryKey] = useState<string>('all');
+  const showCategoryDropdown = useMediaQuery('(max-width: 47.99em)');
 
   useEffect(() => {
     const controller = new AbortController();
@@ -122,13 +124,30 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
             className={styles.search}
           />
 
-          <SegmentedControl
-            fullWidth
-            value={categoryKey}
-            onChange={setCategoryKey}
-            data={categoryOptions}
-            className={styles.categories}
-          />
+          {showCategoryDropdown ? (
+            <Select
+              value={categoryKey}
+              onChange={(value) => setCategoryKey(value ?? 'all')}
+              data={categoryOptions}
+              allowDeselect={false}
+              className={styles.categoriesSelect}
+              classNames={{
+                input: styles.categoriesSelectInput,
+                dropdown: styles.categoriesSelectDropdown,
+                option: styles.categoriesSelectOption,
+                section: styles.categoriesSelectSection,
+              }}
+              comboboxProps={{ withinPortal: false }}
+            />
+          ) : (
+            <SegmentedControl
+              fullWidth
+              value={categoryKey}
+              onChange={setCategoryKey}
+              data={categoryOptions}
+              className={styles.categories}
+            />
+          )}
         </div>
       </header>
 

@@ -45,12 +45,7 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
         {hasHeader && <SectionHeader headline={headlineSegments} lead={blok.lead} align="center" />}
 
         {hasCards && (
-          <SimpleGrid
-            cols={{ base: 1, sm: Math.ceil(cols / 2), lg: cols }}
-            spacing="xl"
-            className={styles.grid}
-            mx={{ base: 0, md: '4rem', lg: '0' }}
-          >
+          <SimpleGrid cols={{ base: 1, sm: Math.ceil(cols / 2), lg: cols }} spacing="xl" className={styles.grid}>
             {cards.map((card, index) => {
               if (!card) return null;
 

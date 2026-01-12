@@ -8,11 +8,11 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  gap: 40px;
+  // gap: 40px;
   align-items: stretch;
 
   @media (min-width: 75em) {
-    gap: 100px;
+    // gap: 100px;
   }
 }
 
@@ -38,6 +38,12 @@
   }
 }
 
+@media (min-width: 48em) and (max-width: 74.999em) {
+  .inner {
+    gap: var(--mantine-spacing-xl);
+  }
+}
+
 .copy {
   display: flex;
   flex-direction: column;
@@ -48,7 +54,7 @@
 
   > * {
     @media (min-width: 75em) {
-      padding-inline: 2rem;
+      padding-inline: 2.5rem;
     }
   }
 }
