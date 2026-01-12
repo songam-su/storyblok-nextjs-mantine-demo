@@ -51,6 +51,10 @@
     width: calc(100% - 1rem);
     max-width: unset;
   }
+
+  @media (min-width: 75em) {
+    width: 100%;
+  }
 }
 
 .imageWrap {

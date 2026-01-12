@@ -47,7 +47,7 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
         {hasCards && (
           <SimpleGrid
             cols={{ base: 1, sm: Math.ceil(cols / 2), lg: cols }}
-            spacing="lg"
+            spacing="xl"
             className={styles.grid}
             mx={{ base: 0, md: '4rem', lg: '0' }}
           >
