@@ -3,7 +3,7 @@
   border-radius: var(--mantine-radius-lg);
   border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
   background-color: var(--sb-surface, rgba(255, 255, 255, 0.02));
-  color: var(--sb-text, #111);
+  color: inherit;
 }
 
 .question {
@@ -13,7 +13,7 @@
 }
 
 .answer {
-  color: color-mix(in srgb, var(--sb-text, #111) 80%, transparent);
+  color: color-mix(in srgb, currentColor 80%, transparent);
   font-size: 1rem;
   line-height: 1.6;
 

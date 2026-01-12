@@ -8,7 +8,7 @@
   width: 100%;
   height: min(70vh, 720px);
   display: block;
-  background-color: var(--mantine-color-gray-0, #f5f5f5);
+  background-color: var(--mantine-color-whiteSmoke-6, #f5f5f5);
 }
 
 .img {
@@ -43,7 +43,7 @@
 }
 
 .inner {
-  background: linear-gradient(180deg, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0.28) 50%, rgba(0,0,0,0.2) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0.28) 50%, rgba(0, 0, 0, 0.2) 100%);
   color: white;
   padding: 2rem;
   border-radius: 8px;

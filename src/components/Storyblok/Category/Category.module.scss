@@ -16,11 +16,11 @@
 
 .title {
   margin: 0;
-  color: var(--sb-text, #111);
+  color: inherit;
 }
 
 .meta {
   margin: 0;
-  color: color-mix(in srgb, var(--sb-text, #111) 70%, transparent);
+  color: color-mix(in srgb, currentColor 70%, transparent);
   line-height: 1.5;
 }

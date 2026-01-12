@@ -1,13 +1,13 @@
 'use client';
 
+import SectionHeader from '@/components/Storyblok/SectionHeader/SectionHeader';
 import { Banner } from '@/lib/storyblok/resources/types/storyblok-components';
-import { Group, Paper, Stack, Text, Title } from '@mantine/core';
+import { Group, Paper, Stack } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import React, { CSSProperties } from 'react';
 
 import Button from '@/components/Storyblok/Button/Button';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import { getStoryblokAlignmentMeta } from '@/lib/storyblok/utils/styles/alignment/storyblokAlignment';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
@@ -67,16 +67,15 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
     >
       <div className={'edge-to-edge__inner ' + styles.inner}>
         <Stack gap="md" align={alignment.alignItems} style={{ textAlign: alignment.textAlign }}>
-          {hasHeadline && (
-            <Title order={1} fw={700} size="h1">
-              {renderHeadlineSegments(blok.headline)}
-            </Title>
-          )}
-          {hasLead && (
-            <Text size="lg" ta={alignment.textAlign} maw={680}>
-              {blok.lead}
-            </Text>
-          )}
+          <SectionHeader
+            headline={blok.headline}
+            lead={blok.lead}
+            titleOrder={1}
+            titleFw={700}
+            titleSize="h1"
+            leadProps={{ c: 'inherit', ta: alignment.textAlign, maw: 680 }}
+            style={{ marginBottom: 0, ['--section-header-lead-color' as any]: 'inherit' }}
+          />
 
           {hasButtons && (
             <Group justify={alignment.justifyContent} gap="md" wrap="wrap" mt="sm">

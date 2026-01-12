@@ -3,13 +3,8 @@
 }
 
 .inner {
-  max-width: 960px;
-  display: grid;
-  gap: 1.5rem;
-}
-
-.lead {
-  color: color-mix(in srgb, var(--sb-text, #111) 72%, transparent);
+  width: min(960px, 100%);
+  margin: 0 auto;
 }
 
 .cards {

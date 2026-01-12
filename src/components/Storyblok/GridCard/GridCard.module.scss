@@ -5,8 +5,8 @@
   padding: 18px;
   border-radius: 12px;
   background-color: #ffffff !important;
-  color: var(--sb-text, #111) !important;
-  border: 1px solid var(--mantine-color-gray-4, #e1e1e1);
+  color: var(--mantine-color-carbonBlack-8, #111) !important;
+  border: 1px solid var(--mantine-color-whiteSmoke-5, #e1e1e1);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   transition:
     transform 150ms ease,
@@ -16,11 +16,9 @@
 
 /* Ensure overrides apply when Mantine adds inline dark backgrounds on the same element */
 :global(.mantine-Card-root).card,
-:global(.mantine-Paper-root).card,
-:global(.mantine-Card-root.GridCard-module-scss-module__FYRdHq__card),
-:global(.mantine-Paper-root.GridCard-module-scss-module__FYRdHq__card) {
+:global(.mantine-Paper-root).card {
   background-color: #ffffff !important;
-  color: var(--sb-text, #111) !important;
+  color: var(--mantine-color-carbonBlack-8, #111) !important;
 }
 
 .withBorder {
@@ -50,23 +48,24 @@
   font-weight: 700;
 }
 
-.backgroundImage {
-  background-size: cover;
-  background-position: center;
-  color: #1a1a1a !important;
-}
+// Background image support intentionally disabled.
+// .backgroundImage {
+//   background-size: cover;
+//   background-position: center;
+//   color: #1a1a1a !important;
+// }
 
 .noImage {
   background-color: #f7f9fc !important;
 }
 
-.backgroundImage::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: color-mix(in srgb, var(--mantine-color-gray-2) 90%, transparent);
-  z-index: 0;
-}
+// .backgroundImage::after {
+//   content: '';
+//   position: absolute;
+//   inset: 0;
+//   background: color-mix(in srgb, var(--mantine-color-whiteSmoke-5) 90%, transparent);
+//   z-index: 0;
+// }
 
 .card :global(.mantine-Stack-root),
 .card :global(.mantine-Text-root),
@@ -75,8 +74,8 @@
   z-index: 1;
 }
 
-.backgroundImage :global(.mantine-Text-root),
-.backgroundImage :global(.mantine-Button-root),
-.backgroundImage :global(.mantine-Button-root span) {
-  color: #1a1a1a !important;
-}
+// .backgroundImage :global(.mantine-Text-root),
+// .backgroundImage :global(.mantine-Button-root),
+// .backgroundImage :global(.mantine-Button-root span) {
+//   color: #1a1a1a !important;
+// }

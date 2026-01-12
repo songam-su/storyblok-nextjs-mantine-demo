@@ -1,65 +1,80 @@
 .card {
   position: relative;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 2.5rem 1.25rem;
-  border: 1px solid var(--mantine-color-gray-4, #e1e1e1);
+  overflow: hidden;
+  padding: 0;
+  border: 0 !important;
   border-radius: 16px;
   background-color: #ffffff !important;
-  color: var(--sb-text, #111) !important;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  color: var(--mantine-color-carbonBlack-8, #111) !important;
+  box-shadow: 4px 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 :global(.mantine-Card-root.TabbedContentEntry-module-scss-module__1bVeMq__card),
 :global(.mantine-Paper-root.TabbedContentEntry-module-scss-module__1bVeMq__card) {
   background-color: #ffffff !important;
-  color: var(--sb-text, #111) !important;
+  color: var(--mantine-color-carbonBlack-8, #111) !important;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 62em) {
+  .body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    height: 100%;
+  }
+
+  .contentPane {
+    height: 100%;
+  }
+
+  .mediaPane {
+    height: 100%;
+  }
+}
+
+.contentPane {
+  padding: clamp(2.5rem, 4.8vw, 4rem);
+  background: var(--mantine-color-whiteSmoke-0, #fafafa);
+}
+
+.mediaPane {
+  position: relative;
+  min-height: 220px;
+  background: var(--mantine-color-whiteSmoke-2, #f2f2f2);
+  overflow: hidden;
+}
+
+@media (min-width: 62em) {
+  .mediaPane {
+    min-height: unset;
+  }
+}
+
+.mediaImage {
+  object-fit: cover;
+  object-position: center;
+
+  /* Prevent faint 1px slivers from subpixel rounding at the edges. */
+  inset: -2px;
+  width: calc(100% + 4px) !important;
+  height: calc(100% + 4px) !important;
 }
 
 .headline {
   font-weight: 700;
   font-size: 1.05rem;
-  color: var(--sb-text, #111);
+  color: inherit;
 }
 
 .richtext {
-  color: var(--sb-text, #111);
+  color: inherit;
   font-size: 0.98rem;
 }
 
 .richtext :global(.sb-richtext) {
   color: inherit;
-}
-
-.backgroundImage {
-  background-size: cover;
-  background-position: center;
-  color: #1a1a1a !important;
-}
-
-.noImage {
-  background-color: #ffffff !important;
-}
-
-.backgroundImage::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: color-mix(in srgb, var(--mantine-color-gray-2) 90%, transparent);
-  z-index: 0;
-}
-
-.card :global(.mantine-Stack-root),
-.card :global(.mantine-Text-root),
-.card :global(.mantine-Button-root) {
-  position: relative;
-  z-index: 1;
-}
-
-.backgroundImage :global(.mantine-Text-root),
-.backgroundImage :global(.mantine-Button-root),
-.backgroundImage :global(.mantine-Button-root span) {
-  color: #1a1a1a !important;
 }

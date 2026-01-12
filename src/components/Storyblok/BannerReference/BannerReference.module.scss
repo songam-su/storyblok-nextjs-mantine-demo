@@ -1,21 +1,48 @@
 .wrapper {
   display: grid;
   gap: clamp(12px, 2vw, 20px);
-  margin-top: clamp(20px, 2.75vw, 44px);
+
+  /* Reference Banner: force the Banner background + text, not the CTA buttons. */
+  --sb-color-bg: var(--mantine-color-neonIceDark-6, #ffc7c7);
+  --sb-color-text: var(--sb-text, var(--mantine-color-carbonBlack-8, #111));
 }
 
-// Manual override: force BannerReference CTAs to a consistent colorway.
-// Rest: Neon Ice. Hover: darker Bubblegum Pink.
-.wrapper :global([data-sb-bg-color][data-sb-text-color]) {
-  background-color: var(--mantine-color-neonIceDark-6) !important;
-  border-color: transparent !important;
-  color: #ffffff !important;
+/*
+  Banner sets its own `--sb-color-bg` via the Storyblok color class on the same element,
+  which overrides inherited vars from `.wrapper`. Apply vars directly to the Banner root.
+*/
+.wrapper .item :global(.edge-to-edge) {
+  --sb-color-bg: var(--mantine-color-neonIceDark-6, #ffc7c7);
+  --sb-color-text: var(--sb-text, var(--mantine-color-carbonBlack-8, #111)) !important;
 }
 
-.wrapper :global([data-sb-bg-color][data-sb-text-color]:hover) {
-  background-color: var(--mantine-color-neonIceDark-5) !important;
+/*
+  Reference Banner CTA buttons:
+  - Rest: dark background + white text
+  - Hover: flip to white background + dark text
+
+  We target Mantine's button root + Storyblok data attributes so this stays stable
+  even if CSS-module class names change.
+*/
+.wrapper :global(.mantine-Button-root[data-sb-bg-color][data-sb-text-color]) {
+  background-color: var(--mantine-color-carbonBlack-8, #111) !important;
+  color: var(--mantine-color-whiteSmoke-0, #fff) !important;
   border-color: transparent !important;
-  color: #ffffff !important;
+
+  transition:
+    background-color 220ms ease-in-out,
+    color 180ms ease-in-out,
+    border-color 220ms ease-in-out;
+
+  /* Keep the Button component's internal hover logic aligned */
+  --sb-color-bg: var(--mantine-color-carbonBlack-8, #111);
+  --sb-color-text: var(--mantine-color-whiteSmoke-0, #fff);
+  --sb-color-bg-hover: var(--mantine-color-whiteSmoke-0, #fff);
+}
+
+.wrapper :global(.mantine-Button-root[data-sb-bg-color][data-sb-text-color]:hover) {
+  background-color: var(--mantine-color-whiteSmoke-0, #fff) !important;
+  color: var(--mantine-color-carbonBlack-8, #111) !important;
 }
 
 .item {

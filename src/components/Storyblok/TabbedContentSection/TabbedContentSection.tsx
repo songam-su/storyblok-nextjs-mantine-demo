@@ -1,12 +1,16 @@
 'use client';
 
-import { Tabs, Stack, Text, Title } from '@mantine/core';
-import { storyblokEditable } from '@storyblok/react';
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
 import TabbedContentEntry from '@/components/Storyblok/TabbedContentEntry/TabbedContentEntry';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
-import type { TabbedContentSection as TabbedContentSectionBlok, TabbedContentEntry as TabbedEntryBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type {
+  TabbedContentSection as TabbedContentSectionBlok,
+  TabbedContentEntry as TabbedEntryBlok,
+} from '@/lib/storyblok/resources/types/storyblok-components';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { Stack, Tabs } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
+import { useEffect, useState } from 'react';
 import styles from './TabbedContentSection.module.scss';
 
 const normalizeEntries = (entries?: TabbedEntryBlok[]) => (Array.isArray(entries) ? entries.filter(Boolean) : []);
@@ -16,46 +20,58 @@ const TabbedContentSection = ({ blok }: SbComponentProps<TabbedContentSectionBlo
   const editable = isEditor ? storyblokEditable(blok as any) : undefined;
 
   const entries = normalizeEntries(blok.entries);
-  const hasHeader = Boolean(blok.headline?.length || blok.lead);
+  const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
   const hasEntries = entries.length > 0;
+  const firstEntryKey = entries[0]?._uid || '0';
+
+  const [activeTab, setActiveTab] = useState<string>(firstEntryKey);
+
+  useEffect(() => {
+    if (!hasEntries) return;
+    const isValid = entries.some((entry) => entry?._uid === activeTab);
+    if (!isValid) setActiveTab(firstEntryKey);
+  }, [hasEntries, entries, activeTab, firstEntryKey]);
 
   if (!hasHeader && !hasEntries) return null;
 
   return (
     <section className={styles.section} {...editable}>
-      <div className={styles.inner}>
-        <Stack gap="md" className={styles.header}>
-          {blok.headline?.length ? (
-            <Title order={2} fw={800} size="h2">
-              {renderHeadlineSegments(blok.headline)}
-            </Title>
-          ) : null}
-
-          {blok.lead && (
-            <Text size="lg" className={styles.lead}>
-              {blok.lead}
-            </Text>
-          )}
-        </Stack>
+      <Stack className={styles.inner} gap="var(--sb-section-stack-gap)">
+        {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} className={styles.header} />}
 
         {hasEntries && (
-          <Tabs className={styles.tabs} defaultValue={entries[0]._uid || '0'} variant="pills">
-            <Tabs.List>
-              {entries.map((entry) => (
-                <Tabs.Tab key={entry._uid} value={entry._uid}>
-                  {entry.headline || 'Untitled'}
-                </Tabs.Tab>
-              ))}
-            </Tabs.List>
+          <>
+            <Tabs
+              className={styles.tabs}
+              value={activeTab}
+              onChange={(value) => setActiveTab(value || firstEntryKey)}
+              variant="pills"
+              keepMounted
+            >
+              <Tabs.List>
+                {entries.map((entry) => (
+                  <Tabs.Tab key={entry._uid} value={entry._uid}>
+                    {entry.headline || 'Untitled'}
+                  </Tabs.Tab>
+                ))}
+              </Tabs.List>
 
-            {entries.map((entry) => (
-              <Tabs.Panel key={entry._uid} value={entry._uid} pt="md">
-                <TabbedContentEntry blok={entry} _uid={entry._uid} component="tabbed-content-entry" />
-              </Tabs.Panel>
-            ))}
-          </Tabs>
+              <div className={styles.panels}>
+                {entries.map((entry) => (
+                  <Tabs.Panel
+                    key={entry._uid}
+                    value={entry._uid}
+                    className={styles.panel}
+                    data-sb-active={activeTab === entry._uid}
+                  >
+                    <TabbedContentEntry blok={entry} _uid={entry._uid} component="tabbed-content-entry" />
+                  </Tabs.Panel>
+                ))}
+              </div>
+            </Tabs>
+          </>
         )}
-      </div>
+      </Stack>
     </section>
   );
 };

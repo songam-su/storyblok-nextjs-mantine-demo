@@ -21,12 +21,12 @@
 }
 
 .has-background-image {
-  background-image: linear-gradient(rgba(6, 11, 26, 0.55), rgba(6, 11, 26, 0.55)), var(--sb-banner-image, none);
+  background-image: linear-gradient(rgba(6, 11, 26, 0.125), rgba(6, 11, 26, 0.125)), var(--sb-banner-image, none);
   background-size: var(--sb-banner-size, cover);
   background-position: var(--sb-banner-position, center);
   background-repeat: no-repeat;
-  color: var(--mantine-color-gray-0);
-  --sb-color-text: var(--mantine-color-gray-0);
+  color: var(--mantine-color-whiteSmoke-0);
+  --sb-color-text: var(--mantine-color-whiteSmoke-0);
 }
 
 .background-cover {

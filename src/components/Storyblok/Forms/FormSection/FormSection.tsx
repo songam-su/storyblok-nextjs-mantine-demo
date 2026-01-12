@@ -1,13 +1,13 @@
 'use client';
 
-import { useCallback } from 'react';
-import { Button as MantineButton, Paper, Stack, Text, TextInput, Textarea, Title } from '@mantine/core';
-import { storyblokEditable } from '@storyblok/react';
 import Button from '@/components/Storyblok/Button/Button';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { FormSection as FormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import { Button as MantineButton, Paper, Stack, Text, TextInput, Textarea } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
+import { useCallback } from 'react';
 import styles from './FormSection.module.scss';
 
 const FormSection = ({ blok }: SbComponentProps<FormSectionBlok>) => {
@@ -71,28 +71,22 @@ const FormSection = ({ blok }: SbComponentProps<FormSectionBlok>) => {
     );
   };
 
-  const hasHeader = Boolean(blok.headline?.length);
+  const hasHeader = hasSectionHeaderContent(blok.headline, undefined);
 
   return (
     <section className={styles.section} {...editable}>
-      <div className={styles.wrapper}>
-        {hasHeader && (
-          <Title order={2} size="h2" fw={800} className={styles.headline}>
-            {renderHeadlineSegments(blok.headline)}
-          </Title>
-        )}
+      <Stack className={styles.wrapper} gap="var(--sb-section-stack-gap)">
+        {hasHeader && <SectionHeader headline={blok.headline} />}
 
         <Paper className={styles.formCard} withBorder={false} shadow="sm" component="form" onSubmit={handleSubmit}>
           <Stack gap="md">
             <Text c="dimmed" size="sm">
-              {formType === 'newsletter'
-                ? 'Subscribe to stay updated.'
-                : 'Send us a note and we will get back to you.'}
+              {formType === 'newsletter' ? 'Subscribe to stay updated.' : 'Send us a note and we will get back to you.'}
             </Text>
             {renderFields()}
           </Stack>
         </Paper>
-      </div>
+      </Stack>
     </section>
   );
 };

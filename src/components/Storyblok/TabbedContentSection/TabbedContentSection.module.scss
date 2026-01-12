@@ -5,8 +5,8 @@
 }
 
 .inner {
-  display: grid;
-  gap: clamp(16px, 3vw, 32px);
+  max-width: 100%;
+  position: relative;
 }
 
 .header {
@@ -18,8 +18,6 @@
 }
 
 .tabs {
-  margin-top: 1.5rem;
-
   :global(.mantine-Tabs-list) {
     gap: 12px;
     display: flex;
@@ -69,5 +67,36 @@
     background: var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5));
     border-color: var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5));
     // box-shadow: 0 6px 18px color-mix(in srgb, var(--sb-accent, #1d63c5) 50%, transparent);
+  }
+}
+
+.panels {
+  display: grid;
+  margin-top: var(--mantine-spacing-md);
+}
+
+.panel {
+  grid-area: 1 / 1;
+  display: block !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 0;
+  transition:
+    opacity 180ms ease,
+    visibility 0ms linear 180ms;
+}
+
+.panel[data-sb-active='true'] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
+  transition: opacity 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    transition: none;
   }
 }

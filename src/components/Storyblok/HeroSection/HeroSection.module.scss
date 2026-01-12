@@ -94,7 +94,7 @@
 }
 
 .lead {
-  color: var(--mantine-color-gray-7);
+  color: var(--mantine-color-graphite-8);
   margin-top: var(--mantine-spacing-lg);
 }
 
@@ -108,8 +108,8 @@
 // In the provided home-page example, the secondary CTA is configured as bg='white' + text='primary-dark'.
 // Force that combination to render as a bubblegum CTA in the Hero only.
 .actions :global([data-sb-bg-color='white'][data-sb-text-color='primary-dark']) {
-  --sb-color-bg: var(--mantine-color-bubblegumPink-6) !important;
-  --sb-color-bg-hover: var(--mantine-color-bubblegumPink-5) !important;
+  --sb-color-bg: var(--mantine-color-secondary-6) !important;
+  --sb-color-bg-hover: var(--mantine-color-secondary-5) !important;
   --sb-color-text: var(--mantine-color-white) !important;
 }
 

@@ -1,12 +1,11 @@
 'use client';
 
+import ArticleCard from '@/components/Storyblok/ArticleCard/ArticleCard';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ArticleOverviewPage as ArticleOverviewPageBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { SegmentedControl, SimpleGrid, Text, TextInput, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './ArticleOverviewPage.module.scss';
 
@@ -147,61 +146,18 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
             No articles match your filters.
           </Text>
         ) : (
-          <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg" verticalSpacing="xl" className={styles.grid}>
+          <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="xl" verticalSpacing="xl" className={styles.grid}>
             {filteredArticles.map((article) => (
-              <Link
+              <ArticleCard
                 key={article.key}
                 href={article.url}
-                className={styles.card}
+                title={article.title}
+                image={article.image?.src ? { src: article.image.src, alt: article.image.alt } : undefined}
+                categories={article.categories.map((cat) => ({ key: cat.key, name: cat.name, icon: cat.icon }))}
                 onClick={(e) => {
                   if (isEditor) e.preventDefault();
                 }}
-              >
-                {article.image?.src ? (
-                  <div className={styles.imageWrap}>
-                    <Image
-                      src={article.image.src}
-                      alt={article.image.alt || ''}
-                      fill
-                      className={styles.image}
-                      sizes="(min-width: 1024px) 320px, (min-width: 768px) 50vw, 100vw"
-                    />
-                  </div>
-                ) : null}
-
-                <div className={styles.body}>
-                  {article.categories.length > 0 ? (
-                    <div className={styles.cardCategories}>
-                      {article.categories.map((cat) => (
-                        <span key={cat.key} className={styles.cardCategory}>
-                          {cat.icon?.src ? (
-                            <span className={styles.cardCategoryIconWrap} aria-hidden="true">
-                              <Image
-                                src={cat.icon.src}
-                                alt=""
-                                width={18}
-                                height={18}
-                                className={styles.cardCategoryIcon}
-                              />
-                            </span>
-                          ) : null}
-                          <span>{cat.name}</span>
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-
-                  <Title order={3} className={styles.cardTitle}>
-                    {article.title}
-                  </Title>
-
-                  {article.excerpt ? <Text className={styles.cardExcerpt}>{article.excerpt}</Text> : null}
-
-                  <div className={styles.cardCta}>
-                    <Text fw={600}>Read more</Text>
-                  </div>
-                </div>
-              </Link>
+              />
             ))}
           </SimpleGrid>
         )}

@@ -1,13 +1,13 @@
 'use client';
 
 import Button from '@/components/Storyblok/Button/Button';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ContactFormSection as ContactFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import getSbImageData from '@/lib/storyblok/utils/image';
 import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Button as MantineButton, Paper, Stack, Text, TextInput, Textarea, Title } from '@mantine/core';
+import { Button as MantineButton, Paper, Stack, Text, TextInput, Textarea } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -72,7 +72,8 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
     );
   };
 
-  const hasHeader = Boolean(blok.headline?.length || blok.lead || blok.text);
+  const hasSectionHeader = hasSectionHeaderContent(blok.headline, blok.lead);
+  const hasHeader = hasSectionHeader || Boolean(blok.text);
 
   const imageData = getSbImageData(blok.image || null);
   const hasImage = Boolean(imageData?.src);
@@ -87,59 +88,57 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
     <section className={styles.section} {...editable}>
       <div className={styles.inner}>
         <div className={styles.formColumn}>
-          {hasHeader && (
-            <Stack gap="xs" className={styles.headline}>
-              {blok.headline?.length ? (
-                <Title order={2} size="h2" fw={800}>
-                  {renderHeadlineSegments(blok.headline)}
-                </Title>
-              ) : null}
-              {typeof blok.lead === 'string' && blok.lead.trim().length > 0 && (
-                <Text className={styles.lead} size="md">
-                  {blok.lead}
-                </Text>
-              )}
-              {blok.text ? <div className={styles.richtext}>{renderSbRichText(blok.text)}</div> : null}
-            </Stack>
-          )}
+          <Stack gap="var(--sb-section-stack-gap)">
+            {hasHeader && (
+              <Stack gap="md" className={styles.header}>
+                {hasSectionHeader && (
+                  <SectionHeader
+                    headline={blok.headline}
+                    lead={typeof blok.lead === 'string' ? blok.lead : undefined}
+                  />
+                )}
+                {blok.text ? <div className={styles.richtext}>{renderSbRichText(blok.text)}</div> : null}
+              </Stack>
+            )}
 
-          <Paper
-            className={styles.formCard}
-            withBorder={false}
-            shadow="sm"
-            component="form"
-            onSubmit={handleSubmit}
-            data-lpignore="true"
-            data-1p-ignore="true"
-          >
-            <Stack gap="md">
-              <Text c="dimmed" size="sm">
-                Tell us about your request.
-              </Text>
-              <TextInput
-                label="Name"
-                name="name"
-                required
-                placeholder="Your name"
-                autoComplete="name"
-                data-lpignore="true"
-                data-1p-ignore="true"
-              />
-              <TextInput
-                label="Email"
-                type="email"
-                name="email"
-                required
-                placeholder="you@example.com"
-                autoComplete="email"
-                data-lpignore="true"
-                data-1p-ignore="true"
-              />
-              <TextInput label="Subject" name="subject" placeholder="How can we help?" />
-              <Textarea label="Message" name="message" minRows={4} placeholder="Share a bit more detail" />
-              <div className={styles.actions}>{renderButtons()}</div>
-            </Stack>
-          </Paper>
+            <Paper
+              className={styles.formCard}
+              withBorder={false}
+              shadow="sm"
+              component="form"
+              onSubmit={handleSubmit}
+              data-lpignore="true"
+              data-1p-ignore="true"
+            >
+              <Stack gap="md">
+                <Text c="dimmed" size="sm">
+                  Tell us about your request.
+                </Text>
+                <TextInput
+                  label="Name"
+                  name="name"
+                  required
+                  placeholder="Your name"
+                  autoComplete="name"
+                  data-lpignore="true"
+                  data-1p-ignore="true"
+                />
+                <TextInput
+                  label="Email"
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  data-lpignore="true"
+                  data-1p-ignore="true"
+                />
+                <TextInput label="Subject" name="subject" placeholder="How can we help?" />
+                <Textarea label="Message" name="message" minRows={4} placeholder="Share a bit more detail" />
+                <div className={styles.actions}>{renderButtons()}</div>
+              </Stack>
+            </Paper>
+          </Stack>
         </div>
 
         {hasAside ? (
