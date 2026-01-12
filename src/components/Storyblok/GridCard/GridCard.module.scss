@@ -67,12 +67,7 @@
 //   z-index: 0;
 // }
 
-.card :global(.mantine-Stack-root),
-.card :global(.mantine-Text-root),
-.card :global(.mantine-Button-root) {
-  position: relative;
-  z-index: 1;
-}
+/* Background image overlay is currently disabled, so we don't need z-index hacks on Mantine children. */
 
 // .backgroundImage :global(.mantine-Text-root),
 // .backgroundImage :global(.mantine-Button-root),

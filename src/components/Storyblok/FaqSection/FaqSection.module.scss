@@ -20,60 +20,59 @@
 
 .accordion {
   background: transparent;
+}
 
-  :global(.mantine-Accordion-item) {
-    border-radius: var(--mantine-radius-sm);
-    border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
-    background: var(--sb-surface, rgba(255, 255, 255, 0.02));
-    overflow: hidden;
-  }
+.accordionItem {
+  border-radius: var(--mantine-radius-sm);
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  background: var(--sb-surface, rgba(255, 255, 255, 0.02));
+  overflow: hidden;
+}
 
-  :global(.mantine-Accordion-item + .mantine-Accordion-item) {
-    margin-top: var(--mantine-spacing-sm);
-  }
+.accordionItem + .accordionItem {
+  margin-top: var(--mantine-spacing-sm);
+}
 
-  :global(.mantine-Accordion-control) {
-    color: inherit;
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
+.accordionControl {
+  color: inherit;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
 
-  // Mantine renders the question text inside an inner label span.
-  // Style it directly so it doesn't look "thin" even when Mantine changes control styles.
-  :global(.mantine-Accordion-label) {
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
+/* Mantine renders the question text inside an inner label span. */
+.accordionLabel {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
 
-  // When an entry is open, give the question a subtle accent tint.
-  :global(.mantine-Accordion-item[data-active='true'] .mantine-Accordion-label) {
-    color: color-mix(in srgb, var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 22%, currentColor);
-  }
+/* When an entry is open, give the question a subtle accent tint. */
+.accordionItem[data-active='true'] .accordionLabel {
+  color: color-mix(in srgb, var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 22%, currentColor);
+}
 
-  // When an entry is open, keep a subtle tint on the header even when not hovered.
-  :global(.mantine-Accordion-item[data-active='true'] .mantine-Accordion-control) {
-    background: color-mix(
-      in srgb,
-      var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 8%,
-      var(--sb-surface, #fff)
-    );
-  }
+/* When an entry is open, keep a subtle tint on the header even when not hovered. */
+.accordionItem[data-active='true'] .accordionControl {
+  background: color-mix(
+    in srgb,
+    var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 8%,
+    var(--sb-surface, #fff)
+  );
+}
 
-  // Add a more visually appealing hover state for questions (open or closed).
-  :global(.mantine-Accordion-item .mantine-Accordion-control:hover) {
-    background: color-mix(
-      in srgb,
-      var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 16%,
-      var(--sb-surface, #fff)
-    );
-  }
+/* Add a more visually appealing hover state for questions (open or closed). */
+.accordionControl:hover {
+  background: color-mix(
+    in srgb,
+    var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 16%,
+    var(--sb-surface, #fff)
+  );
+}
 
-  :global(.mantine-Accordion-panel) {
-    color: inherit;
-  }
+.accordionPanel {
+  color: inherit;
+}
 
-  :global(.mantine-Accordion-content) {
-    padding-top: var(--mantine-spacing-sm) !important;
-    padding-bottom: var(--mantine-spacing-sm) !important;
-  }
+.accordionContent {
+  padding-top: var(--mantine-spacing-sm) !important;
+  padding-bottom: var(--mantine-spacing-sm) !important;
 }

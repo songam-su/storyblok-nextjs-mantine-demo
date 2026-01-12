@@ -8,7 +8,7 @@ import {
   FaqSection as FaqSectionBlok,
 } from '@/lib/storyblok/resources/types/storyblok-components';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Accordion, Paper, Stack } from '@mantine/core';
+import { Accordion, Stack } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import styles from './FaqSection.module.scss';
 
@@ -27,13 +27,20 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
   }
 
   return (
-    <Paper component="section" className={styles.section} radius="sm" {...editableAttributes}>
+    <section className={styles.section} {...editableAttributes}>
       <Stack gap="var(--sb-section-stack-gap)">
         {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
 
         {hasEntries && (
           <Accordion
             className={styles.accordion}
+            classNames={{
+              item: styles.accordionItem,
+              control: styles.accordionControl,
+              label: styles.accordionLabel,
+              panel: styles.accordionPanel,
+              content: styles.accordionContent,
+            }}
             radius="lg"
             chevronPosition="right"
             defaultValue={getAccordionValue(entries[0], 0)}
@@ -56,7 +63,7 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
           </Accordion>
         )}
       </Stack>
-    </Paper>
+    </section>
   );
 };
 
