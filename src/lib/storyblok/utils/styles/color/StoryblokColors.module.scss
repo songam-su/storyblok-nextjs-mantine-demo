@@ -2,7 +2,7 @@
   :global(:root) {
     --sb-color-default-bg: var(--mantine-color-carbonBlack-8);
     --sb-color-default-bg-hover: var(--mantine-color-carbonBlack-7);
-    --sb-color-default-text: var(--mantine-color-gray-0);
+    --sb-color-default-text: var(--mantine-color-whiteSmoke-0);
   }
 }
 
@@ -16,26 +16,26 @@
 
   .highlight-1,
   .color_1 {
-    --sb-color-bg: var(--mantine-color-bubblegumPink-6);
-    --sb-color-bg-hover: var(--mantine-color-bubblegumPink-5);
+    --sb-color-bg: var(--mantine-color-secondary-6);
+    --sb-color-bg-hover: var(--mantine-color-secondary-5);
     --sb-color-text: var(--mantine-color-white);
-    --sb-color-highlight: var(--mantine-color-bubblegumPink-3);
+    --sb-color-highlight: var(--mantine-color-secondary-3);
   }
 
   .highlight-2,
   .color_2 {
-    --sb-color-bg: var(--mantine-color-amberGlow-6);
-    --sb-color-bg-hover: var(--mantine-color-amberGlow-5);
+    --sb-color-bg: var(--mantine-color-warning-6);
+    --sb-color-bg-hover: var(--mantine-color-warning-5);
     --sb-color-text: var(--mantine-color-carbonBlack-8);
-    --sb-color-highlight: var(--mantine-color-amberGlow-3);
+    --sb-color-highlight: var(--mantine-color-warning-3);
   }
 
   .highlight-3,
   .color_3 {
-    --sb-color-bg: var(--mantine-color-blushedBrick-6);
-    --sb-color-bg-hover: var(--mantine-color-blushedBrick-5);
+    --sb-color-bg: var(--mantine-color-accent-6);
+    --sb-color-bg-hover: var(--mantine-color-accent-5);
     --sb-color-text: var(--mantine-color-white);
-    --sb-color-highlight: var(--mantine-color-blushedBrick-3);
+    --sb-color-highlight: var(--mantine-color-accent-3);
   }
 
   .primary-dark {
@@ -132,16 +132,16 @@
 
   .highlight-text-highlight-1,
   .highlight-text-color_1 {
-    color: var(--mantine-color-bubblegumPink-3);
+    color: var(--mantine-color-secondary-3);
   }
 
   .highlight-text-highlight-2,
   .highlight-text-color_2 {
-    color: var(--mantine-color-amberGlow-3);
+    color: var(--mantine-color-warning-3);
   }
 
   .highlight-text-highlight-3,
   .highlight-text-color_3 {
-    color: var(--mantine-color-blushedBrick-3);
+    color: var(--mantine-color-accent-3);
   }
 }

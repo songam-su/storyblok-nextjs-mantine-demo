@@ -6,7 +6,7 @@
   border-radius: 12px;
   background-color: #ffffff !important;
   color: var(--sb-text, #111) !important;
-  border: 1px solid var(--mantine-color-gray-4, #e1e1e1);
+  border: 1px solid var(--mantine-color-whiteSmoke-7, #e1e1e1);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   transition:
     transform 150ms ease,
@@ -64,7 +64,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, var(--mantine-color-gray-2) 90%, transparent);
+  background: color-mix(in srgb, var(--mantine-color-whiteSmoke-7) 90%, transparent);
   z-index: 0;
 }
 

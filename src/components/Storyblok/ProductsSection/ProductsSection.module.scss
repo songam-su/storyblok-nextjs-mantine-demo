@@ -4,9 +4,9 @@
   border-radius: 16px;
   display: grid;
   gap: 16px;
-  background: var(--mantine-color-gray-0);
+  background: var(--mantine-color-whiteSmoke-0);
   background: var(--mantine-color-neonIceLight-0);
-  border: 1px solid var(--mantine-color-gray-3);
+  border: 1px solid var(--mantine-color-whiteSmoke-8);
   margin: 64px auto;
 }
 
@@ -16,16 +16,16 @@
 }
 
 .lead {
-  color: var(--mantine-color-gray-7);
+  color: var(--mantine-color-graphite-8);
   max-width: 720px;
 }
 
 .pluginBox {
   padding: 18px;
   border-radius: 12px;
-  border: 1px dashed var(--mantine-color-gray-4);
-  background: var(--mantine-color-gray-1);
-  color: var(--mantine-color-gray-7);
+  border: 1px dashed var(--mantine-color-whiteSmoke-9);
+  background: var(--mantine-color-whiteSmoke-6);
+  color: var(--mantine-color-graphite-8);
 }
 
 .products {
@@ -45,7 +45,7 @@
   overflow: hidden;
   border-radius: 14px;
   background: var(--mantine-color-white);
-  border: 1px solid var(--mantine-color-gray-3);
+  border: 1px solid var(--mantine-color-whiteSmoke-8);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 
   @media (min-width: 48em) {
@@ -58,7 +58,7 @@
   position: relative;
   aspect-ratio: 1 / 1;
   width: 100%;
-  background: var(--mantine-color-gray-1);
+  background: var(--mantine-color-whiteSmoke-6);
 }
 
 .image {
@@ -81,7 +81,7 @@
 
 .description {
   margin: 0;
-  color: var(--mantine-color-gray-7);
+  color: var(--mantine-color-graphite-8);
   line-height: 1.55;
 }
 
@@ -91,5 +91,5 @@
 }
 
 .soldOut {
-  color: var(--mantine-color-pink-7);
+  color: var(--mantine-color-danger-8);
 }
