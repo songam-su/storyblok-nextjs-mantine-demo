@@ -3,7 +3,7 @@ import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorConte
 import type { LatestArticlesSection as LatestArticlesSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Text } from '@mantine/core';
+import { Stack, Text } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import styles from './LatestArticlesSection.module.scss';
@@ -16,11 +16,13 @@ const LatestArticlesSection = ({ blok }: SbComponentProps<LatestArticlesSectionB
 
   return (
     <section {...editable} className={classNames(styles.section, backgroundClass)}>
-      {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
+      <Stack gap="var(--sb-section-stack-gap)">
+        {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
 
-      <Text size="sm" c="dimmed">
-        No articles connected yet.
-      </Text>
+        <Text size="sm" c="dimmed">
+          No articles connected yet.
+        </Text>
+      </Stack>
     </section>
   );
 };

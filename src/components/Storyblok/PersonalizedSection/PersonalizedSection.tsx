@@ -9,7 +9,7 @@ import type {
   Button as SbButtonBlok,
 } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Card } from '@mantine/core';
+import { Card, Stack } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import styles from './PersonalizedSection.module.scss';
 
@@ -34,7 +34,7 @@ const PersonalizedSection = ({ blok }: SbComponentProps<PersonalizedSectionConte
 
   return (
     <section className={styles.section} {...editable}>
-      <div className={styles.inner}>
+      <Stack className={styles.inner} gap="var(--sb-section-stack-gap)">
         {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
 
         {hasButtons && (
@@ -51,7 +51,7 @@ const PersonalizedSection = ({ blok }: SbComponentProps<PersonalizedSectionConte
             ))}
           </div>
         )}
-      </div>
+      </Stack>
     </section>
   );
 };

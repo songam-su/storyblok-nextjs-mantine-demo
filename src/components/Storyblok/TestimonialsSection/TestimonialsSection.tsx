@@ -35,10 +35,10 @@ const TestimonialsSection = ({ blok }: SbComponentProps<TestimonialsSectionBlok>
 
   return (
     <section className={styles.section} {...editable}>
-      <div className={styles.inner}>
-        <Stack gap="md" className={styles.header}>
-          <SectionHeader headline={blok.headline} lead={blok.lead} />
-        </Stack>
+      <Stack className={styles.inner} gap="var(--sb-section-stack-gap)">
+        {hasHeader && (
+          <SectionHeader headline={blok.headline} lead={blok.lead} align="center" className={styles.header} />
+        )}
 
         {hasTestimonials && (
           <SimpleGrid
@@ -53,7 +53,7 @@ const TestimonialsSection = ({ blok }: SbComponentProps<TestimonialsSectionBlok>
             ))}
           </SimpleGrid>
         )}
-      </div>
+      </Stack>
     </section>
   );
 };

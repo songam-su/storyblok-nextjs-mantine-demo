@@ -75,12 +75,8 @@ const FormSection = ({ blok }: SbComponentProps<FormSectionBlok>) => {
 
   return (
     <section className={styles.section} {...editable}>
-      <div className={styles.wrapper}>
-        {hasHeader && (
-          <div className={styles.headline}>
-            <SectionHeader headline={blok.headline} />
-          </div>
-        )}
+      <Stack className={styles.wrapper} gap="var(--sb-section-stack-gap)">
+        {hasHeader && <SectionHeader headline={blok.headline} />}
 
         <Paper className={styles.formCard} withBorder={false} shadow="sm" component="form" onSubmit={handleSubmit}>
           <Stack gap="md">
@@ -90,7 +86,7 @@ const FormSection = ({ blok }: SbComponentProps<FormSectionBlok>) => {
             {renderFields()}
           </Stack>
         </Paper>
-      </div>
+      </Stack>
     </section>
   );
 };

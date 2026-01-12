@@ -4,7 +4,7 @@ import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/S
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ProductsSection as ProductsSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { SimpleGrid } from '@mantine/core';
+import { SimpleGrid, Stack } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import Image from 'next/image';
 import styles from './ProductsSection.module.scss';
@@ -103,59 +103,61 @@ const ProductsSection = ({ blok }: SbComponentProps<ProductsSectionBlok>) => {
 
   return (
     <section {...editable} className={styles.section}>
-      <SectionHeader headline={blok.headline} lead={blok.lead} />
+      <Stack gap="var(--sb-section-stack-gap)">
+        {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
 
-      {hasPlugin && (
-        <div className={styles.products}>
-          {products.length > 0 ? (
-            <SimpleGrid
-              cols={{ base: 1, sm: 2, lg: 3 }}
-              spacing="lg"
-              verticalSpacing="xl"
-              mx={{ base: 0, md: '4rem', lg: 0 }}
-              className={styles.grid}
-            >
-              {products.map((product, index) => {
-                const key = product.id ?? product.sku ?? product.slug ?? `${blok._uid}-product-${index}`;
-                const priceMeta = getProductPriceLabel(product);
+        {hasPlugin && (
+          <div className={styles.products}>
+            {products.length > 0 ? (
+              <SimpleGrid
+                cols={{ base: 1, sm: 2, lg: 3 }}
+                spacing="lg"
+                verticalSpacing="xl"
+                mx={{ base: 0, md: '4rem', lg: 0 }}
+                className={styles.grid}
+              >
+                {products.map((product, index) => {
+                  const key = product.id ?? product.sku ?? product.slug ?? `${blok._uid}-product-${index}`;
+                  const priceMeta = getProductPriceLabel(product);
 
-                return (
-                  <div key={key} className={styles.card}>
-                    {product.image ? (
-                      <div className={styles.imageWrap}>
-                        <Image
-                          src={product.image}
-                          alt={product.name ?? ''}
-                          fill
-                          className={styles.image}
-                          sizes="(min-width: 1024px) 320px, (min-width: 768px) 50vw, 100vw"
-                        />
-                      </div>
-                    ) : null}
-
-                    <div className={styles.body}>
-                      {product.name ? <h3 className={styles.title}>{product.name}</h3> : null}
-                      {product.description ? <p className={styles.description}>{product.description}</p> : null}
-
-                      {priceMeta ? (
-                        <div className={styles.price}>
-                          {priceMeta.kind === 'sold-out' ? (
-                            <span className={styles.soldOut}>Sold out</span>
-                          ) : (
-                            <span>{priceMeta.label}</span>
-                          )}
+                  return (
+                    <div key={key} className={styles.card}>
+                      {product.image ? (
+                        <div className={styles.imageWrap}>
+                          <Image
+                            src={product.image}
+                            alt={product.name ?? ''}
+                            fill
+                            className={styles.image}
+                            sizes="(min-width: 1024px) 320px, (min-width: 768px) 50vw, 100vw"
+                          />
                         </div>
                       ) : null}
+
+                      <div className={styles.body}>
+                        {product.name ? <h3 className={styles.title}>{product.name}</h3> : null}
+                        {product.description ? <p className={styles.description}>{product.description}</p> : null}
+
+                        {priceMeta ? (
+                          <div className={styles.price}>
+                            {priceMeta.kind === 'sold-out' ? (
+                              <span className={styles.soldOut}>Sold out</span>
+                            ) : (
+                              <span>{priceMeta.label}</span>
+                            )}
+                          </div>
+                        ) : null}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </SimpleGrid>
-          ) : (
-            <div className={styles.pluginBox}>No products selected in the plugin field.</div>
-          )}
-        </div>
-      )}
+                  );
+                })}
+              </SimpleGrid>
+            ) : (
+              <div className={styles.pluginBox}>No products selected in the plugin field.</div>
+            )}
+          </div>
+        )}
+      </Stack>
     </section>
   );
 };

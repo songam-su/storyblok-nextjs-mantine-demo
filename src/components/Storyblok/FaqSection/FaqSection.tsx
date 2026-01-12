@@ -28,8 +28,8 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
 
   return (
     <Paper component="section" className={styles.section} radius="sm" {...editableAttributes}>
-      <Stack>
-        <SectionHeader headline={blok.headline} lead={blok.lead} />
+      <Stack gap="var(--sb-section-stack-gap)">
+        {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
 
         {hasEntries && (
           <Accordion
@@ -37,7 +37,6 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
             radius="lg"
             chevronPosition="right"
             defaultValue={getAccordionValue(entries[0], 0)}
-            mt="1rem"
             mx={{ base: 0, md: '4rem', xl: '0' }}
           >
             {entries.map((entry, index) => {

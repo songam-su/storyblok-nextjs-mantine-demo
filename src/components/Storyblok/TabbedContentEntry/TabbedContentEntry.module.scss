@@ -1,10 +1,8 @@
 .card {
   position: relative;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 2.5rem 1.25rem;
+  overflow: hidden;
+  padding: 0;
   border: 1px solid var(--mantine-color-whiteSmoke-5, #e1e1e1);
   border-radius: 16px;
   background-color: #ffffff !important;
@@ -16,6 +14,48 @@
 :global(.mantine-Paper-root.TabbedContentEntry-module-scss-module__1bVeMq__card) {
   background-color: #ffffff !important;
   color: var(--mantine-color-carbonBlack-8, #111) !important;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 62em) {
+  .body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    height: 100%;
+  }
+
+  .contentPane {
+    height: 100%;
+  }
+
+  .mediaPane {
+    height: 100%;
+  }
+}
+
+.contentPane {
+  padding: clamp(1.25rem, 2.4vw, 2rem);
+  background: var(--mantine-color-whiteSmoke-0, #fafafa);
+}
+
+.mediaPane {
+  position: relative;
+  min-height: 220px;
+  background: var(--mantine-color-whiteSmoke-2, #f2f2f2);
+}
+
+@media (min-width: 62em) {
+  .mediaPane {
+    min-height: unset;
+  }
+}
+
+.mediaImage {
+  object-fit: cover;
+  object-position: center;
 }
 
 .headline {
@@ -31,35 +71,4 @@
 
 .richtext :global(.sb-richtext) {
   color: inherit;
-}
-
-.backgroundImage {
-  background-size: cover;
-  background-position: center;
-  color: #1a1a1a !important;
-}
-
-.noImage {
-  background-color: #ffffff !important;
-}
-
-.backgroundImage::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: color-mix(in srgb, var(--mantine-color-whiteSmoke-5) 90%, transparent);
-  z-index: 0;
-}
-
-.card :global(.mantine-Stack-root),
-.card :global(.mantine-Text-root),
-.card :global(.mantine-Button-root) {
-  position: relative;
-  z-index: 1;
-}
-
-.backgroundImage :global(.mantine-Text-root),
-.backgroundImage :global(.mantine-Button-root),
-.backgroundImage :global(.mantine-Button-root span) {
-  color: #1a1a1a !important;
 }

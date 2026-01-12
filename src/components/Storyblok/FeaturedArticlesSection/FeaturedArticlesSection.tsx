@@ -8,7 +8,7 @@ import type {
 } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Text, Title } from '@mantine/core';
+import { Stack, Text, Title } from '@mantine/core';
 import type { ISbStoryData } from '@storyblok/react';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
@@ -79,44 +79,46 @@ const FeaturedArticlesSection = ({ blok }: SbComponentProps<FeaturedArticlesSect
 
   return (
     <section {...editable} className={classNames(styles.section, backgroundClass)}>
-      {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
+      <Stack gap="var(--sb-section-stack-gap)">
+        {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
 
-      {hasArticles && (
-        <div className={styles.grid}>
-          {articles.map((article, index) => {
-            const normalized = normalizeArticle(article as ArticleRef, index);
-            if (!normalized) return null;
+        {hasArticles && (
+          <div className={styles.grid}>
+            {articles.map((article, index) => {
+              const normalized = normalizeArticle(article as ArticleRef, index);
+              if (!normalized) return null;
 
-            const content = (
-              <div className={styles.card}>
-                <Title order={4} className={styles.cardTitle}>
-                  {normalized.name}
-                </Title>
-                {normalized.lead && <Text size="sm">{normalized.lead}</Text>}
-              </div>
-            );
-
-            if (normalized.url) {
-              return (
-                <Link
-                  key={normalized.key}
-                  href={normalized.url}
-                  onClick={handleEditorClick}
-                  className={styles.cardLink}
-                >
-                  {content}
-                </Link>
+              const content = (
+                <div className={styles.card}>
+                  <Title order={4} className={styles.cardTitle}>
+                    {normalized.name}
+                  </Title>
+                  {normalized.lead && <Text size="sm">{normalized.lead}</Text>}
+                </div>
               );
-            }
 
-            return (
-              <div key={normalized.key} className={styles.cardWrapper}>
-                {content}
-              </div>
-            );
-          })}
-        </div>
-      )}
+              if (normalized.url) {
+                return (
+                  <Link
+                    key={normalized.key}
+                    href={normalized.url}
+                    onClick={handleEditorClick}
+                    className={styles.cardLink}
+                  >
+                    {content}
+                  </Link>
+                );
+              }
+
+              return (
+                <div key={normalized.key} className={styles.cardWrapper}>
+                  {content}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </Stack>
     </section>
   );
 };

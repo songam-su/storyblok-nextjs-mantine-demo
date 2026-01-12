@@ -27,8 +27,8 @@ const TextSection = ({ blok }: SbComponentProps<TextSectionBlok>) => {
 
   return (
     <section {...editable} className={classNames(styles.section, backgroundClass)}>
-      <Stack gap="md">
-        <SectionHeader headline={blok.headline} lead={lead} />
+      <Stack gap="var(--sb-section-stack-gap)">
+        {hasHeader && <SectionHeader headline={blok.headline} lead={lead} />}
 
         {hasText && <div className={styles.content}>{renderSbRichText(blok.text)}</div>}
       </Stack>

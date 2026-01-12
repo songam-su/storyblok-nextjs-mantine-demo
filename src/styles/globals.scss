@@ -27,6 +27,7 @@ body {
   --page-shell-block-padding: clamp(2rem, 6vw, 4rem);
   --page-shell-section-gap: clamp(1.5rem, 4vw, 3rem);
   --page-shell-section-padding: clamp(24px, 4vw, 64px);
+  --sb-section-stack-gap: 2rem;
   --sb-surface: color-mix(in srgb, var(--sb-background, #f8f9fb) 92%, #ffffff);
   --sb-surface-strong: color-mix(in srgb, var(--sb-background, #f0f2f5) 80%, #ffffff);
   --sb-border: color-mix(in srgb, var(--sb-text, #0d0d0d) 12%, transparent);
@@ -70,6 +71,7 @@ body {
 @media (min-width: 48em) {
   :root {
     --page-shell-inline-padding: var(--page-shell-inline-padding-sm);
+    --sb-section-stack-gap: 2.5rem;
   }
 }
 
@@ -109,6 +111,7 @@ body {
   color: var(--mantine-color-dimmed);
 
   --sb-richtext-block-gap-default: 0.75em;
+  --_sb-richtext-block-gap: var(--sb-richtext-block-gap, var(--sb-richtext-block-gap-default));
 
   /*
     Rich text spacing rules:
@@ -117,16 +120,20 @@ body {
     - Remove bottom margin on the final block so the component controls spacing.
   */
 
-  :where(h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, pre) {
-    margin-top: 0;
+  /*
+    Rich text block spacing:
+    - The first block should never push content down.
+    - The last block should never push content down.
+    - Interior spacing is controlled by a single tokenized gap.
+  */
+
+  :where(.sb-rt-heading, .sb-rt-paragraph, h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, pre) {
+    margin: 0;
   }
 
-  :where(p, ul, ol, blockquote, pre) {
-    margin-bottom: var(--sb-richtext-block-gap, var(--sb-richtext-block-gap-default));
-  }
-
-  :where(p, ul, ol, blockquote, pre):last-of-type {
-    margin-bottom: 0;
+  > :where(.sb-rt-heading, .sb-rt-paragraph, h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, pre)
+    + :where(.sb-rt-heading, .sb-rt-paragraph, h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, pre) {
+    margin-top: var(--_sb-richtext-block-gap);
   }
 
   h1,
@@ -166,21 +173,12 @@ body {
     padding-left: 1.25rem;
   }
 
+  li + li {
+    margin-top: 0.35em;
+  }
+
   .sb-rt-heading {
-    color: #fff;
-    margin: 0 0 0.35em;
+    color: var(--sb-headline-color, var(--sb-text, #111));
     line-height: 1.2;
-  }
-
-  .sb-rt-heading:last-of-type {
-    margin-bottom: 0;
-  }
-
-  .sb-rt-paragraph {
-    margin: 0 0 var(--sb-richtext-block-gap, var(--sb-richtext-block-gap-default));
-  }
-
-  .sb-rt-paragraph:last-of-type {
-    margin-bottom: 0;
   }
 }

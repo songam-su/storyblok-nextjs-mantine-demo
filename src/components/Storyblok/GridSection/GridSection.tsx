@@ -31,8 +31,9 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
     ? blok.headline.filter((segment) => Boolean(segment?.text?.trim()))
     : [];
   const hasHeader = hasSectionHeaderContent(headlineSegments, blok.lead);
-  const hasHeaderRow = hasHeader || buttons.length > 0;
-  const hasContent = hasHeaderRow || cards.length > 0;
+  const hasButtons = buttons.length > 0;
+  const hasCards = cards.length > 0;
+  const hasContent = hasHeader || hasCards || hasButtons;
 
   if (!hasContent) {
     return <section {...editable} className={classNames(styles.section, backgroundClass)} />;
@@ -40,31 +41,10 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
 
   return (
     <section {...editable} className={classNames(styles.section, backgroundClass)}>
-      <Stack gap={hasHeaderRow && cards.length > 0 ? 'md' : 0}>
-        {hasHeaderRow && (
-          <SectionHeader
-            className={styles.headerRow}
-            headline={headlineSegments}
-            lead={blok.lead}
-            rightSlot={
-              buttons.length > 0 ? (
-                <Group className={styles.actions} gap="sm">
-                  {buttons.map((btn) => (
-                    <Button
-                      key={btn._uid}
-                      blok={btn}
-                      _uid={btn._uid}
-                      component={btn.component}
-                      storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
-                    />
-                  ))}
-                </Group>
-              ) : null
-            }
-          />
-        )}
+      <Stack gap="var(--sb-section-stack-gap)">
+        {hasHeader && <SectionHeader headline={headlineSegments} lead={blok.lead} align="center" />}
 
-        {cards.length > 0 && (
+        {hasCards && (
           <SimpleGrid
             cols={{ base: 1, sm: Math.ceil(cols / 2), lg: cols }}
             spacing="lg"
@@ -110,6 +90,22 @@ const GridSection = ({ blok }: SbComponentProps<GridSectionBlok>) => {
               return null;
             })}
           </SimpleGrid>
+        )}
+
+        {hasButtons && (
+          <div className={styles.actionsWrap}>
+            <Group className={styles.actions} justify="center" gap="sm" wrap="wrap">
+              {buttons.map((btn) => (
+                <Button
+                  key={btn._uid}
+                  blok={btn}
+                  _uid={btn._uid}
+                  component={btn.component}
+                  storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
+                />
+              ))}
+            </Group>
+          </div>
         )}
       </Stack>
     </section>

@@ -52,7 +52,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
 
   return (
     <section className={styles.section} {...editable}>
-      <div className={styles.wrapper}>
+      <Stack className={styles.wrapper} gap="var(--sb-section-stack-gap)">
         {hasHeader && (
           <SectionHeader
             headline={blok.headline}
@@ -88,7 +88,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
             {renderButtons()}
           </Stack>
         </Paper>
-      </div>
+      </Stack>
     </section>
   );
 };
