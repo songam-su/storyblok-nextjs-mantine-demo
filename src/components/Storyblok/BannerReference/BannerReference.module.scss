@@ -1,10 +1,8 @@
 .wrapper {
   display: grid;
   gap: clamp(12px, 2vw, 20px);
-  margin-top: clamp(20px, 2.75vw, 44px);
 
   /* Reference Banner: force the Banner background + text, not the CTA buttons. */
-  // --sb-color-bg: var(--mantine-color-tomatoJam-1, #ffc7c7);
   --sb-color-bg: var(--mantine-color-neonIceDark-6, #ffc7c7);
   --sb-color-text: var(--sb-text, var(--mantine-color-carbonBlack-8, #111));
 }
@@ -14,7 +12,6 @@
   which overrides inherited vars from `.wrapper`. Apply vars directly to the Banner root.
 */
 .wrapper .item :global(.edge-to-edge) {
-  // --sb-color-bg: var(--mantine-color-tomatoJam-1, #ffc7c7) !important;
   --sb-color-bg: var(--mantine-color-neonIceDark-6, #ffc7c7);
   --sb-color-text: var(--sb-text, var(--mantine-color-carbonBlack-8, #111)) !important;
 }
