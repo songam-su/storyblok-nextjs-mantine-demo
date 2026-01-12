@@ -10,12 +10,6 @@
   box-shadow: 4px 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-:global(.mantine-Card-root.TabbedContentEntry-module-scss-module__1bVeMq__card),
-:global(.mantine-Paper-root.TabbedContentEntry-module-scss-module__1bVeMq__card) {
-  background-color: #ffffff !important;
-  color: var(--mantine-color-carbonBlack-8, #111) !important;
-}
-
 .body {
   display: grid;
   grid-template-columns: 1fr;

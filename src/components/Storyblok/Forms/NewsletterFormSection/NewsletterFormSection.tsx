@@ -8,7 +8,7 @@ import {
   getStoryblokTextColorClass,
 } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Button as MantineButton, Paper, Text, TextInput } from '@mantine/core';
+import { Button as MantineButton, Text, TextInput } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import { useCallback } from 'react';
@@ -34,15 +34,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
   return (
     <section className={classNames('edge-to-edge', styles.section)} {...editable}>
       <div className={styles.wrapper}>
-        <Paper
-          className={styles.banner}
-          withBorder={false}
-          shadow="sm"
-          component="form"
-          onSubmit={handleSubmit}
-          data-lpignore="true"
-          data-1p-ignore="true"
-        >
+        <form className={styles.banner} onSubmit={handleSubmit} data-lpignore="true" data-1p-ignore="true">
           <div className={styles.content}>
             {hasHeader && (
               <SectionHeader
@@ -84,7 +76,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
               {submitLabel}
             </MantineButton>
           </div>
-        </Paper>
+        </form>
       </div>
     </section>
   );
