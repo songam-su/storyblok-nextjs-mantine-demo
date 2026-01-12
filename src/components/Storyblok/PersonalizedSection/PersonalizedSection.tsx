@@ -1,16 +1,16 @@
 'use client';
 
-import { Card, Stack, Text, Title } from '@mantine/core';
-import { storyblokEditable } from '@storyblok/react';
 import Button from '@/components/Storyblok/Button/Button';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type {
+  HeadlineSegment,
   PersonalizedSection as PersonalizedSectionBlok,
   Button as SbButtonBlok,
-  HeadlineSegment,
 } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import { Card } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
 import styles from './PersonalizedSection.module.scss';
 
 type PersonalizedSectionContent = PersonalizedSectionBlok & {
@@ -27,7 +27,7 @@ const PersonalizedSection = ({ blok }: SbComponentProps<PersonalizedSectionConte
   const editable = isEditor ? storyblokEditable(blok as any) : undefined;
 
   const buttons = normalizeCards(blok.buttons as any); // Storyblok type may differ; we use Button blok entries
-  const hasHeader = Boolean(blok.headline?.length || blok.lead);
+  const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
   const hasButtons = buttons.length > 0;
 
   if (!hasHeader && !hasButtons) return null;
@@ -35,16 +35,7 @@ const PersonalizedSection = ({ blok }: SbComponentProps<PersonalizedSectionConte
   return (
     <section className={styles.section} {...editable}>
       <div className={styles.inner}>
-        {hasHeader && (
-          <Stack gap="xs">
-            {blok.headline?.length ? (
-              <Title order={2} size="h2" fw={800}>
-                {renderHeadlineSegments(blok.headline)}
-              </Title>
-            ) : null}
-            {blok.lead && <Text className={styles.lead}>{blok.lead}</Text>}
-          </Stack>
-        )}
+        {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
 
         {hasButtons && (
           <div className={styles.cards}>

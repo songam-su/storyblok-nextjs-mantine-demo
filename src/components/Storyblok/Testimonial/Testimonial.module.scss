@@ -9,7 +9,7 @@
   max-width: 720px;
   background: #ffffff !important;
   background-color: #ffffff !important;
-  color: var(--sb-text, #111827) !important;
+  color: var(--mantine-color-carbonBlack-8, #111827) !important;
   border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
@@ -34,7 +34,7 @@
   font-size: 1rem;
   line-height: 1.6;
   font-style: italic;
-  color: var(--sb-text, #111827);
+  color: inherit;
   margin: 0;
 }
 
@@ -65,6 +65,6 @@
 }
 
 .role {
-  color: color-mix(in srgb, var(--sb-text, #111) 65%, transparent);
+  color: color-mix(in srgb, currentColor 65%, transparent);
   font-size: 0.95rem;
 }

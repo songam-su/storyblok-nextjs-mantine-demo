@@ -1,0 +1,50 @@
+.row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 2rem;
+}
+
+@media (min-width: 48em) {
+  .row {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+.center {
+  text-align: center;
+}
+
+@media (min-width: 48em) {
+  .center {
+    text-align: center;
+  }
+
+  .center {
+    align-items: center;
+  }
+}
+
+.header {
+  display: grid;
+  gap: 8px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.center .header {
+  justify-items: center;
+}
+
+.lead {
+  margin: 0;
+  /*
+    Default behavior: tint from the surrounding text color.
+    This avoids accidentally forcing dark text on sections that intentionally
+    set a light text color via inherited `color`.
+  */
+  color: var(--section-header-lead-color, color-mix(in srgb, currentColor 72%, transparent));
+}

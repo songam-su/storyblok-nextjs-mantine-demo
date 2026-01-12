@@ -39,9 +39,12 @@ app/(pages)/layout.tsx
 | `getStoryblokColorClass`    | `src/lib/storyblok/utils/styles/color/storyblokColorUtils.ts`    | Returns the SCSS module class that maps Storyblok color pickers to CSS custom properties.     |
 | `getStoryblokAlignmentMeta` | `src/lib/storyblok/utils/styles/alignment/storyblokAlignment.ts` | Converts alignment select fields into `textAlign`, `justifyContent`, and `alignItems` values. |
 | `renderHeadlineSegments`    | `src/components/Storyblok/utils/renderHeadlineSegments.tsx`      | Builds highlighted headlines from the segment array editors manage.                           |
+| `SectionHeader`             | `src/components/Storyblok/SectionHeader/SectionHeader.tsx`       | Standardizes the common headline + lead (+ actions) section header pattern.                   |
 | `renderSbRichText`          | `src/components/Storyblok/utils/renderSbRichText.tsx`            | Renders rich-text fields consistently with typography defaults.                               |
 
 Whenever possible, rely on these helpers instead of duplicating alignment or color logic inside each blok.
+
+Also see: [`docs/guides/components/section-header.md`](./section-header.md) for when to use the shared section header (and which bloks are intentionally exceptions).
 
 ## Component checklist
 

@@ -8,13 +8,8 @@
   margin: 0 auto;
 }
 
-.headline {
+.header {
   margin: 0 1rem 2rem;
-}
-
-.lead {
-  color: color-mix(in srgb, var(--sb-text, #111) 72%, transparent);
-  margin-bottom: 1rem;
 }
 
 .formCard {
@@ -23,21 +18,21 @@
   border-radius: 14px;
   background: #ffffff !important;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
-  color: var(--sb-text, #111);
+  color: var(--mantine-color-carbonBlack-8, #111);
 
   :global(.mantine-Paper-root) {
     background-color: inherit;
   }
 
   :global(.mantine-TextInput-label) {
-    color: color-mix(in srgb, var(--sb-text, #111) 82%, transparent);
+    color: color-mix(in srgb, currentColor 82%, transparent);
     font-weight: 600;
   }
 
   :global(.mantine-TextInput-input) {
     background: #f8fafc;
     border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.1));
-    color: var(--sb-text, #111);
+    color: inherit;
   }
 
   :global(.mantine-TextInput-input:focus) {
@@ -46,7 +41,7 @@
   }
 
   :global(.mantine-TextInput-input::placeholder) {
-    color: color-mix(in srgb, var(--sb-text, #111) 55%, transparent);
+    color: color-mix(in srgb, currentColor 55%, transparent);
   }
 
   :global(.mantine-Button-root) {
@@ -78,5 +73,5 @@
 }
 
 .helper {
-  color: color-mix(in srgb, var(--sb-text, #111) 65%, transparent);
+  color: color-mix(in srgb, currentColor 65%, transparent);
 }

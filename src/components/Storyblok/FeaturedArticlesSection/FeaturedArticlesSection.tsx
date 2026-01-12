@@ -1,16 +1,19 @@
 'use client';
 
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type {
+  ArticlePage,
+  FeaturedArticlesSection as FeaturedArticlesSectionBlok,
+} from '@/lib/storyblok/resources/types/storyblok-components';
+import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { Text, Title } from '@mantine/core';
+import type { ISbStoryData } from '@storyblok/react';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useCallback } from 'react';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
-import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
-import type { ArticlePage, FeaturedArticlesSection as FeaturedArticlesSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import type { ISbStoryData } from '@storyblok/react';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './FeaturedArticlesSection.module.scss';
 
 type ArticleRef = ISbStoryData<ArticlePage> | string;
@@ -67,7 +70,7 @@ const FeaturedArticlesSection = ({ blok }: SbComponentProps<FeaturedArticlesSect
   );
 
   const articles = Array.isArray(blok.articles) ? blok.articles.filter(Boolean) : [];
-  const hasHeader = Boolean(blok.headline?.length || blok.lead);
+  const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
   const hasArticles = articles.length > 0;
 
   if (!hasHeader && !hasArticles) {
@@ -76,20 +79,7 @@ const FeaturedArticlesSection = ({ blok }: SbComponentProps<FeaturedArticlesSect
 
   return (
     <section {...editable} className={classNames(styles.section, backgroundClass)}>
-      {hasHeader && (
-        <div className={styles.header}>
-          {blok.headline?.length ? (
-            <Title order={2} fw={800}>
-              {renderHeadlineSegments(blok.headline)}
-            </Title>
-          ) : null}
-          {blok.lead && (
-            <Text size="lg" className={styles.lead}>
-              {blok.lead}
-            </Text>
-          )}
-        </div>
-      )}
+      {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
 
       {hasArticles && (
         <div className={styles.grid}>

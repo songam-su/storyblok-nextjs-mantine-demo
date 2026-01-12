@@ -8,10 +8,6 @@
   gap: 1.5rem;
 }
 
-.lead {
-  color: color-mix(in srgb, var(--sb-text, #111) 72%, transparent);
-}
-
 .cards {
   display: grid;
   gap: 1rem;

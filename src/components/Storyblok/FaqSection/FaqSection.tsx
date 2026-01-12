@@ -1,14 +1,14 @@
 'use client';
 
 import { FaqEntryContent } from '@/components/Storyblok/FaqEntry/FaqEntryContent';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import {
   FaqEntry as FaqEntryBlok,
   FaqSection as FaqSectionBlok,
 } from '@/lib/storyblok/resources/types/storyblok-components';
 import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Accordion, Paper, Stack, Text, Title } from '@mantine/core';
+import { Accordion, Paper, Stack } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import styles from './FaqSection.module.scss';
 
@@ -19,7 +19,7 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
   const editableAttributes = isEditor ? storyblokEditable(blok as any) : undefined;
   const entries = blok.faq_entries ?? [];
 
-  const hasHeader = Boolean(blok.headline?.length || blok.lead);
+  const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
   const hasEntries = entries.length > 0;
 
   if (!hasHeader && !hasEntries) {
@@ -29,26 +29,7 @@ const FaqSection: React.FC<SbComponentProps<FaqSectionBlok>> = ({ blok }) => {
   return (
     <Paper component="section" className={styles.section} radius="sm" {...editableAttributes}>
       <Stack>
-        {hasHeader && (
-          <div className={styles.headerRow}>
-            {hasHeader ? (
-              <div className={styles.header}>
-                {blok.headline?.length ? (
-                  <Title order={2} fw={800}>
-                    {renderHeadlineSegments(blok.headline)}
-                  </Title>
-                ) : null}
-                {blok.lead && (
-                  <Text size="lg" className={styles.lead}>
-                    {blok.lead}
-                  </Text>
-                )}
-              </div>
-            ) : (
-              <div />
-            )}
-          </div>
-        )}
+        <SectionHeader headline={blok.headline} lead={blok.lead} />
 
         {hasEntries && (
           <Accordion

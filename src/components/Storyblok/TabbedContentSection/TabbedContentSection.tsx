@@ -1,12 +1,15 @@
 'use client';
 
-import { Tabs, Stack, Text, Title } from '@mantine/core';
-import { storyblokEditable } from '@storyblok/react';
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
 import TabbedContentEntry from '@/components/Storyblok/TabbedContentEntry/TabbedContentEntry';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
-import type { TabbedContentSection as TabbedContentSectionBlok, TabbedContentEntry as TabbedEntryBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type {
+  TabbedContentSection as TabbedContentSectionBlok,
+  TabbedContentEntry as TabbedEntryBlok,
+} from '@/lib/storyblok/resources/types/storyblok-components';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { Stack, Tabs } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
 import styles from './TabbedContentSection.module.scss';
 
 const normalizeEntries = (entries?: TabbedEntryBlok[]) => (Array.isArray(entries) ? entries.filter(Boolean) : []);
@@ -16,7 +19,7 @@ const TabbedContentSection = ({ blok }: SbComponentProps<TabbedContentSectionBlo
   const editable = isEditor ? storyblokEditable(blok as any) : undefined;
 
   const entries = normalizeEntries(blok.entries);
-  const hasHeader = Boolean(blok.headline?.length || blok.lead);
+  const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
   const hasEntries = entries.length > 0;
 
   if (!hasHeader && !hasEntries) return null;
@@ -25,17 +28,7 @@ const TabbedContentSection = ({ blok }: SbComponentProps<TabbedContentSectionBlo
     <section className={styles.section} {...editable}>
       <div className={styles.inner}>
         <Stack gap="md" className={styles.header}>
-          {blok.headline?.length ? (
-            <Title order={2} fw={800} size="h2">
-              {renderHeadlineSegments(blok.headline)}
-            </Title>
-          ) : null}
-
-          {blok.lead && (
-            <Text size="lg" className={styles.lead}>
-              {blok.lead}
-            </Text>
-          )}
+          <SectionHeader headline={blok.headline} lead={blok.lead} />
         </Stack>
 
         {hasEntries && (

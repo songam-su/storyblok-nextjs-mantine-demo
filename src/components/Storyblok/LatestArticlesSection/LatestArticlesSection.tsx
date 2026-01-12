@@ -1,35 +1,22 @@
-import { Text, Title } from '@mantine/core';
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type { LatestArticlesSection as LatestArticlesSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
+import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { Text } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
-import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
-import type { LatestArticlesSection as LatestArticlesSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './LatestArticlesSection.module.scss';
 
 const LatestArticlesSection = ({ blok }: SbComponentProps<LatestArticlesSectionBlok>) => {
   const { isEditor } = useStoryblokEditor();
   const editable = isEditor ? storyblokEditable(blok as any) : undefined;
   const backgroundClass = getStoryblokColorClass(blok.background_color as string | undefined);
-  const hasHeader = Boolean(blok.headline?.length || blok.lead);
+  const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
 
   return (
     <section {...editable} className={classNames(styles.section, backgroundClass)}>
-      {hasHeader && (
-        <div className={styles.header}>
-          {blok.headline?.length ? (
-            <Title order={2} fw={800}>
-              {renderHeadlineSegments(blok.headline)}
-            </Title>
-          ) : null}
-          {blok.lead && (
-            <Text size="lg" className={styles.lead}>
-              {blok.lead}
-            </Text>
-          )}
-        </div>
-      )}
+      {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
 
       <Text size="sm" c="dimmed">
         No articles connected yet.

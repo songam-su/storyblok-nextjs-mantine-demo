@@ -1,11 +1,11 @@
 'use client';
 
 import Button from '@/components/Storyblok/Button/Button';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { NewsletterFormSection as NewsletterFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Button as MantineButton, Paper, Stack, Text, TextInput, Title } from '@mantine/core';
+import { Button as MantineButton, Paper, Stack, Text, TextInput } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import { useCallback } from 'react';
 import styles from './NewsletterFormSection.module.scss';
@@ -48,24 +48,17 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
     );
   };
 
-  const hasHeader = Boolean(blok.headline?.length || (typeof blok.lead === 'string' && blok.lead.trim().length > 0));
+  const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
 
   return (
     <section className={styles.section} {...editable}>
       <div className={styles.wrapper}>
         {hasHeader && (
-          <Stack gap="xs" className={styles.headline}>
-            {blok.headline?.length ? (
-              <Title order={2} size="h2" fw={800}>
-                {renderHeadlineSegments(blok.headline)}
-              </Title>
-            ) : null}
-            {typeof blok.lead === 'string' && blok.lead.trim().length > 0 && (
-              <Text className={styles.lead} size="md">
-                {blok.lead}
-              </Text>
-            )}
-          </Stack>
+          <SectionHeader
+            headline={blok.headline}
+            lead={typeof blok.lead === 'string' ? blok.lead : undefined}
+            className={styles.header}
+          />
         )}
 
         <Paper

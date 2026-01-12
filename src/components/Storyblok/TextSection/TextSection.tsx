@@ -1,14 +1,14 @@
 'use client';
 
-import { Stack, Text, Title } from '@mantine/core';
-import { storyblokEditable } from '@storyblok/react';
-import classNames from 'classnames';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type { TextSection as TextSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
-import type { TextSection as TextSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import { Stack } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
+import classNames from 'classnames';
 import styles from './TextSection.module.scss';
 
 const TextSection = ({ blok }: SbComponentProps<TextSectionBlok>) => {
@@ -18,7 +18,7 @@ const TextSection = ({ blok }: SbComponentProps<TextSectionBlok>) => {
 
   const lead = typeof (blok as any)?.lead === 'string' ? ((blok as any).lead as string) : undefined;
 
-  const hasHeader = Boolean(blok.headline?.length || lead);
+  const hasHeader = hasSectionHeaderContent(blok.headline, lead);
   const hasText = Boolean(blok.text);
 
   if (!hasHeader && !hasText) {
@@ -28,20 +28,7 @@ const TextSection = ({ blok }: SbComponentProps<TextSectionBlok>) => {
   return (
     <section {...editable} className={classNames(styles.section, backgroundClass)}>
       <Stack gap="md">
-        {hasHeader && (
-          <div className={styles.header}>
-            {blok.headline?.length ? (
-              <Title order={2} fw={800}>
-                {renderHeadlineSegments(blok.headline)}
-              </Title>
-            ) : null}
-            {lead && (
-              <Text size="lg" className={styles.lead}>
-                {lead}
-              </Text>
-            )}
-          </div>
-        )}
+        <SectionHeader headline={blok.headline} lead={lead} />
 
         {hasText && <div className={styles.content}>{renderSbRichText(blok.text)}</div>}
       </Stack>

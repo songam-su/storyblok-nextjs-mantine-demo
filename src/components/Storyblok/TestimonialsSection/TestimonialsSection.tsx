@@ -1,14 +1,14 @@
 'use client';
 
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
 import Testimonial from '@/components/Storyblok/Testimonial/Testimonial';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type {
   Testimonial as TestimonialBlok,
   TestimonialsSection as TestimonialsSectionBlok,
 } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { SimpleGrid, Stack, Text, Title } from '@mantine/core';
+import { SimpleGrid, Stack } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import styles from './TestimonialsSection.module.scss';
 
@@ -28,7 +28,7 @@ const TestimonialsSection = ({ blok }: SbComponentProps<TestimonialsSectionBlok>
   const editable = isEditor ? storyblokEditable(blok as any) : undefined;
 
   const testimonials = normalizeTestimonials(blok.testimonials);
-  const hasHeader = Boolean(blok.headline?.length || blok.lead);
+  const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
   const hasTestimonials = testimonials.length > 0;
 
   if (!hasHeader && !hasTestimonials) return null;
@@ -37,17 +37,7 @@ const TestimonialsSection = ({ blok }: SbComponentProps<TestimonialsSectionBlok>
     <section className={styles.section} {...editable}>
       <div className={styles.inner}>
         <Stack gap="md" className={styles.header}>
-          {blok.headline?.length ? (
-            <Title order={2} fw={800} size="h2">
-              {renderHeadlineSegments(blok.headline)}
-            </Title>
-          ) : null}
-
-          {blok.lead && (
-            <Text size="lg" className={styles.lead}>
-              {blok.lead}
-            </Text>
-          )}
+          <SectionHeader headline={blok.headline} lead={blok.lead} />
         </Stack>
 
         {hasTestimonials && (

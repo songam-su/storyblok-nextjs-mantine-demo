@@ -108,6 +108,27 @@ body {
 .sb-richtext {
   color: var(--mantine-color-dimmed);
 
+  --sb-richtext-block-gap-default: 0.75em;
+
+  /*
+    Rich text spacing rules:
+    - Never allow browser default top margins to leak out of a blok.
+    - Keep predictable spacing between blocks.
+    - Remove bottom margin on the final block so the component controls spacing.
+  */
+
+  :where(h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, pre) {
+    margin-top: 0;
+  }
+
+  :where(p, ul, ol, blockquote, pre) {
+    margin-bottom: var(--sb-richtext-block-gap, var(--sb-richtext-block-gap-default));
+  }
+
+  :where(p, ul, ol, blockquote, pre):last-of-type {
+    margin-bottom: 0;
+  }
+
   h1,
   h2,
   h3,
@@ -151,7 +172,15 @@ body {
     line-height: 1.2;
   }
 
+  .sb-rt-heading:last-of-type {
+    margin-bottom: 0;
+  }
+
   .sb-rt-paragraph {
-    margin: 0 0 0.75em;
+    margin: 0 0 var(--sb-richtext-block-gap, var(--sb-richtext-block-gap-default));
+  }
+
+  .sb-rt-paragraph:last-of-type {
+    margin-bottom: 0;
   }
 }

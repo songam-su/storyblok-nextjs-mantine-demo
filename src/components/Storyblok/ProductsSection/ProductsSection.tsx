@@ -1,10 +1,10 @@
 'use client';
 
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ProductsSection as ProductsSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { SimpleGrid, Text, Title } from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import Image from 'next/image';
 import styles from './ProductsSection.module.scss';
@@ -95,7 +95,7 @@ const ProductsSection = ({ blok }: SbComponentProps<ProductsSectionBlok>) => {
   const products = Array.isArray(pluginValue?.items) ? pluginValue!.items!.filter(Boolean) : [];
   const hasPlugin = Boolean(pluginValue);
 
-  const hasHeader = Boolean(blok.headline?.length || (typeof blok.lead === 'string' && blok.lead.trim().length > 0));
+  const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
 
   if (!hasHeader && !hasPlugin) {
     return <section {...editable} className={styles.section} />;
@@ -103,20 +103,7 @@ const ProductsSection = ({ blok }: SbComponentProps<ProductsSectionBlok>) => {
 
   return (
     <section {...editable} className={styles.section}>
-      {hasHeader && (
-        <div className={styles.header}>
-          {blok.headline?.length ? (
-            <Title order={2} fw={800}>
-              {renderHeadlineSegments(blok.headline)}
-            </Title>
-          ) : null}
-          {blok.lead && blok.lead.trim().length > 0 && (
-            <Text size="lg" className={styles.lead}>
-              {blok.lead}
-            </Text>
-          )}
-        </div>
-      )}
+      <SectionHeader headline={blok.headline} lead={blok.lead} />
 
       {hasPlugin && (
         <div className={styles.products}>

@@ -1,13 +1,13 @@
 'use client';
 
 import Button from '@/components/Storyblok/Button/Button';
-import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ContactFormSection as ContactFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import getSbImageData from '@/lib/storyblok/utils/image';
 import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Button as MantineButton, Paper, Stack, Text, TextInput, Textarea, Title } from '@mantine/core';
+import { Button as MantineButton, Paper, Stack, Text, TextInput, Textarea } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -72,7 +72,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
     );
   };
 
-  const hasHeader = Boolean(blok.headline?.length || blok.lead || blok.text);
+  const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead) || Boolean(blok.text);
 
   const imageData = getSbImageData(blok.image || null);
   const hasImage = Boolean(imageData?.src);
@@ -88,17 +88,8 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
       <div className={styles.inner}>
         <div className={styles.formColumn}>
           {hasHeader && (
-            <Stack gap="xs" className={styles.headline}>
-              {blok.headline?.length ? (
-                <Title order={2} size="h2" fw={800}>
-                  {renderHeadlineSegments(blok.headline)}
-                </Title>
-              ) : null}
-              {typeof blok.lead === 'string' && blok.lead.trim().length > 0 && (
-                <Text className={styles.lead} size="md">
-                  {blok.lead}
-                </Text>
-              )}
+            <Stack gap="xs" className={styles.header}>
+              <SectionHeader headline={blok.headline} lead={typeof blok.lead === 'string' ? blok.lead : undefined} />
               {blok.text ? <div className={styles.richtext}>{renderSbRichText(blok.text)}</div> : null}
             </Stack>
           )}
