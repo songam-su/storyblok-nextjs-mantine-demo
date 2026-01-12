@@ -110,12 +110,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
               </Stack>
             )}
 
-            <form
-              className={styles.formCard}
-              onSubmit={handleSubmit}
-              data-lpignore="true"
-              data-1p-ignore="true"
-            >
+            <form className={styles.formCard} onSubmit={handleSubmit} data-lpignore="true" data-1p-ignore="true">
               <Stack gap="md">
                 <Text c="dimmed" size="sm">
                   Tell us about your request.
