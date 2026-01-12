@@ -7,7 +7,7 @@ import type { ContactFormSection as ContactFormSectionBlok } from '@/lib/storybl
 import getSbImageData from '@/lib/storyblok/utils/image';
 import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Button as MantineButton, Paper, Stack, Text, TextInput, Textarea } from '@mantine/core';
+import { Button as MantineButton, Stack, Text, TextInput, Textarea } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -84,6 +84,15 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
   const hasAttribution = hasName || hasPosition;
   const hasAside = hasImage || hasQuote || hasAttribution;
 
+  const textInputClassNames = {
+    label: styles.inputLabel,
+  };
+
+  const textareaClassNames = {
+    label: styles.inputLabel,
+    input: styles.textareaInput,
+  };
+
   return (
     <section className={styles.section} {...editable}>
       <div className={styles.inner}>
@@ -101,11 +110,8 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
               </Stack>
             )}
 
-            <Paper
+            <form
               className={styles.formCard}
-              withBorder={false}
-              shadow="sm"
-              component="form"
               onSubmit={handleSubmit}
               data-lpignore="true"
               data-1p-ignore="true"
@@ -115,6 +121,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
                   Tell us about your request.
                 </Text>
                 <TextInput
+                  classNames={textInputClassNames}
                   label="Name"
                   name="name"
                   required
@@ -124,6 +131,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
                   data-1p-ignore="true"
                 />
                 <TextInput
+                  classNames={textInputClassNames}
                   label="Email"
                   type="email"
                   name="email"
@@ -133,11 +141,22 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
                   data-lpignore="true"
                   data-1p-ignore="true"
                 />
-                <TextInput label="Subject" name="subject" placeholder="How can we help?" />
-                <Textarea label="Message" name="message" minRows={4} placeholder="Share a bit more detail" />
+                <TextInput
+                  classNames={textInputClassNames}
+                  label="Subject"
+                  name="subject"
+                  placeholder="How can we help?"
+                />
+                <Textarea
+                  classNames={textareaClassNames}
+                  label="Message"
+                  name="message"
+                  minRows={4}
+                  placeholder="Share a bit more detail"
+                />
                 <div className={styles.actions}>{renderButtons()}</div>
               </Stack>
-            </Paper>
+            </form>
           </Stack>
         </div>
 

@@ -55,6 +55,10 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
           <div className={styles.formRow}>
             <TextInput
               className={styles.emailField}
+              classNames={{
+                label: styles.emailLabel,
+                input: styles.emailInput,
+              }}
               label="Email"
               type="email"
               name="email"

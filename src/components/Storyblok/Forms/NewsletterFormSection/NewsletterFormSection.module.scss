@@ -84,38 +84,40 @@
 }
 
 .emailField {
-  :global(.mantine-TextInput-label) {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
+  width: 100%;
+}
 
-  :global(.mantine-TextInput-input) {
-    height: 44px;
-    border-radius: var(--mantine-radius-sm);
-    background: #ffffff;
-    border: 1px solid color-mix(in srgb, var(--sb-text, #111) 14%, transparent);
-    color: inherit;
-    transition:
-      border-color 180ms ease,
-      box-shadow 180ms ease,
-      background-color 180ms ease;
-  }
+.emailLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
-  :global(.mantine-TextInput-input:focus) {
-    border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 55%, #000);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
-  }
+.emailInput {
+  height: 44px;
+  border-radius: var(--mantine-radius-sm);
+  background: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--sb-text, #111) 14%, transparent);
+  color: inherit;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
 
-  :global(.mantine-TextInput-input::placeholder) {
-    color: color-mix(in srgb, currentColor 55%, transparent);
-  }
+.emailInput:focus {
+  border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 55%, #000);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
+}
+
+.emailInput::placeholder {
+  color: color-mix(in srgb, currentColor 55%, transparent);
 }
 
 .submitButton {
