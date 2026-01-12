@@ -1,12 +1,15 @@
 'use client';
 
-import { SimpleGrid, Stack, Text, Title } from '@mantine/core';
-import { storyblokEditable } from '@storyblok/react';
 import Testimonial from '@/components/Storyblok/Testimonial/Testimonial';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
-import type { TestimonialsSection as TestimonialsSectionBlok, Testimonial as TestimonialBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type {
+  Testimonial as TestimonialBlok,
+  TestimonialsSection as TestimonialsSectionBlok,
+} from '@/lib/storyblok/resources/types/storyblok-components';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { SimpleGrid, Stack, Text, Title } from '@mantine/core';
+import { storyblokEditable } from '@storyblok/react';
 import styles from './TestimonialsSection.module.scss';
 
 function normalizeTestimonials(testimonials: TestimonialsSectionBlok['testimonials']) {
@@ -53,6 +56,7 @@ const TestimonialsSection = ({ blok }: SbComponentProps<TestimonialsSectionBlok>
             cols={{ base: 1, sm: 2, lg: 3 }}
             spacing="lg"
             verticalSpacing="xl"
+            mx={{ base: 0, md: '4rem', lg: 0 }}
           >
             {testimonials.map((testimonial) => (
               <Testimonial key={testimonial._uid} blok={testimonial} _uid={testimonial._uid} component="testimonial" />

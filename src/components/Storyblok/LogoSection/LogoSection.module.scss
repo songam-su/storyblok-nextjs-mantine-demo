@@ -1,15 +1,20 @@
 .section {
   width: 100%;
-  padding: 2rem 1.25rem;
   box-sizing: border-box;
+
+  // padding: 2rem 1rem;
+  // @media (min-width: 75em) {
+  padding: 4rem 1.25rem;
+  // }
 }
 
-.lead {
+.lead[data-order='2'] {
   max-width: 760px;
   margin: 0 auto 2.3rem;
   text-align: center;
-  color: var(--mantine-color-dark-6, #1f1f1f);
-  font-size: 1.05rem;
+  color: var(--mantine-color-bubblegumPink-5, #e64980) !important;
+  font-size: 32px !important;
+  font-weight: 700 !important;
   line-height: 1.5;
 }
 

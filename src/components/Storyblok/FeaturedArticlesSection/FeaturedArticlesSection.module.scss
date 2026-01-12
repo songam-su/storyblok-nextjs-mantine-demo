@@ -1,5 +1,5 @@
 .section {
-  padding: clamp(24px, 4vw, 64px);
+  padding: var(--page-shell-section-padding);
   border-radius: 16px;
   display: grid;
   gap: 20px;
@@ -48,15 +48,20 @@
   flex: 1;
   background: var(--sb-surface, #ffffff);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
-  transition: background-color 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+  transform: translateZ(0);
+  transition:
+    transform 180ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    border-color 150ms ease;
+  will-change: transform;
   min-height: 180px;
   @media (min-width: 768px) {
-    min-height: 200px;    
+    min-height: 200px;
   }
   @media (min-width: 1200px) {
-    min-height: 240px;    
+    min-height: 240px;
   }
-
 }
 
 .card::before {
@@ -72,10 +77,10 @@
   mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%2064%2064'%3E%3Cpath%20fill%3D'black'%20d%3D'M14%2010h30a6%206%200%200%201%206%206v30a8%208%200%200%201-8%208H18a8%208%200%200%201-8-8V16a6%206%200%200%201%206-6zm-2%206v30a6%206%200%200%200%206%206h24a6%206%200%200%200%206-6V16a4%204%200%200%200-4-4H14a4%204%200%200%200-4%204zm6%207h18v4H18v-4zm0%208h28v4H18v-4zm0%208h28v4H18v-4zm0%208h22v4H18v-4z'/%3E%3C/svg%3E");
   -webkit-mask-repeat: repeat;
   mask-repeat: repeat;
-  -webkit-mask-size: 140px 140px;
-  mask-size: 140px 140px;
-  -webkit-mask-position: -12px -8px;
-  mask-position: -12px -8px;
+  // -webkit-mask-size: 140px 140px;
+  mask-size: 150% 150%;
+  -webkit-mask-position: -50%;
+  mask-position: 40% 50%;
   opacity: 0.36;
 }
 
@@ -90,6 +95,7 @@
 }
 
 .card:hover {
+  transform: scale(1.02);
   background-color: var(--sb-surface-strong, #f3f4f6);
   border-color: color-mix(
     in srgb,
@@ -98,6 +104,24 @@
   );
   box-shadow: 0 10px 22px rgba(2, 6, 23, 0.12);
   border-width: 2px;
+}
+
+.card:focus-within {
+  transform: scale(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition:
+      background-color 150ms ease,
+      box-shadow 150ms ease,
+      border-color 150ms ease;
+  }
+
+  .card:hover,
+  .card:focus-within {
+    transform: none;
+  }
 }
 
 .card:focus-within {

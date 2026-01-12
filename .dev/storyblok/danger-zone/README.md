@@ -65,8 +65,8 @@ Important detail: `PUBLISH_MODE` currently behaves like a boolean switch:
 - Node.js `>= 20` (repo enforces this in `package.json`)
 - Dependencies installed (`pnpm install` at repo root)
 - These scripts may require you to temporarily install dependencies that are not kept in the repo:
-  - `pnpm i axios`
-  - `pnpm i form-data`
+   - `pnpm i axios`
+   - `pnpm i form-data`
 - Storyblok **Management API** tokens with access to the relevant spaces
 - You know the correct region for each space: `eu | us | ca | ap | cn`
 

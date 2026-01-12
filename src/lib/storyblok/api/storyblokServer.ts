@@ -2,9 +2,9 @@ import 'server-only';
 
 import StoryblokClient, {
   type ISbCustomFetch,
+  type ISbStoriesParams,
   type ISbStoryData,
   type ISbStoryParams,
-  type ISbStoriesParams,
 } from 'storyblok-js-client';
 
 export type StoryblokVersion = 'published' | 'draft';
@@ -17,16 +17,14 @@ const DEFAULT_RELATIONS = [
   'testimonials-section.testimonials',
 ];
 
-const UUID_REGEX =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 function looksLikeUuid(value: unknown): value is string {
   return typeof value === 'string' && UUID_REGEX.test(value);
 }
 
 function getStoryblokToken(version: StoryblokVersion): string {
-  const previewToken =
-    process.env.STORYBLOK_PREVIEW_TOKEN ?? process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN;
+  const previewToken = process.env.STORYBLOK_PREVIEW_TOKEN ?? process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN;
   const publicToken = process.env.STORYBLOK_PUBLIC_TOKEN ?? process.env.NEXT_PUBLIC_STORYBLOK_PUBLIC_TOKEN;
 
   if (version === 'draft') {
@@ -120,7 +118,7 @@ async function fetchStoriesByUuids(
   client: StoryblokClient,
   uuids: string[],
   version: StoryblokVersion,
-  fetchOptions?: ISbCustomFetch,
+  fetchOptions?: ISbCustomFetch
 ) {
   if (!uuids.length) return [] as ISbStoryData[];
 
@@ -147,7 +145,10 @@ async function fetchStoriesByUuids(
   return allStories;
 }
 
-export async function getStory(slug: string, options: { version: StoryblokVersion; relations?: string[]; fetchOptions?: any }) {
+export async function getStory(
+  slug: string,
+  options: { version: StoryblokVersion; relations?: string[]; fetchOptions?: any }
+) {
   const { version } = options;
   const relations = options.relations ?? DEFAULT_RELATIONS;
 
@@ -192,5 +193,61 @@ export async function getStory(slug: string, options: { version: StoryblokVersio
 
     console.error('Storyblok getStory failed', { slug, version, error });
     return null;
+  }
+}
+
+export async function getStories(options: {
+  version: StoryblokVersion;
+  startsWith?: string;
+  perPage?: number;
+  relations?: string[];
+  fetchOptions?: any;
+  sortBy?: string;
+}) {
+  const {
+    version,
+    startsWith,
+    perPage = 100,
+    relations = DEFAULT_RELATIONS,
+    fetchOptions,
+    sortBy = 'first_published_at:desc',
+  } = options;
+
+  try {
+    const client = createServerClient(version);
+
+    const allStories: ISbStoryData[] = [];
+    let page = 1;
+
+    while (true) {
+      const params: ISbStoriesParams = {
+        version,
+        page,
+        per_page: perPage,
+        resolve_relations: relations,
+        resolve_links: '0',
+        ...(startsWith ? { starts_with: startsWith } : null),
+        ...(sortBy ? { sort_by: sortBy } : null),
+        ...(version === 'draft' ? { cv: Date.now() } : null),
+      };
+
+      const res = await client.getStories(params, fetchOptions as ISbCustomFetch | undefined);
+      const stories = Array.isArray(res?.data?.stories) ? (res.data.stories as ISbStoryData[]) : [];
+
+      allStories.push(...stories);
+
+      if (stories.length < perPage) break;
+      page += 1;
+    }
+
+    return allStories;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : '';
+    const isConfigError = typeof message === 'string' && message.includes('Missing Storyblok');
+
+    if (isConfigError) throw error;
+
+    console.error('Storyblok getStories failed', { version, startsWith, error });
+    return [] as ISbStoryData[];
   }
 }

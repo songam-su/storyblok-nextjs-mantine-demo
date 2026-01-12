@@ -2,6 +2,7 @@
   border-top: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
   background: color-mix(in srgb, var(--sb-background, #f8f9fb) 92%, transparent);
   padding: 3.8rem var(--page-shell-inline-padding) 3rem;
+  background: var(--mantine-color-graphite-0);
 }
 
 .inner {

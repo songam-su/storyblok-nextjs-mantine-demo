@@ -1,6 +1,6 @@
 .section {
   position: relative;
-  padding: clamp(24px, 4vw, 64px);
+  padding: var(--page-shell-section-padding);
   border-radius: 16px;
   display: grid;
   gap: clamp(16px, 3vw, 32px);

@@ -9,10 +9,14 @@ Notes
 ```mermaid
 flowchart TB
   SC["site-config<br/>(theme, header, footer, nav items)"]
-  Page["page story<br/>(default-page)"]
-  Body["body<br/>(bloks array)"]
+  DefaultPage["page story<br/>(default-page)"]
+  DefaultBody["body<br/>(bloks array)"]
 
-  Page --> Body
+  ArticleOverview["page story<br/>(article-overview-page)<br/>slug: articles/"]
+  ArticlePage["page story<br/>(article-page)<br/>slug: articles/*"]
+  Category["category story<br/>(category)<br/>slug: categories/*"]
+
+  DefaultPage --> DefaultBody
   SC --> Header["header nav<br/>(nav-item list)"]
   SC --> Footer[footer nav + meta]
   SC --> Theme["theme tokens<br/>(CSS vars + Mantine)"]
@@ -22,6 +26,7 @@ flowchart TB
     Tabs["tabbed-content-section<br/>→ tabbed-content-entry*"]
     Testimonial["testimonials-section<br/>→ testimonial*"]
     Featured[featured-articles-section]
+    Products[products-section]
     Forms[form-section / contact-form-section / newsletter-form-section]
     Text[text-section]
     TwoCol[two-columns-section]
@@ -33,17 +38,37 @@ flowchart TB
     Personalized["personalized-section<br/>(branching children)"]
   end
 
-  Body --> Grid
-  Body --> Tabs
-  Body --> Testimonial
-  Body --> Featured
-  Body --> Forms
-  Body --> Text
-  Body --> TwoCol
-  Body --> ImgText
-  Body --> Hero
-  Body --> Logo
-  Body --> Banner
-  Body --> Faq
-  Body --> Personalized
+  DefaultBody --> Grid
+  DefaultBody --> Tabs
+  DefaultBody --> Testimonial
+  DefaultBody --> Featured
+  DefaultBody --> Products
+  DefaultBody --> Forms
+  DefaultBody --> Text
+  DefaultBody --> TwoCol
+  DefaultBody --> ImgText
+  DefaultBody --> Hero
+  DefaultBody --> Logo
+  DefaultBody --> Banner
+  DefaultBody --> Faq
+  DefaultBody --> Personalized
+
+  ArticleOverview --> ArticlesApi["API route<br/>GET /api/articles"]
+  ArticlesApi --> ArticlePage
+  ArticlePage --> Category
 ```
+
+## Articles (overview + detail)
+
+- Article listing is driven by Storyblok folders:
+  - `articles/` contains `article-page` stories (detail pages)
+  - `categories/` contains `category` stories (used as relations on articles)
+- The Article Overview page (`article-overview-page`) fetches from `GET /api/articles` and supports:
+  - Search (title/excerpt/category names)
+  - Category filtering
+  - Category ordering based on the Storyblok folder order (`categories/` sorted by `position:asc`)
+
+## Products (plugin-driven)
+
+- The `products-section` blok renders cards from a Storyblok **plugin field** (demo plugin: `sb-fake-ecommerce`).
+- Items are rendered directly from the plugin payload; a small demo SKU catalog is used to fill gaps and to mark sold-out items.

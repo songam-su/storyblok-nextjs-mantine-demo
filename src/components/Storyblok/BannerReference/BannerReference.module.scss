@@ -1,6 +1,7 @@
 .wrapper {
   display: grid;
   gap: clamp(12px, 2vw, 20px);
+  margin-top: clamp(20px, 2.75vw, 44px);
 }
 
 // Manual override: force BannerReference CTAs to a consistent colorway.

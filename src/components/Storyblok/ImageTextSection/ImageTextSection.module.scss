@@ -8,8 +8,12 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  gap: clamp(16px, 3vw, 32px);
+  gap: 40px;
   align-items: stretch;
+
+  @media (min-width: 75em) {
+    gap: 100px;
+  }
 }
 
 .reverseMobile {
@@ -28,25 +32,39 @@
   }
 
   .frame {
-    height: calc(var(--imageText-copy-height, 360px) + 6rem);
+    height: calc(var(--imageText-copy-height, 360px) + 16rem);
     max-height: none;
     aspect-ratio: auto;
   }
 }
 
 .copy {
-  display: grid;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
   flex: 1 1 0;
   max-width: none;
   min-width: 0;
+  text-align: center;
+
+  > * {
+    @media (min-width: 75em) {
+      padding-inline: 2rem;
+    }
+  }
 }
 
 .richtext {
   color: var(--mantine-color-dimmed);
 
+  p {
+    margin: 0;
+    text-align: center;
+  }
+
   :global(.sb-richtext) {
     color: inherit;
+
+    --imageText-pill-accent: var(--mantine-color-bubblegumPink-6, #e64980);
 
     h1,
     h2,
@@ -70,6 +88,42 @@
     h6 {
       color: var(--sb-headline-color, var(--sb-text, #111));
     }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 2rem auto 1rem;
+      display: grid;
+      gap: 0.25rem;
+      text-align: center;
+      width: fit-content;
+      justify-items: center;
+    }
+
+    ul > li {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      line-height: 1.4;
+    }
+
+    // Storyblok rich text often wraps list item content in <p>.
+    // Remove paragraph margins inside list items so the first line aligns with the marker.
+    ul > li :is(p) {
+      margin: 0;
+      color: var(--sb-text, #111);
+      font-weight: 600;
+    }
+
+    // ul > li::before {
+    //   content: '';
+    //   flex: 0 0 12px;
+    //   width: 12px;
+    //   height: 4px;
+    //   border-radius: 999px;
+    //   background: color-mix(in srgb, var(--imageText-pill-accent) 80%, transparent);
+    //   margin-top: 0.7em;
+    // }
   }
 }
 
@@ -77,8 +131,7 @@
   font-weight: 600;
   letter-spacing: 0.01em;
   opacity: 0.8;
-  padding-top: 10px;
-  margin-bottom: -6px;
+  margin-bottom: 4px;
 }
 
 .lead {
@@ -89,7 +142,17 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 4px;
+  justify-content: center;
+
+  a[class*='is-ghost']:hover {
+    border: 1px solid var(--mantine-color-bubblegumPink-5, #e64980) !important;
+    background: var(--mantine-color-bubblegumPink-5, #e64980) !important;
+  }
+
+  a[class*='is-ghost']:not(:hover) {
+    border: 1px solid var(--mantine-color-bubblegumPink-5, #e64980) !important;
+    // border:background: color-mix(in srgb, var(--mantine-color-bubblegumPink-6) 12.5%, transparent) !important;
+  }
 }
 
 .media {
@@ -102,8 +165,8 @@
 .frame {
   position: relative;
   width: 100%;
-  max-height: min(78vh, 600px);
-  aspect-ratio: 3 / 4;
+  // max-height: min(78vh, 600px);
+  aspect-ratio: 3 / 3;
   border-radius: 12px;
   overflow: hidden;
   background: var(--mantine-color-gray-1);

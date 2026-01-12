@@ -1,6 +1,6 @@
 .section {
   position: relative;
-  padding: clamp(24px, 4vw, 64px);
+  padding: var(--page-shell-section-padding);
 }
 
 .wrapper {

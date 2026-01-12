@@ -34,6 +34,11 @@ Related docs:
   - [ ] Run `pnpm dev-setup` then `pnpm dev` (HTTPS)
   - [ ] Open a story in the Visual Editor and confirm changes live-update
 
+- [ ] (If using the blog demo) Create the article folders used by the Article Overview page:
+  - [ ] `articles/` folder containing `article-page` stories
+  - [ ] `categories/` folder containing `category` stories
+  - [ ] Ensure `article-page.categories` is a relation field pointing at `category` stories
+
 ## 1) Create your Storyblok space
 
 - Create a new Storyblok space in your organization.
