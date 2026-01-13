@@ -5,6 +5,7 @@ import { fetchStory } from '@/lib/storyblok/api/client';
 import type { SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContext';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { ColorSchemeScript } from '@mantine/core';
 import type { Metadata } from 'next';
 import ScrollToTop from '../ScrollToTop';
 import PublishedProviders from './providers';
@@ -30,6 +31,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en">
+      <head>
+        <ColorSchemeScript defaultColorScheme="light" localStorageKey="site-color-scheme" />
+      </head>
       <body className="app-body">
         <PublishedProviders siteConfig={siteConfig}>
           <div className="page-shell">

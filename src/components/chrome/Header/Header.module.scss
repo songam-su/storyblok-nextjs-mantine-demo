@@ -54,6 +54,37 @@
   gap: 0.5rem;
 }
 
+.themeToggle {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  background: var(--sb-surface, #ffffff);
+  color: var(--sb-text, #111);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.themeToggle:hover {
+  background: var(--sb-surface-strong, #ffffff);
+}
+
+.themeToggle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--sb-accent, #0899a0) 60%, transparent);
+  outline-offset: 2px;
+}
+
+.themeIcon {
+  width: 18px;
+  height: 18px;
+}
+
 .mobileMenuControl {
   display: none;
   margin-left: auto;
@@ -100,6 +131,39 @@
   padding-top: 0.75rem;
   background: var(--sb-background, #ffffff);
   color: var(--sb-text, #111);
+}
+
+.drawerUtilities {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  margin-bottom: 1rem;
+}
+
+.drawerThemeToggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  background: var(--sb-surface, #ffffff);
+  color: var(--sb-text, #111);
+  cursor: pointer;
+}
+
+.drawerThemeToggle:hover {
+  background: var(--sb-surface-strong, #ffffff);
+}
+
+.drawerThemeToggle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--sb-accent, #0899a0) 60%, transparent);
+  outline-offset: 2px;
+}
+
+.drawerThemeToggleLabel {
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .mobileNavList {
