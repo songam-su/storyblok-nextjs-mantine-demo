@@ -1,0 +1,109 @@
+.skeleton {
+  --_radius: 16px;
+  --_bg: color-mix(in srgb, var(--sb-surface, #fff) 88%, transparent);
+  --_shimmer: color-mix(in srgb, var(--sb-text, #111) 10%, transparent);
+
+  width: 100%;
+  display: grid;
+  gap: clamp(18px, 3vw, 28px);
+  padding: clamp(18px, 3vw, 28px) 0;
+}
+
+@supports not (color: color-mix(in srgb, #000 10%, transparent)) {
+  .skeleton {
+    --_bg: rgba(255, 255, 255, 0.75);
+    --_shimmer: rgba(0, 0, 0, 0.08);
+  }
+
+  :root[data-mantine-color-scheme='dark'] .skeleton {
+    --_bg: rgba(255, 255, 255, 0.06);
+    --_shimmer: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.hero {
+  height: clamp(220px, 34vw, 420px);
+  border-radius: var(--_radius);
+  background: var(--_bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.content {
+  display: grid;
+  gap: 12px;
+}
+
+.line {
+  height: 14px;
+  border-radius: 999px;
+  background: var(--_bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sb-grid-gap-lg);
+  margin-top: 14px;
+}
+
+.card {
+  height: 230px;
+  border-radius: var(--_radius);
+  background: var(--_bg);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 62em) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 48em) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card {
+    height: 210px;
+  }
+}
+
+@media (max-width: 30em) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    height: 190px;
+  }
+}
+
+.hero::before,
+.line::before,
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--_shimmer), transparent);
+  transform: translateX(-60%);
+  animation: sb-skeleton-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes sb-skeleton-shimmer {
+  to {
+    transform: translateX(60%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before,
+  .line::before,
+  .card::before {
+    animation: none;
+  }
+}

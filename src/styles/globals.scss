@@ -189,6 +189,18 @@ body {
   box-sizing: border-box;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 .mantine-Title-root[data-order='2'] {
   --title-fz: 32px;
   --title-lh: 1.12;

@@ -1,3 +1,4 @@
+import AppLoadingOverlay from '@/components/chrome/AppLoadingOverlay/AppLoadingOverlay';
 import Footer from '@/components/chrome/Footer/Footer';
 import Header from '@/components/chrome/Header/Header';
 import { METADATA_BASE } from '@/lib/site/siteUrl';
@@ -34,6 +35,7 @@ export default async function PreviewLayout({ children }: { children: React.Reac
       </head>
       <body>
         <PreviewProviders siteConfig={siteConfig}>
+          <AppLoadingOverlay />
           <div className="page-shell">
             <div className="page-shell__content">
               <ScrollToTop />

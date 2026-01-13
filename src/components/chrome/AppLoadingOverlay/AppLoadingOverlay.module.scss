@@ -1,0 +1,29 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--sb-background, #f8f9fb);
+  opacity: 1;
+  transition: opacity 220ms ease-in-out;
+  pointer-events: none;
+}
+
+.overlay[data-visible='false'] {
+  opacity: 0;
+}
+
+/* Stop painting once hidden (prevents any lingering shimmer cost). */
+.overlay[data-visible='false'] {
+  visibility: hidden;
+  transition:
+    opacity 220ms ease-in-out,
+    visibility 0s linear 260ms;
+}
+
+.inner {
+  width: min(var(--page-shell-max-width), 100%);
+  margin: 0 auto;
+  padding-left: var(--page-shell-inline-padding);
+  padding-right: var(--page-shell-inline-padding);
+  padding-top: clamp(18px, 3vw, 28px);
+}
