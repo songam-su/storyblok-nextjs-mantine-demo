@@ -17,6 +17,26 @@
   min-height: clamp(320px, 46vw, 520px);
 }
 
+.mobileImage {
+  display: none;
+  width: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  background-image: var(--sb-hero-image, none);
+  background-position: var(--sb-hero-position, center);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: clamp(220px, 46vw, 420px);
+}
+
+.mobileImageCover {
+  background-size: cover;
+}
+
+.mobileImageContain {
+  background-size: contain;
+}
+
 .stacked {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -110,13 +130,51 @@
 }
 
 @media (max-width: 47.99em) {
+  .section {
+    margin-top: 0;
+  }
+
+  /* Mobile hero: stack content box above image and avoid full-bleed background image. */
+  .section.hasBackgroundImage {
+    background-image: none;
+  }
+
+  .inner {
+    flex-direction: column;
+    gap: clamp(14px, 4vw, 22px);
+    padding-top: var(--page-shell-section-padding);
+    padding-bottom: 0;
+    min-height: unset;
+  }
+
+  .contentBox {
+    padding-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: min(540px, calc(100% - 2rem));
+  }
+
+  .copy {
+    justify-content: center;
+  }
+
+  .mobileImage {
+    display: block;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
   .actions {
     width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    justify-content: stretch;
     align-items: stretch;
+    margin-top: clamp(12px, 3vw, 20px);
   }
 
   .actions :global(.mantine-Button-root) {
-    flex: 1 1 220px;
     width: 100%;
   }
 }
@@ -201,6 +259,16 @@
   text-align: center;
 }
 
+.alignCenter .copy {
+  align-items: center;
+}
+
+.alignCenter .eyebrow,
+.alignCenter .headline,
+.alignCenter .lead {
+  text-align: center;
+}
+
 .alignCenter .actions {
   justify-content: center;
 }
@@ -208,4 +276,49 @@
 .inner > :not(.decoration) {
   position: relative;
   z-index: 1;
+}
+
+/*
+  Keep mobile overrides below the base .contentBox definition so they win the cascade.
+  This is the "new treatment" (content box stacked above a full-bleed image).
+*/
+@media (max-width: 47.99em) {
+  .section .contentBox {
+    width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    border-radius: 0;
+
+    /* Keep content aligned with the site shell padding while the box is full-bleed. */
+    padding-left: var(--page-shell-inline-padding);
+    padding-right: var(--page-shell-inline-padding);
+
+    /* New treatment: no border/outline around the full-bleed copy area. */
+    border: 0 !important;
+
+    /* Remove the desktop glass/shadow treatment on mobile. */
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+
+    /* Center the copy + CTAs for mobile. */
+    text-align: center !important;
+  }
+
+  .section .copy {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .section .lead {
+    text-align: center;
+  }
+
+  .section .headline {
+    text-align: center;
+  }
+
+  /* Headline segments are rendered as Mantine Text spans; make them inline so centering is reliable. */
+  .section .headline :global(.mantine-Text-root) {
+    display: inline;
+  }
 }

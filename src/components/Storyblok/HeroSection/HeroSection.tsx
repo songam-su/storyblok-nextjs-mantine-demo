@@ -29,6 +29,11 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
 
   const hasBody = Boolean(blok.eyebrow || blok.headline?.length || blok.text || (blok.buttons?.length ?? 0) > 0);
 
+  // New mobile treatment: when we render the image as its own block (not a background),
+  // center-align copy and CTAs for consistency with the rest of the site.
+  const useMobileImageBlock = !isStackedLayout && hasImage;
+  const effectiveTextAlign = useMobileImageBlock ? 'center' : textAlign;
+
   if (!hasBody && !hasImage) {
     return <section {...editable} className={classNames(styles.section, backgroundClass)} />;
   }
@@ -49,7 +54,7 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
         styles.section,
         'edge-to-edge',
         backgroundClass,
-        textAlign === 'center' && styles.alignCenter,
+        effectiveTextAlign === 'center' && styles.alignCenter,
         !isStackedLayout && hasImage && styles.hasBackgroundImage,
         !isStackedLayout &&
           hasImage &&
@@ -63,7 +68,7 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
 
           {hasBody && (
             <div className={classNames(styles.contentBox, isStackedLayout && styles.contentBoxStacked)}>
-              <Stack gap="md" className={styles.copy} style={{ textAlign }}>
+              <Stack gap="md" className={styles.copy} style={{ textAlign: effectiveTextAlign }}>
                 {blok.eyebrow && (
                   <Text size="sm" className={styles.eyebrow}>
                     {blok.eyebrow}
@@ -83,7 +88,11 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
                 )}
 
                 {Array.isArray(blok.buttons) && blok.buttons.length > 0 && (
-                  <Group gap="sm" className={styles.actions} justify={textAlign === 'center' ? 'center' : 'flex-start'}>
+                  <Group
+                    gap="sm"
+                    className={styles.actions}
+                    justify={effectiveTextAlign === 'center' ? 'center' : 'flex-start'}
+                  >
                     {blok.buttons.map((button) => {
                       if (!button) return null;
                       return (
@@ -100,6 +109,16 @@ const HeroSection = ({ blok }: SbComponentProps<HeroSectionBlok>) => {
                 )}
               </Stack>
             </div>
+          )}
+
+          {!isStackedLayout && hasImage && (
+            <div
+              className={classNames(
+                styles.mobileImage,
+                imageObjectFit === 'contain' ? styles.mobileImageContain : styles.mobileImageCover
+              )}
+              aria-hidden="true"
+            />
           )}
 
           {isStackedLayout && hasImage && (

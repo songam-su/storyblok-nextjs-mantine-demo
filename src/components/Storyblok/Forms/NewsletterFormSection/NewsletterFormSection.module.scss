@@ -1,10 +1,8 @@
 .section {
   width: 100%;
-  background-color: var(
-    --sb-newsletter-bg,
-    var(--sb-surface-accent-secondary, #ffcbd3)
-  );
-  padding: var(--page-shell-section-padding);
+  background-color: var(--sb-newsletter-bg, var(--sb-surface-accent-secondary, #ffcbd3));
+  padding: calc(0.9 * var(--page-shell-section-padding)) var(--page-shell-section-padding)
+    var(--page-shell-section-padding);
 }
 
 .wrapper {
@@ -23,6 +21,15 @@
   box-shadow: none;
 }
 
+@media (min-width: 62em) {
+  .banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: var(--mantine-spacing-xl);
+  }
+}
+
 @media (min-width: 75em) {
   .banner {
     flex-direction: row;
@@ -32,11 +39,34 @@
   }
 }
 
+@media (max-width: 62em) {
+  .section {
+    padding-top: calc(0.75 * var(--page-shell-section-padding));
+    padding-bottom: calc(1.125 * var(--page-shell-section-padding));
+  }
+}
+
 .header {
   :global(.mantine-Title-root) {
     letter-spacing: -0.01em;
     line-height: 1.12;
     color: var(--sb-text, #111);
+
+    /* Make the Title a predictable alignment container. */
+    display: flex;
+    align-items: flex-start;
+
+    /* Prevent the Title from using auto margins that make it sit low in flex/grid layouts. */
+    margin: 0 !important;
+  }
+
+  /* SectionHeader renders headline segments as Mantine Text spans with their own line-height.
+     Make them inherit from the Title so the text sits properly within the line box. */
+  :global(.mantine-Title-root) :global(.mantine-Text-root) {
+    /* Inline styles set --text-lh; override directly so the glyphs don't sit low. */
+    line-height: inherit !important;
+    display: block;
+    align-self: flex-start;
   }
 }
 
@@ -64,11 +94,25 @@
 .formRow {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   align-items: stretch;
   justify-content: center;
   width: 80%;
   margin: 0 auto;
+}
+
+@media (min-width: 62em) {
+  .formRow {
+    gap: 24px;
+    margin: 14px auto 0;
+  }
+}
+
+@media (min-width: 75em) {
+  .formRow {
+    gap: 12px;
+    margin: 0 auto;
+  }
 }
 
 @media (min-width: 75em) {
