@@ -50,6 +50,21 @@
     --sb-color-text: #ffffff;
   }
 
+  :global(:root[data-mantine-color-scheme='dark']) {
+    .primary-dark {
+      /* Dark-mode: keep the original neutral feel but increase contrast vs the page background. */
+      --sb-color-bg-hover: #2c2c2c;
+    }
+  }
+
+  @supports (color: color-mix(in srgb, #000 10%, #fff)) {
+    :global(:root[data-mantine-color-scheme='dark']) {
+      .primary-dark {
+        --sb-color-bg-hover: color-mix(in srgb, #212121 62%, #3b3b3b);
+      }
+    }
+  }
+
   .white {
     /* whiteSmoke */
     --sb-color-bg: #ffffff;

@@ -1,13 +1,16 @@
 'use client';
 
-import Image from 'next/image';
-import classNames from 'classnames';
+import Button from '@/components/Storyblok/Button/Button';
+import NavItem from '@/components/Storyblok/NavItem/NavItem';
+import { useSiteConfig } from '@/lib/storyblok/context/SiteConfigContext';
+import type {
+  Button as ButtonBlok,
+  NavItem as NavItemBlok,
+} from '@/lib/storyblok/resources/types/storyblok-components';
 import { Burger, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import NavItem from '@/components/Storyblok/NavItem/NavItem';
-import Button from '@/components/Storyblok/Button/Button';
-import { useSiteConfig } from '@/lib/storyblok/context/SiteConfigContext';
-import type { NavItem as NavItemBlok, Button as ButtonBlok } from '@/lib/storyblok/resources/types/storyblok-components';
+import classNames from 'classnames';
+import Image from 'next/image';
 import styles from './Header.module.scss';
 
 const normalizeNav = (items?: NavItemBlok[]) => (Array.isArray(items) ? items.filter(Boolean) : []);
@@ -60,13 +63,21 @@ const Header = () => {
 
   const nextScheme = colorScheme === 'dark' ? 'light' : 'dark';
 
+  const logoSrc = typeof logo?.filename === 'string' ? logo.filename : undefined;
+  const logoAlt = typeof logo?.alt === 'string' ? logo.alt : undefined;
+  const isDefaultBrandLogo = Boolean(logoSrc && /brand-new-day-logo\.svg(\?.*)?$/i.test(logoSrc));
+  const resolvedLogoSrc =
+    colorScheme === 'dark' && isDefaultBrandLogo
+      ? '/assets/logos/brand-new-day-logo-dark.svg'
+      : logoSrc;
+
   return (
     <header className={classNames(styles.header, isLight && styles.isLight)}>
       <div className={styles.inner}>
         <div className={styles.brand}>
-          {logo?.filename ? (
+          {resolvedLogoSrc ? (
             <span className={styles.logo}>
-              <Image src={logo.filename} alt={logo.alt || 'Logo'} width={140} height={38} />
+              <Image src={resolvedLogoSrc} alt={logoAlt || 'Logo'} width={140} height={38} />
             </span>
           ) : (
             <span className={styles.placeholder}>Logo</span>
@@ -77,7 +88,12 @@ const Header = () => {
           <nav className={styles.nav}>
             <div className={styles.navList}>
               {navItems.map((item) => (
-                <NavItem key={item._uid} blok={{ ...item, component: 'nav-item' }} _uid={item._uid} component="nav-item" />
+                <NavItem
+                  key={item._uid}
+                  blok={{ ...item, component: 'nav-item' }}
+                  _uid={item._uid}
+                  component="nav-item"
+                />
               ))}
             </div>
           </nav>
@@ -91,7 +107,11 @@ const Header = () => {
             aria-label={`Switch to ${nextScheme} mode`}
             title={`Switch to ${nextScheme} mode`}
           >
-            {colorScheme === 'dark' ? <SunIcon className={styles.themeIcon} /> : <MoonIcon className={styles.themeIcon} />}
+            {colorScheme === 'dark' ? (
+              <SunIcon className={styles.themeIcon} />
+            ) : (
+              <MoonIcon className={styles.themeIcon} />
+            )}
           </button>
 
           {buttons.length
@@ -118,9 +138,9 @@ const Header = () => {
         position="right"
         size="xs"
         title={
-          logo?.filename ? (
+          resolvedLogoSrc ? (
             <span className={styles.drawerBrand}>
-              <Image src={logo.filename} alt={logo.alt || 'Logo'} width={140} height={38} />
+              <Image src={resolvedLogoSrc} alt={logoAlt || 'Logo'} width={140} height={38} />
             </span>
           ) : (
             'Menu'
@@ -139,10 +159,12 @@ const Header = () => {
             onClick={toggleColorScheme}
             aria-label={`Switch to ${nextScheme} mode`}
           >
-            {colorScheme === 'dark' ? <SunIcon className={styles.themeIcon} /> : <MoonIcon className={styles.themeIcon} />}
-            <span className={styles.drawerThemeToggleLabel}>
-              {colorScheme === 'dark' ? 'Light mode' : 'Dark mode'}
-            </span>
+            {colorScheme === 'dark' ? (
+              <SunIcon className={styles.themeIcon} />
+            ) : (
+              <MoonIcon className={styles.themeIcon} />
+            )}
+            <span className={styles.drawerThemeToggleLabel}>{colorScheme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
           </button>
         </div>
 
@@ -150,7 +172,12 @@ const Header = () => {
           <nav className={styles.mobileNav} aria-label="Mobile navigation">
             <div className={styles.mobileNavList} onClick={mobileMenu.close}>
               {navItems.map((item) => (
-                <NavItem key={item._uid} blok={{ ...item, component: 'nav-item' }} _uid={item._uid} component="nav-item" />
+                <NavItem
+                  key={item._uid}
+                  blok={{ ...item, component: 'nav-item' }}
+                  _uid={item._uid}
+                  component="nav-item"
+                />
               ))}
             </div>
           </nav>

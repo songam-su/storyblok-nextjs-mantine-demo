@@ -28,8 +28,8 @@ body {
     These are the canonical design tokens for the site.
   */
   --sb-accent: #0899a0;
-  /* Use shade 5 for section headers (requested). */
-  --sb-accent-heading: #31bdcb;
+  /* Section heading color (light-mode default keeps the existing look). */
+  --sb-section-heading-color: var(--sb-accent-hover, #31bdcb);
   --sb-accent-weak: rgba(8, 153, 160, 0.12);
   --sb-accent-hover: #31bdcb;
   --sb-accent-secondary: #fd5a78;
@@ -196,7 +196,7 @@ body {
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--sb-section-heading-color, var(--sb-accent-heading, #31bdcb));
+  color: var(--sb-section-heading-color, var(--sb-accent-hover, #31bdcb));
 }
 
 /* Mantine sometimes wraps Title content in an inner Text/span; enforce the same treatment there too. */

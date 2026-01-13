@@ -55,6 +55,13 @@
   border-color: transparent;
 }
 
+:global(:root[data-mantine-color-scheme='dark']) {
+  .tabsTab:not([data-active='true']):hover {
+    background: color-mix(in srgb, var(--sb-accent, #1d63c5) 28%, var(--sb-surface, #444041));
+    border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 42%, transparent);
+  }
+}
+
 .tabsTab[data-active='true'] {
   background: var(--sb-accent, #1d63c5);
   color: var(--sb-on-accent, #fff);

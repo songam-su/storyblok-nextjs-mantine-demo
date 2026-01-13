@@ -225,9 +225,7 @@ export const SiteConfigProvider = ({
   }, []);
 
   return (
-    <SiteConfigContext.Provider
-      value={{ config, setConfig, theme, colorScheme, setColorScheme, toggleColorScheme }}
-    >
+    <SiteConfigContext.Provider value={{ config, setConfig, theme, colorScheme, setColorScheme, toggleColorScheme }}>
       {children}
     </SiteConfigContext.Provider>
   );
