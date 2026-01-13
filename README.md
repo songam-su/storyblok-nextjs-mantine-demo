@@ -32,6 +32,8 @@ This project demonstrates how to build scalable, CMS-driven applications using m
   - [Tech Stack \& Features](#tech-stack--features)
     - [Auto-formatting (VS Code)](#auto-formatting-vs-code)
     - [Mermaid diagrams (VS Code)](#mermaid-diagrams-vs-code)
+    - [Documentation](#documentation)
+  - [Prerequisites](#prerequisites)
   - [Enterprise Architecture](#enterprise-architecture)
     - [Architecture Diagram](#architecture-diagram)
     - [Published vs Preview Routes](#published-vs-preview-routes)
@@ -42,7 +44,6 @@ This project demonstrates how to build scalable, CMS-driven applications using m
   - [Component \& Layout Highlights](#component--layout-highlights)
     - [Layout \& spacing system](#layout--spacing-system)
     - [Shared utilities](#shared-utilities)
-  - [Prerequisites](#prerequisites)
   - [Getting Started](#getting-started)
   - [Key Scripts](#key-scripts)
   - [Testing](#testing)
@@ -50,7 +51,9 @@ This project demonstrates how to build scalable, CMS-driven applications using m
     - [React peer dependency warning (React \<= 18)](#react-peer-dependency-warning-react--18)
   - [Local SSL Setup](#local-ssl-setup)
   - [Storyblok Visual Editor](#storyblok-visual-editor)
+    - [Preview troubleshooting (compact)](#preview-troubleshooting-compact)
   - [Environment Variables](#environment-variables)
+    - [Required vs optional (at a glance)](#required-vs-optional-at-a-glance)
   - [Deploying on Vercel (short)](#deploying-on-vercel-short)
   - [Indexing / SEO (Demo Subdomain)](#indexing--seo-demo-subdomain)
   - [Webhooks](#webhooks)
@@ -88,7 +91,7 @@ For a guided adaptation, see [docs/guides/implementation-guide.md](docs/guides/i
 ## What's Included (and What's Not)
 
 - ✅ Integration patterns (routing, preview, component registry, performance-minded defaults)
-- ✅ Example bloks/components mapped from a demo space
+- ✅ Example bloks/components mapped from the Storyblok Demo Space
 - ❌ Production credentials (see `.env.example`)
 - ❌ A ready-to-ship site (replace demo models/content for your space)
 
@@ -136,7 +139,7 @@ Note: the built-in Markdown preview may show Mermaid blocks as plain text unless
 - Local HTTPS support (this repo runs `pnpm dev` with Next.js experimental HTTPS)
   - Run `pnpm dev-setup` once to generate local certs
   - If you don’t already have it, install and trust mkcert (see [Local SSL Setup](#local-ssl-setup))
-- A Storyblok account + space (or access to the demo space used by this repo)
+- A Storyblok account + space (or access to a Storyblok Demo Space)
 
 ## Enterprise Architecture
 
