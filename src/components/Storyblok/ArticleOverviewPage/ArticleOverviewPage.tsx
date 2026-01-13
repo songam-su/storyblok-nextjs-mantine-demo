@@ -4,7 +4,7 @@ import ArticleCard from '@/components/Storyblok/ArticleCard/ArticleCard';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ArticleOverviewPage as ArticleOverviewPageBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { SegmentedControl, Select, SimpleGrid, Text, TextInput, Title } from '@mantine/core';
+import { CloseButton, SegmentedControl, Select, SimpleGrid, Text, TextInput, Title } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { storyblokEditable } from '@storyblok/react';
 import { useEffect, useMemo, useState } from 'react';
@@ -123,6 +123,20 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
             onChange={(event) => setQuery(event.currentTarget.value)}
             className={styles.search}
             classNames={{ input: styles.searchInput }}
+            rightSection={
+              <div className={styles.searchRightSection}>
+                {query ? (
+                  <CloseButton
+                    variant="transparent"
+                    aria-label="Clear search"
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => setQuery('')}
+                  />
+                ) : null}
+              </div>
+            }
+            rightSectionPointerEvents="all"
+            rightSectionWidth="calc(3.125rem * var(--mantine-scale))"
           />
 
           {showCategoryDropdown ? (

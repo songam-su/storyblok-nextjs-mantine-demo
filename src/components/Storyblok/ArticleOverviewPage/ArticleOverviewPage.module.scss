@@ -49,13 +49,22 @@
   /* Pair with the category selector/button geometry. */
   border-radius: var(--mantine-radius-sm);
   font-size: var(--mantine-font-size-md);
-  font-weight: 500;
+  font-weight: 600;
   padding-block: calc(1rem * var(--mantine-scale) + 0.6875rem);
-  padding-inline: calc(1rem * var(--mantine-scale) + 0.6875rem);
+  padding-inline-start: calc(1rem * var(--mantine-scale) + 0.6875rem);
+}
+
+.searchRightSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--mantine-color-graphite-7);
 }
 
 .searchInput::placeholder {
-  color: var(--mantine-color-graphite-4);
+  color: var(--mantine-color-graphite-2);
   font-weight: 400;
 }
 
@@ -92,16 +101,16 @@
 
   /*
     Optional divider override (kept for easy re-enable later).
-
+    
     :global(.mantine-SegmentedControl-control) {
       --separator-color: var(--mantine-color-neonIceDark-3);
     }
-
+    
     :global(.mantine-SegmentedControl-control)::before {
       width: var(--sb-category-divider-width);
       inset-inline-start: calc(var(--sb-category-pill-gap) / -2);
     }
-  */
+    */
 
   :global(.mantine-SegmentedControl-label) {
     font-weight: 600;
