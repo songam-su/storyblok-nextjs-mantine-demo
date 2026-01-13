@@ -32,9 +32,6 @@
 
 @media (min-width: 75em) {
   .banner {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
     gap: 0;
   }
 }
@@ -72,11 +69,11 @@
 
 .content {
   display: flex;
+  flex-direction: column;
   gap: 12px;
   align-items: center;
   margin: 0 auto;
   width: 80%;
-  flex-direction: column;
 }
 
 @media (min-width: 75em) {
@@ -111,12 +108,6 @@
 @media (min-width: 75em) {
   .formRow {
     gap: 12px;
-    margin: 0 auto;
-  }
-}
-
-@media (min-width: 75em) {
-  .formRow {
     margin: 0;
     flex: 1 1 50%;
     width: 100%;
@@ -208,10 +199,7 @@
 
   transition: background-color 180ms ease;
 
-  :global(span) {
-    color: inherit;
-  }
-
+  :global(span),
   :global(.mantine-Button-label) {
     color: inherit;
   }
