@@ -3,23 +3,40 @@
 import styles from './PageSkeleton.module.scss';
 
 type PageSkeletonProps = {
-  variant?: 'default' | 'articles';
+  mode?: 'page' | 'content';
 };
 
-export default function PageSkeleton({ variant = 'default' }: PageSkeletonProps) {
+export default function PageSkeleton({ mode = 'page' }: PageSkeletonProps) {
   return (
-    <div className={styles.skeleton} data-variant={variant} aria-hidden="true">
-      <div className={styles.hero} />
-      <div className={styles.content}>
-        <div className={styles.line} style={{ width: '46%' }} />
-        <div className={styles.line} style={{ width: '72%' }} />
-        <div className={styles.line} style={{ width: '64%' }} />
-
-        <div className={styles.grid}>
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className={styles.card} />
-          ))}
+    <div className={styles.skeleton} data-mode={mode} aria-hidden="true">
+      {mode === 'page' ? (
+        <div className={styles.header}>
+          <div className={styles.logo} />
+          <div className={styles.nav}>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className={styles.navItem} />
+            ))}
+          </div>
+          <div className={styles.headerRight}>
+            <div className={styles.iconButton} />
+          </div>
         </div>
+      ) : null}
+
+      <div className={styles.sectionHeader}>
+        <div className={styles.title} style={{ width: '42%' }} />
+        <div className={styles.line} style={{ width: '64%' }} />
+      </div>
+
+      <div className={styles.controlsRow}>
+        <div className={styles.control} />
+        <div className={styles.control} />
+      </div>
+
+      <div className={styles.grid}>
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className={styles.card} />
+        ))}
       </div>
     </div>
   );

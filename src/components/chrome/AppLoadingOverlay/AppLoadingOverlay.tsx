@@ -51,7 +51,7 @@ export default function AppLoadingOverlay() {
   return (
     <div className={styles.overlay} data-visible={isVisible ? 'true' : 'false'} aria-hidden="true">
       <div className={styles.inner}>
-        <PageSkeleton />
+        <PageSkeleton mode="page" />
       </div>
     </div>
   );

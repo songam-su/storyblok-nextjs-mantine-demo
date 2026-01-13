@@ -2,7 +2,6 @@
 
 import { Suspense } from 'react';
 import { lazyRegistry } from '../registry/lazy';
-import { Loader } from '@mantine/core';
 import { ErrorBoundary } from './ErrorBoundary';
 import { storyblokEditable } from '@storyblok/react';
 import type { StoryblokBlok } from '../registry/StoryblokBlok';
@@ -23,12 +22,11 @@ export function StoryblokComponentRenderer({ blok, isPreview }: StoryblokCompone
     return null;
   }
 
-  const spinner = <Loader size="lg" type="dots" />;
   const editableAttributes = isPreview && blok?._editable ? storyblokEditable(blok as any) : undefined;
 
   return (
     <ErrorBoundary>
-      <Suspense fallback={spinner}>
+      <Suspense fallback={null}>
         {isPreview ? (
           <div {...editableAttributes} style={{ display: 'contents' }} suppressHydrationWarning>
             <Component blok={blok} />

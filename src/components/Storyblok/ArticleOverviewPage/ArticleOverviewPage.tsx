@@ -1,6 +1,7 @@
 'use client';
 
 import ArticleCard from '@/components/Storyblok/ArticleCard/ArticleCard';
+import PageSkeleton from '@/components/chrome/PageSkeleton/PageSkeleton';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ArticleOverviewPage as ArticleOverviewPageBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
@@ -171,9 +172,7 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
 
       <main className={styles.main}>
         {isLoading ? (
-          <Text size="sm" c="dimmed">
-            Loading articles…
-          </Text>
+          <PageSkeleton mode="content" />
         ) : error ? (
           <Text size="sm" c="red">
             {error}
