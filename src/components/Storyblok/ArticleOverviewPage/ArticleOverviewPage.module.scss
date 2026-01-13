@@ -1,5 +1,6 @@
 .section {
   padding: var(--page-shell-section-padding);
+  padding-bottom: calc(var(--page-shell-section-padding) + var(--sb-section-stack-gap));
 }
 
 .header {
@@ -9,13 +10,15 @@
 }
 
 .title {
-  margin: 0 0 var(--mantine-spacing-xl);
+  margin: 0 0 var(--sb-section-stack-gap);
+  font-size: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+  line-height: 1.1;
 }
 
 .controls {
   display: grid;
-  gap: var(--mantine-spacing-lg);
-  margin: 0 auto var(--mantine-spacing-xl);
+  gap: var(--sb-grid-gap-ui);
+  margin: 0 auto var(--sb-section-stack-gap);
   max-width: 56rem;
 
   /* Shared sizing so Search, Select, and SegmentedControl feel aligned */
@@ -235,11 +238,5 @@
 
 .grid {
   align-items: stretch;
-  margin: 0 10%;
-}
-
-@media (min-width: 62em) {
-  .grid {
-    margin: 0;
-  }
+  margin: 0;
 }

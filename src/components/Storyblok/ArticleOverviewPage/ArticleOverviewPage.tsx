@@ -183,7 +183,12 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
             No articles match your filters.
           </Text>
         ) : (
-          <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="xl" verticalSpacing="xl" className={styles.grid}>
+          <SimpleGrid
+            cols={{ base: 1, sm: 2, md: 3, lg: 4 }}
+            spacing="var(--sb-grid-gap-lg)"
+            verticalSpacing="var(--sb-grid-gap-lg)"
+            className={styles.grid}
+          >
             {filteredArticles.map((article) => (
               <ArticleCard
                 key={article.key}

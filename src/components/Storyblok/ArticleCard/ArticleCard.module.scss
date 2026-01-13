@@ -73,7 +73,7 @@
   align-items: center;
   gap: 8px;
   font-weight: 800;
-  font-size: 0.95rem;
+  font-size: clamp(0.7rem, 0.62rem + 0.35vw, 0.85rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--article-category-muted);
@@ -98,6 +98,6 @@
 .title {
   margin: 0;
   font-weight: 900;
-  font-size: 1.5rem;
+  font-size: clamp(1.05rem, 0.85rem + 0.8vw, 1.375rem);
   line-height: 1.2;
 }
