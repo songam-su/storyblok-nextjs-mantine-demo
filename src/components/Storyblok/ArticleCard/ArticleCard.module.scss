@@ -65,7 +65,7 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  --article-category-muted: color-mix(in srgb, var(--mantine-color-secondary-6) 75%, transparent);
+  --article-category-muted: color-mix(in srgb, var(--mantine-color-secondary-6) 100%, transparent);
 }
 
 .category {

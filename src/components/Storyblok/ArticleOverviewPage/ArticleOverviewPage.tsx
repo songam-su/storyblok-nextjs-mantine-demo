@@ -159,6 +159,7 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
           ) : (
             <SegmentedControl
               fullWidth
+              withItemsBorders={false}
               value={categoryKey}
               onChange={setCategoryKey}
               data={categoryOptions}
