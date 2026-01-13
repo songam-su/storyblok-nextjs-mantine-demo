@@ -57,8 +57,6 @@
 
 :global(:root[data-mantine-color-scheme='dark']) {
   .tabsTab:not([data-active='true']) {
-    /* Dark mode: give tabs a subtle Neon Ice Dark tint at rest. */
-    background: color-mix(in srgb, var(--sb-accent, #0899a0) 14%, var(--sb-surface, #444041));
     background: transparent;
   }
 
@@ -72,11 +70,6 @@
 .tabsTab[data-active='true'] {
   background: var(--sb-accent, #1d63c5);
   color: var(--sb-on-accent, #fff);
-  border-color: var(--sb-accent, #1d63c5);
-}
-
-.tabsTab[data-active='true']:hover {
-  background: var(--sb-accent, #1d63c5);
   border-color: var(--sb-accent, #1d63c5);
 }
 

@@ -114,10 +114,16 @@
     transition:
       color 90ms ease,
       background-color 90ms ease;
-  }
 
-  :global(.mantine-SegmentedControl-label):where([data-active]) {
-    color: var(--sb-on-accent, #fff);
+    &:where([data-active]) {
+      color: var(--sb-on-accent, #fff);
+    }
+
+    /* Match Select dropdown hover color for non-active pills. */
+    &:where(:not([data-disabled], [data-active], [data-read-only])):hover {
+      background-color: var(--sb-category-active-bg, var(--sb-accent, #1d63c5));
+      color: var(--sb-text, #111);
+    }
   }
 
   :global(.mantine-SegmentedControl-control) {
@@ -129,26 +135,14 @@
     display: none;
     content: none;
   }
-
-  /* Match Select dropdown hover color for non-active pills. */
-  :global(.mantine-SegmentedControl-label):where(:not([data-disabled], [data-active], [data-read-only])):hover {
-    background-color: var(--sb-category-active-bg, var(--sb-accent, #1d63c5));
-    color: var(--sb-text, #111);
-  }
 }
 
 :global(:root[data-mantine-color-scheme='dark']) {
-  // .tabsTab:not([data-active='true']) {
-  //   /* Dark mode: give tabs a subtle Neon Ice Dark tint at rest. */
-  //   background: color-mix(in srgb, var(--sb-accent, #0899a0) 14%, var(--sb-surface, #444041));
-  //   background: transparent;
-  // }
-  .categories {
+  .categories
     :global(.mantine-SegmentedControl-label):where(:not([data-disabled], [data-active], [data-read-only])):hover {
-      /* Hover: next darker iteration of Neon Ice Dark (darker than --sb-accent). */
-      background: color-mix(in srgb, #077882 70%, var(--sb-surface, #444041));
-      border-color: color-mix(in srgb, #077882 70%, transparent);
-    }
+    /* Hover: next darker iteration of Neon Ice Dark (darker than --sb-accent). */
+    background: color-mix(in srgb, #077882 70%, var(--sb-surface, #444041));
+    border-color: color-mix(in srgb, #077882 70%, transparent);
   }
 }
 
