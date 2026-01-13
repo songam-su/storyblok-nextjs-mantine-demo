@@ -130,10 +130,12 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
               onChange={(value) => setCategoryKey(value ?? 'all')}
               data={categoryOptions}
               allowDeselect={false}
+              withScrollArea={false}
               className={styles.categoriesSelect}
               classNames={{
                 input: styles.categoriesSelectInput,
                 dropdown: styles.categoriesSelectDropdown,
+                options: styles.categoriesSelectOptions,
                 option: styles.categoriesSelectOption,
                 section: styles.categoriesSelectSection,
               }}

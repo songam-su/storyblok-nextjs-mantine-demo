@@ -26,35 +26,40 @@
 .categories {
   /* Mantine SegmentedControl root background (defaults to a gray). */
   --sc-background: var(--mantine-color-neonIceDark-1);
-  /* Use a non-white pill so separators keep consistent contrast while resizing. */
-  --sc-color: var(--mantine-color-neonIceDark-0);
+  /* Slightly lighten the active pill vs NeonIceDark-0 (closer to button feel). */
+  --sb-category-active-bg: color-mix(in srgb, var(--mantine-color-neonIceDark-0) 60%, #fff);
+  --sc-color: var(--sb-category-active-bg);
   /* Match project button geometry/typography. */
   --sc-radius: var(--mantine-radius-sm);
   --sc-font-size: var(--mantine-font-size-md);
   --sc-padding: calc(0.5rem * var(--mantine-scale)) calc(1.375rem * var(--mantine-scale));
   --sb-category-root-padding: calc(0.5rem * var(--mantine-scale)); /* 8px */
   --sb-category-pill-gap: calc(0.5rem * var(--mantine-scale)); /* 8px */
-  /* Item divider when `withItemsBorders` is enabled. */
-  --separator-color: var(--mantine-color-neonIceDark-3);
-  --sb-category-divider-width: calc(0.0625rem * var(--mantine-scale)); /* 1.5px @ 16px root */
+  /*
+    Optional item dividers (kept here for easy re-enable later):
+
+    When `withItemsBorders` is enabled, Mantine renders dividers via `::before`.
+    If you want those back, uncomment this whole block.
+
+    --separator-color: var(--mantine-color-neonIceDark-3);
+    --sb-category-divider-width: calc(0.0625rem * var(--mantine-scale));
+  */
   background-color: var(--mantine-color-neonIceDark-1);
   padding: var(--sb-category-root-padding);
   column-gap: var(--sb-category-pill-gap);
 
   /*
-    Mantine sets `--separator-color` on the control element itself in light/dark mode.
-    Override it there so the `::before` divider actually changes.
-  */
-  :global(.mantine-SegmentedControl-control) {
-    --separator-color: var(--mantine-color-neonIceDark-3);
-  }
+    Optional divider override (kept for easy re-enable later).
 
-  :global(.mantine-SegmentedControl-control)::before {
-    /* Mantine default is ~1px; make all dividers match the thicker one you're seeing. */
-    width: var(--sb-category-divider-width);
-    /* Center the divider inside the new 8px gap. */
-    inset-inline-start: calc(var(--sb-category-pill-gap) / -2);
-  }
+    :global(.mantine-SegmentedControl-control) {
+      --separator-color: var(--mantine-color-neonIceDark-3);
+    }
+
+    :global(.mantine-SegmentedControl-control)::before {
+      width: var(--sb-category-divider-width);
+      inset-inline-start: calc(var(--sb-category-pill-gap) / -2);
+    }
+  */
 
   :global(.mantine-SegmentedControl-label) {
     font-weight: 600;
@@ -70,12 +75,21 @@
 
 .categoriesSelect {
   /* Wrapper class for layout only; visuals are applied via Select `classNames` below. */
+  width: 100%;
 }
 
 .categoriesSelectInput {
-  background-color: var(--mantine-color-neonIceDark-1);
+  // background-color: var(--mantine-color-neonIceDark-1);
   border-color: var(--mantine-color-neonIceDark-3);
+  // border: none;
   color: var(--mantine-color-graphite-9);
+
+  /* Match the SegmentedControl pills / project buttons. */
+  border-radius: var(--mantine-radius-sm);
+  font-size: var(--mantine-font-size-md);
+  font-weight: 600;
+  padding-block: calc(1rem * var(--mantine-scale) + 0.6875rem);
+  padding-inline: calc(1rem * var(--mantine-scale) + 0.6875rem);
 }
 
 .categoriesSelectInput::placeholder {
@@ -91,24 +105,48 @@
 }
 
 .categoriesSelectDropdown {
-  background-color: var(--mantine-color-neonIceDark-1);
+  // background-color: var(--mantine-color-neonIceDark-1);
   border: none;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --sb-category-active-bg: color-mix(in srgb, var(--mantine-color-neonIceDark-0) 60%, #fff);
+
+  /* Match pill radius on the container too. */
+  border-radius: var(--mantine-radius-sm);
+}
+
+.categoriesSelectOptions {
+  /* Ensure hover/active backgrounds are inset equally left/right. */
+  padding-block: calc(0.25rem * var(--mantine-scale));
+  padding-inline-start: calc(0.125rem * var(--mantine-scale));
+  padding-inline-end: calc(0.25rem * var(--mantine-scale));
 }
 
 .categoriesSelectOption {
   color: var(--mantine-color-graphite-9);
+
+  /* Match the SegmentedControl pills / project buttons. */
+  border-radius: var(--mantine-radius-sm);
+  font-size: var(--mantine-font-size-md);
+  font-weight: 600;
+  padding-block: calc(0.5rem * var(--mantine-scale));
+  padding-inline: calc(1.375rem * var(--mantine-scale));
+  margin-block: calc(0.25rem * var(--mantine-scale));
 }
 
+// /* Active option */
+// .categoriesSelectOption[data-combobox-active] {
+//   background-color: color-mix(in srgb, var(--mantine-color-neonIceDark-0) 50%, transparent);
+// }
+
 /* Hovered option */
-.categoriesSelectOption[data-combobox-active] {
-  background-color: var(--mantine-color-neonIceDark-0);
+.categoriesSelectOption:hover {
+  background-color: color-mix(in srgb, var(--mantine-color-neonIceDark-1) 50%, transparent);
 }
 
 /* Selected option */
 .categoriesSelectOption[data-combobox-selected],
 .categoriesSelectOption[data-selected] {
-  background-color: var(--mantine-color-neonIceDark-0);
+  background-color: var(--sb-category-active-bg, color-mix(in srgb, var(--mantine-color-neonIceDark-0) 60%, #fff));
   color: var(--mantine-color-graphite-9);
   font-weight: 600;
 }
