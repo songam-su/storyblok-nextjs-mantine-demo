@@ -1,9 +1,9 @@
 'use client';
 
-import { MantineProvider, MantineThemeOverride, type MantineColorsTuple } from '@mantine/core';
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import baseTheme from '@/lib/mantine/theme';
 import type { SiteConfig as SiteConfigBlok } from '@/lib/storyblok/resources/types/storyblok-components';
+import { MantineProvider, MantineThemeOverride, type MantineColorsTuple } from '@mantine/core';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 const DEFAULT_RADIUS = baseTheme.defaultRadius ?? 'md';
 const DEFAULT_BACKGROUND = baseTheme.other?.backgroundLight ?? '#05060c';
@@ -85,7 +85,13 @@ const hexToRgb = (value?: string): [number, number, number] | null => {
   const hex = value.trim().replace('#', '');
   if (!/^([0-9a-f]{3}|[0-9a-f]{6})$/i.test(hex)) return null;
 
-  const normalized = hex.length === 3 ? hex.split('').map((c) => c + c).join('') : hex;
+  const normalized =
+    hex.length === 3
+      ? hex
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      : hex;
   const num = parseInt(normalized, 16);
   const r = (num >> 16) & 255;
   const g = (num >> 8) & 255;
@@ -111,16 +117,23 @@ const getReadableTextColor = (background?: string): string | undefined => {
 export const applyConfigToTheme = (config?: NormalizedSiteConfig): MantineThemeOverride => {
   const palette = config?.useCustomColors ? toMantinePalette(config.primary) : undefined;
   const backgroundLight = config?.useCustomColors && config.background ? config.background : DEFAULT_BACKGROUND;
-  const backgroundDark = config?.useCustomColors && config.backgroundDark ? config.backgroundDark : baseTheme.other?.backgroundDark;
-  const backgroundLightMuted = config?.useCustomColors && config.backgroundAlt ? config.backgroundAlt : baseTheme.other?.backgroundLightMuted;
-  const backgroundDarkMuted = config?.useCustomColors && config.backgroundMuted ? config.backgroundMuted : baseTheme.other?.backgroundDarkMuted;
-  const accent = config?.useCustomColors && (config.secondary || config.primary) ? config.secondary ?? config.primary : baseTheme.other?.accent;
+  const backgroundDark =
+    config?.useCustomColors && config.backgroundDark ? config.backgroundDark : baseTheme.other?.backgroundDark;
+  const backgroundLightMuted =
+    config?.useCustomColors && config.backgroundAlt ? config.backgroundAlt : baseTheme.other?.backgroundLightMuted;
+  const backgroundDarkMuted =
+    config?.useCustomColors && config.backgroundMuted ? config.backgroundMuted : baseTheme.other?.backgroundDarkMuted;
+  const accent =
+    config?.useCustomColors && (config.secondary || config.primary)
+      ? (config.secondary ?? config.primary)
+      : baseTheme.other?.accent;
   const secondary = config?.useCustomColors && config.tertiary ? config.tertiary : baseTheme.other?.secondary;
 
   const fontFamily = config?.useCustomFonts && config.bodyFont ? config.bodyFont : baseTheme.fontFamily;
-  const headingsFont = config?.useCustomFonts && (config.headingsFont || config.bodyFont)
-    ? config.headingsFont || config.bodyFont
-    : baseTheme.headings?.fontFamily ?? baseTheme.fontFamily;
+  const headingsFont =
+    config?.useCustomFonts && (config.headingsFont || config.bodyFont)
+      ? config.headingsFont || config.bodyFont
+      : (baseTheme.headings?.fontFamily ?? baseTheme.fontFamily);
 
   return {
     ...baseTheme,
@@ -149,7 +162,13 @@ export const applyConfigToTheme = (config?: NormalizedSiteConfig): MantineThemeO
   } satisfies MantineThemeOverride;
 };
 
-export const SiteConfigProvider = ({ children, initialConfig }: { children: React.ReactNode; initialConfig?: SiteConfigContent }) => {
+export const SiteConfigProvider = ({
+  children,
+  initialConfig,
+}: {
+  children: React.ReactNode;
+  initialConfig?: SiteConfigContent;
+}) => {
   const initialNormalized = useMemo(() => normalizeSiteConfig(initialConfig), [initialConfig]);
   const [config, setConfigState] = useState<NormalizedSiteConfig | undefined>(initialNormalized);
 
@@ -190,6 +209,7 @@ export const resetCssVariables = () => {
   const root = document.documentElement;
   root.style.setProperty('--sb-background', DEFAULT_BACKGROUND);
   root.style.setProperty('--sb-text', DEFAULT_TEXT_ON_BACKGROUND);
+  root.style.setProperty('--sb-color-scheme', 'light');
   root.style.removeProperty('--sb-accent');
   root.style.removeProperty('--sb-headline-color');
   root.style.removeProperty('--sb-radius');
@@ -200,11 +220,12 @@ export const resetCssVariables = () => {
 export const applyCssVariables = (config?: NormalizedSiteConfig) => {
   const root = document.documentElement;
   const background = config?.useCustomColors && config.background ? config.background : undefined;
-  const accent = config?.useCustomColors ? config.secondary ?? config.primary : undefined;
-  const headline = config?.coloredHeadlines ? accent ?? config?.primary : undefined;
+  const accent = config?.useCustomColors ? (config.secondary ?? config.primary) : undefined;
+  const headline = config?.coloredHeadlines ? (accent ?? config?.primary) : undefined;
   const radius = config?.disableRoundedCorners ? '0px' : undefined;
 
   const textColor = getReadableTextColor(background) ?? DEFAULT_TEXT_ON_BACKGROUND;
+  const colorScheme = textColor === '#ffffff' ? 'dark' : 'light';
 
   if (background) {
     root.style.setProperty('--sb-background', background);
@@ -217,6 +238,7 @@ export const applyCssVariables = (config?: NormalizedSiteConfig) => {
   }
 
   root.style.setProperty('--sb-text', textColor);
+  root.style.setProperty('--sb-color-scheme', colorScheme);
 
   if (accent) {
     root.style.setProperty('--sb-accent', accent);

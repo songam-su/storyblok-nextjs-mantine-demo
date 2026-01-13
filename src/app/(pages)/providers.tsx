@@ -1,10 +1,14 @@
 'use client';
 
-import { ReactNode } from 'react';
-import '@mantine/core/styles.css';
-import '@/styles/globals.scss';
+import {
+  SiteConfigProvider,
+  SiteThemeProvider,
+  type SiteConfigContent,
+} from '@/lib/storyblok/context/SiteConfigContext';
 import { StoryblokEditorProvider } from '@/lib/storyblok/context/StoryblokEditorContext';
-import { SiteConfigProvider, SiteThemeProvider, type SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContext';
+import '@/styles/globals.scss';
+import '@/styles/vendor.css';
+import { ReactNode } from 'react';
 
 interface PublishedProvidersProps {
   children: ReactNode;

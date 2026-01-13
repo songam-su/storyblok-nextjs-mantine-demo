@@ -1,0 +1,3 @@
+@layer mantine, app;
+
+@import '@mantine/core/styles.css' layer(mantine);

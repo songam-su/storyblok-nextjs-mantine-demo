@@ -17,6 +17,26 @@
   min-height: clamp(320px, 46vw, 520px);
 }
 
+.mobileImage {
+  display: none;
+  width: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  background-image: var(--sb-hero-image, none);
+  background-position: var(--sb-hero-position, center);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: clamp(220px, 46vw, 420px);
+}
+
+.mobileImageCover {
+  background-size: cover;
+}
+
+.mobileImageContain {
+  background-size: contain;
+}
+
 .stacked {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -58,7 +78,7 @@
   font-weight: 650;
   letter-spacing: 0.01em;
   opacity: 0.98;
-  color: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
+  color: var(--sb-accent, #1d63c5);
   font-size: clamp(0.98rem, 1.4vw, 1.1rem);
   line-height: 1.2;
 }
@@ -72,29 +92,29 @@
     -apple-system,
     sans-serif;
   letter-spacing: -0.01em;
-  font-weight: 800 !important;
+  font-weight: 800;
   line-height: 1.05;
   font-size: clamp(2.1rem, 5vw, 3.4rem);
 
   // Mantine Title derives sizing from CSS variables that may be set inline.
   // Set them here so all HeroSection h1s look consistent.
-  --title-fw: 800 !important;
-  --title-lh: 1.05 !important;
-  --title-fz: clamp(2.1rem, 5vw, 3.4rem) !important;
+  --title-fw: 800;
+  --title-lh: 1.05;
+  --title-fz: clamp(2.1rem, 5vw, 3.4rem);
 }
 
 // Mantine wraps Title content in inner Text spans; ensure they inherit the headline treatment.
 .headline :global(.mantine-Text-root),
 .headline :global(.mantine-Text-root) span,
 .headline span {
-  font-size: clamp(2.1rem, 5vw, 3.4rem) !important;
-  font-weight: 800 !important;
-  line-height: 1.05 !important;
-  letter-spacing: -0.01em !important;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
 }
 
 .lead {
-  color: var(--mantine-color-graphite-8);
+  color: var(--sb-text-muted, #4b5563);
   margin: 0;
   max-width: 60ch;
   font-size: clamp(1.05rem, 1.35vw, 1.22rem);
@@ -110,13 +130,51 @@
 }
 
 @media (max-width: 47.99em) {
+  .section {
+    margin-top: 0;
+  }
+
+  /* Mobile hero: stack content box above image and avoid full-bleed background image. */
+  .section.hasBackgroundImage {
+    background-image: none;
+  }
+
+  .inner {
+    flex-direction: column;
+    gap: clamp(14px, 4vw, 22px);
+    padding-top: var(--page-shell-section-padding);
+    padding-bottom: 0;
+    min-height: unset;
+  }
+
+  .contentBox {
+    padding-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: min(540px, calc(100% - 2rem));
+  }
+
+  .copy {
+    justify-content: center;
+  }
+
+  .mobileImage {
+    display: block;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
   .actions {
     width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    justify-content: stretch;
     align-items: stretch;
+    margin-top: clamp(12px, 3vw, 20px);
   }
 
   .actions :global(.mantine-Button-root) {
-    flex: 1 1 220px;
     width: 100%;
   }
 }
@@ -125,9 +183,9 @@
 // In the provided home-page example, the secondary CTA is configured as bg='white' + text='primary-dark'.
 // Force that combination to render as a bubblegum CTA in the Hero only.
 .actions :global([data-sb-bg-color='white'][data-sb-text-color='primary-dark']) {
-  --sb-color-bg: var(--mantine-color-secondary-6) !important;
-  --sb-color-bg-hover: var(--mantine-color-secondary-5) !important;
-  --sb-color-text: var(--mantine-color-white) !important;
+  --sb-color-bg: var(--sb-accent-secondary-strong, #f4416a);
+  --sb-color-bg-hover: var(--sb-accent-secondary, #fd5a78);
+  --sb-color-text: var(--sb-on-accent, #fff);
 }
 
 .hasBackgroundImage {
@@ -147,8 +205,8 @@
 
 .contentBox {
   width: min(540px, 100%);
-  margin-right: auto !important;
-  margin-left: 0 !important;
+  margin-right: auto;
+  margin-left: 0;
   padding: clamp(18px, 3vw, 28px);
   border-radius: 14px;
   border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
@@ -164,8 +222,8 @@
 }
 
 .contentBoxStacked {
-  margin-left: auto !important;
-  margin-right: auto !important;
+  margin-left: auto;
+  margin-right: auto;
   border: 0;
   box-shadow: none;
   background: transparent;
@@ -201,6 +259,16 @@
   text-align: center;
 }
 
+.alignCenter .copy {
+  align-items: center;
+}
+
+.alignCenter .eyebrow,
+.alignCenter .headline,
+.alignCenter .lead {
+  text-align: center;
+}
+
 .alignCenter .actions {
   justify-content: center;
 }
@@ -208,4 +276,49 @@
 .inner > :not(.decoration) {
   position: relative;
   z-index: 1;
+}
+
+/*
+  Keep mobile overrides below the base .contentBox definition so they win the cascade.
+  This is the "new treatment" (content box stacked above a full-bleed image).
+*/
+@media (max-width: 47.99em) {
+  .section .contentBox {
+    width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    border-radius: 0;
+
+    /* Keep content aligned with the site shell padding while the box is full-bleed. */
+    padding-left: var(--page-shell-inline-padding);
+    padding-right: var(--page-shell-inline-padding);
+
+    /* New treatment: no border/outline around the full-bleed copy area. */
+    border: 0 !important;
+
+    /* Remove the desktop glass/shadow treatment on mobile. */
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+
+    /* Center the copy + CTAs for mobile. */
+    text-align: center !important;
+  }
+
+  .section .copy {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .section .lead {
+    text-align: center;
+  }
+
+  .section .headline {
+    text-align: center;
+  }
+
+  /* Headline segments are rendered as Mantine Text spans; make them inline so centering is reliable. */
+  .section .headline :global(.mantine-Text-root) {
+    display: inline;
+  }
 }

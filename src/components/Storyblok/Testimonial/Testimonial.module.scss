@@ -7,10 +7,9 @@
   margin: 0 auto;
   width: 80%;
   max-width: 720px;
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  color: var(--mantine-color-carbonBlack-8, #111827) !important;
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  background: var(--sb-surface, #ffffff);
+  color: var(--sb-text, #111);
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
   min-height: 160px;

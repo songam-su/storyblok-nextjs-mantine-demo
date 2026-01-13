@@ -60,12 +60,12 @@
   color: var(--sb-text, #111);
 
   :global(.mantine-Burger-burger) {
-    background-color: var(--sb-text, #111) !important;
+    background-color: var(--sb-text, #111);
   }
 
   :global(.mantine-Burger-burger)::before,
   :global(.mantine-Burger-burger)::after {
-    background-color: var(--sb-text, #111) !important;
+    background-color: var(--sb-text, #111);
   }
 }
 
@@ -78,7 +78,7 @@
 
 .drawerContent {
   background: var(--sb-background, #ffffff);
-  color-scheme: light;
+  color-scheme: var(--sb-color-scheme, light);
   color: var(--sb-text, #111);
 }
 

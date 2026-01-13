@@ -81,7 +81,7 @@
 }
 
 .asideWithImage {
-  color: #fff;
+  color: var(--sb-on-accent, #fff);
 
   &::before {
     content: '';

@@ -7,13 +7,13 @@
     color 120ms ease,
     border-color 120ms ease;
   border: 1px solid transparent;
-  background: var(--sb-color-bg, var(--sb-color-default-bg)) !important;
-  color: var(--sb-color-text, var(--sb-color-default-text)) !important;
+  background: var(--sb-color-bg, var(--sb-color-default-bg));
+  color: var(--sb-color-text, var(--sb-color-default-text));
   --sb-button-ghost-hover-text: var(--sb-text, var(--sb-color-text, var(--sb-color-default-text)));
 }
 
 .button[data-sb-text-color='primary-dark'] {
-  --sb-button-ghost-hover-text: #ffffff;
+  --sb-button-ghost-hover-text: var(--sb-on-accent, #fff);
 }
 
 .button[data-sb-bg-color='primary-highlight'][data-sb-text-color='primary-dark'],
@@ -23,30 +23,33 @@
 .button[data-sb-bg-color='color_1'][data-sb-text-color='primary-dark'],
 .button[data-sb-bg-color='color_2'][data-sb-text-color='primary-dark'],
 .button[data-sb-bg-color='color_3'][data-sb-text-color='primary-dark'] {
-  --sb-color-text: var(--mantine-color-white);
+  --sb-color-text: var(--sb-on-accent, #fff);
 }
 
 // Fix contrast for the common Storyblok CTA configuration:
 // bg='primary-dark' + text='white' + style='ghost'
 // Rest: dark outline/text. Hover: subtle accent tint.
 .button.is-ghost[data-sb-bg-color='primary-dark'][data-sb-text-color='white'] {
-  --sb-button-ghost-hover-bg: color-mix(in srgb, var(--sb-accent, #1d63c5) 88%, #fff);
-  --sb-button-ghost-hover-border: var(
-    --sb-accent,
-    var(--mantine-color-primary-6, #1d63c5)
-  );
-  --sb-button-ghost-hover-text: var(--mantine-color-white);
+  --sb-button-ghost-hover-bg: var(--sb-accent, #1d63c5);
+  --sb-button-ghost-hover-border: var(--sb-accent, #1d63c5);
+  --sb-button-ghost-hover-text: var(--sb-on-accent, #fff);
+}
+
+@supports (color: color-mix(in srgb, #000 10%, #fff)) {
+  .button.is-ghost[data-sb-bg-color='primary-dark'][data-sb-text-color='white'] {
+    --sb-button-ghost-hover-bg: color-mix(in srgb, var(--sb-accent, #1d63c5) 88%, #fff);
+  }
 }
 
 .button:not(.is-ghost):hover {
-  background: var(--sb-color-bg-hover, var(--sb-color-bg, var(--sb-color-default-bg))) !important;
-  color: var(--sb-color-text, var(--sb-color-default-text)) !important;
+  background: var(--sb-color-bg-hover, var(--sb-color-bg, var(--sb-color-default-bg)));
+  color: var(--sb-color-text, var(--sb-color-default-text));
 }
 
 .is-ghost {
-  background: transparent !important;
+  background: transparent;
   border: 1px solid currentColor;
-  color: var(--sb-button-ghost-rest-color, var(--sb-color-bg, var(--sb-color-default-bg))) !important;
+  color: var(--sb-button-ghost-rest-color, var(--sb-color-bg, var(--sb-color-default-bg)));
 
   @include ghostHover.hover-styles;
 }
