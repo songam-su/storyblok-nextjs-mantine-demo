@@ -52,12 +52,28 @@
 
 /* When an entry is open, keep a subtle tint on the header even when not hovered. */
 .accordionItem[data-active='true'] .accordionControl {
-  background: color-mix(in srgb, var(--sb-accent, #1d63c5) 8%, var(--sb-surface, #fff));
+  background: color-mix(in srgb, var(--sb-accent, #1d63c5) 24%, var(--sb-surface, #fff));
 }
 
 /* Add a more visually appealing hover state for questions (open or closed). */
 .accordionControl:hover {
-  background: color-mix(in srgb, var(--sb-accent, #1d63c5) 16%, var(--sb-surface, #fff));
+  background: color-mix(in srgb, var(--sb-accent, #1d63c5) 10%, var(--sb-surface, #fff));
+}
+
+:global(:root[data-mantine-color-scheme='dark']) {
+  .accordionControl:hover {
+    background: color-mix(in srgb, var(--sb-accent, #1d63c5) 16%, var(--sb-surface, #fff));
+    background: color-mix(in srgb, #077882 50%, var(--sb-surface, #444041));
+  }
+
+  .accordionItem[data-active='true'] .accordionControl {
+    background: color-mix(in srgb, #077882 90%, var(--sb-surface, #444041));
+  }
+
+  /* Add a more visually appealing hover state for questions (open or closed). */
+  .accordionControl:hover {
+    background: color-mix(in srgb, #077882 40%, var(--sb-surface, #444041));
+  }
 }
 
 .accordionPanel {

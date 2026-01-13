@@ -1,13 +1,16 @@
 'use client';
 
 import baseTheme from '@/lib/mantine/theme';
+import { COLOR_SCHEME_STORAGE_KEY, isSiteColorScheme, type SiteColorScheme } from '@/lib/site/colorScheme';
 import type { SiteConfig as SiteConfigBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import { MantineProvider, MantineThemeOverride, type MantineColorsTuple } from '@mantine/core';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 const DEFAULT_RADIUS = baseTheme.defaultRadius ?? 'md';
-const DEFAULT_BACKGROUND = baseTheme.other?.backgroundLight ?? '#05060c';
-const DEFAULT_TEXT_ON_BACKGROUND = baseTheme.other?.textOnLight ?? '#212121';
+const DEFAULT_BACKGROUND_LIGHT = baseTheme.other?.backgroundLight ?? '#ffffff';
+const DEFAULT_TEXT_ON_LIGHT = baseTheme.other?.textOnLight ?? '#212121';
+const DEFAULT_BACKGROUND_DARK = baseTheme.other?.backgroundDark ?? '#0d0d0d';
+const DEFAULT_TEXT_ON_DARK = baseTheme.other?.textOnDark ?? '#ffffff';
 
 export type SiteConfigContent = SiteConfigBlok & {
   primary_highlight_color?: string;
@@ -45,6 +48,10 @@ type SiteConfigContextValue = {
   config?: NormalizedSiteConfig;
   setConfig: (config?: NormalizedSiteConfig) => void;
   theme: MantineThemeOverride;
+  colorScheme: SiteColorScheme;
+  hasInitializedColorScheme: boolean;
+  setColorScheme: (scheme: SiteColorScheme) => void;
+  toggleColorScheme: () => void;
 };
 
 const SiteConfigContext = createContext<SiteConfigContextValue | undefined>(undefined);
@@ -116,7 +123,7 @@ const getReadableTextColor = (background?: string): string | undefined => {
 
 export const applyConfigToTheme = (config?: NormalizedSiteConfig): MantineThemeOverride => {
   const palette = config?.useCustomColors ? toMantinePalette(config.primary) : undefined;
-  const backgroundLight = config?.useCustomColors && config.background ? config.background : DEFAULT_BACKGROUND;
+  const backgroundLight = config?.useCustomColors && config.background ? config.background : DEFAULT_BACKGROUND_LIGHT;
   const backgroundDark =
     config?.useCustomColors && config.backgroundDark ? config.backgroundDark : baseTheme.other?.backgroundDark;
   const backgroundLightMuted =
@@ -171,22 +178,106 @@ export const SiteConfigProvider = ({
 }) => {
   const initialNormalized = useMemo(() => normalizeSiteConfig(initialConfig), [initialConfig]);
   const [config, setConfigState] = useState<NormalizedSiteConfig | undefined>(initialNormalized);
+  // IMPORTANT: Keep SSR + first client render deterministic to avoid hydration mismatches.
+  // We sync from ColorSchemeScript/localStorage after mount.
+  const [colorScheme, setColorSchemeState] = useState<SiteColorScheme>('light');
+  const [hasInitializedColorScheme, setHasInitializedColorScheme] = useState(false);
 
   const theme = useMemo(() => applyConfigToTheme(config), [config]);
 
   useEffect(() => {
-    if (!config) {
-      resetCssVariables();
+    try {
+      const stored = window.localStorage.getItem(COLOR_SCHEME_STORAGE_KEY);
+      if (isSiteColorScheme(stored)) {
+        setColorSchemeState(stored);
+        setHasInitializedColorScheme(true);
+        return;
+      }
+    } catch {
+      // ignore
+    }
+
+    const attributeValue = document.documentElement.getAttribute('data-mantine-color-scheme');
+    if (isSiteColorScheme(attributeValue)) {
+      setColorSchemeState(attributeValue);
+      setHasInitializedColorScheme(true);
       return;
     }
-    applyCssVariables(config);
-  }, [config]);
+
+    setHasInitializedColorScheme(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasInitializedColorScheme) return;
+
+    if (!config) {
+      resetCssVariables(colorScheme);
+      return;
+    }
+    applyCssVariables(config, colorScheme);
+  }, [config, colorScheme, hasInitializedColorScheme]);
+
+  useEffect(() => {
+    if (!hasInitializedColorScheme) return;
+
+    document.documentElement.setAttribute('data-mantine-color-scheme', colorScheme);
+    try {
+      window.localStorage.setItem(COLOR_SCHEME_STORAGE_KEY, colorScheme);
+    } catch {
+      // ignore
+    }
+  }, [colorScheme, hasInitializedColorScheme]);
 
   const setConfig = useCallback((value?: NormalizedSiteConfig) => {
     setConfigState(value);
   }, []);
 
-  return <SiteConfigContext.Provider value={{ config, setConfig, theme }}>{children}</SiteConfigContext.Provider>;
+  const setColorScheme = useCallback((scheme: SiteColorScheme) => {
+    setHasInitializedColorScheme(true);
+    setColorSchemeState(scheme);
+
+    // Persist immediately so a fast refresh keeps the user's choice.
+    try {
+      window.localStorage.setItem(COLOR_SCHEME_STORAGE_KEY, scheme);
+    } catch {
+      // ignore
+    }
+
+    document.documentElement.setAttribute('data-mantine-color-scheme', scheme);
+  }, []);
+
+  const toggleColorScheme = useCallback(() => {
+    setHasInitializedColorScheme(true);
+    setColorSchemeState((current) => {
+      const next = current === 'dark' ? 'light' : 'dark';
+
+      // Persist immediately so a fast refresh keeps the user's choice.
+      try {
+        window.localStorage.setItem(COLOR_SCHEME_STORAGE_KEY, next);
+      } catch {
+        // ignore
+      }
+
+      document.documentElement.setAttribute('data-mantine-color-scheme', next);
+      return next;
+    });
+  }, []);
+
+  return (
+    <SiteConfigContext.Provider
+      value={{
+        config,
+        setConfig,
+        theme,
+        colorScheme,
+        hasInitializedColorScheme,
+        setColorScheme,
+        toggleColorScheme,
+      }}
+    >
+      {children}
+    </SiteConfigContext.Provider>
+  );
 };
 
 export const useSiteConfig = () => {
@@ -196,45 +287,56 @@ export const useSiteConfig = () => {
 };
 
 export const SiteThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const { theme } = useSiteConfig();
+  const { theme, colorScheme } = useSiteConfig();
 
   return (
-    <MantineProvider theme={theme} defaultColorScheme="light">
+    <MantineProvider theme={theme} defaultColorScheme="light" forceColorScheme={colorScheme}>
       {children}
     </MantineProvider>
   );
 };
 
-export const resetCssVariables = () => {
+export const resetCssVariables = (colorScheme: SiteColorScheme = 'light') => {
   const root = document.documentElement;
-  root.style.setProperty('--sb-background', DEFAULT_BACKGROUND);
-  root.style.setProperty('--sb-text', DEFAULT_TEXT_ON_BACKGROUND);
-  root.style.setProperty('--sb-color-scheme', 'light');
+
+  const background = colorScheme === 'dark' ? DEFAULT_BACKGROUND_DARK : DEFAULT_BACKGROUND_LIGHT;
+  const text = colorScheme === 'dark' ? DEFAULT_TEXT_ON_DARK : DEFAULT_TEXT_ON_LIGHT;
+
+  root.style.setProperty('--sb-background', background);
+  root.style.setProperty('--sb-text', text);
+  root.style.setProperty('--sb-color-scheme', colorScheme);
   root.style.removeProperty('--sb-accent');
   root.style.removeProperty('--sb-headline-color');
   root.style.removeProperty('--sb-radius');
-  document.body.style.backgroundColor = DEFAULT_BACKGROUND;
-  document.documentElement.style.backgroundColor = DEFAULT_BACKGROUND;
+  document.body.style.backgroundColor = background;
+  document.documentElement.style.backgroundColor = background;
 };
 
-export const applyCssVariables = (config?: NormalizedSiteConfig) => {
+export const applyCssVariables = (config?: NormalizedSiteConfig, colorScheme: SiteColorScheme = 'light') => {
   const root = document.documentElement;
-  const background = config?.useCustomColors && config.background ? config.background : undefined;
+
+  const background =
+    config?.useCustomColors && colorScheme === 'dark'
+      ? (config.backgroundDark ?? config.background ?? baseTheme.other?.backgroundDark)
+      : config?.useCustomColors
+        ? config.background
+        : undefined;
   const accent = config?.useCustomColors ? (config.secondary ?? config.primary) : undefined;
   const headline = config?.coloredHeadlines ? (accent ?? config?.primary) : undefined;
   const radius = config?.disableRoundedCorners ? '0px' : undefined;
 
-  const textColor = getReadableTextColor(background) ?? DEFAULT_TEXT_ON_BACKGROUND;
-  const colorScheme = textColor === '#ffffff' ? 'dark' : 'light';
+  const fallbackBackground = colorScheme === 'dark' ? DEFAULT_BACKGROUND_DARK : DEFAULT_BACKGROUND_LIGHT;
+  const fallbackText = colorScheme === 'dark' ? DEFAULT_TEXT_ON_DARK : DEFAULT_TEXT_ON_LIGHT;
+  const textColor = getReadableTextColor(background ?? fallbackBackground) ?? fallbackText;
 
   if (background) {
     root.style.setProperty('--sb-background', background);
     document.body.style.backgroundColor = background;
     document.documentElement.style.backgroundColor = background;
   } else {
-    root.style.setProperty('--sb-background', DEFAULT_BACKGROUND);
-    document.body.style.backgroundColor = DEFAULT_BACKGROUND;
-    document.documentElement.style.backgroundColor = DEFAULT_BACKGROUND;
+    root.style.setProperty('--sb-background', fallbackBackground);
+    document.body.style.backgroundColor = fallbackBackground;
+    document.documentElement.style.backgroundColor = fallbackBackground;
   }
 
   root.style.setProperty('--sb-text', textColor);

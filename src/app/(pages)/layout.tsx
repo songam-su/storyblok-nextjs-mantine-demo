@@ -3,6 +3,7 @@ import Header from '@/components/chrome/Header/Header';
 import { METADATA_BASE } from '@/lib/site/siteUrl';
 import { fetchStory } from '@/lib/storyblok/api/client';
 import type { SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContext';
+import { ColorSchemeScript } from '@mantine/core';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
@@ -29,7 +30,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const siteConfig = siteConfigStory?.content as SiteConfigContent | undefined;
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <ColorSchemeScript defaultColorScheme="light" localStorageKey="site-color-scheme" />
+      </head>
       <body className="app-body">
         <PublishedProviders siteConfig={siteConfig}>
           <div className="page-shell">

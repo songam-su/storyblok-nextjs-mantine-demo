@@ -87,11 +87,6 @@
 
   a {
     margin: 0 auto;
-
-    &:hover {
-      font-weight: 700;
-      color: var(--sb-accent, #1d63c5);
-    }
   }
 }
 
@@ -108,18 +103,17 @@
   display: grid;
   gap: 0.35rem;
 
-  :global(.navItem) {
+  :is(a, span) {
     font-weight: 600;
     color: color-mix(in srgb, var(--sb-text, #111) 86%, transparent);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--mantine-radius-sm);
   }
 
-  :global(.navItem:hover) {
-    color: var(--sb-text, #111);
-    text-decoration: underline;
-  }
-
-  :global(.navItem:hover) {
-    text-decoration: none;
+  /* Keep hover color stable (light + dark) while allowing other hover effects (e.g., weight) */
+  :is(a, span):hover {
+    color: color-mix(in srgb, var(--sb-text, #111) 86%, transparent);
+    font-weight: 700;
   }
 }
 

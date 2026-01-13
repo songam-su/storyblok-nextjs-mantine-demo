@@ -28,8 +28,8 @@ body {
     These are the canonical design tokens for the site.
   */
   --sb-accent: #0899a0;
-  /* Use shade 5 for section headers (requested). */
-  --sb-accent-heading: #31bdcb;
+  /* Section heading color (light-mode default keeps the existing look). */
+  --sb-section-heading-color: var(--sb-accent-hover, #31bdcb);
   --sb-accent-weak: rgba(8, 153, 160, 0.12);
   --sb-accent-hover: #31bdcb;
   --sb-accent-secondary: #fd5a78;
@@ -100,7 +100,20 @@ body {
 */
 :root[data-mantine-color-scheme='dark'] {
   --sb-color-scheme: dark;
+  --sb-background: #3b3b3b;
+  --sb-text: #f5f5f5;
+  --sb-text-muted: rgba(245, 245, 245, 0.72);
   --sb-on-accent: #fff;
+
+  --sb-surface: #444041;
+  --sb-surface-strong: #5a5152;
+  --sb-surface-accent: var(--sb-surface-strong, #5a5152);
+  --sb-surface-accent-secondary: rgba(253, 90, 120, 0.28);
+  --sb-surface-subtle: rgba(255, 255, 255, 0.06);
+  --sb-border: rgba(255, 255, 255, 0.14);
+
+  --sb-overlay-bg: rgba(0, 0, 0, 0.65);
+  --sb-overlay-border: rgba(255, 255, 255, 0.18);
 }
 
 @supports (color: color-mix(in srgb, #000 10%, #fff)) {
@@ -183,7 +196,7 @@ body {
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--sb-section-heading-color, var(--sb-accent-heading, #31bdcb));
+  color: var(--sb-section-heading-color, var(--sb-accent-hover, #31bdcb));
 }
 
 /* Mantine sometimes wraps Title content in an inner Text/span; enforce the same treatment there too. */

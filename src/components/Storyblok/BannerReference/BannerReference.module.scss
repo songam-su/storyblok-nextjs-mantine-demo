@@ -37,12 +37,13 @@
   /* Keep the Button component's internal hover logic aligned */
   --sb-color-bg: var(--sb-surface-inverse, #111);
   --sb-color-text: var(--sb-on-inverse, #fff);
-  --sb-color-bg-hover: var(--sb-surface, #fff);
+  /* Always flip to white on hover (same in light + dark). */
+  --sb-color-bg-hover: #fff;
 }
 
 .wrapper :global(.mantine-Button-root[data-sb-bg-color][data-sb-text-color]:hover) {
-  background-color: var(--sb-surface, #fff);
-  color: var(--sb-text, #111);
+  background-color: #fff;
+  color: #111;
 }
 
 .item {

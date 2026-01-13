@@ -55,14 +55,21 @@
   border-color: transparent;
 }
 
+:global(:root[data-mantine-color-scheme='dark']) {
+  .tabsTab:not([data-active='true']) {
+    background: transparent;
+  }
+
+  .tabsTab:not([data-active='true']):hover {
+    /* Hover: next darker iteration of Neon Ice Dark (darker than --sb-accent). */
+    background: color-mix(in srgb, #077882 70%, var(--sb-surface, #444041));
+    border-color: color-mix(in srgb, #077882 70%, transparent);
+  }
+}
+
 .tabsTab[data-active='true'] {
   background: var(--sb-accent, #1d63c5);
   color: var(--sb-on-accent, #fff);
-  border-color: var(--sb-accent, #1d63c5);
-}
-
-.tabsTab[data-active='true']:hover {
-  background: var(--sb-accent, #1d63c5);
   border-color: var(--sb-accent, #1d63c5);
 }
 

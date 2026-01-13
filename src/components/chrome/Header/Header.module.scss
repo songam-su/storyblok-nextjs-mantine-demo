@@ -46,12 +46,115 @@
   align-items: center;
   gap: 1.65rem;
   flex-wrap: wrap;
+
+  /* Increase click target without changing perceived layout spacing. */
+  :is(a, span) {
+    padding: 0.5rem 0.75rem;
+    margin: -0.5rem -0.75rem;
+    border-radius: var(--mantine-radius-sm);
+  }
 }
 
 .actions {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.themeToggle {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  background: var(--sb-surface, #ffffff);
+  color: var(--sb-text, #111);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.themeToggle:hover {
+  background: var(--sb-surface-strong, #ffffff);
+}
+
+.themeToggle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--sb-accent, #0899a0) 60%, transparent);
+  outline-offset: 2px;
+}
+
+.themeIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.themeIconStack {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+}
+
+.themeIconStack > :global(svg) {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity 520ms ease-in-out,
+    transform 520ms ease-in-out;
+  transform: scale(1);
+}
+
+.themeIconAuto {
+  opacity: 0.5;
+}
+
+.themeIconFinal {
+  opacity: 0;
+  transform: scale(1);
+}
+
+.themeIconSun,
+.themeIconMoon {
+  opacity: 0;
+}
+
+/* Auto glyph only shows before we know the stored scheme. */
+.themeIconStack[data-ready='true'] {
+  .themeIconAuto {
+    opacity: 0;
+  }
+}
+
+/* No-overlap switching: hide BOTH final icons during transition (fade-out to blank). */
+.themeIconStack[data-switching='true'] {
+  .themeIconSun,
+  .themeIconMoon {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* After init and not switching, show only the active scheme's icon (fade-in from blank). */
+.themeIconStack[data-ready='true'][data-switching='false'][data-scheme='dark'] {
+  .themeIconSun {
+    opacity: 0.75;
+  }
+}
+
+.themeIconStack[data-ready='true'][data-switching='false'][data-scheme='light'] {
+  .themeIconMoon {
+    opacity: 0.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .themeIconStack > :global(svg) {
+    transition: none;
+  }
 }
 
 .mobileMenuControl {
@@ -102,16 +205,51 @@
   color: var(--sb-text, #111);
 }
 
+.drawerUtilities {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  margin-bottom: 1rem;
+}
+
+.drawerThemeToggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  background: var(--sb-surface, #ffffff);
+  color: var(--sb-text, #111);
+  cursor: pointer;
+}
+
+.drawerThemeToggle:hover {
+  background: var(--sb-surface-strong, #ffffff);
+}
+
+.drawerThemeToggle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--sb-accent, #0899a0) 60%, transparent);
+  outline-offset: 2px;
+}
+
+.drawerThemeToggleLabel {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
 .mobileNavList {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
 
-  :global(.navItem) {
+  :is(a, span) {
     display: block;
     width: 100%;
     font-size: 1.05rem;
     color: var(--sb-text, #111);
+    padding: 0.6rem 0.65rem;
+    border-radius: var(--mantine-radius-sm);
   }
 }
 
