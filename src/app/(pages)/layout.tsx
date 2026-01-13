@@ -11,6 +11,9 @@ import PublishedProviders from './providers';
 
 export const metadata: Metadata = {
   metadataBase: METADATA_BASE,
+  icons: {
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }, { url: '/favicon.ico' }],
+  },
   robots: {
     index: false,
     follow: false,

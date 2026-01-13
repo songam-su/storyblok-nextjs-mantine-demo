@@ -1,14 +1,17 @@
-import PreviewProviders from './providers';
-import Header from '@/components/chrome/Header/Header';
 import Footer from '@/components/chrome/Footer/Footer';
+import Header from '@/components/chrome/Header/Header';
+import { METADATA_BASE } from '@/lib/site/siteUrl';
 import { fetchStory } from '@/lib/storyblok/api/client';
 import type { SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContext';
-import { METADATA_BASE } from '@/lib/site/siteUrl';
 import type { Metadata } from 'next';
 import ScrollToTop from '../../ScrollToTop';
+import PreviewProviders from './providers';
 
 export const metadata: Metadata = {
   metadataBase: METADATA_BASE,
+  icons: {
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }, { url: '/favicon.ico' }],
+  },
   robots: {
     index: false,
     follow: false,
