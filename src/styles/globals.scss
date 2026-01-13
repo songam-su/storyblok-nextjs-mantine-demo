@@ -17,8 +17,35 @@ body {
 }
 
 :root {
-  color-scheme: light;
+  --sb-color-scheme: light;
+  color-scheme: var(--sb-color-scheme, light);
   background-color: var(--sb-background, #f8f9fb);
+
+  /*
+    Brand palette tokens
+    - Primary accent: NeonIceDark (used for headings/interactive accents)
+    - Secondary accent: Bubblegum (used for selected CTAs and category pills)
+    These are the canonical design tokens for the site.
+  */
+  --sb-accent: #0899a0;
+  /* Use shade 5 for section headers (requested). */
+  --sb-accent-heading: #31bdcb;
+  --sb-accent-weak: rgba(8, 153, 160, 0.12);
+  --sb-accent-hover: #31bdcb;
+  --sb-accent-secondary: #fd5a78;
+  --sb-accent-secondary-strong: #f4416a;
+
+  --sb-text: #212121;
+  --sb-text-muted: #4b5563;
+  --sb-on-accent: #fff;
+
+  /* Additional semantic/brand tokens used by Storyblok color classes */
+  --sb-warning: #ffa904;
+  --sb-warning-hover: #ffb629;
+  --sb-on-warning: #111;
+  --sb-accent-tertiary: #dc576f;
+  --sb-accent-tertiary-hover: #e36f83;
+  --sb-on-tertiary: #fff;
   --page-shell-max-width: 1400px;
   --page-shell-inline-padding-xs: var(--mantine-spacing-md);
   --page-shell-inline-padding-sm: 20px;
@@ -38,9 +65,58 @@ body {
   --sb-grid-gap-lg: clamp(1rem, 3vw, 2rem); /* 16px → 32px */
   --sb-grid-gap-ui: clamp(0.5rem, 2vw, 1rem); /* 8px → 16px */
 
-  --sb-surface: color-mix(in srgb, var(--sb-background, #f8f9fb) 92%, #ffffff);
-  --sb-surface-strong: color-mix(in srgb, var(--sb-background, #f0f2f5) 80%, #ffffff);
-  --sb-border: color-mix(in srgb, var(--sb-text, #0d0d0d) 12%, transparent);
+  /* Baseline fallbacks for older browsers; upgraded below with @supports(color-mix). */
+  --sb-surface: #ffffff;
+  --sb-surface-strong: #ffffff;
+  --sb-surface-accent: var(--sb-surface-strong, #ffffff);
+  /* Bubblegum banner tint (more visible than a 12% mix). */
+  --sb-surface-accent-secondary: #ffcbd3;
+  --sb-surface-subtle: rgba(255, 255, 255, 0.02);
+  --sb-border: rgba(0, 0, 0, 0.12);
+
+  /* Semantic colors */
+  --sb-danger: #e03131;
+
+  /* Overlays / badges */
+  --sb-overlay-bg: rgba(0, 0, 0, 0.6);
+  --sb-overlay-border: rgba(255, 255, 255, 0.2);
+  --sb-on-overlay: #fff;
+
+  /* Image overlays (hero/banner style) */
+  --sb-image-overlay-1: rgba(0, 0, 0, 0.48);
+  --sb-image-overlay-2: rgba(0, 0, 0, 0.28);
+  --sb-image-overlay-3: rgba(0, 0, 0, 0.2);
+
+  /* Inverse surfaces (intentional dark UI elements) */
+  --sb-surface-inverse: #111;
+  --sb-surface-inverse-hover: #1a1a1a;
+  --sb-on-inverse: #fff;
+}
+
+/*
+  Dark-mode hook (future-proofing)
+  - Works with Mantine's `data-mantine-color-scheme` attribute.
+  - Also supports manual overrides via `--sb-color-scheme` from site config.
+*/
+:root[data-mantine-color-scheme='dark'] {
+  --sb-color-scheme: dark;
+  --sb-on-accent: #fff;
+}
+
+@supports (color: color-mix(in srgb, #000 10%, #fff)) {
+  :root {
+    --sb-surface: color-mix(in srgb, var(--sb-background, #f8f9fb) 92%, #ffffff);
+    --sb-surface-strong: color-mix(in srgb, var(--sb-background, #f0f2f5) 80%, #ffffff);
+    --sb-surface-accent: color-mix(in srgb, var(--sb-accent, #1d63c5) 8%, var(--sb-surface, #ffffff));
+    --sb-surface-accent-secondary: color-mix(
+      in srgb,
+      var(--sb-accent-secondary, #fd5a78) 28%,
+      var(--sb-surface, #ffffff)
+    );
+    --sb-surface-subtle: color-mix(in srgb, var(--sb-surface, #ffffff) 10%, transparent);
+    --sb-border: color-mix(in srgb, var(--sb-text, #0d0d0d) 12%, transparent);
+    --sb-text-muted: color-mix(in srgb, var(--sb-text, #111) 62%, transparent);
+  }
 }
 
 html {
@@ -101,24 +177,24 @@ body {
 }
 
 .mantine-Title-root[data-order='2'] {
-  --title-fz: 32px !important;
-  --title-lh: 1.12 !important;
-  --title-fw: 700 !important;
-  font-size: 32px !important;
-  font-weight: 700 !important;
+  --title-fz: 32px;
+  --title-lh: 1.12;
+  --title-fw: 700;
+  font-size: 32px;
+  font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--mantine-color-neonIceDark-5, var(--mantine-color-primary-6, #1d63c5)) !important;
+  color: var(--sb-section-heading-color, var(--sb-accent-heading, #31bdcb));
 }
 
 /* Mantine sometimes wraps Title content in an inner Text/span; enforce the same treatment there too. */
 .mantine-Title-root[data-order='2'] :is(span, .mantine-Text-root) {
-  font-size: 32px !important;
-  font-weight: 700 !important;
-  color: var(--mantine-color-neonIceDark-5, var(--mantine-color-primary-6, #1d63c5)) !important;
+  font-size: 32px;
+  font-weight: 700;
+  color: inherit;
 }
 
 .sb-richtext {
-  color: var(--mantine-color-dimmed);
+  color: var(--sb-text-muted, #4b5563);
 
   --sb-richtext-block-gap-default: 0.75em;
   --_sb-richtext-block-gap: var(--sb-richtext-block-gap, var(--sb-richtext-block-gap-default));

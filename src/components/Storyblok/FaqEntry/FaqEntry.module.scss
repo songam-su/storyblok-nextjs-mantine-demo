@@ -2,7 +2,7 @@
   padding: var(--mantine-spacing-lg);
   border-radius: var(--mantine-radius-lg);
   border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
-  background-color: var(--sb-surface, rgba(255, 255, 255, 0.02));
+  background-color: var(--sb-surface, var(--sb-surface-subtle, rgba(255, 255, 255, 0.02)));
   color: inherit;
 }
 
@@ -18,11 +18,11 @@
   line-height: 1.6;
 
   :global(.sb-richtext) {
-    color: inherit !important;
+    color: inherit;
   }
 
   :global(.sb-richtext) :is(p, span, li, a, strong, em) {
-    color: inherit !important;
+    color: inherit;
   }
 
   :global(p + p) {

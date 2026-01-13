@@ -1,6 +1,6 @@
 .section {
   border-radius: var(--mantine-radius-sm);
-  background-color: var(--sb-surface, rgba(255, 255, 255, 0.02));
+  background-color: var(--sb-surface, var(--sb-surface-subtle, rgba(255, 255, 255, 0.02)));
   padding: var(--page-shell-section-padding);
   margin-bottom: var(--page-shell-section-padding);
   color: inherit;
@@ -15,7 +15,7 @@
 }
 
 .lead {
-  color: var(--mantine-color-graphite-8);
+  color: var(--sb-text-muted, #4b5563);
 }
 
 .accordion {
@@ -25,7 +25,7 @@
 .accordionItem {
   border-radius: var(--mantine-radius-sm);
   border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
-  background: var(--sb-surface, rgba(255, 255, 255, 0.02));
+  background: var(--sb-surface, var(--sb-surface-subtle, rgba(255, 255, 255, 0.02)));
   overflow: hidden;
 }
 
@@ -47,14 +47,14 @@
 
 /* When an entry is open, give the question a subtle accent tint. */
 .accordionItem[data-active='true'] .accordionLabel {
-  color: color-mix(in srgb, var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 22%, currentColor);
+  color: color-mix(in srgb, var(--sb-accent, #1d63c5) 22%, currentColor);
 }
 
 /* When an entry is open, keep a subtle tint on the header even when not hovered. */
 .accordionItem[data-active='true'] .accordionControl {
   background: color-mix(
     in srgb,
-    var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 8%,
+    var(--sb-accent, #1d63c5) 8%,
     var(--sb-surface, #fff)
   );
 }
@@ -63,7 +63,7 @@
 .accordionControl:hover {
   background: color-mix(
     in srgb,
-    var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 16%,
+    var(--sb-accent, #1d63c5) 16%,
     var(--sb-surface, #fff)
   );
 }
@@ -73,6 +73,6 @@
 }
 
 .accordionContent {
-  padding-top: var(--mantine-spacing-sm) !important;
-  padding-bottom: var(--mantine-spacing-sm) !important;
+  padding-top: var(--mantine-spacing-sm);
+  padding-bottom: var(--mantine-spacing-sm);
 }

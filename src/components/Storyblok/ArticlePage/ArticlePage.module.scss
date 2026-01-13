@@ -13,11 +13,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  > div > span {
-    font-size: 18px !important;
-    letter-spacing: 0.5px !important;
-    color: var(--mantine-color-secondary-6) !important;
-  }
+}
+
+.categories :global(.mantine-Badge-label) {
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: var(--sb-accent, #1d63c5);
 }
 
 .media {
@@ -25,7 +26,7 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  background: var(--mantine-color-whiteSmoke-6);
+  background: var(--sb-surface, #ffffff);
   width: 50%;
   margin: 1rem auto 2rem;
 }

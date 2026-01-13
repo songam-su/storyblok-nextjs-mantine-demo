@@ -4,13 +4,14 @@
   gap: 12px;
   padding: 20px;
   border-radius: 16px;
-  background: var(--mantine-color-whiteSmoke-0);
-  border: 1px solid var(--mantine-color-whiteSmoke-8);
+  background: var(--sb-surface, #ffffff);
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
 }
 
 .popular {
-  border: 1px solid rgba(var(--mantine-color-primary-6-rgb, 28, 126, 214), 0.33);
+  border: 1px solid rgba(29, 99, 197, 0.33);
+  border: 1px solid color-mix(in srgb, var(--sb-accent, #1d63c5) 33%, transparent);
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.07);
 }
 
@@ -35,7 +36,7 @@
 .perMonth {
   font-weight: 600;
   font-size: 1.8rem;
-  color: var(--mantine-color-carbonBlack-8);
+  color: var(--sb-text, #111);
 }
 
 .body {
@@ -46,7 +47,7 @@
     margin: 0.5rem 0;
   }
 
-  --pricecard-feature-accent: var(--mantine-color-neonIceDark-6, #1d63c5);
+  --pricecard-feature-accent: var(--sb-accent, #1d63c5);
 
   :global(ul) {
     list-style: none;
@@ -79,6 +80,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 .bottomRichText > div {

@@ -58,7 +58,7 @@
   font-weight: 650;
   letter-spacing: 0.01em;
   opacity: 0.98;
-  color: var(--sb-accent, var(--mantine-color-primary-6, #1d63c5));
+  color: var(--sb-accent, #1d63c5);
   font-size: clamp(0.98rem, 1.4vw, 1.1rem);
   line-height: 1.2;
 }
@@ -72,29 +72,29 @@
     -apple-system,
     sans-serif;
   letter-spacing: -0.01em;
-  font-weight: 800 !important;
+  font-weight: 800;
   line-height: 1.05;
   font-size: clamp(2.1rem, 5vw, 3.4rem);
 
   // Mantine Title derives sizing from CSS variables that may be set inline.
   // Set them here so all HeroSection h1s look consistent.
-  --title-fw: 800 !important;
-  --title-lh: 1.05 !important;
-  --title-fz: clamp(2.1rem, 5vw, 3.4rem) !important;
+  --title-fw: 800;
+  --title-lh: 1.05;
+  --title-fz: clamp(2.1rem, 5vw, 3.4rem);
 }
 
 // Mantine wraps Title content in inner Text spans; ensure they inherit the headline treatment.
 .headline :global(.mantine-Text-root),
 .headline :global(.mantine-Text-root) span,
 .headline span {
-  font-size: clamp(2.1rem, 5vw, 3.4rem) !important;
-  font-weight: 800 !important;
-  line-height: 1.05 !important;
-  letter-spacing: -0.01em !important;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
 }
 
 .lead {
-  color: var(--mantine-color-graphite-8);
+  color: var(--sb-text-muted, #4b5563);
   margin: 0;
   max-width: 60ch;
   font-size: clamp(1.05rem, 1.35vw, 1.22rem);
@@ -125,9 +125,9 @@
 // In the provided home-page example, the secondary CTA is configured as bg='white' + text='primary-dark'.
 // Force that combination to render as a bubblegum CTA in the Hero only.
 .actions :global([data-sb-bg-color='white'][data-sb-text-color='primary-dark']) {
-  --sb-color-bg: var(--mantine-color-secondary-6) !important;
-  --sb-color-bg-hover: var(--mantine-color-secondary-5) !important;
-  --sb-color-text: var(--mantine-color-white) !important;
+  --sb-color-bg: var(--sb-accent-secondary-strong, #f4416a);
+  --sb-color-bg-hover: var(--sb-accent-secondary, #fd5a78);
+  --sb-color-text: var(--sb-on-accent, #fff);
 }
 
 .hasBackgroundImage {
@@ -147,8 +147,8 @@
 
 .contentBox {
   width: min(540px, 100%);
-  margin-right: auto !important;
-  margin-left: 0 !important;
+  margin-right: auto;
+  margin-left: 0;
   padding: clamp(18px, 3vw, 28px);
   border-radius: 14px;
   border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
@@ -164,8 +164,8 @@
 }
 
 .contentBoxStacked {
-  margin-left: auto !important;
-  margin-right: auto !important;
+  margin-left: auto;
+  margin-right: auto;
   border: 0;
   box-shadow: none;
   background: transparent;

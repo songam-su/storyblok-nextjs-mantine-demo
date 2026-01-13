@@ -1,6 +1,9 @@
 .section {
   width: 100%;
-  background-color: var(--sb-newsletter-bg, var(--mantine-color-tomatoJam-1, #ffc7c7));
+  background-color: var(
+    --sb-newsletter-bg,
+    var(--sb-surface-accent-secondary, #ffcbd3)
+  );
   padding: var(--page-shell-section-padding);
 }
 
@@ -15,7 +18,7 @@
   justify-content: space-between;
   gap: 18px;
   border-radius: 0;
-  color: var(--sb-text, var(--mantine-color-carbonBlack-8, #111));
+  color: var(--sb-text, #111);
   background: transparent;
   box-shadow: none;
 }
@@ -33,7 +36,7 @@
   :global(.mantine-Title-root) {
     letter-spacing: -0.01em;
     line-height: 1.12;
-    color: var(--sb-text, var(--mantine-color-carbonBlack-8, #111));
+    color: var(--sb-text, #111);
   }
 }
 
@@ -125,7 +128,7 @@
 }
 
 .emailInput::placeholder {
-  color: var(--mantine-color-graphite-5);
+  color: var(--sb-text-muted, #4b5563);
   color: color-mix(in srgb, currentColor 55%, transparent);
   font-weight: 400;
   font-size: inherit;
@@ -155,23 +158,30 @@
   font-weight: 750;
   letter-spacing: 0.01em;
 
-  background-color: var(--sb-color-bg, var(--sb-accent, var(--mantine-color-primary-6, #1d63c5))) !important;
-  color: var(--mantine-color-whiteSmoke-0, #fff) !important;
-  border: 1px solid transparent !important;
+  background-color: var(--sb-color-bg, var(--sb-accent-secondary-strong, #f4416a));
+  color: var(--sb-on-accent, #fff);
+  border: 1px solid transparent;
 
   transition: background-color 180ms ease;
 
   :global(span) {
     color: inherit;
   }
+
+  :global(.mantine-Button-label) {
+    color: inherit;
+  }
 }
 
 .submitButton:hover {
-  background-color: var(--sb-color-bg-hover, var(--sb-color-bg, var(--sb-accent, #1d63c5))) !important;
+  background-color: var(
+    --sb-color-bg-hover,
+    var(--sb-color-bg, var(--sb-accent-secondary, var(--sb-accent-secondary-strong, #f4416a)))
+  );
 }
 
 .submitButton:focus,
 .submitButton:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 24%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent-secondary, #fd5a78) 24%, transparent);
 }

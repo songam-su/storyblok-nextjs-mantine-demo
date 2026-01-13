@@ -3,10 +3,10 @@
   height: 100%;
   overflow: hidden;
   padding: 0;
-  border: 0 !important;
+  border: 0;
   border-radius: 16px;
-  background-color: #ffffff !important;
-  color: var(--mantine-color-carbonBlack-8, #111) !important;
+  background-color: var(--sb-surface, #ffffff);
+  color: var(--sb-text, #111);
   box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.1);
 }
 
@@ -35,14 +35,14 @@
 
 .contentPane {
   padding: clamp(2.5rem, 4.8vw, 4rem);
-  background: var(--mantine-color-whiteSmoke-0, #fafafa);
+  background: var(--sb-surface, #ffffff);
 }
 
 .mediaPane {
   position: relative;
   min-height: 220px;
   height: 100%;
-  background: var(--mantine-color-whiteSmoke-2, #f2f2f2);
+  background: var(--sb-surface-strong, var(--sb-surface, #ffffff));
   overflow: hidden;
 }
 

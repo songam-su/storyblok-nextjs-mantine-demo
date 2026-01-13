@@ -5,7 +5,6 @@ import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorConte
 import type { NewsletterFormSection as NewsletterFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import {
   getStoryblokColorClass,
-  getStoryblokTextColorClass,
 } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { CloseButton, Button as MantineButton, Text, TextInput } from '@mantine/core';
@@ -25,7 +24,6 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
   const submitLabel =
     typeof primaryButton?.label === 'string' && primaryButton.label.trim() ? primaryButton.label : 'Subscribe';
   const submitBgKey = typeof primaryButton?.background_color === 'string' ? primaryButton.background_color : undefined;
-  const submitTextKey = typeof primaryButton?.text_color === 'string' ? primaryButton.text_color : undefined;
 
   const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -92,8 +90,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
               type="submit"
               className={classNames(
                 styles.submitButton,
-                submitBgKey ? getStoryblokColorClass(submitBgKey) : undefined,
-                submitTextKey ? getStoryblokTextColorClass(submitTextKey) : undefined
+                submitBgKey ? getStoryblokColorClass(submitBgKey) : undefined
               )}
             >
               {submitLabel}

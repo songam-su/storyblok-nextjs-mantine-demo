@@ -3,8 +3,8 @@
   --sb-button-ghost-hover-border: var(--sb-button-ghost-hover-bg);
 
   &:hover {
-    background-color: var(--sb-button-ghost-hover-bg) !important;
-    color: var(--sb-button-ghost-hover-text, var(--sb-color-text, var(--sb-color-default-text))) !important;
-    border-color: var(--sb-button-ghost-hover-border) !important;
+    background-color: var(--sb-button-ghost-hover-bg);
+    color: var(--sb-button-ghost-hover-text, var(--sb-color-text, var(--sb-color-default-text)));
+    border-color: var(--sb-button-ghost-hover-border);
   }
 }

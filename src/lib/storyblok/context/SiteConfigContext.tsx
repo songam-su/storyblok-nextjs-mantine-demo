@@ -190,6 +190,7 @@ export const resetCssVariables = () => {
   const root = document.documentElement;
   root.style.setProperty('--sb-background', DEFAULT_BACKGROUND);
   root.style.setProperty('--sb-text', DEFAULT_TEXT_ON_BACKGROUND);
+  root.style.setProperty('--sb-color-scheme', 'light');
   root.style.removeProperty('--sb-accent');
   root.style.removeProperty('--sb-headline-color');
   root.style.removeProperty('--sb-radius');
@@ -205,6 +206,7 @@ export const applyCssVariables = (config?: NormalizedSiteConfig) => {
   const radius = config?.disableRoundedCorners ? '0px' : undefined;
 
   const textColor = getReadableTextColor(background) ?? DEFAULT_TEXT_ON_BACKGROUND;
+  const colorScheme = textColor === '#ffffff' ? 'dark' : 'light';
 
   if (background) {
     root.style.setProperty('--sb-background', background);
@@ -217,6 +219,7 @@ export const applyCssVariables = (config?: NormalizedSiteConfig) => {
   }
 
   root.style.setProperty('--sb-text', textColor);
+  root.style.setProperty('--sb-color-scheme', colorScheme);
 
   if (accent) {
     root.style.setProperty('--sb-accent', accent);

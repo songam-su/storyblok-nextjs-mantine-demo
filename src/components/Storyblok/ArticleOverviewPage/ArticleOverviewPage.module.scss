@@ -43,7 +43,7 @@
 
 .searchInput {
   height: calc(2.75rem * var(--mantine-scale));
-  background: #ffffff;
+  background: var(--sb-surface, #ffffff);
   border: 1px solid var(--sb-border, #d7dbe0);
   color: var(--sb-text, #111);
   box-shadow: none;
@@ -53,7 +53,7 @@
     background-color 180ms ease;
 
   /* Pair with the category selector/button geometry. */
-  border-radius: var(--mantine-radius-sm) !important;
+  border-radius: var(--mantine-radius-sm);
   font-size: var(--mantine-font-size-md);
   font-weight: 500;
   padding-block: var(--sb-filter-control-padding-y);
@@ -67,13 +67,13 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: var(--mantine-color-graphite-7);
+  color: var(--sb-text-muted, #4b5563);
 }
 
 .searchInput::placeholder {
-  color: var(--mantine-color-graphite-5);
+  color: var(--sb-text-muted, #4b5563);
   color: color-mix(in srgb, currentColor 55%, transparent);
-  font-weight: 400 !important;
+  font-weight: 400;
   font-size: inherit;
 }
 
@@ -91,8 +91,8 @@
 
 .categories {
   /* Mantine SegmentedControl root background (defaults to a gray). */
-  --sc-background: #ffffff;
-  --sb-category-active-bg: var(--mantine-color-neonIceDark-6);
+  --sc-background: var(--sb-surface, #ffffff);
+  --sb-category-active-bg: var(--sb-accent, #1d63c5);
   --sc-color: var(--sb-category-active-bg);
   /* Match project button geometry/typography. */
   --sc-radius: var(--mantine-radius-sm);
@@ -110,14 +110,14 @@
     font-weight: 600;
     font-size: var(--mantine-font-size-md);
     border-radius: var(--mantine-radius-sm);
-    color: var(--mantine-color-graphite-9);
+    color: var(--sb-text, #111);
     transition:
       color 90ms ease,
       background-color 90ms ease;
   }
 
   :global(.mantine-SegmentedControl-label):where([data-active]) {
-    color: var(--mantine-color-white);
+    color: var(--sb-on-accent, #fff);
   }
 
   :global(.mantine-SegmentedControl-control) {
@@ -132,8 +132,8 @@
 
   /* Match Select dropdown hover color for non-active pills. */
   :global(.mantine-SegmentedControl-label):where(:not([data-disabled], [data-active], [data-read-only])):hover {
-    background-color: var(--mantine-color-neonIceDark-6);
-    color: var(--mantine-color-black);
+    background-color: var(--sb-category-active-bg, var(--sb-accent, #1d63c5));
+    color: var(--sb-text, #111);
   }
 }
 
@@ -142,7 +142,7 @@
     :global(.mantine-SegmentedControl-label):where(:not([data-disabled], [data-active], [data-read-only])):hover {
     background-color: color-mix(
       in srgb,
-      var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 16%,
+      var(--sb-accent, #1d63c5) 16%,
       var(--sb-surface, #fff)
     );
   }
@@ -154,9 +154,9 @@
 }
 
 .categoriesSelectInput {
-  background: #ffffff;
-  border-color: var(--mantine-color-graphite-3);
-  color: var(--mantine-color-graphite-9);
+  background: var(--sb-surface, #ffffff);
+  border-color: var(--sb-border, rgba(0, 0, 0, 0.12));
+  color: var(--sb-text, #111);
 
   /* Match the SegmentedControl pills / project buttons. */
   border-radius: var(--mantine-radius-sm);
@@ -167,23 +167,31 @@
 }
 
 .categoriesSelectInput::placeholder {
-  color: var(--mantine-color-graphite-2);
+  color: var(--sb-text-muted, #4b5563);
+  color: color-mix(in srgb, currentColor 55%, transparent);
 }
 
 .categoriesSelectInput:focus {
-  border-color: var(--mantine-color-graphite-4);
-  /* Add perceived thickness without changing layout. */
-  box-shadow: 0 0 0 0.5px var(--mantine-color-graphite-5);
+  border-color: var(--sb-accent, #1d63c5);
+  box-shadow: 0 0 0 3px rgba(29, 99, 197, 0.18);
+}
+
+@supports (color: color-mix(in srgb, #000 50%, #fff)) {
+  .categoriesSelectInput:focus {
+    border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 55%, #000);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
+  }
 }
 
 .categoriesSelectSection {
-  color: var(--mantine-color-graphite-7);
+  color: var(--sb-text-muted, #4b5563);
 }
 
 .categoriesSelectDropdown {
   border: none;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  --sb-category-active-bg: var(--mantine-color-neonIceDark-0);
+  --sb-category-active-bg: var(--sb-surface-accent, rgba(29, 99, 197, 0.12));
+  --sb-category-hover-bg: rgba(29, 99, 197, 0.08);
 
   /* Match pill radius on the container too. */
   border-radius: var(--mantine-radius-sm);
@@ -191,7 +199,8 @@
 
 @supports (color: color-mix(in srgb, #000 50%, #fff)) {
   .categoriesSelectDropdown {
-    --sb-category-active-bg: color-mix(in srgb, var(--mantine-color-neonIceDark-0) 60%, #fff);
+    --sb-category-active-bg: color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, var(--sb-surface, #fff));
+    --sb-category-hover-bg: color-mix(in srgb, var(--sb-accent, #1d63c5) 12%, transparent);
   }
 }
 
@@ -203,7 +212,7 @@
 }
 
 .categoriesSelectOption {
-  color: var(--mantine-color-graphite-9);
+  color: var(--sb-text, #111);
 
   /* Match the SegmentedControl pills / project buttons. */
   border-radius: var(--mantine-radius-sm);
@@ -216,20 +225,20 @@
 
 /* Hovered option */
 .categoriesSelectOption:hover {
-  background-color: var(--mantine-color-neonIceDark-1);
+  background-color: var(--sb-category-hover-bg, rgba(29, 99, 197, 0.08));
 }
 
 @supports (color: color-mix(in srgb, #000 50%, #fff)) {
   .categoriesSelectOption:hover {
-    background-color: color-mix(in srgb, var(--mantine-color-neonIceDark-1) 50%, transparent);
+    background-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 12%, transparent);
   }
 }
 
 /* Selected option */
 .categoriesSelectOption[data-combobox-selected],
 .categoriesSelectOption[data-selected] {
-  background-color: var(--sb-category-active-bg, var(--mantine-color-neonIceDark-0));
-  color: var(--mantine-color-graphite-9);
+  background-color: var(--sb-category-active-bg, rgba(29, 99, 197, 0.12));
+  color: var(--sb-text, #111);
   font-weight: 600;
 }
 

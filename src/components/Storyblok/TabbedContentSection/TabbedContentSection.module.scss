@@ -14,7 +14,7 @@
 }
 
 .lead {
-  color: #4b5563;
+  color: var(--sb-text-muted, #4b5563);
 }
 
 .tabs {
@@ -53,21 +53,21 @@
 .tabsTab:not([data-active='true']):hover {
   background: color-mix(
     in srgb,
-    var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 16%,
+    var(--sb-accent, #1d63c5) 16%,
     var(--sb-surface, #fff)
   );
   border-color: transparent;
 }
 
 .tabsTab[data-active='true'] {
-  background: var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5));
-  color: #fff;
-  border-color: var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5));
+  background: var(--sb-accent, #1d63c5);
+  color: var(--sb-on-accent, #fff);
+  border-color: var(--sb-accent, #1d63c5);
 }
 
 .tabsTab[data-active='true']:hover {
-  background: var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5));
-  border-color: var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5));
+  background: var(--sb-accent, #1d63c5);
+  border-color: var(--sb-accent, #1d63c5);
 }
 
 .panels {
@@ -77,7 +77,7 @@
 
 .panel {
   grid-area: 1 / 1;
-  display: block !important;
+  display: block;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;

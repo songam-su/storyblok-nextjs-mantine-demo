@@ -72,6 +72,15 @@ const ImageCard = ({ blok }: SbComponentProps<ImageCardBlok>) => {
   const imageData = getSbImageData(blok.image || null);
   const hasImage = Boolean(imageData?.src);
 
+  const imageStyle: React.CSSProperties = {
+    maxWidth: '100%',
+    maxHeight: '100%',
+    width: 'auto',
+    height: 'auto',
+    objectFit: 'contain',
+    objectPosition: imageData?.objectPosition || 'center',
+  };
+
   if (!hasImage && !blok.label && !blok.text) {
     return <div {...editable} className={styles.card} />;
   }
@@ -85,9 +94,10 @@ const ImageCard = ({ blok }: SbComponentProps<ImageCardBlok>) => {
               className={styles.img}
               src={imageData!.src}
               alt={imageData!.alt || ''}
-              fill
+              width={imageData?.width || 451}
+              height={imageData?.height || 360}
               sizes="(min-width: 768px) 320px, 100vw"
-              style={imageData?.objectPosition ? { objectPosition: imageData.objectPosition } : undefined}
+              style={imageStyle}
             />
           </div>
         </div>

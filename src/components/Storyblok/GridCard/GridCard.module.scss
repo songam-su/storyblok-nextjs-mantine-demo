@@ -4,9 +4,9 @@
   gap: 12px;
   padding: 18px;
   border-radius: 12px;
-  background-color: #ffffff !important;
-  color: var(--mantine-color-carbonBlack-8, #111) !important;
-  border: 1px solid var(--mantine-color-whiteSmoke-5, #e1e1e1);
+  background-color: var(--sb-surface, #ffffff);
+  color: var(--sb-text, #111);
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   transition:
     transform 150ms ease,
@@ -27,8 +27,8 @@
 /* Ensure overrides apply when Mantine adds inline dark backgrounds on the same element */
 :global(.mantine-Card-root).card,
 :global(.mantine-Paper-root).card {
-  background-color: #ffffff !important;
-  color: var(--mantine-color-carbonBlack-8, #111) !important;
+  background-color: var(--sb-surface, #ffffff);
+  color: var(--sb-text, #111);
 }
 
 .withBorder {
@@ -66,14 +66,14 @@
 // }
 
 .noImage {
-  background-color: #f7f9fc !important;
+  background-color: var(--sb-surface-strong, #f7f9fc);
 }
 
 // .backgroundImage::after {
 //   content: '';
 //   position: absolute;
 //   inset: 0;
-//   background: color-mix(in srgb, var(--mantine-color-whiteSmoke-5) 90%, transparent);
+//   background: color-mix(in srgb, var(--sb-surface, #ffffff) 90%, transparent);
 //   z-index: 0;
 // }
 

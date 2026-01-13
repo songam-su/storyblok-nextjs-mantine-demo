@@ -3,8 +3,8 @@
   gap: clamp(12px, 2vw, 20px);
 
   /* Reference Banner: force the Banner background + text, not the CTA buttons. */
-  --sb-color-bg: var(--mantine-color-neonIceDark-6, #ffc7c7);
-  --sb-color-text: var(--sb-text, var(--mantine-color-carbonBlack-8, #111));
+  --sb-color-bg: var(--sb-accent, #1d63c5);
+  --sb-color-text: var(--sb-text, #111);
 }
 
 /*
@@ -12,8 +12,8 @@
   which overrides inherited vars from `.wrapper`. Apply vars directly to the Banner root.
 */
 .wrapper .item :global(.edge-to-edge) {
-  --sb-color-bg: var(--mantine-color-neonIceDark-6, #ffc7c7);
-  --sb-color-text: var(--sb-text, var(--mantine-color-carbonBlack-8, #111)) !important;
+  --sb-color-bg: var(--sb-accent, #1d63c5);
+  --sb-color-text: var(--sb-text, #111);
 }
 
 /*
@@ -25,9 +25,9 @@
   even if CSS-module class names change.
 */
 .wrapper :global(.mantine-Button-root[data-sb-bg-color][data-sb-text-color]) {
-  background-color: var(--mantine-color-carbonBlack-8, #111) !important;
-  color: var(--mantine-color-whiteSmoke-0, #fff) !important;
-  border-color: transparent !important;
+  background-color: var(--sb-surface-inverse, #111);
+  color: var(--sb-on-inverse, #fff);
+  border-color: transparent;
 
   transition:
     background-color 220ms ease-in-out,
@@ -35,14 +35,14 @@
     border-color 220ms ease-in-out;
 
   /* Keep the Button component's internal hover logic aligned */
-  --sb-color-bg: var(--mantine-color-carbonBlack-8, #111);
-  --sb-color-text: var(--mantine-color-whiteSmoke-0, #fff);
-  --sb-color-bg-hover: var(--mantine-color-whiteSmoke-0, #fff);
+  --sb-color-bg: var(--sb-surface-inverse, #111);
+  --sb-color-text: var(--sb-on-inverse, #fff);
+  --sb-color-bg-hover: var(--sb-surface, #fff);
 }
 
 .wrapper :global(.mantine-Button-root[data-sb-bg-color][data-sb-text-color]:hover) {
-  background-color: var(--mantine-color-whiteSmoke-0, #fff) !important;
-  color: var(--mantine-color-carbonBlack-8, #111) !important;
+  background-color: var(--sb-surface, #fff);
+  color: var(--sb-text, #111);
 }
 
 .item {

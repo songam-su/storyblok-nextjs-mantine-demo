@@ -13,7 +13,8 @@
   border-radius: 12px;
   display: grid;
   gap: 12px;
-  background: var(--mantine-color-whiteSmoke-0);
+  background: var(--sb-surface, #ffffff);
+  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
 }
 
