@@ -20,7 +20,7 @@
 .mobileImage {
   display: none;
   width: 100%;
-  border-radius: 0;
+  border-radius: 16px;
   overflow: hidden;
   background-image: var(--sb-hero-image, none);
   background-position: var(--sb-hero-position, center);
@@ -193,6 +193,7 @@
   background-position: var(--sb-hero-position, center);
   background-repeat: no-repeat;
   background-size: var(--sb-hero-size, cover);
+  border-radius: 16px;
 }
 
 .backgroundCover {
