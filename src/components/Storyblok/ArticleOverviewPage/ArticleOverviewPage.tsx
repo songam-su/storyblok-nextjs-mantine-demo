@@ -122,6 +122,7 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
             value={query}
             onChange={(event) => setQuery(event.currentTarget.value)}
             className={styles.search}
+            classNames={{ input: styles.searchInput }}
           />
 
           {showCategoryDropdown ? (
