@@ -19,6 +19,23 @@
   max-width: 56rem;
 }
 
+.search {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 47.99em) {
+  .controls {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  /* Match the Select input height when dropdown is shown */
+  .searchInput {
+    padding-block: calc(1rem * var(--mantine-scale) + 0.6875rem);
+  }
+}
+
 .searchInput {
   border-color: var(--mantine-color-graphite-3);
   color: var(--mantine-color-graphite-9);
@@ -32,13 +49,13 @@
   /* Pair with the category selector/button geometry. */
   border-radius: var(--mantine-radius-sm);
   font-size: var(--mantine-font-size-md);
-  font-weight: 600;
-  padding-block: calc(0.625rem * var(--mantine-scale) + 0.6875rem);
+  font-weight: 500;
+  padding-block: calc(1rem * var(--mantine-scale) + 0.6875rem);
   padding-inline: calc(1rem * var(--mantine-scale) + 0.6875rem);
 }
 
 .searchInput::placeholder {
-  color: var(--mantine-color-graphite-2);
+  color: var(--mantine-color-graphite-4);
   font-weight: 400;
 }
 
@@ -105,7 +122,7 @@
 
 .categoriesSelectInput {
   // background-color: var(--mantine-color-neonIceDark-1);
-  border-color: var(--mantine-color-neonIceDark-3);
+  border-color: var(--mantine-color-graphite-3);
   // border: none;
   color: var(--mantine-color-graphite-9);
 
@@ -122,7 +139,9 @@
 }
 
 .categoriesSelectInput:focus {
-  border-color: var(--mantine-color-neonIceDark-4);
+  border-color: var(--mantine-color-graphite-4);
+  /* Add perceived thickness without changing layout. */
+  box-shadow: 0 0 0 0.5px var(--mantine-color-graphite-5);
 }
 
 .categoriesSelectSection {
