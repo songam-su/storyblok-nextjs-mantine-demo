@@ -25,6 +25,7 @@
 
 .card:focus-within {
   transform: scale(1.02);
+  outline: 2px solid rgba(29, 99, 197, 0.4);
   outline: 2px solid color-mix(in srgb, var(--sb-accent, #1d63c5) 40%, transparent);
   outline-offset: 3px;
 }
@@ -65,6 +66,7 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  --article-category-muted: var(--mantine-color-secondary-6);
   --article-category-muted: color-mix(in srgb, var(--mantine-color-secondary-6) 100%, transparent);
 }
 

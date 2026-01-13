@@ -41,7 +41,7 @@
 .searchInput {
   height: calc(2.75rem * var(--mantine-scale));
   background: var(--sb-surface, #ffffff);
-  border: 1px solid var(--sb-border, color-mix(in srgb, var(--sb-text, #111) 12%, transparent));
+  border: 1px solid var(--sb-border, #d7dbe0);
   color: var(--sb-text, #111);
   box-shadow: none;
   transition:
@@ -67,59 +67,40 @@
 }
 
 .searchInput::placeholder {
+  color: var(--mantine-color-graphite-5);
   color: color-mix(in srgb, currentColor 55%, transparent);
   font-weight: 400;
   font-size: inherit;
 }
 
 .searchInput:focus {
-  border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 55%, #000);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
+  border-color: var(--sb-accent, #1d63c5);
+  box-shadow: 0 0 0 3px rgba(29, 99, 197, 0.18);
+}
+
+@supports (color: color-mix(in srgb, #000 50%, #fff)) {
+  .searchInput:focus {
+    border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 55%, #000);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
+  }
 }
 
 .categories {
   /* Mantine SegmentedControl root background (defaults to a gray). */
   --sc-background: var(--mantine-color-neonIceDark-6);
-  /* Slightly lighten the active pill vs NeonIceDark-0 (closer to button feel). */
-  --sb-category-active-bg: var(
-    --mantine-color-neonIceDark-6
-  ); //color-mix(in srgb, var(--mantine-color-neonIceDark-0) 60%, #fff);
+  --sb-category-active-bg: var(--mantine-color-neonIceDark-6);
   --sc-color: var(--sb-category-active-bg);
   /* Match project button geometry/typography. */
   --sc-radius: var(--mantine-radius-sm);
   --sc-font-size: var(--mantine-font-size-md);
   --sc-padding: calc(0.5rem * var(--mantine-scale)) calc(1.375rem * var(--mantine-scale));
-  --sb-category-root-padding: calc(0.5rem * var(--mantine-scale)); /* 8px */
   --sb-category-pill-gap: calc(0.5rem * var(--mantine-scale)); /* 8px */
-
-  /*
-    Optional item dividers (kept here for easy re-enable later):
-
-    When `withItemsBorders` is enabled, Mantine renders dividers via `::before`.
-    If you want those back, uncomment this whole block.
-
-    --separator-color: var(--mantine-color-neonIceDark-3);
-    --sb-category-divider-width: calc(0.0625rem * var(--mantine-scale));
-  */
   /* Minimal container: no extra padding/background; pills fill the width. */
   background-color: transparent;
   border: none;
   padding: 0;
   gap: 0;
-  column-gap: 0;
   column-gap: var(--sb-category-pill-gap);
-  /*
-    Optional divider override (kept for easy re-enable later).
-    
-    :global(.mantine-SegmentedControl-control) {
-      --separator-color: var(--mantine-color-neonIceDark-3);
-    }
-    
-    :global(.mantine-SegmentedControl-control)::before {
-      width: var(--sb-category-divider-width);
-      inset-inline-start: calc(var(--sb-category-pill-gap) / -2);
-    }
-    */
 
   :global(.mantine-SegmentedControl-label) {
     font-weight: 600;
@@ -147,13 +128,19 @@
 
   /* Match Select dropdown hover color for non-active pills. */
   :global(.mantine-SegmentedControl-label):where(:not([data-disabled], [data-active], [data-read-only])):hover {
+    background-color: var(--mantine-color-neonIceDark-6);
+    color: var(--mantine-color-black);
+  }
+}
+
+@supports (color: color-mix(in srgb, #000 50%, #fff)) {
+  .categories
+    :global(.mantine-SegmentedControl-label):where(:not([data-disabled], [data-active], [data-read-only])):hover {
     background-color: color-mix(
       in srgb,
       var(--sb-accent, var(--mantine-color-neonIceDark-6, #1d63c5)) 16%,
       var(--sb-surface, #fff)
     );
-    // color: var(--mantine-color-white);
-    color: var(--mantine-color-black);
   }
 }
 
@@ -163,9 +150,7 @@
 }
 
 .categoriesSelectInput {
-  // background-color: var(--mantine-color-neonIceDark-1);
   border-color: var(--mantine-color-graphite-3);
-  // border: none;
   color: var(--mantine-color-graphite-9);
 
   /* Match the SegmentedControl pills / project buttons. */
@@ -191,13 +176,18 @@
 }
 
 .categoriesSelectDropdown {
-  // background-color: var(--mantine-color-neonIceDark-1);
   border: none;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  --sb-category-active-bg: color-mix(in srgb, var(--mantine-color-neonIceDark-0) 60%, #fff);
+  --sb-category-active-bg: var(--mantine-color-neonIceDark-0);
 
   /* Match pill radius on the container too. */
   border-radius: var(--mantine-radius-sm);
+}
+
+@supports (color: color-mix(in srgb, #000 50%, #fff)) {
+  .categoriesSelectDropdown {
+    --sb-category-active-bg: color-mix(in srgb, var(--mantine-color-neonIceDark-0) 60%, #fff);
+  }
 }
 
 .categoriesSelectOptions {
@@ -219,20 +209,21 @@
   margin-block: calc(0.25rem * var(--mantine-scale));
 }
 
-// /* Active option */
-// .categoriesSelectOption[data-combobox-active] {
-//   background-color: color-mix(in srgb, var(--mantine-color-neonIceDark-0) 50%, transparent);
-// }
-
 /* Hovered option */
 .categoriesSelectOption:hover {
-  background-color: color-mix(in srgb, var(--mantine-color-neonIceDark-1) 50%, transparent);
+  background-color: var(--mantine-color-neonIceDark-1);
+}
+
+@supports (color: color-mix(in srgb, #000 50%, #fff)) {
+  .categoriesSelectOption:hover {
+    background-color: color-mix(in srgb, var(--mantine-color-neonIceDark-1) 50%, transparent);
+  }
 }
 
 /* Selected option */
 .categoriesSelectOption[data-combobox-selected],
 .categoriesSelectOption[data-selected] {
-  background-color: var(--sb-category-active-bg, color-mix(in srgb, var(--mantine-color-neonIceDark-0) 60%, #fff));
+  background-color: var(--sb-category-active-bg, var(--mantine-color-neonIceDark-0));
   color: var(--mantine-color-graphite-9);
   font-weight: 600;
 }

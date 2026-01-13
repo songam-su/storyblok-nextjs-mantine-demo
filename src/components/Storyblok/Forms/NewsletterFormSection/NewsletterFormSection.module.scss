@@ -54,7 +54,8 @@
 }
 
 .helper {
-  color: color-mix(in srgb, currentColor 70%, transparent);
+  color: currentColor;
+  opacity: 0.7;
 }
 
 .formRow {
@@ -96,7 +97,7 @@
   height: calc(2.75rem * var(--mantine-scale));
   border-radius: var(--mantine-radius-sm);
   background: var(--sb-surface, #ffffff);
-  border: 1px solid var(--sb-border, color-mix(in srgb, var(--sb-text, #111) 12%, transparent));
+  border: 1px solid var(--sb-border, #d7dbe0);
   color: var(--sb-text, #111);
   font-size: var(--mantine-font-size-md);
   font-weight: 500;
@@ -114,18 +115,37 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: color-mix(in srgb, currentColor 70%, transparent);
+  color: currentColor;
+  opacity: 0.7;
 }
 
 .emailInput:focus {
-  border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 55%, #000);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
+  border-color: var(--sb-accent, #1d63c5);
+  box-shadow: 0 0 0 3px rgba(29, 99, 197, 0.18);
 }
 
 .emailInput::placeholder {
+  color: var(--mantine-color-graphite-5);
   color: color-mix(in srgb, currentColor 55%, transparent);
   font-weight: 400;
   font-size: inherit;
+}
+
+@supports (color: color-mix(in srgb, #000 50%, #fff)) {
+  .helper {
+    opacity: 1;
+    color: color-mix(in srgb, currentColor 70%, transparent);
+  }
+
+  .emailRightSection {
+    opacity: 1;
+    color: color-mix(in srgb, currentColor 70%, transparent);
+  }
+
+  .emailInput:focus {
+    border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 55%, #000);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
+  }
 }
 
 .submitButton {

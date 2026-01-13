@@ -8,7 +8,7 @@ import {
   getStoryblokTextColorClass,
 } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Button as MantineButton, CloseButton, Text, TextInput } from '@mantine/core';
+import { CloseButton, Button as MantineButton, Text, TextInput } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import { useCallback, useState } from 'react';
