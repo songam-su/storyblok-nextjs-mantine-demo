@@ -7,10 +7,13 @@
   max-width: min(var(--page-shell-max-width), 100%);
   margin: 0 auto;
   text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: var(--sb-section-stack-gap);
 }
 
 .title {
-  margin: 0 0 var(--sb-section-stack-gap);
+  margin: 0;
   font-size: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
   line-height: 1.1;
 }
@@ -40,7 +43,7 @@
 
 .searchInput {
   height: calc(2.75rem * var(--mantine-scale));
-  background: var(--sb-surface, #ffffff);
+  background: #ffffff;
   border: 1px solid var(--sb-border, #d7dbe0);
   color: var(--sb-text, #111);
   box-shadow: none;
@@ -50,11 +53,12 @@
     background-color 180ms ease;
 
   /* Pair with the category selector/button geometry. */
-  border-radius: var(--mantine-radius-sm);
+  border-radius: var(--mantine-radius-sm) !important;
   font-size: var(--mantine-font-size-md);
   font-weight: 500;
   padding-block: var(--sb-filter-control-padding-y);
   padding-inline-start: var(--sb-filter-control-padding-x);
+  padding-inline-end: calc(3.125rem * var(--mantine-scale));
 }
 
 .searchRightSection {
@@ -69,7 +73,7 @@
 .searchInput::placeholder {
   color: var(--mantine-color-graphite-5);
   color: color-mix(in srgb, currentColor 55%, transparent);
-  font-weight: 400;
+  font-weight: 400 !important;
   font-size: inherit;
 }
 
@@ -87,7 +91,7 @@
 
 .categories {
   /* Mantine SegmentedControl root background (defaults to a gray). */
-  --sc-background: var(--mantine-color-neonIceDark-6);
+  --sc-background: #ffffff;
   --sb-category-active-bg: var(--mantine-color-neonIceDark-6);
   --sc-color: var(--sb-category-active-bg);
   /* Match project button geometry/typography. */
@@ -150,6 +154,7 @@
 }
 
 .categoriesSelectInput {
+  background: #ffffff;
   border-color: var(--mantine-color-graphite-3);
   color: var(--mantine-color-graphite-9);
 
