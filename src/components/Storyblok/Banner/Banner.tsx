@@ -59,7 +59,6 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
     <Paper
       component="section"
       radius={0}
-      p={{ base: 'xl', md: 'xxl' }}
       shadow="lg"
       className={bannerClasses}
       style={bannerInlineStyle}
@@ -70,9 +69,6 @@ const SbBanner: React.FC<SbComponentProps<Banner>> = ({ blok }) => {
           <SectionHeader
             headline={blok.headline}
             lead={blok.lead}
-            titleOrder={1}
-            titleFw={700}
-            titleSize="h1"
             leadProps={{ c: 'inherit', ta: alignment.textAlign, maw: 680 }}
             style={{ marginBottom: 0, ['--section-header-lead-color' as any]: 'inherit' }}
           />

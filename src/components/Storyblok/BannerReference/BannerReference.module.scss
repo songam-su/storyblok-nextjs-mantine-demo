@@ -1,6 +1,6 @@
 .wrapper {
   display: grid;
-  gap: clamp(12px, 2vw, 20px);
+  gap: var(--page-shell-section-gap);
 
   /* Reference Banner: force the Banner background + text, not the CTA buttons. */
   --sb-color-bg: var(--sb-accent, #1d63c5);

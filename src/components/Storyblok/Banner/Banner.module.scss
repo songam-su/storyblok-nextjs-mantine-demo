@@ -3,19 +3,22 @@
   overflow: hidden;
   color: var(--sb-color-text, var(--sb-color-default-text));
   background-color: var(--sb-color-bg, var(--sb-color-default-bg));
+
+  /* SectionHeader (h2) should be white inside banners. */
+  --sb-section-heading-color: var(--sb-on-overlay, #fff);
 }
 
 .banner + .banner {
-  margin-top: var(--mantine-spacing-xl);
+  margin-top: var(--page-shell-section-gap);
 }
 
 .banner + .banner::before {
   content: '';
   position: absolute;
-  top: calc(-1 * var(--mantine-spacing-xl));
+  top: calc(-1 * var(--page-shell-section-gap));
   left: 10%;
   right: 10%;
-  height: var(--mantine-spacing-xl);
+  height: var(--page-shell-section-gap);
   background: linear-gradient(180deg, rgba(2, 6, 23, 0.4), rgba(2, 6, 23, 0));
   pointer-events: none;
 }
@@ -52,4 +55,11 @@
 .inner {
   max-width: 640px;
   text-align: start;
+  padding: calc(0.95 * var(--page-shell-section-padding)) var(--page-shell-section-padding)
+    var(--page-shell-section-padding);
+}
+
+/* Banner headings use SectionHeader; keep inline segment typography aligned to the Title line-height. */
+.banner :global(.mantine-Title-root) :global(.mantine-Text-root) {
+  line-height: inherit;
 }
