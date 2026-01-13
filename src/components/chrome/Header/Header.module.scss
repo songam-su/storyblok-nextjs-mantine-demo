@@ -46,6 +46,13 @@
   align-items: center;
   gap: 1.65rem;
   flex-wrap: wrap;
+
+  /* Increase click target without changing perceived layout spacing. */
+  :is(a, span) {
+    padding: 0.5rem 0.75rem;
+    margin: -0.5rem -0.75rem;
+    border-radius: var(--mantine-radius-sm);
+  }
 }
 
 .actions {
@@ -171,11 +178,13 @@
   flex-direction: column;
   gap: 0.9rem;
 
-  :global(.navItem) {
+  :is(a, span) {
     display: block;
     width: 100%;
     font-size: 1.05rem;
     color: var(--sb-text, #111);
+    padding: 0.6rem 0.65rem;
+    border-radius: var(--mantine-radius-sm);
   }
 }
 

@@ -67,9 +67,7 @@ const Header = () => {
   const logoAlt = typeof logo?.alt === 'string' ? logo.alt : undefined;
   const isDefaultBrandLogo = Boolean(logoSrc && /brand-new-day-logo\.svg(\?.*)?$/i.test(logoSrc));
   const resolvedLogoSrc =
-    colorScheme === 'dark' && isDefaultBrandLogo
-      ? '/assets/logos/brand-new-day-logo-dark.svg'
-      : logoSrc;
+    colorScheme === 'dark' && isDefaultBrandLogo ? '/assets/logos/brand-new-day-logo-dark.svg' : logoSrc;
 
   return (
     <header className={classNames(styles.header, isLight && styles.isLight)}>
