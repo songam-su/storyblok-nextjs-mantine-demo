@@ -93,15 +93,28 @@
 }
 
 .emailInput {
-  height: 44px;
+  height: calc(2.75rem * var(--mantine-scale));
   border-radius: var(--mantine-radius-sm);
-  background: #ffffff;
-  border: 1px solid color-mix(in srgb, var(--sb-text, #111) 14%, transparent);
-  color: inherit;
+  background: var(--sb-surface, #ffffff);
+  border: 1px solid var(--sb-border, color-mix(in srgb, var(--sb-text, #111) 12%, transparent));
+  color: var(--sb-text, #111);
+  font-size: var(--mantine-font-size-md);
+  font-weight: 500;
+  padding-inline-start: 20px;
+  padding-inline-end: calc(3.125rem * var(--mantine-scale));
   transition:
     border-color 180ms ease,
     box-shadow 180ms ease,
     background-color 180ms ease;
+}
+
+.emailRightSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: color-mix(in srgb, currentColor 70%, transparent);
 }
 
 .emailInput:focus {
@@ -111,6 +124,8 @@
 
 .emailInput::placeholder {
   color: color-mix(in srgb, currentColor 55%, transparent);
+  font-weight: 400;
+  font-size: inherit;
 }
 
 .submitButton {
