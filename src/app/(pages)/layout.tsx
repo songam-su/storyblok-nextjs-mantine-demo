@@ -30,7 +30,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const siteConfig = siteConfigStory?.content as SiteConfigContent | undefined;
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript defaultColorScheme="light" localStorageKey="site-color-scheme" />
       </head>

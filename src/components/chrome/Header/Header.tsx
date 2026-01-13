@@ -11,12 +11,14 @@ import { Burger, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classNames from 'classnames';
 import Image from 'next/image';
+import type { SVGProps } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Header.module.scss';
 
 const normalizeNav = (items?: NavItemBlok[]) => (Array.isArray(items) ? items.filter(Boolean) : []);
 const normalizeButtons = (items?: ButtonBlok[]) => (Array.isArray(items) ? items.filter(Boolean) : []);
 
-const SunIcon = (props: React.SVGProps<SVGSVGElement>) => (
+const SunIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" {...props}>
     <path
       d="M12 17.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z"
@@ -35,8 +37,9 @@ const SunIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const MoonIcon = (props: React.SVGProps<SVGSVGElement>) => (
+const MoonIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" {...props}>
+    <path d="M21 13.2A7.8 7.8 0 0 1 10.8 3a6.9 6.9 0 1 0 10.2 10.2Z" fill="currentColor" />
     <path
       d="M21 13.2A7.8 7.8 0 0 1 10.8 3a6.9 6.9 0 1 0 10.2 10.2Z"
       stroke="currentColor"
@@ -47,10 +50,51 @@ const MoonIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+const AutoThemeIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" {...props}>
+    <path
+      d="M12 2.75l1.05 3.35a1 1 0 0 0 .65.65l3.35 1.05-3.35 1.05a1 1 0 0 0-.65.65L12 12.85l-1.05-3.35a1 1 0 0 0-.65-.65L6.95 7.8l3.35-1.05a1 1 0 0 0 .65-.65L12 2.75Z"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M18.25 13.25l.6 1.9a1 1 0 0 0 .65.65l1.9.6-1.9.6a1 1 0 0 0-.65.65l-.6 1.9-.6-1.9a1 1 0 0 0-.65-.65l-1.9-.6 1.9-.6a1 1 0 0 0 .65-.65l.6-1.9Z"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinejoin="round"
+      opacity="0.75"
+    />
+  </svg>
+);
+
 const Header = () => {
-  const { config, colorScheme, toggleColorScheme } = useSiteConfig();
+  const { config, colorScheme, hasInitializedColorScheme, toggleColorScheme } = useSiteConfig();
   const raw = config?.raw;
   const [mobileMenuOpened, mobileMenu] = useDisclosure(false);
+
+  const [isIconSwitching, setIsIconSwitching] = useState(false);
+  const hasRunInitTransition = useRef(false);
+  const ICON_FADE_MS = 520;
+  const ICON_GAP_MS = 55;
+  const ICON_SWITCH_HOLD_MS = ICON_FADE_MS + ICON_GAP_MS;
+
+  useEffect(() => {
+    if (!hasInitializedColorScheme || hasRunInitTransition.current) return;
+    hasRunInitTransition.current = true;
+
+    // Ensure the first transition (sparkle -> final icon) has no overlap.
+    setIsIconSwitching(true);
+    const id = window.setTimeout(() => setIsIconSwitching(false), ICON_SWITCH_HOLD_MS);
+    return () => window.clearTimeout(id);
+  }, [hasInitializedColorScheme, ICON_SWITCH_HOLD_MS]);
+
+  const handleToggleColorScheme = useCallback(() => {
+    if (isIconSwitching) return;
+    setIsIconSwitching(true);
+    toggleColorScheme();
+    window.setTimeout(() => setIsIconSwitching(false), ICON_SWITCH_HOLD_MS);
+  }, [ICON_SWITCH_HOLD_MS, isIconSwitching, toggleColorScheme]);
 
   if (!raw) return null;
 
@@ -101,15 +145,20 @@ const Header = () => {
           <button
             type="button"
             className={styles.themeToggle}
-            onClick={toggleColorScheme}
-            aria-label={`Switch to ${nextScheme} mode`}
-            title={`Switch to ${nextScheme} mode`}
+            onClick={handleToggleColorScheme}
+            aria-label={hasInitializedColorScheme ? `Switch to ${nextScheme} mode` : 'Toggle color scheme'}
+            title={hasInitializedColorScheme ? `Switch to ${nextScheme} mode` : 'Toggle color scheme'}
           >
-            {colorScheme === 'dark' ? (
-              <SunIcon className={styles.themeIcon} />
-            ) : (
-              <MoonIcon className={styles.themeIcon} />
-            )}
+            <span
+              className={styles.themeIconStack}
+              data-ready={hasInitializedColorScheme ? 'true' : 'false'}
+              data-switching={isIconSwitching ? 'true' : 'false'}
+              data-scheme={colorScheme}
+            >
+              <AutoThemeIcon className={classNames(styles.themeIcon, styles.themeIconAuto)} />
+              <SunIcon className={classNames(styles.themeIcon, styles.themeIconFinal, styles.themeIconSun)} />
+              <MoonIcon className={classNames(styles.themeIcon, styles.themeIconFinal, styles.themeIconMoon)} />
+            </span>
           </button>
 
           {buttons.length
@@ -154,14 +203,19 @@ const Header = () => {
           <button
             type="button"
             className={styles.drawerThemeToggle}
-            onClick={toggleColorScheme}
-            aria-label={`Switch to ${nextScheme} mode`}
+            onClick={handleToggleColorScheme}
+            aria-label={hasInitializedColorScheme ? `Switch to ${nextScheme} mode` : 'Toggle color scheme'}
           >
-            {colorScheme === 'dark' ? (
-              <SunIcon className={styles.themeIcon} />
-            ) : (
-              <MoonIcon className={styles.themeIcon} />
-            )}
+            <span
+              className={styles.themeIconStack}
+              data-ready={hasInitializedColorScheme ? 'true' : 'false'}
+              data-switching={isIconSwitching ? 'true' : 'false'}
+              data-scheme={colorScheme}
+            >
+              <AutoThemeIcon className={classNames(styles.themeIcon, styles.themeIconAuto)} />
+              <SunIcon className={classNames(styles.themeIcon, styles.themeIconFinal, styles.themeIconSun)} />
+              <MoonIcon className={classNames(styles.themeIcon, styles.themeIconFinal, styles.themeIconMoon)} />
+            </span>
             <span className={styles.drawerThemeToggleLabel}>{colorScheme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
           </button>
         </div>

@@ -49,6 +49,7 @@ type SiteConfigContextValue = {
   setConfig: (config?: NormalizedSiteConfig) => void;
   theme: MantineThemeOverride;
   colorScheme: SiteColorScheme;
+  hasInitializedColorScheme: boolean;
   setColorScheme: (scheme: SiteColorScheme) => void;
   toggleColorScheme: () => void;
 };
@@ -177,55 +178,103 @@ export const SiteConfigProvider = ({
 }) => {
   const initialNormalized = useMemo(() => normalizeSiteConfig(initialConfig), [initialConfig]);
   const [config, setConfigState] = useState<NormalizedSiteConfig | undefined>(initialNormalized);
-  const [colorScheme, setColorSchemeState] = useState<SiteColorScheme>(() => {
-    if (typeof window === 'undefined') return 'light';
-
-    const attributeValue = document.documentElement.getAttribute('data-mantine-color-scheme');
-    if (isSiteColorScheme(attributeValue)) return attributeValue;
-
-    try {
-      const stored = window.localStorage.getItem(COLOR_SCHEME_STORAGE_KEY);
-      if (isSiteColorScheme(stored)) return stored;
-    } catch {
-      // ignore
-    }
-
-    return 'light';
-  });
+  // IMPORTANT: Keep SSR + first client render deterministic to avoid hydration mismatches.
+  // We sync from ColorSchemeScript/localStorage after mount.
+  const [colorScheme, setColorSchemeState] = useState<SiteColorScheme>('light');
+  const [hasInitializedColorScheme, setHasInitializedColorScheme] = useState(false);
 
   const theme = useMemo(() => applyConfigToTheme(config), [config]);
 
   useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(COLOR_SCHEME_STORAGE_KEY);
+      if (isSiteColorScheme(stored)) {
+        setColorSchemeState(stored);
+        setHasInitializedColorScheme(true);
+        return;
+      }
+    } catch {
+      // ignore
+    }
+
+    const attributeValue = document.documentElement.getAttribute('data-mantine-color-scheme');
+    if (isSiteColorScheme(attributeValue)) {
+      setColorSchemeState(attributeValue);
+      setHasInitializedColorScheme(true);
+      return;
+    }
+
+    setHasInitializedColorScheme(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasInitializedColorScheme) return;
+
     if (!config) {
       resetCssVariables(colorScheme);
       return;
     }
     applyCssVariables(config, colorScheme);
-  }, [config, colorScheme]);
+  }, [config, colorScheme, hasInitializedColorScheme]);
 
   useEffect(() => {
+    if (!hasInitializedColorScheme) return;
+
     document.documentElement.setAttribute('data-mantine-color-scheme', colorScheme);
     try {
       window.localStorage.setItem(COLOR_SCHEME_STORAGE_KEY, colorScheme);
     } catch {
       // ignore
     }
-  }, [colorScheme]);
+  }, [colorScheme, hasInitializedColorScheme]);
 
   const setConfig = useCallback((value?: NormalizedSiteConfig) => {
     setConfigState(value);
   }, []);
 
   const setColorScheme = useCallback((scheme: SiteColorScheme) => {
+    setHasInitializedColorScheme(true);
     setColorSchemeState(scheme);
+
+    // Persist immediately so a fast refresh keeps the user's choice.
+    try {
+      window.localStorage.setItem(COLOR_SCHEME_STORAGE_KEY, scheme);
+    } catch {
+      // ignore
+    }
+
+    document.documentElement.setAttribute('data-mantine-color-scheme', scheme);
   }, []);
 
   const toggleColorScheme = useCallback(() => {
-    setColorSchemeState((current) => (current === 'dark' ? 'light' : 'dark'));
+    setHasInitializedColorScheme(true);
+    setColorSchemeState((current) => {
+      const next = current === 'dark' ? 'light' : 'dark';
+
+      // Persist immediately so a fast refresh keeps the user's choice.
+      try {
+        window.localStorage.setItem(COLOR_SCHEME_STORAGE_KEY, next);
+      } catch {
+        // ignore
+      }
+
+      document.documentElement.setAttribute('data-mantine-color-scheme', next);
+      return next;
+    });
   }, []);
 
   return (
-    <SiteConfigContext.Provider value={{ config, setConfig, theme, colorScheme, setColorScheme, toggleColorScheme }}>
+    <SiteConfigContext.Provider
+      value={{
+        config,
+        setConfig,
+        theme,
+        colorScheme,
+        hasInitializedColorScheme,
+        setColorScheme,
+        toggleColorScheme,
+      }}
+    >
       {children}
     </SiteConfigContext.Provider>
   );

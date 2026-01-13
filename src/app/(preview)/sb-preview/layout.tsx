@@ -28,7 +28,7 @@ export default async function PreviewLayout({ children }: { children: React.Reac
   const siteConfig = siteConfigStory?.content as SiteConfigContent | undefined;
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript defaultColorScheme="light" localStorageKey="site-color-scheme" />
       </head>

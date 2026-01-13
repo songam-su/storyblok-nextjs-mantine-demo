@@ -92,6 +92,71 @@
   height: 18px;
 }
 
+.themeIconStack {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+}
+
+.themeIconStack > :global(svg) {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity 520ms ease-in-out,
+    transform 520ms ease-in-out;
+  transform: scale(1);
+}
+
+.themeIconAuto {
+  opacity: 0.5;
+}
+
+.themeIconFinal {
+  opacity: 0;
+  transform: scale(1);
+}
+
+.themeIconSun,
+.themeIconMoon {
+  opacity: 0;
+}
+
+/* Auto glyph only shows before we know the stored scheme. */
+.themeIconStack[data-ready='true'] {
+  .themeIconAuto {
+    opacity: 0;
+  }
+}
+
+/* No-overlap switching: hide BOTH final icons during transition (fade-out to blank). */
+.themeIconStack[data-switching='true'] {
+  .themeIconSun,
+  .themeIconMoon {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* After init and not switching, show only the active scheme's icon (fade-in from blank). */
+.themeIconStack[data-ready='true'][data-switching='false'][data-scheme='dark'] {
+  .themeIconSun {
+    opacity: 0.75;
+  }
+}
+
+.themeIconStack[data-ready='true'][data-switching='false'][data-scheme='light'] {
+  .themeIconMoon {
+    opacity: 0.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .themeIconStack > :global(svg) {
+    transition: none;
+  }
+}
+
 .mobileMenuControl {
   display: none;
   margin-left: auto;
