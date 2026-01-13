@@ -7,11 +7,21 @@
   background-color: #ffffff !important;
   color: var(--mantine-color-carbonBlack-8, #111) !important;
   border: 1px solid var(--mantine-color-whiteSmoke-5, #e1e1e1);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   transition:
     transform 150ms ease,
     box-shadow 150ms ease,
     border-color 150ms ease;
+
+  margin: 0 auto;
+  width: 80%;
+  max-width: unset;
+}
+
+@media (min-width: 48em) {
+  .card {
+    width: 100%;
+  }
 }
 
 /* Ensure overrides apply when Mantine adds inline dark backgrounds on the same element */
@@ -67,12 +77,7 @@
 //   z-index: 0;
 // }
 
-.card :global(.mantine-Stack-root),
-.card :global(.mantine-Text-root),
-.card :global(.mantine-Button-root) {
-  position: relative;
-  z-index: 1;
-}
+/* Background image overlay is currently disabled, so we don't need z-index hacks on Mantine children. */
 
 // .backgroundImage :global(.mantine-Text-root),
 // .backgroundImage :global(.mantine-Button-root),

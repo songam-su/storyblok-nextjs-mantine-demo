@@ -3,7 +3,7 @@
   padding: var(--page-shell-section-padding);
   border-radius: 16px;
   display: grid;
-  gap: 20px;
+  gap: var(--sb-grid-gap-sm);
 }
 
 .header {
@@ -17,7 +17,7 @@
 
 .grid {
   display: grid;
-  gap: 32px;
+  gap: var(--sb-grid-gap-lg);
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;
 }
@@ -30,6 +30,13 @@
 }
 
 @media (min-width: 62em) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-content: stretch;
+  }
+}
+
+@media (min-width: 75em) {
   .grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     justify-content: stretch;

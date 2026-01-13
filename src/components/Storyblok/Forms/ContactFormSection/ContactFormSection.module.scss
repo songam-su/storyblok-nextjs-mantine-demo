@@ -48,15 +48,15 @@
   border-radius: 16px;
   background: var(--sb-surface, #ffffff);
   box-shadow: none;
+}
 
-  :global(.mantine-InputWrapper-label) {
-    margin-bottom: 0.5rem;
-  }
+.inputLabel {
+  margin-bottom: 0.5rem;
+}
 
-  :global(textarea) {
-    resize: none;
-    min-height: 120px;
-  }
+.textareaInput {
+  resize: none;
+  min-height: 120px;
 }
 
 .actions {

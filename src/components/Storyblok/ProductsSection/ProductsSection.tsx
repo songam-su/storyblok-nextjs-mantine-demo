@@ -111,9 +111,8 @@ const ProductsSection = ({ blok }: SbComponentProps<ProductsSectionBlok>) => {
             {products.length > 0 ? (
               <SimpleGrid
                 cols={{ base: 1, sm: 2, lg: 3 }}
-                spacing="lg"
+                spacing={{ base: 'lg', sm: 'xl', lg: 'lg' }}
                 verticalSpacing="xl"
-                mx={{ base: 0, md: '4rem', lg: 0 }}
                 className={styles.grid}
               >
                 {products.map((product, index) => {

@@ -33,8 +33,7 @@
 
 .grid {
   align-items: start;
-
-  justify-items: center;
+  justify-items: stretch;
 }
 
 .card {
@@ -48,7 +47,8 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 
   @media (min-width: 48em) {
-    width: calc(100% - 1rem);
+    margin: 0;
+    width: 100%;
     max-width: unset;
   }
 

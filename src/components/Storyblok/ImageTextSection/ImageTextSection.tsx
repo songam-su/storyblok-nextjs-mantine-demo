@@ -54,7 +54,8 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
 
   return (
     <section {...editable} className={classNames(styles.section, backgroundClass)}>
-      <div
+      <Stack
+        gap="xl"
         className={classNames(
           styles.inner,
           reverseDesktop && styles.reverseDesktop,
@@ -120,7 +121,7 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
             </div>
           </div>
         )}
-      </div>
+      </Stack>
     </section>
   );
 };

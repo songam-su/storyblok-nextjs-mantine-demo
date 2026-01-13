@@ -1,13 +1,7 @@
 .section {
   width: 100%;
   background-color: var(--sb-newsletter-bg, var(--mantine-color-tomatoJam-1, #ffc7c7));
-  padding: 2.5rem 5rem;
-}
-
-@media (max-width: 48em) {
-  .section {
-    padding: 2rem 1.5rem;
-  }
+  padding: var(--page-shell-section-padding);
 }
 
 .wrapper {
@@ -48,20 +42,20 @@
   gap: 12px;
   align-items: center;
   margin: 0 auto;
-  width: 100%;
+  width: 80%;
   flex-direction: column;
-  max-width: 600px;
 }
 
 @media (min-width: 75em) {
   .content {
     flex: 1 1 50%;
-    max-width: none;
+    width: 100%;
   }
 }
 
 .helper {
-  color: color-mix(in srgb, currentColor 70%, transparent);
+  color: currentColor;
+  opacity: 0.7;
 }
 
 .formRow {
@@ -70,7 +64,7 @@
   gap: 12px;
   align-items: stretch;
   justify-content: center;
-  width: min(520px, 100%);
+  width: 80%;
   margin: 0 auto;
 }
 
@@ -84,37 +78,73 @@
 }
 
 .emailField {
-  :global(.mantine-TextInput-label) {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+  width: 100%;
+}
+
+.emailLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.emailInput {
+  height: calc(2.75rem * var(--mantine-scale));
+  border-radius: var(--mantine-radius-sm);
+  background: var(--sb-surface, #ffffff);
+  border: 1px solid var(--sb-border, #d7dbe0);
+  color: var(--sb-text, #111);
+  font-size: var(--mantine-font-size-md);
+  font-weight: 500;
+  padding-inline-start: 20px;
+  padding-inline-end: calc(3.125rem * var(--mantine-scale));
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.emailRightSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: currentColor;
+  opacity: 0.7;
+}
+
+.emailInput:focus {
+  border-color: var(--sb-accent, #1d63c5);
+  box-shadow: 0 0 0 3px rgba(29, 99, 197, 0.18);
+}
+
+.emailInput::placeholder {
+  color: var(--mantine-color-graphite-5);
+  color: color-mix(in srgb, currentColor 55%, transparent);
+  font-weight: 400;
+  font-size: inherit;
+}
+
+@supports (color: color-mix(in srgb, #000 50%, #fff)) {
+  .helper {
+    opacity: 1;
+    color: color-mix(in srgb, currentColor 70%, transparent);
   }
 
-  :global(.mantine-TextInput-input) {
-    height: 44px;
-    border-radius: var(--mantine-radius-sm);
-    background: #ffffff;
-    border: 1px solid color-mix(in srgb, var(--sb-text, #111) 14%, transparent);
-    color: inherit;
-    transition:
-      border-color 180ms ease,
-      box-shadow 180ms ease,
-      background-color 180ms ease;
+  .emailRightSection {
+    opacity: 1;
+    color: color-mix(in srgb, currentColor 70%, transparent);
   }
 
-  :global(.mantine-TextInput-input:focus) {
+  .emailInput:focus {
     border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 55%, #000);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
-  }
-
-  :global(.mantine-TextInput-input::placeholder) {
-    color: color-mix(in srgb, currentColor 55%, transparent);
   }
 }
 
@@ -129,8 +159,7 @@
   color: var(--mantine-color-whiteSmoke-0, #fff) !important;
   border: 1px solid transparent !important;
 
-  transition:
-    background-color 180ms ease;
+  transition: background-color 180ms ease;
 
   :global(span) {
     color: inherit;

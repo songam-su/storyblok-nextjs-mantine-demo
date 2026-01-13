@@ -7,23 +7,20 @@
   border-radius: 16px;
   background-color: #ffffff !important;
   color: var(--mantine-color-carbonBlack-8, #111) !important;
-  box-shadow: 4px 6px 20px rgba(0, 0, 0, 0.08);
-}
-
-:global(.mantine-Card-root.TabbedContentEntry-module-scss-module__1bVeMq__card),
-:global(.mantine-Paper-root.TabbedContentEntry-module-scss-module__1bVeMq__card) {
-  background-color: #ffffff !important;
-  color: var(--mantine-color-carbonBlack-8, #111) !important;
+  box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.1);
 }
 
 .body {
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: auto minmax(220px, 1fr);
+  height: 100%;
 }
 
 @media (min-width: 62em) {
   .body {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: 1fr;
     height: 100%;
   }
 
@@ -44,6 +41,7 @@
 .mediaPane {
   position: relative;
   min-height: 220px;
+  height: 100%;
   background: var(--mantine-color-whiteSmoke-2, #f2f2f2);
   overflow: hidden;
 }

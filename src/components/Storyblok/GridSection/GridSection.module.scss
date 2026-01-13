@@ -6,14 +6,6 @@
 
 .actionsWrap {
   margin-inline: 0;
-
-  @media (min-width: 48em) {
-    margin-inline: 4rem;
-  }
-
-  @media (min-width: 62em) {
-    margin-inline: 0;
-  }
 }
 
 .actions {

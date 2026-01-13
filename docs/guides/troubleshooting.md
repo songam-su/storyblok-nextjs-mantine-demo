@@ -75,6 +75,19 @@ Fix:
 
 See: [../reference/deployment-envs.md](../reference/deployment-envs.md)
 
+## Storyblok noise / unexpected 404s
+
+### Storyblok 404 for `/.well-known/appspecific/com.chrome.devtools.json`
+
+Some browsers/extensions (notably Chrome DevTools related tooling) may request `/.well-known/appspecific/com.chrome.devtools.json` automatically.
+
+Because this project uses a catch-all route to resolve unknown paths through Storyblok, that probe can otherwise be treated as a Storyblok slug and produce noisy `getStory failed (404)` logs.
+
+Mitigation:
+
+- Serve a static file at `public/.well-known/appspecific/com.chrome.devtools.json` so the request is handled locally (and never forwarded into Storyblok).
+- Add `Cache-Control: no-store` for that path via `next.config.mjs` headers so it doesn't get cached.
+
 ## Known dev-only warning
 
 ### Hydration mismatch (LastPass / password managers)

@@ -4,7 +4,8 @@ import ArticleCard from '@/components/Storyblok/ArticleCard/ArticleCard';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ArticleOverviewPage as ArticleOverviewPageBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { SegmentedControl, SimpleGrid, Text, TextInput, Title } from '@mantine/core';
+import { CloseButton, SegmentedControl, Select, SimpleGrid, Text, TextInput, Title } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { storyblokEditable } from '@storyblok/react';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './ArticleOverviewPage.module.scss';
@@ -40,6 +41,7 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
   const [data, setData] = useState<ApiResponse | null>(null);
   const [query, setQuery] = useState('');
   const [categoryKey, setCategoryKey] = useState<string>('all');
+  const showCategoryDropdown = useMediaQuery('(max-width: 47.99em)');
 
   useEffect(() => {
     const controller = new AbortController();
@@ -120,15 +122,50 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
             value={query}
             onChange={(event) => setQuery(event.currentTarget.value)}
             className={styles.search}
+            classNames={{ input: styles.searchInput }}
+            rightSection={
+              <div className={styles.searchRightSection}>
+                {query ? (
+                  <CloseButton
+                    variant="transparent"
+                    aria-label="Clear search"
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => setQuery('')}
+                  />
+                ) : null}
+              </div>
+            }
+            rightSectionPointerEvents="all"
+            rightSectionWidth="calc(3.125rem * var(--mantine-scale))"
           />
 
-          <SegmentedControl
-            fullWidth
-            value={categoryKey}
-            onChange={setCategoryKey}
-            data={categoryOptions}
-            className={styles.categories}
-          />
+          {showCategoryDropdown ? (
+            <Select
+              value={categoryKey}
+              onChange={(value) => setCategoryKey(value ?? 'all')}
+              data={categoryOptions}
+              allowDeselect={false}
+              withScrollArea={false}
+              className={styles.categoriesSelect}
+              classNames={{
+                input: styles.categoriesSelectInput,
+                dropdown: styles.categoriesSelectDropdown,
+                options: styles.categoriesSelectOptions,
+                option: styles.categoriesSelectOption,
+                section: styles.categoriesSelectSection,
+              }}
+              comboboxProps={{ withinPortal: false }}
+            />
+          ) : (
+            <SegmentedControl
+              fullWidth
+              withItemsBorders={false}
+              value={categoryKey}
+              onChange={setCategoryKey}
+              data={categoryOptions}
+              className={styles.categories}
+            />
+          )}
         </div>
       </header>
 
@@ -146,7 +183,12 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
             No articles match your filters.
           </Text>
         ) : (
-          <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="xl" verticalSpacing="xl" className={styles.grid}>
+          <SimpleGrid
+            cols={{ base: 1, sm: 2, md: 3, lg: 4 }}
+            spacing="var(--sb-grid-gap-lg)"
+            verticalSpacing="var(--sb-grid-gap-lg)"
+            className={styles.grid}
+          >
             {filteredArticles.map((article) => (
               <ArticleCard
                 key={article.key}

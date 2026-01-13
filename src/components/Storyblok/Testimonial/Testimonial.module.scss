@@ -16,7 +16,8 @@
   min-height: 160px;
   @media (min-width: 48em) {
     max-width: unset;
-    width: calc(100% - 1rem);
+    margin: 0;
+    width: 100%;
     min-height: 180px;
     flex-grow: 1;
     justify-content: space-between;

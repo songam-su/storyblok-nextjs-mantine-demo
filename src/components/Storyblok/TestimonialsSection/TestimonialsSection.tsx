@@ -44,9 +44,8 @@ const TestimonialsSection = ({ blok }: SbComponentProps<TestimonialsSectionBlok>
           <SimpleGrid
             className={styles.grid}
             cols={{ base: 1, sm: 2, lg: 3 }}
-            spacing="lg"
+            spacing={{ base: 'lg', sm: 'xl', lg: 'lg' }}
             verticalSpacing="xl"
-            mx={{ base: 0, md: '4rem', lg: 0 }}
           >
             {testimonials.map((testimonial) => (
               <Testimonial key={testimonial._uid} blok={testimonial} _uid={testimonial._uid} component="testimonial" />

@@ -8,15 +8,18 @@ import {
   getStoryblokTextColorClass,
 } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Button as MantineButton, Paper, Text, TextInput } from '@mantine/core';
+import { CloseButton, Button as MantineButton, Text, TextInput } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import styles from './NewsletterFormSection.module.scss';
 
 const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionBlok>) => {
   const { isEditor } = useStoryblokEditor();
   const editable = isEditor ? storyblokEditable(blok as any) : undefined;
+
+  const [email, setEmail] = useState('');
+  const clearEmail = () => setEmail('');
 
   const primaryButton = Array.isArray(blok.button) ? blok.button.find(Boolean) : undefined;
   const submitLabel =
@@ -34,15 +37,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
   return (
     <section className={classNames('edge-to-edge', styles.section)} {...editable}>
       <div className={styles.wrapper}>
-        <Paper
-          className={styles.banner}
-          withBorder={false}
-          shadow="sm"
-          component="form"
-          onSubmit={handleSubmit}
-          data-lpignore="true"
-          data-1p-ignore="true"
-        >
+        <form className={styles.banner} onSubmit={handleSubmit} data-lpignore="true" data-1p-ignore="true">
           <div className={styles.content}>
             {hasHeader && (
               <SectionHeader
@@ -63,6 +58,10 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
           <div className={styles.formRow}>
             <TextInput
               className={styles.emailField}
+              classNames={{
+                label: styles.emailLabel,
+                input: styles.emailInput,
+              }}
               label="Email"
               type="email"
               name="email"
@@ -71,6 +70,22 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
               autoComplete="email"
               data-lpignore="true"
               data-1p-ignore="true"
+              value={email}
+              onChange={(e) => setEmail(e.currentTarget.value)}
+              rightSection={
+                <div className={styles.emailRightSection}>
+                  {email ? (
+                    <CloseButton
+                      variant="transparent"
+                      aria-label="Clear email"
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={clearEmail}
+                    />
+                  ) : null}
+                </div>
+              }
+              rightSectionPointerEvents="all"
+              rightSectionWidth="calc(3.125rem * var(--mantine-scale))"
             />
 
             <MantineButton
@@ -84,7 +99,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
               {submitLabel}
             </MantineButton>
           </div>
-        </Paper>
+        </form>
       </div>
     </section>
   );

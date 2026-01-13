@@ -28,6 +28,16 @@ body {
   --page-shell-section-gap: clamp(1.5rem, 4vw, 3rem);
   --page-shell-section-padding: clamp(24px, 4vw, 64px);
   --sb-section-stack-gap: 2rem;
+
+  /*
+    Fluid spacing tokens
+    - Keep desktop layout stable (values clamp to max at >= ~1200px).
+    - Allow mobile/tablet to breathe without extra breakpoint rules.
+  */
+  --sb-grid-gap-sm: clamp(0.75rem, 2vw, 1.25rem); /* 12px → 20px */
+  --sb-grid-gap-lg: clamp(1rem, 3vw, 2rem); /* 16px → 32px */
+  --sb-grid-gap-ui: clamp(0.5rem, 2vw, 1rem); /* 8px → 16px */
+
   --sb-surface: color-mix(in srgb, var(--sb-background, #f8f9fb) 92%, #ffffff);
   --sb-surface-strong: color-mix(in srgb, var(--sb-background, #f0f2f5) 80%, #ffffff);
   --sb-border: color-mix(in srgb, var(--sb-text, #0d0d0d) 12%, transparent);

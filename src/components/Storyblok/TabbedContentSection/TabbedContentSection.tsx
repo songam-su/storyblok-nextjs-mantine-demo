@@ -43,6 +43,10 @@ const TabbedContentSection = ({ blok }: SbComponentProps<TabbedContentSectionBlo
           <>
             <Tabs
               className={styles.tabs}
+              classNames={{
+                list: styles.tabsList,
+                tab: styles.tabsTab,
+              }}
               value={activeTab}
               onChange={(value) => setActiveTab(value || firstEntryKey)}
               variant="pills"
