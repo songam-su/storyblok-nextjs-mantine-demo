@@ -51,11 +51,7 @@
 }
 
 .tabsTab:not([data-active='true']):hover {
-  background: color-mix(
-    in srgb,
-    var(--sb-accent, #1d63c5) 16%,
-    var(--sb-surface, #fff)
-  );
+  background: color-mix(in srgb, var(--sb-accent, #1d63c5) 16%, var(--sb-surface, #fff));
   border-color: transparent;
 }
 

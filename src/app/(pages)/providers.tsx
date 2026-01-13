@@ -6,8 +6,8 @@ import {
   type SiteConfigContent,
 } from '@/lib/storyblok/context/SiteConfigContext';
 import { StoryblokEditorProvider } from '@/lib/storyblok/context/StoryblokEditorContext';
-import '@/styles/vendor.css';
 import '@/styles/globals.scss';
+import '@/styles/vendor.css';
 import { ReactNode } from 'react';
 
 interface PublishedProvidersProps {

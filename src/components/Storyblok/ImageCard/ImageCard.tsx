@@ -73,10 +73,6 @@ const ImageCard = ({ blok }: SbComponentProps<ImageCardBlok>) => {
   const hasImage = Boolean(imageData?.src);
 
   const imageStyle: React.CSSProperties = {
-    maxWidth: '100%',
-    maxHeight: '100%',
-    width: 'auto',
-    height: 'auto',
     objectFit: 'contain',
     objectPosition: imageData?.objectPosition || 'center',
   };
@@ -94,8 +90,7 @@ const ImageCard = ({ blok }: SbComponentProps<ImageCardBlok>) => {
               className={styles.img}
               src={imageData!.src}
               alt={imageData!.alt || ''}
-              width={imageData?.width || 451}
-              height={imageData?.height || 360}
+              fill
               sizes="(min-width: 768px) 320px, 100vw"
               style={imageStyle}
             />

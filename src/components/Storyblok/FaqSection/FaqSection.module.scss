@@ -52,20 +52,12 @@
 
 /* When an entry is open, keep a subtle tint on the header even when not hovered. */
 .accordionItem[data-active='true'] .accordionControl {
-  background: color-mix(
-    in srgb,
-    var(--sb-accent, #1d63c5) 8%,
-    var(--sb-surface, #fff)
-  );
+  background: color-mix(in srgb, var(--sb-accent, #1d63c5) 8%, var(--sb-surface, #fff));
 }
 
 /* Add a more visually appealing hover state for questions (open or closed). */
 .accordionControl:hover {
-  background: color-mix(
-    in srgb,
-    var(--sb-accent, #1d63c5) 16%,
-    var(--sb-surface, #fff)
-  );
+  background: color-mix(in srgb, var(--sb-accent, #1d63c5) 16%, var(--sb-surface, #fff));
 }
 
 .accordionPanel {

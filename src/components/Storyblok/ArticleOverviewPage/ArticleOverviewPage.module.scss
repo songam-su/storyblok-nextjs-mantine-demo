@@ -140,11 +140,7 @@
 @supports (color: color-mix(in srgb, #000 50%, #fff)) {
   .categories
     :global(.mantine-SegmentedControl-label):where(:not([data-disabled], [data-active], [data-read-only])):hover {
-    background-color: color-mix(
-      in srgb,
-      var(--sb-accent, #1d63c5) 16%,
-      var(--sb-surface, #fff)
-    );
+    background-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 16%, var(--sb-surface, #fff));
   }
 }
 
