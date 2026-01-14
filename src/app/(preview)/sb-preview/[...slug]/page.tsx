@@ -3,7 +3,7 @@ import { fetchStory } from '@/lib/storyblok/api/client';
 import StoryblokRenderer from '@/lib/storyblok/rendering/StoryblokRenderer';
 import type { Metadata } from 'next';
 import { draftMode, headers } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -22,7 +22,8 @@ export async function generateMetadata(props: PreviewPageProps): Promise<Metadat
   if (!isPreviewAllowed({ host, headers: h, isDraftModeEnabled: draft.isEnabled })) return {};
 
   const params = await props.params;
-  const slug = params?.slug ? params.slug.join('/') : 'home';
+  const rawSegments = params?.slug ?? [];
+  const slug = rawSegments.length ? rawSegments.map((s) => s.toLowerCase()).join('/') : 'home';
 
   const story = await fetchStory(slug, 'draft');
   const content = story?.content as any;
@@ -41,7 +42,9 @@ export default async function PreviewPage(props: PreviewPageProps) {
   const draft = await draftMode();
 
   const params = await props.params;
-  const slug = params?.slug ? params.slug.join('/') : 'home';
+  const rawSegments = params?.slug ?? [];
+  const normalizedSegments = rawSegments.map((s) => s.toLowerCase());
+  const slug = normalizedSegments.length ? normalizedSegments.join('/') : 'home';
 
   // Build an absolute URL so preview gating can detect Storyblok query params.
   const sp = await props.searchParams;
@@ -53,6 +56,12 @@ export default async function PreviewPage(props: PreviewPageProps) {
 
   const url = host ? `https://${host}/sb-preview/${slug}?${qs.toString()}` : null;
   if (!isPreviewAllowed({ host, headers: h, url, isDraftModeEnabled: draft.isEnabled })) notFound();
+
+  // Canonicalize mixed-case vanity URLs (e.g. /sb-preview/HoMe -> /sb-preview/home).
+  if (rawSegments.length && rawSegments.some((s, i) => s !== normalizedSegments[i])) {
+    const canonical = `/sb-preview/${slug}${qs.toString() ? `?${qs.toString()}` : ''}`;
+    redirect(canonical);
+  }
 
   const story = await fetchStory(slug, 'draft');
 

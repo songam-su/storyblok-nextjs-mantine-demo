@@ -32,10 +32,12 @@ const detectStoryblokEditor = (): boolean => {
 
 export interface StoryblokEditorContextValue {
   isEditor: boolean;
+  isVisualEditor: boolean;
 }
 
 const StoryblokEditorContext = createContext<StoryblokEditorContextValue>({
   isEditor: false,
+  isVisualEditor: false,
 });
 
 interface StoryblokEditorProviderProps {
@@ -44,16 +46,25 @@ interface StoryblokEditorProviderProps {
 }
 
 export function StoryblokEditorProvider({ children, initialIsEditor = false }: StoryblokEditorProviderProps) {
+  // `isEditor` controls whether we render Storyblok editable markup.
+  // We allow this to be `true` initially to keep SSR/client hydration consistent on preview routes,
+  // then correct it after mount based on actual runtime detection.
   const [isEditor, setIsEditor] = useState<boolean>(() => initialIsEditor || detectStoryblokEditor());
+  // `isVisualEditor` means "running inside the Storyblok Visual Editor iframe".
+  // This is used for UX behaviors (e.g. disabling navigation) that should NOT apply to normal preview pages.
+  const [isVisualEditor, setIsVisualEditor] = useState<boolean>(() => detectStoryblokEditor());
 
   useEffect(() => {
-    if (initialIsEditor) return; // already known
-    if (detectStoryblokEditor()) {
-      setIsEditor(true);
-    }
-  }, [initialIsEditor]);
+    const detected = detectStoryblokEditor();
 
-  const value = useMemo(() => ({ isEditor }), [isEditor]);
+    // Always keep `isVisualEditor` accurate.
+    setIsVisualEditor(detected);
+
+    // Correct `isEditor` after hydration.
+    setIsEditor(detected);
+  }, []);
+
+  const value = useMemo(() => ({ isEditor, isVisualEditor }), [isEditor, isVisualEditor]);
 
   return <StoryblokEditorContext.Provider value={value}>{children}</StoryblokEditorContext.Provider>;
 }
