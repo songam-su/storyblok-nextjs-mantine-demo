@@ -1,7 +1,9 @@
+import { isPreviewAllowed } from '@/lib/site/previewAccess';
 import { fetchStory } from '@/lib/storyblok/api/client';
 import StoryblokRenderer from '@/lib/storyblok/rendering/StoryblokRenderer';
-import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { draftMode, headers } from 'next/headers';
+import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -14,6 +16,11 @@ type PreviewPageProps = {
 };
 
 export async function generateMetadata(props: PreviewPageProps): Promise<Metadata> {
+  const h = await headers();
+  const host = h.get('host');
+  const draft = await draftMode();
+  if (!isPreviewAllowed({ host, headers: h, isDraftModeEnabled: draft.isEnabled })) return {};
+
   const params = await props.params;
   const slug = params?.slug ? params.slug.join('/') : 'home';
 
@@ -29,8 +36,23 @@ export async function generateMetadata(props: PreviewPageProps): Promise<Metadat
 }
 
 export default async function PreviewPage(props: PreviewPageProps) {
+  const h = await headers();
+  const host = h.get('host');
+  const draft = await draftMode();
+
   const params = await props.params;
   const slug = params?.slug ? params.slug.join('/') : 'home';
+
+  // Build an absolute URL so preview gating can detect Storyblok query params.
+  const sp = await props.searchParams;
+  const qs = new URLSearchParams();
+  Object.entries(sp ?? {}).forEach(([key, value]) => {
+    if (Array.isArray(value)) value.forEach((v) => typeof v === 'string' && qs.append(key, v));
+    else if (typeof value === 'string') qs.set(key, value);
+  });
+
+  const url = host ? `https://${host}/sb-preview/${slug}?${qs.toString()}` : null;
+  if (!isPreviewAllowed({ host, headers: h, url, isDraftModeEnabled: draft.isEnabled })) notFound();
 
   const story = await fetchStory(slug, 'draft');
 

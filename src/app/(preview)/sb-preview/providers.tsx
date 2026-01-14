@@ -17,7 +17,7 @@ interface PreviewProvidersProps {
 
 export default function PreviewProviders({ children, siteConfig }: PreviewProvidersProps) {
   return (
-    <StoryblokEditorProvider>
+    <StoryblokEditorProvider initialIsEditor={true}>
       <SiteConfigProvider initialConfig={siteConfig}>
         <SiteThemeProvider>{children}</SiteThemeProvider>
       </SiteConfigProvider>

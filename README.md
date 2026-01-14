@@ -305,7 +305,7 @@ Some Storyblok integrations expect HTTPS (especially inside the Visual Editor if
 
 - Default Visual Editor environment: <https://d6a698f5.me.storyblok.com/>.
 - Preview/editing uses `/sb-preview/<slug>` (draft + bridge).
-- You can also use the normal published URL as the Visual Editor preview URL; the middleware rewrites Storyblok editor requests (those with `_storyblok` params) to `/sb-preview/...` automatically.
+- You can also use the normal published URL as the Visual Editor preview URL; `next.config.mjs` rewrites Storyblok editor requests (those with `_storyblok` params) to `/sb-preview/...` automatically.
 - Storyblok demo space domain: <https://d6a698f5.me.storyblok.com>
 
 ### Preview troubleshooting (compact)
@@ -324,7 +324,6 @@ If preview isn’t behaving as expected, these are the common culprits:
 ### Required vs optional (at a glance)
 
 - **Required (local dev + deployment)**
-  - `NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN`
   - `STORYBLOK_PREVIEW_TOKEN`
 - **Recommended (production-quality metadata)**
   - `SITE_URL` (used for canonical URLs and OpenGraph)
@@ -338,19 +337,24 @@ If preview isn’t behaving as expected, these are the common culprits:
   - `STORYBLOK_THEME_TOKEN` (only if you fetch theme separately)
   - `STORYBLOK_REGION` (only if you need a region override)
   - `STORYBLOK_SPACE_ID` (Storyblok CLI tooling)
+  - `PREVIEW_ALLOWED_HOSTS`, `PREVIEW_AUTH_COOKIE_NAME`, `STORYBLOK_EDITOR_HOST` (preview route gating for QA/enterprise)
 
-| Variable                              | Description                                                       | Scope  |
-| ------------------------------------- | ----------------------------------------------------------------- | ------ |
-| `NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN` | Public token for client-side bridge preview requests.             | Client |
-| `NEXT_PUBLIC_STORYBLOK_PUBLIC_TOKEN`  | Public token for client-side published requests (if ever needed). | Client |
-| `NEXT_PUBLIC_SITE_URL`                | Optional site base URL fallback (metadata + client access).       | Client |
-| `STORYBLOK_PUBLIC_TOKEN`              | Token for server-side published requests.                         | Server |
-| `STORYBLOK_PREVIEW_TOKEN`             | Private token for server-side fetches (`fetchStory`).             | Server |
-| `STORYBLOK_REGION`                    | Region override for Storyblok client (for non-default regions).   | Server |
-| `STORYBLOK_THEME_TOKEN`               | Token for server-side theme fetching (`fetchTheme`).              | Server |
-| `STORYBLOK_SPACE_ID`                  | Space identifier for Storyblok CLI tooling.                       | Server |
-| `STORYBLOK_WEBHOOK_SECRET`            | Shared secret for ISR webhook authentication.                     | Server |
-| `ALGOLIA_WEBHOOK_SECRET`              | Shared secret for the Algolia scaffold endpoint.                  | Server |
+| Variable                             | Description                                                       | Scope  |
+| ------------------------------------ | ----------------------------------------------------------------- | ------ |
+| `NEXT_PUBLIC_STORYBLOK_PUBLIC_TOKEN` | Public token for client-side published requests (if ever needed). | Client |
+| `NEXT_PUBLIC_SITE_URL`               | Optional site base URL fallback (metadata + client access).       | Client |
+| `STORYBLOK_PUBLIC_TOKEN`             | Token for server-side published requests.                         | Server |
+| `STORYBLOK_PREVIEW_TOKEN`            | Private token for server-side fetches (`fetchStory`).             | Server |
+| `STORYBLOK_REGION`                   | Region override for Storyblok client (for non-default regions).   | Server |
+| `STORYBLOK_THEME_TOKEN`              | Token for server-side theme fetching (`fetchTheme`).              | Server |
+| `STORYBLOK_SPACE_ID`                 | Space identifier for Storyblok CLI tooling.                       | Server |
+| `STORYBLOK_WEBHOOK_SECRET`           | Shared secret for ISR webhook authentication.                     | Server |
+| `ALGOLIA_WEBHOOK_SECRET`             | Shared secret for the Algolia scaffold endpoint.                  | Server |
+| `PREVIEW_ALLOWED_HOSTS`              | Production allowlist for preview routes (e.g. QA hostnames).      | Server |
+| `PREVIEW_AUTH_COOKIE_NAME`           | Optional cookie name to allow preview after auth.                 | Server |
+| `STORYBLOK_EDITOR_HOST`              | Optional Storyblok editor host override for gating.               | Server |
+
+Preview route gating (quick note): in production, preview surfaces (`/sb-preview/*`, `GET /api/preview`) are blocked by default unless the request originates from the Storyblok Visual Editor, draft mode is already enabled, a preview-auth cookie is present, or the host is allowlisted via `PREVIEW_ALLOWED_HOSTS`.
 
 Additional:
 

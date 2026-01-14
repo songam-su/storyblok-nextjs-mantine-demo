@@ -13,7 +13,7 @@ flowchart LR
   Dev["Local Dev<br/>HTTPS self-signed<br/>.env.local"] --> Staging["Staging/Preview<br/>ENV: Storyblok preview token"]
   Staging --> Prod["Production<br/>ENV: Storyblok tokens"]
 
-  Secrets["Env vars:<br/>NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN<br/>STORYBLOK_PREVIEW_TOKEN<br/>STORYBLOK_THEME_TOKEN<br/>STORYBLOK_WEBHOOK_SECRET<br/>SITE_URL"] -.-> Dev
+  Secrets["Env vars:<br/>STORYBLOK_PREVIEW_TOKEN<br/>STORYBLOK_PUBLIC_TOKEN<br/>STORYBLOK_THEME_TOKEN<br/>STORYBLOK_WEBHOOK_SECRET<br/>SITE_URL"] -.-> Dev
   Secrets -.-> Staging
   Secrets -.-> Prod
 

@@ -9,7 +9,7 @@ RQ[Browser request]
 end
 
 subgraph ROUTING[Routing]
-PROXY["Proxy rewrite<br/>(src/proxy.ts)"]
+PROXY["Routing rules<br/>(next.config.mjs)"]
 DETECT["Detect editor context<br/>(_storyblok/_storyblok_tk OR /sb-preview)"]
 end
 

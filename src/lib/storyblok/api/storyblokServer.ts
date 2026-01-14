@@ -24,17 +24,17 @@ function looksLikeUuid(value: unknown): value is string {
 }
 
 function getStoryblokToken(version: StoryblokVersion): string {
-  const previewToken = process.env.STORYBLOK_PREVIEW_TOKEN ?? process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN;
-  const publicToken = process.env.STORYBLOK_PUBLIC_TOKEN ?? process.env.NEXT_PUBLIC_STORYBLOK_PUBLIC_TOKEN;
+  const previewToken = process.env.STORYBLOK_PREVIEW_TOKEN;
+  const publicToken = process.env.STORYBLOK_PUBLIC_TOKEN;
 
   if (version === 'draft') {
-    if (!previewToken) throw new Error('Missing Storyblok preview token env var');
+    if (!previewToken) throw new Error('Missing Storyblok preview token env var (STORYBLOK_PREVIEW_TOKEN)');
     return previewToken;
   }
 
   if (publicToken) return publicToken;
   if (previewToken) return previewToken;
-  throw new Error('Missing Storyblok public/preview token env var');
+  throw new Error('Missing Storyblok public/preview token env var (STORYBLOK_PUBLIC_TOKEN or STORYBLOK_PREVIEW_TOKEN)');
 }
 
 function createServerClient(version: StoryblokVersion) {

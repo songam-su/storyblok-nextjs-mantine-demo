@@ -8,7 +8,7 @@ sequenceDiagram
   participant User as User Browser
   participant Editor as Storyblok Visual Editor
   participant Next as Next.js App Router
-  participant Proxy as Request Proxy (src/proxy.ts)
+  participant Proxy as Routing rules (next.config.mjs)
   participant SB as Storyblok Content API
   participant Hook as /api/webhooks/revalidate
 

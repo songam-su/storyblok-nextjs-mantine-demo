@@ -14,7 +14,7 @@ SB_MODELS["Component schemas + content models<br/>(demo space template)"]
 end
 
 subgraph NX["Next.js App<br/>(App Router)"]
-NX_PROXY["Request proxy / rewrite<br/>(src/proxy.ts)"]
+NX_PROXY["Routing rules<br/>(next.config.mjs)"]
 
 NX_PUB["Published routes<br/>(app/(pages)/...)<br/>ISR/static"]
 NX_PREV["Preview routes<br/>(app/(preview)/sb-preview/...)<br/>draft + bridge"]

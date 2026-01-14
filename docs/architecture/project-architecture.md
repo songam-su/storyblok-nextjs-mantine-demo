@@ -6,7 +6,7 @@ Notes
 
 - Published route: `app/(pages)/...` (ISR/static)
 - Preview route: `app/(preview)/sb-preview/...` (draft + bridge)
-- Editor requests are rewritten to preview via `src/proxy.ts`
+- Editor requests are rewritten to preview via `next.config.mjs` rewrites
 - Publish events should call `/api/webhooks/revalidate`
 
 ```mermaid
@@ -18,7 +18,7 @@ flowchart LR
   end
 
   subgraph Next[Next.js App Router]
-    Proxy["Request proxy (src/proxy.ts)"]
+    Proxy["Edge proxy (src/proxy.ts)"]
 
     Pub["Published routes"]
     Prev["Preview routes"]
