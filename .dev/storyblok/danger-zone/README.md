@@ -62,7 +62,7 @@ Important detail: `PUBLISH_MODE` currently behaves like a boolean switch:
 
 ## Prerequisites
 
-- Node.js `>= 20` (repo enforces this in `package.json`)
+- Node.js `>= 24` (repo enforces this in `package.json`)
 - Dependencies installed (`pnpm install` at repo root)
 - These scripts may require you to temporarily install dependencies that are not kept in the repo:
    - `pnpm i axios`

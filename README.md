@@ -134,12 +134,47 @@ Note: the built-in Markdown preview may show Mermaid blocks as plain text unless
 
 ## Prerequisites
 
-- Node.js (LTS recommended)
-- pnpm
+- Node.js 24.x (see `.nvmrc`)
+- pnpm 10.x (this repo pins `packageManager` to pnpm 10)
 - Local HTTPS support (this repo runs `pnpm dev` with Next.js experimental HTTPS)
   - Run `pnpm dev-setup` once to generate local certs
   - If you don’t already have it, install and trust mkcert (see [Local SSL Setup](#local-ssl-setup))
 - A Storyblok account + space (or access to a Storyblok Demo Space)
+
+### Optional: auto-switch Node with `nvm`
+
+This repo includes `.nvmrc` (and `.node-version`) so version managers can select the correct Node version.
+
+If you use `nvm` on macOS/Linux (or in WSL/Git Bash), you can add a small shell hook so `cd` into this repo automatically runs `nvm use`.
+
+Zsh example (`~/.zshrc`):
+
+```sh
+autoload -U add-zsh-hook
+
+load-nvmrc() {
+  if [ -f .nvmrc ]; then
+    nvm use --silent >/dev/null
+  fi
+}
+
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+```
+
+Bash example (`~/.bashrc`):
+
+```sh
+nvm_use_if_needed() {
+  if [ -f .nvmrc ]; then
+    nvm use --silent >/dev/null
+  fi
+}
+
+PROMPT_COMMAND="nvm_use_if_needed;${PROMPT_COMMAND:-}"
+```
+
+Windows note: if you use `nvm-windows`, it does not support the same shell hooks by default — you’ll typically run `nvm use 24` once per terminal session.
 
 ## Enterprise Architecture
 
