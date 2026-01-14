@@ -7,6 +7,7 @@ Notes
 - `/api/preview` sets the preview cookie; `/sb-preview/...` routes render draft stories.
 - Storyblok Bridge listens for content changes and triggers rerenders inside the iframe.
 - `storyblokEditable` attributes enable click-to-edit in the Visual Editor.
+- Navigation behavior: the Visual Editor iframe disables link navigation to avoid leaving the editor context; when browsing `/sb-preview/...` in a normal tab, internal links stay within `/sb-preview/...`.
 
 ```mermaid
 sequenceDiagram

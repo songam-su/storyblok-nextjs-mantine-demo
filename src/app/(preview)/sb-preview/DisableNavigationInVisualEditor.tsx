@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 

@@ -25,6 +25,13 @@ This keeps:
 
 Note: these rewrites do not enable Next.js draft mode by themselves (they can’t set cookies). If you need Next draft mode cookies (recommended for consistent preview behavior), use `GET /api/preview?slug=...`.
 
+## Preview URL normalization
+
+Storyblok slugs are treated as lowercase in this repo.
+
+- The preview route normalizes incoming preview slugs to lowercase when fetching draft stories.
+- Mixed-case vanity URLs (for example `/sb-preview/HoMe`) are redirected to the lowercase canonical URL (`/sb-preview/home`) while preserving the query string.
+
 ## Preview cookies
 
 Draft mode is enabled via the preview endpoints (for example `GET /api/preview`), which set the standard Next preview cookies. If we later need the Visual Editor iframe to auto-enable draft mode without using `/api/preview`, that would be a good reason to reintroduce Edge middleware using [src/proxy.ts](../../src/proxy.ts) as the shared implementation.

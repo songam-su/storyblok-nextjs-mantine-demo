@@ -22,7 +22,10 @@ const detectStoryblokEditor = (): boolean => {
   if (isPreviewPath && isInIframe) return true;
 
   const ancestorOrigins = (window.location as any)?.ancestorOrigins as string[] | undefined;
-  if (Array.isArray(ancestorOrigins) && ancestorOrigins.some((o) => typeof o === 'string' && o.includes(STORYBLOK_PREVIEW_HOST))) {
+  if (
+    Array.isArray(ancestorOrigins) &&
+    ancestorOrigins.some((o) => typeof o === 'string' && o.includes(STORYBLOK_PREVIEW_HOST))
+  ) {
     return true;
   }
 

@@ -306,6 +306,7 @@ Some Storyblok integrations expect HTTPS (especially inside the Visual Editor if
 - Default Visual Editor environment: <https://d6a698f5.me.storyblok.com/>.
 - Preview/editing uses `/sb-preview/<slug>` (draft + bridge).
 - You can also use the normal published URL as the Visual Editor preview URL; `next.config.mjs` rewrites Storyblok editor requests (those with `_storyblok` params) to `/sb-preview/...` automatically.
+- Inside the Visual Editor iframe, in-app navigation is intentionally disabled to avoid navigating the iframe away from the editor context. When browsing `/sb-preview/...` in a normal tab, internal links stay within `/sb-preview/...` and preview slugs are canonicalized to lowercase.
 - Storyblok demo space domain: <https://d6a698f5.me.storyblok.com>
 
 ### Preview troubleshooting (compact)
