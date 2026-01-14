@@ -1,7 +1,7 @@
 # SNMUI White Paper (2026)
 
 **Storyblok + Next.js + Mantine UI**  
-*Implementing Storyblok's Demo Space with an enterprise-lean architecture*
+_Implementing Storyblok's Demo Space with an enterprise-lean architecture_
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![Storyblok](https://img.shields.io/badge/Storyblok-CMS-blue?logo=storyblok)](https://www.storyblok.com)
@@ -70,7 +70,7 @@ SB_MODELS["Component schemas + content models<br/>(demo space template)"]
 end
 
 subgraph NX["Next.js App<br/>(App Router)"]
-NX_PROXY["Request proxy / rewrite<br/>(src/proxy.ts)"]
+NX_PROXY["Routing rules<br/>(next.config.mjs)"]
 
 NX_PUB["Published routes<br/>(app/(pages)/...)<br/>ISR/static"]
 NX_PREV["Preview routes<br/>(app/(preview)/sb-preview/...)<br/>draft + bridge"]
@@ -134,7 +134,7 @@ M_THEME --- F3
 #### How to read the diagram
 
 - **Browser**: Two entry points - the end user and the Storyblok Visual Editor iframe.
-- **Next.js App (App Router)**: The core runtime - request proxy/rewrite (`src/proxy.ts`), published routes vs preview routes, plus the server content layer and renderer.
+- **Next.js App (App Router)**: The core runtime - routing rules (`next.config.mjs`), published routes vs preview routes, plus the server content layer and renderer.
 - **Storyblok**: Content comes from the CDN Content API; the Visual Editor bridge enables live preview updates; webhooks trigger revalidation.
 - **Mantine UI Layer**: Rendering uses Mantine components, while theming is driven by site config (CSS vars + Mantine theme).
 - **Published vs Preview behavior**: Published routes are cache-friendly (ISR/static + on-demand revalidate); preview routes are editor-friendly (draft + bridge + no-store).

@@ -30,10 +30,7 @@ export async function fetchStory(slug: string, version: StoryblokVersion) {
 }
 
 export async function fetchTheme(version: 'published' | 'draft' = 'published') {
-  const token =
-    version === 'draft'
-      ? process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN // safe for client-side preview
-      : process.env.STORYBLOK_THEME_TOKEN; // private token for published
+  const token = version === 'draft' ? process.env.STORYBLOK_PREVIEW_TOKEN : process.env.STORYBLOK_THEME_TOKEN; // private token for published
 
   const cache = version === 'published' ? 'force-cache' : 'no-store';
   const next = version === 'published' ? { revalidate: REVALIDATE_SECONDS } : undefined;

@@ -1,11 +1,14 @@
 import AppLoadingOverlay from '@/components/chrome/AppLoadingOverlay/AppLoadingOverlay';
 import Footer from '@/components/chrome/Footer/Footer';
 import Header from '@/components/chrome/Header/Header';
+import { isPreviewAllowed } from '@/lib/site/previewAccess';
 import { METADATA_BASE } from '@/lib/site/siteUrl';
 import { fetchStory } from '@/lib/storyblok/api/client';
 import type { SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContext';
 import { ColorSchemeScript } from '@mantine/core';
 import type { Metadata } from 'next';
+import { draftMode, headers } from 'next/headers';
+import { notFound } from 'next/navigation';
 import ScrollToTop from '../../ScrollToTop';
 import PreviewProviders from './providers';
 
@@ -25,6 +28,11 @@ export const metadata: Metadata = {
 };
 
 export default async function PreviewLayout({ children }: { children: React.ReactNode }) {
+  const h = await headers();
+  const host = h.get('host');
+  const draft = await draftMode();
+  if (!isPreviewAllowed({ host, headers: h, isDraftModeEnabled: draft.isEnabled })) notFound();
+
   const siteConfigStory = await fetchStory('site-config', 'draft');
   const siteConfig = siteConfigStory?.content as SiteConfigContent | undefined;
 

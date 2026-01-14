@@ -9,6 +9,7 @@ import { StoryblokEditorProvider } from '@/lib/storyblok/context/StoryblokEditor
 import '@/styles/globals.scss';
 import '@/styles/vendor.css';
 import { ReactNode } from 'react';
+import DisableNavigationInVisualEditor from './DisableNavigationInVisualEditor';
 
 interface PreviewProvidersProps {
   children: ReactNode;
@@ -17,7 +18,8 @@ interface PreviewProvidersProps {
 
 export default function PreviewProviders({ children, siteConfig }: PreviewProvidersProps) {
   return (
-    <StoryblokEditorProvider>
+    <StoryblokEditorProvider initialIsEditor={true}>
+      <DisableNavigationInVisualEditor />
       <SiteConfigProvider initialConfig={siteConfig}>
         <SiteThemeProvider>{children}</SiteThemeProvider>
       </SiteConfigProvider>

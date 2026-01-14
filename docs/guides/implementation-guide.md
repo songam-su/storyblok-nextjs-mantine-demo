@@ -14,12 +14,15 @@ Related docs:
 - [ ] Create a new Storyblok space (or clone models from the demo space).
 - [ ] Create tokens:
   - [ ] `STORYBLOK_PREVIEW_TOKEN` (server-side fetching)
-  - [ ] `NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN` (client-side bridge)
+  - [ ] (Optional) `STORYBLOK_PUBLIC_TOKEN` (server-side published fetching)
   - [ ] (Optional) `STORYBLOK_THEME_TOKEN`
   - [ ] (Optional) `NEXT_PUBLIC_STORYBLOK_PUBLIC_TOKEN`
 
 - [ ] Set your Visual Editor preview URL:
-  - Use the published URL (recommended). Editor requests are rewritten into `/sb-preview/...` by `src/proxy.ts`.
+  - Recommended: use the preview endpoint so draft mode cookies are set: `GET /api/preview?slug=...`.
+  - Optional: you can use the published URL; editor requests will still be rewritten into `/sb-preview/...` by `next.config.mjs` rewrites (but this does not enable draft mode cookies).
+
+Note: preview routes are gated in production by host allowlisting. To enable preview on a non-production QA site, set `PREVIEW_ALLOWED_HOSTS` to include the QA hostname.
 
 - [ ] Configure webhooks (recommended):
   - [ ] Publish/unpublish/move/delete → `POST /api/webhooks/revalidate?secret=...`

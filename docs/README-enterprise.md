@@ -45,6 +45,7 @@ These diagrams are authored as Mermaid fenced blocks (e.g. ` ```mermaid `). To v
 - ISR lifecycle: [reference/isr-cache-lifecycle.md](reference/isr-cache-lifecycle.md)
 - Webhook verification and revalidation: [reference/webhook-revalidate.md](reference/webhook-revalidate.md)
 - Preview/editor live updates: [reference/preview-live-update.md](reference/preview-live-update.md)
+- Routing proxy + canonicalization: [reference/routing-proxy-and-canonicalization.md](reference/routing-proxy-and-canonicalization.md)
 
 ## Content Model & Components
 
@@ -64,6 +65,7 @@ These diagrams are authored as Mermaid fenced blocks (e.g. ` ```mermaid `). To v
 ## Testing
 
 - Unit coverage includes webhook verification and shared helpers (links, images). Run: `pnpm test` or `pnpm vitest`.
+- E2E status + how to run Cypress: [reference/testing.md](reference/testing.md)
 
 ## For Clean Architecture-style visuals
 

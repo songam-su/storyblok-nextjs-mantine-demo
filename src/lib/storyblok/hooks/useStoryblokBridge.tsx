@@ -1,8 +1,7 @@
 'use client';
 
+import type { ISbStoryData, StoryblokBridgeConfigV2 } from '@storyblok/react';
 import { useEffect, useMemo, useState } from 'react';
-import type { ISbStoryData } from '@storyblok/react';
-import type { StoryblokBridgeConfigV2 } from '@storyblok/react';
 
 export interface UseStoryblokBridgeProps {
   initialStory: ISbStoryData;
@@ -20,6 +19,8 @@ const DEFAULT_RESOLVE_RELATIONS = [
 const DEFAULT_RESOLVE_LINKS: StoryblokBridgeConfigV2['resolveLinks'] = 'story';
 
 const BRIDGE_HANDLER_REGISTRY_KEY = '__sbBridgeHandlerRegistry';
+const BRIDGE_LOADER_PROMISE_KEY = '__sbBridgeLoaderPromise';
+const BRIDGE_SCRIPT_ID = 'storyblok-bridge-v2-script';
 
 function getBridgeHandlerRegistry(): Set<string> | null {
   if (typeof window === 'undefined') return null;
@@ -28,6 +29,47 @@ function getBridgeHandlerRegistry(): Set<string> | null {
     win[BRIDGE_HANDLER_REGISTRY_KEY] = new Set<string>();
   }
   return win[BRIDGE_HANDLER_REGISTRY_KEY] as Set<string>;
+}
+
+function loadStoryblokBridgeScript(): Promise<void> {
+  if (typeof window === 'undefined') return Promise.resolve();
+  if ((window as any).StoryblokBridge) return Promise.resolve();
+
+  const win = window as typeof window & {
+    [BRIDGE_LOADER_PROMISE_KEY]?: Promise<void>;
+  };
+
+  if (win[BRIDGE_LOADER_PROMISE_KEY]) return win[BRIDGE_LOADER_PROMISE_KEY]!;
+
+  win[BRIDGE_LOADER_PROMISE_KEY] = new Promise<void>((resolve, reject) => {
+    const existing = document.getElementById(BRIDGE_SCRIPT_ID) as HTMLScriptElement | null;
+
+    const done = () => resolve();
+    const fail = () => reject(new Error('Failed to load Storyblok Bridge script'));
+
+    if (existing) {
+      if ((window as any).StoryblokBridge) {
+        done();
+        return;
+      }
+
+      existing.addEventListener('load', done, { once: true });
+      existing.addEventListener('error', fail, { once: true });
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.id = BRIDGE_SCRIPT_ID;
+    script.src = 'https://app.storyblok.com/f/storyblok-v2-latest.js';
+    script.async = true;
+    script.addEventListener('load', done, { once: true });
+    script.addEventListener('error', fail, { once: true });
+
+    // Use <head> to reduce timing issues with body insertion in iframes.
+    document.head.appendChild(script);
+  });
+
+  return win[BRIDGE_LOADER_PROMISE_KEY]!;
 }
 
 export const useStoryblokBridge = (props: UseStoryblokBridgeProps): ISbStoryData => {
@@ -56,15 +98,7 @@ export const useStoryblokBridge = (props: UseStoryblokBridgeProps): ISbStoryData
     let handler: ((event: any) => void) | null = null;
     const registry = getBridgeHandlerRegistry();
 
-    // Load the bridge script if not present
-    if (typeof window !== 'undefined' && !window.StoryblokBridge) {
-      const script = document.createElement('script');
-      script.src = 'https://app.storyblok.com/f/storyblok-v2-latest.js';
-      script.async = true;
-      script.onload = initBridge;
-      document.body.appendChild(script);
-      return;
-    }
+    let cancelled = false;
 
     function initBridge() {
       if (!window.StoryblokBridge) return;
@@ -78,11 +112,17 @@ export const useStoryblokBridge = (props: UseStoryblokBridgeProps): ISbStoryData
       registry?.add(handlerKey);
     }
 
-    if (typeof window !== 'undefined' && window.StoryblokBridge) {
-      initBridge();
-    }
+    loadStoryblokBridgeScript()
+      .then(() => {
+        if (cancelled) return;
+        initBridge();
+      })
+      .catch(() => {
+        // If the bridge fails to load, preview still renders using the initial draft fetch.
+      });
 
     return () => {
+      cancelled = true;
       if (sbBridge && handler) {
         // StoryblokBridgeV2 does not provide an off() or removeListener method,
         // so we cannot remove the handler directly. If Storyblok adds this in the future, add it here.
