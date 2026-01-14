@@ -1,7 +1,8 @@
+import { getCanonicalUrl } from '@/lib/site/canonicalUrl';
 import { fetchStory } from '@/lib/storyblok/api/client';
 import StoryblokRenderer from '@/lib/storyblok/rendering/StoryblokRenderer';
-import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 export const revalidate = 600;
 export const dynamic = 'force-static';
@@ -15,6 +16,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: content?.meta_title || story.name,
     description: content?.meta_description,
+    alternates: {
+      canonical: getCanonicalUrl('/'),
+    },
   };
 }
 

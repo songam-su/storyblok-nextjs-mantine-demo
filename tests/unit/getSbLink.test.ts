@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
-import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
 import type { StoryblokMultilink } from '@/lib/storyblok/resources/types/storyblok';
+import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
+import { describe, expect, it } from 'vitest';
 
 const storyLink = (cached_url: string): StoryblokMultilink =>
   ({

@@ -1,7 +1,46 @@
 // src/proxy.ts
-import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { authMiddleware } from './middleware/auth';
+import { NextResponse } from 'next/server';
+
+const hasUppercase = (value: string) => /[A-Z]/.test(value);
+
+const looksLikeFilePath = (pathname: string) => {
+  const last = pathname.split('/').pop() ?? '';
+  return last.includes('.') && !last.startsWith('.');
+};
+
+function vanityRedirect(req: NextRequest): NextResponse | null {
+  const nextUrl = req.nextUrl.clone();
+  const pathname = nextUrl.pathname;
+
+  // Exact vanity routes.
+  if (pathname === '/home' || pathname === '/home/') {
+    nextUrl.pathname = '/';
+    return NextResponse.redirect(nextUrl, 308);
+  }
+
+  if (pathname === '/index' || pathname === '/index/' || pathname === '/index.html' || pathname === '/index.html/') {
+    nextUrl.pathname = '/';
+    return NextResponse.redirect(nextUrl, 308);
+  }
+
+  // Trailing slash canonicalization (but keep root '/').
+  if (pathname.length > 1 && pathname.endsWith('/')) {
+    nextUrl.pathname = pathname.replace(/\/+$/, '');
+    return NextResponse.redirect(nextUrl, 308);
+  }
+
+  // Optional lowercase canonicalization.
+  // IMPORTANT: This is safest when your CMS slugs are already lowercase.
+  // If Storyblok contains mixed-case slugs, redirecting to lowercase could cause 404s.
+  const enforceLowercase = process.env.ENFORCE_LOWERCASE_PATHS === 'true';
+  if (enforceLowercase && hasUppercase(pathname) && !looksLikeFilePath(pathname)) {
+    nextUrl.pathname = pathname.toLowerCase();
+    return NextResponse.redirect(nextUrl, 308);
+  }
+
+  return null;
+}
 
 const setPreviewCookies = (res: NextResponse) => {
   const cookieOpts = { path: '/', sameSite: 'none' as const, secure: true };
@@ -41,17 +80,22 @@ export function proxy(req: NextRequest) {
     return res;
   }
 
-  // Apply auth middleware for protected routes
-  if (req.nextUrl.pathname.startsWith('/dashboard')) {
-    return authMiddleware(req);
-  }
+  // Vanity/canonical redirects (published site).
+  const vanity = vanityRedirect(req);
+  if (vanity) return vanity;
 
   return NextResponse.next();
+}
+
+// Next.js Middleware entrypoint.
+// NOTE: Middleware runs in the Edge runtime. Keep this file Edge-safe (no Node-only imports).
+export function middleware(req: NextRequest) {
+  return proxy(req);
 }
 
 export const config = {
   matcher: [
     // Run proxy for all non-static paths so we can rewrite editor requests.
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|icon.svg|robots.txt).*)',
   ],
 };

@@ -22,6 +22,7 @@
     "sb:pull-datasources": "node ./.dev/storyblok/pull-datasources.mjs",
     "sb:pull-languages": "node ./.dev/storyblok/pull-languages.mjs",
     "sb:pull-types": "node ./.dev/storyblok/pull-types.mjs && npm run sb:generate:blok-union",
+    "lint:storyblok-slugs": "node ./scripts/check-storyblok-slugs.mjs",
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest watch",

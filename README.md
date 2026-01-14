@@ -258,6 +258,24 @@ Additional Storyblok bloks can follow the same pattern. See [Component Implement
 | `pnpm sb:pull`    | Pulls Storyblok resources and regenerates types                               |
 | `pnpm vercel`     | Pulls Vercel env vars into a local `.env` file                                |
 
+### Optional: Storyblok slug lint
+
+This repo includes an **optional** script intended for CI or occasional audits:
+
+- Runs against Storyblok `cdn/links` and fails if any `full_slug` contains uppercase characters.
+- Reports underscores and whitespace too, but does **not** fail on them by default.
+
+Usage:
+
+- Default (fail on uppercase only): `pnpm -s lint:storyblok-slugs`
+- Strict (also fail on underscores + whitespace): `pnpm -s lint:storyblok-slugs -- --strict`
+- Limit scope (example): `pnpm -s lint:storyblok-slugs -- --starts-with=articles`
+
+Notes:
+
+- The script is inert unless you run it (it does not affect `dev`, `build`, or runtime).
+- Requires Storyblok tokens only when executed (see [Environment Variables](#environment-variables)).
+
 ## Testing
 
 - Unit: `pnpm test` (Vitest, uses alias `@` → `src/`, specs in `tests/unit`).
@@ -358,6 +376,14 @@ This repository is commonly deployed as a **demo** on a subdomain. If you intend
 - `X-Robots-Tag: noindex, nofollow` response header (configured in `next.config.mjs`) as defense-in-depth
 
 If you want the site to be indexed, remove/adjust these rules before launch.
+
+### Canonical URLs
+
+Published routes set a canonical URL via Next.js metadata `alternates.canonical`.
+
+- Canonicalization rules: `/home` → `/` and trailing slashes are stripped (except `/`).
+- Canonical base URL comes from `SITE_URL` (or `NEXT_PUBLIC_SITE_URL` fallback) via `metadataBase`.
+- Preview routes under `/sb-preview/*` intentionally do **not** emit canonical URLs.
 
 > Tip: Secrets can be reused across webhooks, but rotating them independently keeps integrations isolated.
 

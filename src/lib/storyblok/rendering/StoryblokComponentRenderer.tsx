@@ -1,10 +1,10 @@
 'use client';
 
+import { storyblokEditable } from '@storyblok/react';
 import { Suspense } from 'react';
 import { lazyRegistry } from '../registry/lazy';
-import { ErrorBoundary } from './ErrorBoundary';
-import { storyblokEditable } from '@storyblok/react';
 import type { StoryblokBlok } from '../registry/StoryblokBlok';
+import { ErrorBoundary } from './ErrorBoundary';
 
 interface StoryblokComponentRendererProps {
   blok: StoryblokBlok;

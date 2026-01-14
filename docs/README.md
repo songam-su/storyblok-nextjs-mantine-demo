@@ -29,7 +29,9 @@ Use this folder as the canonical home for technical docs.
 
 - Component resolution (registry + lazy loading): [reference/component-resolution.md](reference/component-resolution.md)
 - Webhook revalidation: [reference/webhook-revalidate.md](reference/webhook-revalidate.md)
+- ISR cache lifecycle: [reference/isr-cache-lifecycle.md](reference/isr-cache-lifecycle.md)
 - Preview live update (Bridge): [reference/preview-live-update.md](reference/preview-live-update.md)
+- Routing proxy + canonicalization: [reference/routing-proxy-and-canonicalization.md](reference/routing-proxy-and-canonicalization.md)
 - Navigation/link resolution behavior: [reference/navigation-link-resolution.md](reference/navigation-link-resolution.md)
 - Storyblok content model overview: [reference/storyblok-data-model.md](reference/storyblok-data-model.md)
 - Site-config theming model: [reference/site-config-theming.md](reference/site-config-theming.md)
@@ -37,6 +39,7 @@ Use this folder as the canonical home for technical docs.
 - Error boundaries: [reference/error-boundaries.md](reference/error-boundaries.md)
 - Form UX conventions: [reference/form-ux.md](reference/form-ux.md)
 - Environments + local HTTPS: [reference/deployment-envs.md](reference/deployment-envs.md)
+- Testing: [reference/testing.md](reference/testing.md)
 
 ## Decisions (ADRs)
 
