@@ -1,11 +1,10 @@
 'use client';
 
 import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
+import { DEMO_FORM_DISABLED_MESSAGE, DISABLE_FORM_SUBMIT } from '@/lib/site/demoFlags';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { NewsletterFormSection as NewsletterFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import {
-  getStoryblokColorClass,
-} from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
+import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { CloseButton, Button as MantineButton, Text, TextInput } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
@@ -18,6 +17,8 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
   const editable = isEditor ? storyblokEditable(blok as any) : undefined;
 
   const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const clearEmail = () => setEmail('');
 
   const primaryButton = Array.isArray(blok.button) ? blok.button.find(Boolean) : undefined;
@@ -25,12 +26,46 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
     typeof primaryButton?.label === 'string' && primaryButton.label.trim() ? primaryButton.label : 'Subscribe';
   const submitBgKey = typeof primaryButton?.background_color === 'string' ? primaryButton.background_color : undefined;
 
-  const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Placeholder submit handler: wire up to API when available
-  }, []);
+  const handleSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      if (DISABLE_FORM_SUBMIT) {
+        setStatus('error');
+        setErrorMessage(DEMO_FORM_DISABLED_MESSAGE);
+        return;
+      }
+
+      if (!email.trim()) return;
+
+      setStatus('submitting');
+      setErrorMessage(null);
+
+      try {
+        const res = await fetch('/api/forms/newsletter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email.trim() }),
+        });
+
+        if (!res.ok) {
+          const data = (await res.json().catch(() => null)) as { message?: string; error?: string } | null;
+          throw new Error(data?.message || data?.error || `Request failed (${res.status})`);
+        }
+
+        clearEmail();
+        setStatus('success');
+      } catch (err) {
+        setStatus('error');
+        setErrorMessage(err instanceof Error ? err.message : 'Something went wrong');
+      }
+    },
+    [email]
+  );
 
   const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
+  const isSubmitting = status === 'submitting';
+  const isSubmitDisabled = isSubmitting || DISABLE_FORM_SUBMIT;
 
   return (
     <section className={classNames('edge-to-edge', styles.section)} {...editable}>
@@ -70,6 +105,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
               data-1p-ignore="true"
               value={email}
               onChange={(e) => setEmail(e.currentTarget.value)}
+              disabled={isSubmitting}
               rightSection={
                 <div className={styles.emailRightSection}>
                   {email ? (
@@ -78,6 +114,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
                       aria-label="Clear email"
                       onMouseDown={(event) => event.preventDefault()}
                       onClick={clearEmail}
+                      disabled={isSubmitting}
                     />
                   ) : null}
                 </div>
@@ -88,14 +125,25 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
 
             <MantineButton
               type="submit"
-              className={classNames(
-                styles.submitButton,
-                submitBgKey ? getStoryblokColorClass(submitBgKey) : undefined
-              )}
+              loading={isSubmitting}
+              disabled={isSubmitDisabled}
+              className={classNames(styles.submitButton, submitBgKey ? getStoryblokColorClass(submitBgKey) : undefined)}
             >
               {submitLabel}
             </MantineButton>
           </div>
+
+          {status === 'success' ? (
+            <Text className={styles.helper} size="sm" role="status">
+              Thanks — we received your request.
+            </Text>
+          ) : null}
+
+          {status === 'error' ? (
+            <Text className={styles.helper} size="sm" role="alert">
+              {errorMessage || 'Unable to submit right now. Please try again.'}
+            </Text>
+          ) : null}
         </form>
       </div>
     </section>

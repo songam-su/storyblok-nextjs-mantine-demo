@@ -30,15 +30,9 @@
 // bg='primary-dark' + text='white' + style='ghost'
 // Rest: dark outline/text. Hover: subtle accent tint.
 .button.is-ghost[data-sb-bg-color='primary-dark'][data-sb-text-color='white'] {
-  --sb-button-ghost-hover-bg: var(--sb-accent, #1d63c5);
+  --sb-button-ghost-hover-bg: var(--sb-accent-strong-hover-bg);
   --sb-button-ghost-hover-border: var(--sb-accent, #1d63c5);
   --sb-button-ghost-hover-text: var(--sb-on-accent, #fff);
-}
-
-@supports (color: color-mix(in srgb, #000 10%, #fff)) {
-  .button.is-ghost[data-sb-bg-color='primary-dark'][data-sb-text-color='white'] {
-    --sb-button-ghost-hover-bg: color-mix(in srgb, var(--sb-accent, #1d63c5) 88%, #fff);
-  }
 }
 
 .button:not(.is-ghost):hover {

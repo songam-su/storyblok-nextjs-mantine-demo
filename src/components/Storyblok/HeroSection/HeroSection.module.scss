@@ -2,13 +2,15 @@
   position: relative;
   overflow: hidden;
   border-radius: 0;
-  padding: 0 0 var(--page-shell-section-padding) 0;
-  background-color: var(--sb-surface, #fff);
+  padding: 0 0 var(--page-shell-section-padding-y) 0;
+  background-color: transparent;
   margin-top: 30px;
+  margin-bottom: var(--page-shell-section-padding-y);
 }
 
 .inner {
   position: relative;
+  z-index: 1;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -135,14 +137,14 @@
   }
 
   /* Mobile hero: stack content box above image and avoid full-bleed background image. */
-  .section.hasBackgroundImage {
-    background-image: none;
+  .section.hasBackgroundImage::before {
+    content: none;
   }
 
   .inner {
     flex-direction: column;
     gap: clamp(14px, 4vw, 22px);
-    padding-top: var(--page-shell-section-padding);
+    padding-top: var(--page-shell-section-padding-y);
     padding-bottom: 0;
     min-height: unset;
   }
@@ -181,19 +183,32 @@
 
 // Hero-specific CTA override:
 // In the provided home-page example, the secondary CTA is configured as bg='white' + text='primary-dark'.
-// Force that combination to render as a bubblegum CTA in the Hero only.
+// Force that combination to render as a secondary (red) CTA in the Hero only.
 .actions :global([data-sb-bg-color='white'][data-sb-text-color='primary-dark']) {
-  --sb-color-bg: var(--sb-accent-secondary-strong, #f4416a);
-  --sb-color-bg-hover: var(--sb-accent-secondary, #fd5a78);
+  --sb-color-bg: var(--sb-accent-secondary-strong, #e02e58);
+  --sb-color-bg-hover: var(--sb-accent-secondary, #ca294f);
   --sb-color-text: var(--sb-on-accent, #fff);
 }
 
 .hasBackgroundImage {
+  border-radius: 16px;
+  background-color: transparent;
+}
+
+.hasBackgroundImage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--page-shell-inline-padding);
+  right: var(--page-shell-inline-padding);
+  border-radius: 16px;
   background-image: var(--sb-hero-image, none);
   background-position: var(--sb-hero-position, center);
   background-repeat: no-repeat;
   background-size: var(--sb-hero-size, cover);
-  border-radius: 16px;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .backgroundCover {
@@ -207,20 +222,20 @@
 .contentBox {
   width: min(540px, 100%);
   margin-right: auto;
-  margin-left: 0;
+  margin-left: calc(1.5 * var(--page-shell-inline-padding));
   padding: clamp(18px, 3vw, 28px);
   border-radius: 14px;
   border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
-  background: var(--sb-surface, #ffffff);
+  background: var(--sb-surface-glass-bg, var(--sb-surface, #ffffff));
   box-shadow: 0 12px 32px rgba(2, 6, 23, 0.14);
   backdrop-filter: blur(6px);
 }
 
-@supports (color: color-mix(in srgb, #000 50%, transparent)) {
-  .contentBox {
-    background: color-mix(in srgb, var(--sb-surface, #ffffff) 94%, transparent);
-  }
-}
+// @media (max-width: 48em) {
+//   .contentBox {
+//     margin-left: 0;
+//   }
+// }
 
 .contentBoxStacked {
   margin-left: auto;
@@ -237,7 +252,8 @@
 }
 
 .contentBox .lead {
-  color: color-mix(in srgb, var(--sb-text, #111) 86%, transparent);
+  color: var(--sb-fg-muted-strong, var(--sb-text, #111));
+  padding: 0 calc(2 * var(--page-shell-inline-padding));
 }
 
 .contentBox :global(.mantine-Button-root) {
@@ -303,6 +319,20 @@
 
     /* Center the copy + CTAs for mobile. */
     text-align: center !important;
+  }
+
+  /* Non-stacked hero uses the mobile "stacked" treatment; keep the copy on a transparent background. */
+  .section.hasBackgroundImage .contentBox {
+    // background: transparent !important;
+    padding-block: calc(3 * clamp(18px, 3vw, 28px));
+  }
+
+  .section.hasBackgroundImage .inner {
+    gap: 0;
+    padding-top: 0;
+  }
+  .section {
+    border-radius: 0;
   }
 
   .section .copy {

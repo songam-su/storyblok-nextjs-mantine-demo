@@ -58,6 +58,11 @@ Notes:
 - `NEXT_PUBLIC_*` variables are exposed to the browser. Do not put private credentials there.
 - Server-only variables are read by the App Router route handlers and server utilities.
 
+Optional (forms):
+
+- This repo can send contact/newsletter notifications via Microsoft 365 SMTP.
+- Configure the `M365_*` env vars from `.env.example` and see: [docs/reference/form-email.md](../reference/form-email.md).
+
 ## 3) Connect the repo to your space
 
 The Storyblok CLI scripts under `.dev/storyblok` can help keep local types/resources in sync.

@@ -1,27 +1,33 @@
 'use client';
 
-import { useEffect } from 'react';
-import { storyblokEditable } from '@storyblok/react';
-import { useSiteConfig, normalizeSiteConfig, applyCssVariables, resetCssVariables, SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContext';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import {
+  applyCssVariables,
+  normalizeSiteConfig,
+  resetCssVariables,
+  SiteConfigContent,
+  useSiteConfig,
+} from '@/lib/storyblok/context/SiteConfigContext';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { storyblokEditable } from '@storyblok/react';
+import { useEffect } from 'react';
 import styles from './SiteConfig.module.scss';
 
 const SiteConfig = ({ blok }: SbComponentProps<SiteConfigContent>) => {
-  const { setConfig } = useSiteConfig();
+  const { setConfig, colorScheme } = useSiteConfig();
   const { isEditor } = useStoryblokEditor();
   const editable = isEditor ? storyblokEditable(blok as any) : undefined;
 
   useEffect(() => {
     const normalized = normalizeSiteConfig(blok);
     setConfig(normalized);
-    applyCssVariables(normalized);
+    applyCssVariables(normalized, colorScheme);
 
     return () => {
       setConfig(undefined);
-      resetCssVariables();
+      resetCssVariables(colorScheme);
     };
-  }, [blok, setConfig]);
+  }, [blok, colorScheme, setConfig]);
 
   if (!isEditor) return null;
 

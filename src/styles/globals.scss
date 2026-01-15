@@ -18,22 +18,65 @@ body {
 
 :root {
   --sb-color-scheme: light;
-  color-scheme: var(--sb-color-scheme, light);
-  background-color: var(--sb-background, #f8f9fb);
+  --sb-background: #f8f9fb;
+  color-scheme: var(--sb-color-scheme);
+  background-color: var(--sb-background);
 
   /*
     Brand palette tokens
-    - Primary accent: NeonIceDark (used for headings/interactive accents)
-    - Secondary accent: Bubblegum (used for selected CTAs and category pills)
+    - Primary accent: sageTeal (used for headings/interactive accents)
+    - Secondary accent: raspberryRed (used for selected CTAs and category pills)
     These are the canonical design tokens for the site.
   */
-  --sb-accent: #0899a0;
-  /* Section heading color (light-mode default keeps the existing look). */
-  --sb-section-heading-color: var(--sb-accent-hover, #31bdcb);
-  --sb-accent-weak: rgba(8, 153, 160, 0.12);
-  --sb-accent-hover: #31bdcb;
-  --sb-accent-secondary: #fd5a78;
-  --sb-accent-secondary-strong: #f4416a;
+  /*
+    Light-mode accent defaults
+    - Keep these explicit so we can tune for WCAG targets.
+    - Upgraded below via @supports(color-mix) for precise derivations.
+  */
+  --sb-accent: #348183;
+  --sb-accent-hover: #2c6c6e;
+  --sb-accent-weak: rgba(52, 129, 131, 0.12);
+  --sb-section-heading-color: var(--sb-accent);
+  /* Secondary accent is intentionally a 2-color backbone pair (bg/hover) */
+  --sb-accent-secondary: #ca294f;
+  --sb-accent-secondary-strong: #e02e58;
+
+  /* Highlight tints for inline text emphasis (Storyblok rich text) */
+  --sb-accent-highlight: #8fbabb;
+  --sb-accent-secondary-highlight: #ee8ca3;
+
+  /* Text color for primary-highlight spans (e.g. SectionHeader highlighted word) */
+  --sb-highlight-text-primary-color: var(--sb-accent-highlight);
+
+  /* Richtext list marker / icon color (e.g. pricing feature checkmarks) */
+  --sb-richtext-bullet-icon-color: var(--sb-accent);
+
+  /*
+    Centralized derived tokens (keep color-mix out of component modules)
+    - Baselines here are safe fallbacks; upgraded below with @supports(color-mix).
+  */
+  --sb-glass-bg: rgba(248, 249, 251, 0.88);
+  --sb-glass-bg-subtle: rgba(248, 249, 251, 0.92);
+
+  --sb-focus-outline-color: rgba(52, 129, 131, 0.42);
+  --sb-focus-shadow-color: rgba(52, 129, 131, 0.18);
+  --sb-focus-shadow-secondary-color: rgba(224, 46, 88, 0.24);
+  --sb-focus-border-color: var(--sb-accent);
+
+  --sb-surface-glass-bg: rgba(255, 255, 255, 0.95);
+  --sb-accent-strong-hover-bg: var(--sb-accent);
+  --sb-accent-border-weak: rgba(52, 129, 131, 0.22);
+  --sb-accent-outline-soft-color: rgba(52, 129, 131, 0.28);
+  --sb-accent-secondary-muted: rgba(224, 46, 88, 0.7);
+
+  --sb-skeleton-bg: var(--sb-surface);
+  --sb-skeleton-shimmer: rgba(0, 0, 0, 0.08);
+
+  --sb-accent-surface-hover-bg: rgba(52, 129, 131, 0.12);
+  --sb-accent-surface-selected-bg: rgba(52, 129, 131, 0.18);
+  --sb-accent-surface-active-bg: rgba(52, 129, 131, 0.24);
+  --sb-accent-border-subtle: rgba(52, 129, 131, 0.35);
+  --sb-accent-text-tint: var(--sb-accent);
 
   --sb-text: #212121;
   --sb-text-muted: #4b5563;
@@ -53,7 +96,8 @@ body {
   --page-shell-inline-padding: var(--page-shell-inline-padding-xs);
   --page-shell-block-padding: clamp(2rem, 6vw, 4rem);
   --page-shell-section-gap: clamp(1.5rem, 4vw, 3rem);
-  --page-shell-section-padding: clamp(24px, 4vw, 64px);
+  --page-shell-section-padding: clamp(12px, 2vw, 32px);
+  --page-shell-section-padding-y: calc(2 * var(--page-shell-section-padding));
   --sb-section-stack-gap: 2rem;
 
   /*
@@ -68,14 +112,15 @@ body {
   /* Baseline fallbacks for older browsers; upgraded below with @supports(color-mix). */
   --sb-surface: #ffffff;
   --sb-surface-strong: #ffffff;
-  --sb-surface-accent: var(--sb-surface-strong, #ffffff);
-  /* Bubblegum banner tint (more visible than a 12% mix). */
-  --sb-surface-accent-secondary: #ffcbd3;
+  --sb-surface-accent: var(--sb-surface-strong);
+  /* Secondary-accent banner tint (more visible than a 12% mix). */
+  --sb-surface-accent-secondary: #f9d5de;
   --sb-surface-subtle: rgba(255, 255, 255, 0.02);
   --sb-border: rgba(0, 0, 0, 0.12);
 
   /* Semantic colors */
-  --sb-danger: #e03131;
+  --sb-danger: #d31818;
+  --sb-danger-dark: #ff7a7a;
 
   /* Overlays / badges */
   --sb-overlay-bg: rgba(0, 0, 0, 0.6);
@@ -100,15 +145,59 @@ body {
 */
 :root[data-mantine-color-scheme='dark'] {
   --sb-color-scheme: dark;
-  --sb-background: #3b3b3b;
+  --sb-background: #2c2c2c;
   --sb-text: #f5f5f5;
   --sb-text-muted: rgba(245, 245, 245, 0.72);
   --sb-on-accent: #fff;
 
+  /* Dark-mode accent defaults (explicit so we can target WCAG independently). */
+  /* Swap backbone roles across schemes (dark bg uses the light hover color). */
+  --sb-accent: #2c6c6e;
+  --sb-accent-hover: #348183;
+  --sb-accent-weak: rgba(44, 108, 110, 0.18);
+  --sb-section-heading-color: var(--sb-highlight-text-primary-color);
+
+  /* Secondary accent swap across schemes */
+  --sb-accent-secondary: #e02e58;
+  --sb-accent-secondary-strong: #ca294f;
+
+  --sb-accent-highlight: #8aaeaf;
+  --sb-accent-secondary-highlight: #e1899e;
+
+  /* Primary-highlight text on dark surfaces (AA-safe) */
+  --sb-highlight-text-primary-color: #5bbabd;
+
+  /* Richtext list marker / icon color on dark surfaces (AA-safe) */
+  --sb-richtext-bullet-icon-color: #5bbabd;
+
+  /* Derived token baselines for dark mode. */
+  --sb-glass-bg: rgba(44, 44, 44, 0.88);
+  --sb-glass-bg-subtle: rgba(44, 44, 44, 0.92);
+
+  --sb-focus-outline-color: rgba(44, 108, 110, 0.55);
+  --sb-focus-shadow-color: rgba(44, 108, 110, 0.25);
+  --sb-focus-shadow-secondary-color: rgba(202, 41, 79, 0.28);
+  --sb-focus-border-color: var(--sb-accent);
+
+  --sb-surface-glass-bg: rgba(68, 64, 65, 0.95);
+  --sb-accent-strong-hover-bg: var(--sb-accent);
+  --sb-accent-border-weak: rgba(44, 108, 110, 0.3);
+  --sb-accent-outline-soft-color: rgba(44, 108, 110, 0.34);
+  --sb-accent-secondary-muted: rgba(255, 127, 159, 0.78);
+
+  --sb-skeleton-bg: var(--sb-surface);
+  --sb-skeleton-shimmer: rgba(255, 255, 255, 0.08);
+
+  --sb-accent-surface-hover-bg: rgba(44, 108, 110, 0.32);
+  --sb-accent-surface-selected-bg: rgba(44, 108, 110, 0.44);
+  --sb-accent-surface-active-bg: rgba(44, 108, 110, 0.6);
+  --sb-accent-border-subtle: rgba(44, 108, 110, 0.6);
+  --sb-accent-text-tint: var(--sb-accent);
+
   --sb-surface: #444041;
   --sb-surface-strong: #5a5152;
-  --sb-surface-accent: var(--sb-surface-strong, #5a5152);
-  --sb-surface-accent-secondary: rgba(253, 90, 120, 0.28);
+  --sb-surface-accent: var(--sb-surface-strong);
+  --sb-surface-accent-secondary: rgba(224, 46, 88, 0.28);
   --sb-surface-subtle: rgba(255, 255, 255, 0.06);
   --sb-border: rgba(255, 255, 255, 0.14);
 
@@ -118,28 +207,65 @@ body {
 
 @supports (color: color-mix(in srgb, #000 10%, #fff)) {
   :root {
-    --sb-surface: color-mix(in srgb, var(--sb-background, #f8f9fb) 92%, #ffffff);
-    --sb-surface-strong: color-mix(in srgb, var(--sb-background, #f0f2f5) 80%, #ffffff);
-    --sb-surface-accent: color-mix(in srgb, var(--sb-accent, #1d63c5) 8%, var(--sb-surface, #ffffff));
-    --sb-surface-accent-secondary: color-mix(
-      in srgb,
-      var(--sb-accent-secondary, #fd5a78) 28%,
-      var(--sb-surface, #ffffff)
-    );
-    --sb-surface-subtle: color-mix(in srgb, var(--sb-surface, #ffffff) 10%, transparent);
-    --sb-border: color-mix(in srgb, var(--sb-text, #0d0d0d) 12%, transparent);
-    --sb-text-muted: color-mix(in srgb, var(--sb-text, #111) 62%, transparent);
+    --sb-glass-bg: color-mix(in srgb, var(--sb-background) 88%, transparent);
+    --sb-glass-bg-subtle: color-mix(in srgb, var(--sb-background) 92%, transparent);
+
+    --sb-focus-outline-color: color-mix(in srgb, var(--sb-accent) 60%, transparent);
+    --sb-focus-shadow-color: color-mix(in srgb, var(--sb-accent) 18%, transparent);
+    --sb-focus-shadow-secondary-color: color-mix(in srgb, var(--sb-accent-secondary-strong) 24%, transparent);
+    --sb-focus-border-color: color-mix(in srgb, var(--sb-accent) 55%, #000);
+
+    --sb-surface-glass-bg: color-mix(in srgb, var(--sb-surface) 95%, transparent);
+    --sb-accent-strong-hover-bg: color-mix(in srgb, var(--sb-accent) 88%, #fff);
+    --sb-accent-border-weak: color-mix(in srgb, var(--sb-accent) 33%, transparent);
+    --sb-accent-outline-soft-color: color-mix(in srgb, var(--sb-accent) 40%, transparent);
+    --sb-accent-secondary-muted: color-mix(in srgb, var(--sb-accent-secondary-strong) 70%, transparent);
+
+    --sb-accent-highlight: color-mix(in srgb, var(--sb-accent) 55%, #fff);
+    --sb-accent-secondary-highlight: color-mix(in srgb, var(--sb-accent-secondary-strong) 55%, #fff);
+
+    --sb-skeleton-bg: color-mix(in srgb, var(--sb-surface) 92%, var(--sb-background));
+    --sb-skeleton-shimmer: color-mix(in srgb, var(--sb-surface) 85%, var(--sb-text));
+
+    --sb-accent-surface-hover-bg: color-mix(in srgb, var(--sb-accent) 12%, var(--sb-surface));
+    --sb-accent-surface-selected-bg: color-mix(in srgb, var(--sb-accent) 18%, var(--sb-surface));
+    --sb-accent-surface-active-bg: color-mix(in srgb, var(--sb-accent) 24%, var(--sb-surface));
+    --sb-accent-border-subtle: color-mix(in srgb, var(--sb-accent) 70%, transparent);
+    --sb-accent-text-tint: color-mix(in srgb, var(--sb-accent) 22%, currentColor);
+
+    --sb-fg-weak: color-mix(in srgb, currentColor 55%, transparent);
+    --sb-fg-muted: color-mix(in srgb, currentColor 70%, transparent);
+    --sb-fg-muted-strong: color-mix(in srgb, currentColor 86%, transparent);
+
+    --sb-surface: color-mix(in srgb, var(--sb-background) 92%, #ffffff);
+    --sb-surface-strong: color-mix(in srgb, var(--sb-background) 80%, #ffffff);
+    --sb-surface-accent: color-mix(in srgb, var(--sb-accent) 8%, var(--sb-surface));
+    --sb-surface-accent-secondary: color-mix(in srgb, var(--sb-accent-secondary-strong) 20%, var(--sb-surface));
+    --sb-surface-subtle: color-mix(in srgb, var(--sb-surface) 10%, transparent);
+    --sb-border: color-mix(in srgb, var(--sb-text) 12%, transparent);
+    --sb-text-muted: color-mix(in srgb, var(--sb-text) 62%, transparent);
+  }
+
+  :root[data-mantine-color-scheme='dark'] {
+    --sb-accent-surface-hover-bg: color-mix(in srgb, var(--sb-accent) 55%, var(--sb-surface));
+    --sb-accent-surface-selected-bg: color-mix(in srgb, var(--sb-accent) 70%, var(--sb-surface));
+    --sb-accent-surface-active-bg: color-mix(in srgb, var(--sb-accent) 85%, var(--sb-surface));
+
+    /* Keep this AA-friendly in dark mode; avoids reintroducing #ca294f* on #444041 surfaces. */
+    --sb-accent-secondary-muted: color-mix(in srgb, #ff7f9f 70%, transparent);
+
+    --sb-accent-strong-hover-bg: color-mix(in srgb, var(--sb-accent) 88%, #fff);
   }
 }
 
 html {
   scrollbar-gutter: stable;
-  background-color: var(--sb-background, #f8f9fb);
+  background-color: var(--sb-background);
 }
 
 body {
-  background-color: var(--sb-background, #f8f9fb);
-  color: var(--sb-text, #111);
+  background-color: var(--sb-background);
+  color: var(--sb-text);
   min-height: 100vh;
 }
 
@@ -180,11 +306,6 @@ body {
   }
 }
 
-// a {
-//   color: inherit;
-//   text-decoration: none;
-// }
-
 * {
   box-sizing: border-box;
 }
@@ -208,7 +329,7 @@ video {
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--sb-section-heading-color, var(--sb-accent-hover, #31bdcb));
+  color: var(--sb-section-heading-color);
 }
 
 /* Mantine sometimes wraps Title content in an inner Text/span; enforce the same treatment there too. */

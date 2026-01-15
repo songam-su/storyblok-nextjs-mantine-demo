@@ -39,7 +39,7 @@ export default async function PreviewLayout({ children }: { children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <ColorSchemeScript defaultColorScheme="light" localStorageKey="site-color-scheme" />
+        <ColorSchemeScript defaultColorScheme="dark" localStorageKey="site-color-scheme" />
       </head>
       <body>
         <PreviewProviders siteConfig={siteConfig}>

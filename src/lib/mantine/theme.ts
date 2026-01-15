@@ -3,43 +3,33 @@ import { createTheme, type MantineColorsTuple } from '@mantine/core';
 
 const FONT_STACK = 'Inter, "Segoe UI", system-ui, -apple-system, sans-serif';
 
-const neonIceLight: MantineColorsTuple = [
-  '#f0ffff',
-  '#d4feff',
-  '#b8fcfe',
-  '#9cfafc',
-  '#80f8fb',
-  '#64f6f9',
-  '#32f4f8',
-  '#1dd6da',
-  '#09b8bc',
-  '#008b8e',
+// Site backbone palettes
+// sageTeal: light bg (dark hover) = #348183, light hover (dark bg) = #2c6c6e
+const sageTeal: MantineColorsTuple = [
+  '#e7f0f0',
+  '#d2e3e4',
+  '#bed7d7',
+  '#aacacb',
+  '#8fbabb',
+  '#348183',
+  '#2c6c6e',
+  '#235658',
+  '#1b4344',
+  '#143132',
 ];
 
-const neonIceDark: MantineColorsTuple = [
-  '#e0f7f8',
-  '#bdebef',
-  '#9ae0e6',
-  '#77d4dd',
-  '#54c9d4',
-  '#31bdcb',
-  '#0899a0',
-  '#077882',
-  '#055864',
-  '#033846',
-];
-
-const bubblegumPink: MantineColorsTuple = [
-  '#ffe6ea',
-  '#ffcbd3',
-  '#ffafbc',
-  '#ff93a4',
-  '#ff768d',
-  '#fd5a78',
-  '#f4416a',
-  '#e43160',
-  '#e85c6b',
-  '#c13a4c',
+// raspberryRed: light bg (dark hover) = #E02E58, light hover (dark bg) = #CA294F
+const raspberryRed: MantineColorsTuple = [
+  '#fceaee',
+  '#f9d5de',
+  '#f6c0cd',
+  '#f3abbc',
+  '#ee8ca3',
+  '#E02E58',
+  '#CA294F',
+  '#a2213f',
+  '#7d1931',
+  '#5b1224',
 ];
 
 const blushedBrick: MantineColorsTuple = [
@@ -64,7 +54,7 @@ const gunmetal: MantineColorsTuple = [
   '#808080',
   '#696969',
   '#545454',
-  '#3b3b3b',
+  '#2c2c2c',
   '#2c2c2c',
 ];
 
@@ -161,14 +151,14 @@ const forestGreen: MantineColorsTuple = [
 
 const theme = createTheme({
   fontFamily: FONT_STACK,
-  primaryColor: 'neonIceDark',
-  primaryShade: { light: 4, dark: 6 },
+  primaryColor: 'sageTeal',
+  // Align with backbone: light uses index 5 (#348183), dark uses index 6 (#2c6c6e)
+  primaryShade: { light: 5, dark: 6 },
   colors: {
-    neonIceLight,
-    neonIceDark,
+    sageTeal,
+    raspberryRed,
 
     // Raw palettes (kept for backwards compatibility)
-    bubblegumPink,
     blushedBrick,
     amberGlow,
     tomatoJam,
@@ -180,7 +170,7 @@ const theme = createTheme({
     whiteSmoke,
 
     // Semantic aliases (preferred)
-    secondary: bubblegumPink,
+    secondary: raspberryRed,
     accent: blushedBrick,
     warning: amberGlow,
     danger: tomatoJam,
@@ -199,17 +189,17 @@ const theme = createTheme({
     },
   },
   other: {
-    backgroundDark: '#3B3B3B',
+    backgroundDark: '#2c2c2c',
     backgroundDarkMuted: '#444041',
     backgroundLight: '#ffffff',
     backgroundLightMuted: '#f5f5f5',
     textOnDark: '#f5f5f5',
     textOnLight: '#212121',
     accent: '#cc4c5a',
-    secondary: '#e85c6b',
+    secondary: '#E02E58',
     primarySwatches: {
-      lightScheme: '#0899a0',
-      darkScheme: '#32f4f8',
+      lightScheme: '#348183',
+      darkScheme: '#2c6c6e',
     },
     status: {
       danger: '#d32f2f',

@@ -12,7 +12,7 @@
   max-width: 760px;
   margin: 0 auto 2.3rem;
   text-align: center;
-  color: var(--sb-accent-secondary, #fd5a78);
+  color: var(--sb-accent-secondary, #ca294f);
   font-size: 32px;
   font-weight: 700;
   line-height: 1.5;
@@ -20,9 +20,15 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
   align-items: center;
+}
+
+@media (min-width: 75em) {
+  .grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
 }
 
 .logo {
@@ -39,4 +45,10 @@
   height: auto;
   object-fit: contain;
   display: block;
+}
+
+:global(:root[data-mantine-color-scheme='dark']) {
+  .logo img {
+    filter: invert(1);
+  }
 }

@@ -1,10 +1,16 @@
 .section {
   border-radius: var(--mantine-radius-sm);
   background-color: var(--sb-surface, var(--sb-surface-subtle, rgba(255, 255, 255, 0.02)));
-  padding: var(--page-shell-section-padding);
-  margin-bottom: var(--page-shell-section-padding);
+  padding: var(--page-shell-section-padding-y) var(--page-shell-section-padding);
+  margin-bottom: var(--page-shell-section-padding-y);
   color: inherit;
   width: 100%;
+}
+
+:global(:root[data-mantine-color-scheme='dark']) {
+  .section {
+    background: transparent;
+  }
 }
 
 .header {
@@ -15,7 +21,7 @@
 }
 
 .lead {
-  color: var(--sb-text-muted, #4b5563);
+  color: var(--sb-text-muted);
 }
 
 .accordion {
@@ -24,7 +30,7 @@
 
 .accordionItem {
   border-radius: var(--mantine-radius-sm);
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  border: 1px solid var(--sb-border);
   background: var(--sb-surface, var(--sb-surface-subtle, rgba(255, 255, 255, 0.02)));
   overflow: hidden;
 }
@@ -47,33 +53,17 @@
 
 /* When an entry is open, give the question a subtle accent tint. */
 .accordionItem[data-active='true'] .accordionLabel {
-  color: color-mix(in srgb, var(--sb-accent, #1d63c5) 22%, currentColor);
+  // color: var(--sb-accent-text-tint);
 }
 
 /* When an entry is open, keep a subtle tint on the header even when not hovered. */
 .accordionItem[data-active='true'] .accordionControl {
-  background: color-mix(in srgb, var(--sb-accent, #1d63c5) 24%, var(--sb-surface, #fff));
+  background: var(--sb-accent-surface-active-bg);
 }
 
 /* Add a more visually appealing hover state for questions (open or closed). */
 .accordionControl:hover {
-  background: color-mix(in srgb, var(--sb-accent, #1d63c5) 10%, var(--sb-surface, #fff));
-}
-
-:global(:root[data-mantine-color-scheme='dark']) {
-  .accordionControl:hover {
-    background: color-mix(in srgb, var(--sb-accent, #1d63c5) 16%, var(--sb-surface, #fff));
-    background: color-mix(in srgb, #077882 50%, var(--sb-surface, #444041));
-  }
-
-  .accordionItem[data-active='true'] .accordionControl {
-    background: color-mix(in srgb, #077882 90%, var(--sb-surface, #444041));
-  }
-
-  /* Add a more visually appealing hover state for questions (open or closed). */
-  .accordionControl:hover {
-    background: color-mix(in srgb, #077882 40%, var(--sb-surface, #444041));
-  }
+  background: var(--sb-accent-surface-hover-bg);
 }
 
 .accordionPanel {

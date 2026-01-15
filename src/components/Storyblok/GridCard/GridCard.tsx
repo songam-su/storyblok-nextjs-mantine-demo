@@ -68,7 +68,7 @@ const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
         </Flex>
 
         {blok.bold_text && (
-          <Text fw={700} fz={px(21)}>
+          <Text fw={700} fz={px(21)} className={styles.boldText}>
             {blok.bold_text}
           </Text>
         )}

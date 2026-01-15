@@ -1,25 +1,13 @@
 .skeleton {
   --_radius: 16px;
   /* Opaque mixes to prevent any underlying UI/colors bleeding through. */
-  --_bg: color-mix(in srgb, var(--sb-surface, #fff) 92%, var(--sb-background, #f8f9fb));
-  --_shimmer: color-mix(in srgb, var(--sb-surface, #fff) 85%, var(--sb-text, #111));
+  --_bg: var(--sb-skeleton-bg);
+  --_shimmer: var(--sb-skeleton-shimmer);
 
   width: 100%;
   display: grid;
   gap: clamp(18px, 3vw, 28px);
   padding: clamp(18px, 3vw, 28px) 0;
-}
-
-@supports not (color: color-mix(in srgb, #000 10%, transparent)) {
-  .skeleton {
-    --_bg: var(--sb-surface, #ffffff);
-    --_shimmer: rgba(0, 0, 0, 0.08);
-  }
-
-  :root[data-mantine-color-scheme='dark'] .skeleton {
-    --_bg: var(--sb-surface, #444041);
-    --_shimmer: rgba(255, 255, 255, 0.08);
-  }
 }
 
 .header {

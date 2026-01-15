@@ -38,6 +38,7 @@ Use this folder as the canonical home for technical docs.
 - Images + focal points: [reference/image-handling.md](reference/image-handling.md)
 - Error boundaries: [reference/error-boundaries.md](reference/error-boundaries.md)
 - Form UX conventions: [reference/form-ux.md](reference/form-ux.md)
+- Form email wiring (M365 SMTP): [reference/form-email.md](reference/form-email.md)
 - Environments + local HTTPS: [reference/deployment-envs.md](reference/deployment-envs.md)
 - Testing: [reference/testing.md](reference/testing.md)
 

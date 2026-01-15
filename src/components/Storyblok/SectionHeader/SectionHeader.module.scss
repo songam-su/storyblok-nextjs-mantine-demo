@@ -46,5 +46,6 @@
     This avoids accidentally forcing dark text on sections that intentionally
     set a light text color via inherited `color`.
   */
-  color: var(--section-header-lead-color, color-mix(in srgb, currentColor 72%, transparent));
+  color: var(--section-header-lead-color, var(--sb-text-muted, #4b5563));
+  color: var(--section-header-lead-color, var(--sb-fg-muted));
 }

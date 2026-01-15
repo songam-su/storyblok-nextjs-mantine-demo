@@ -5,7 +5,7 @@ Purpose: show how form sections (contact/newsletter) inherit theme tokens and ap
 Notes
 
 - Forms are client components styled via Mantine theme + CSS vars from site-config.
-- Newsletter CTA uses accent button styling; inputs maintain accessible contrast in light theme.
+- Newsletter CTA uses accent button styling; inputs maintain accessible contrast in both light and dark themes.
 
 ```mermaid
 flowchart LR
@@ -15,3 +15,5 @@ flowchart LR
   FormSection --> Buttons["Buttons<br/>ghost/default/accent"]
   Buttons --> Hover["Hover/focus states<br/>light-friendly"]
 ```
+
+Submission wiring (API routes + M365 SMTP): [form-email.md](form-email.md)

@@ -8,16 +8,25 @@
   display: grid;
   gap: clamp(1.5rem, 4vw, 6rem);
   align-items: start;
+
+  /* Stacked layout: show the image/aside first, then the form. */
+  grid-template-areas:
+    'aside'
+    'form';
 }
 
 @media (min-width: 62em) {
   .inner {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: stretch;
+
+    /* Desktop layout: keep form first, then the aside. */
+    grid-template-areas: 'form aside';
   }
 }
 
 .formColumn {
+  grid-area: form;
   width: 100%;
   max-width: 760px;
   justify-self: center;
@@ -38,7 +47,8 @@
 
 .richtext {
   :global(.sb-richtext) {
-    color: color-mix(in srgb, currentColor 80%, transparent);
+    color: currentColor;
+    color: var(--sb-fg-muted-strong, currentColor);
   }
 }
 
@@ -48,6 +58,12 @@
   border-radius: 16px;
   background: var(--sb-surface, #ffffff);
   box-shadow: none;
+}
+
+:root[data-mantine-color-scheme='dark'] {
+  .formCard {
+    background: var(--sb-background, #2c2c2c);
+  }
 }
 
 .inputLabel {
@@ -63,7 +79,28 @@
   margin-top: 1rem;
 }
 
+:global([data-mantine-color-scheme='light']) {
+  .intentSelectDropdown {
+    /* Match ArticleOverviewPage category Select hover treatment (light mode). */
+    --sb-category-hover-bg: var(--sb-accent-surface-hover-bg);
+  }
+}
+
+.intentSelectOptions {
+  /* Keep alignment consistent with other dropdowns in the project. */
+  padding-block: calc(0.25rem * var(--mantine-scale));
+  padding-inline-start: calc(0.125rem * var(--mantine-scale));
+  padding-inline-end: calc(0.25rem * var(--mantine-scale));
+}
+
+:global([data-mantine-color-scheme='light']) {
+  .intentSelectOption:hover {
+    background-color: var(--sb-category-hover-bg, rgba(29, 99, 197, 0.08));
+  }
+}
+
 .aside {
+  grid-area: aside;
   position: relative;
   border-radius: 0;
   overflow: hidden;
@@ -107,10 +144,19 @@
 .asideContent {
   position: relative;
   z-index: 2;
-  padding: clamp(1.25rem, 3vw, 1.8rem) clamp(2.5rem, 6vw, 4.5rem);
+  /* Stacked layout: give the overlay text more breathing room vertically. */
+  padding-block: clamp(1.5rem, 4vw, 6rem);
+  padding-inline: clamp(2.5rem, 6vw, 4.5rem);
   width: 100%;
 
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+}
+
+@media (min-width: 62em) {
+  .asideContent {
+    /* Desktop layout: keep the tighter vertical rhythm used previously. */
+    padding-block: clamp(1.25rem, 3vw, 1.8rem);
+  }
 }
 
 .quote {

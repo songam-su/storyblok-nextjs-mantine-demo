@@ -125,6 +125,13 @@ export interface FaqSection {
   [k: string]: unknown;
 }
 
+export interface Feature {
+  name?: string;
+  component: "feature";
+  _uid: string;
+  [k: string]: unknown;
+}
+
 export interface FeaturedArticlesSection {
   headline?: HeadlineSegment[];
   lead?: string;
@@ -141,6 +148,51 @@ export interface FormSection {
   form?: "contact" | "newsletter";
   button?: Button[];
   component: "form-section";
+  _uid: string;
+  [k: string]: unknown;
+}
+
+export interface Grid {
+  columns?: (
+    | ArticleOverviewPage
+    | ArticlePage
+    | Banner
+    | BannerReference
+    | Button
+    | Category
+    | ContactFormSection
+    | DefaultPage
+    | FaqEntry
+    | FaqSection
+    | Feature
+    | FeaturedArticlesSection
+    | FormSection
+    | Grid
+    | GridCard
+    | GridSection
+    | HeadlineSegment
+    | HeroSection
+    | ImageCard
+    | ImageTextSection
+    | LatestArticlesSection
+    | LogoSection
+    | NavItem
+    | NewsletterFormSection
+    | Page
+    | PersonalizedSection
+    | PriceCard
+    | ProductsSection
+    | RichtextYoutube
+    | SiteConfig
+    | TabbedContentEntry
+    | TabbedContentSection
+    | Teaser
+    | Testimonial
+    | TestimonialsSection
+    | TextSection
+    | TwoColumnsSection
+  )[];
+  component: "grid";
   _uid: string;
   [k: string]: unknown;
 }
@@ -258,6 +310,51 @@ export interface NewsletterFormSection {
   [k: string]: unknown;
 }
 
+export interface Page {
+  body?: (
+    | ArticleOverviewPage
+    | ArticlePage
+    | Banner
+    | BannerReference
+    | Button
+    | Category
+    | ContactFormSection
+    | DefaultPage
+    | FaqEntry
+    | FaqSection
+    | Feature
+    | FeaturedArticlesSection
+    | FormSection
+    | Grid
+    | GridCard
+    | GridSection
+    | HeadlineSegment
+    | HeroSection
+    | ImageCard
+    | ImageTextSection
+    | LatestArticlesSection
+    | LogoSection
+    | NavItem
+    | NewsletterFormSection
+    | Page
+    | PersonalizedSection
+    | PriceCard
+    | ProductsSection
+    | RichtextYoutube
+    | SiteConfig
+    | TabbedContentEntry
+    | TabbedContentSection
+    | Teaser
+    | Testimonial
+    | TestimonialsSection
+    | TextSection
+    | TwoColumnsSection
+  )[];
+  component: "page";
+  _uid: string;
+  [k: string]: unknown;
+}
+
 export interface PersonalizedSection {
   preview?: "new_visitor" | "returning_visitor";
   returning_visitor?: unknown;
@@ -332,6 +429,10 @@ export interface RichtextYoutube {
 }
 
 export interface SiteConfig {
+  header_logo?: StoryblokAsset;
+  header_logo_dark?: StoryblokAsset;
+  header_nav?: NavItem[];
+  header_buttons?: Button[];
   primary_highlight_color?: unknown;
   highlight_1_color?: unknown;
   highlight_2_color?: unknown;
@@ -367,9 +468,6 @@ export interface SiteConfig {
   footer_nav_2?: NavItem[];
   footer_nav_3_headline?: string;
   footer_nav_3?: NavItem[];
-  header_logo?: StoryblokAsset;
-  header_nav?: NavItem[];
-  header_buttons?: Button[];
   instagram?: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
   youtube?: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
   facebook?: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
@@ -393,6 +491,13 @@ export interface TabbedContentSection {
   lead?: string;
   entries?: TabbedContentEntry[];
   component: "tabbed-content-section";
+  _uid: string;
+  [k: string]: unknown;
+}
+
+export interface Teaser {
+  headline?: string;
+  component: "teaser";
   _uid: string;
   [k: string]: unknown;
 }
@@ -452,5 +557,6 @@ export type ContentType =
   | Banner
   | Category
   | DefaultPage
+  | Page
   | SiteConfig
   | Testimonial;

@@ -1,6 +1,6 @@
 .section {
-  padding: var(--page-shell-section-padding);
-  padding-bottom: calc(var(--page-shell-section-padding) + var(--sb-section-stack-gap));
+  padding: var(--page-shell-section-padding-y) var(--page-shell-section-padding);
+  padding-bottom: calc(var(--page-shell-section-padding-y) + var(--sb-section-stack-gap));
 }
 
 .header {
@@ -39,6 +39,17 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: stretch;
   }
+
+  .categoriesSelectInput {
+    /* Match the search control height + center the selected value. */
+    min-height: calc(2.75rem * var(--mantine-scale));
+    padding-block: calc(0.625rem * var(--mantine-scale));
+  }
+
+  .categoriesSelectSection {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .searchInput {
@@ -71,22 +82,14 @@
 }
 
 .searchInput::placeholder {
-  color: var(--sb-text-muted, #4b5563);
-  color: color-mix(in srgb, currentColor 55%, transparent);
+  color: var(--sb-fg-weak, var(--sb-text-muted, #4b5563));
   font-weight: 400;
   font-size: inherit;
 }
 
 .searchInput:focus {
-  border-color: var(--sb-accent, #1d63c5);
-  box-shadow: 0 0 0 3px rgba(29, 99, 197, 0.18);
-}
-
-@supports (color: color-mix(in srgb, #000 50%, #fff)) {
-  .searchInput:focus {
-    border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 55%, #000);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
-  }
+  border-color: var(--sb-focus-border-color, var(--sb-accent, #1d63c5));
+  box-shadow: 0 0 0 3px var(--sb-focus-shadow-color, rgba(29, 99, 197, 0.18));
 }
 
 .categories {
@@ -121,8 +124,8 @@
 
     /* Match Select dropdown hover color for non-active pills. */
     &:where(:not([data-disabled], [data-active], [data-read-only])):hover {
-      background-color: var(--sb-category-active-bg, var(--sb-accent, #1d63c5));
-      color: var(--sb-text, #111);
+      background-color: var(--sb-accent-hover);
+      color: var(--sb-on-accent, #fff);
     }
   }
 
@@ -138,18 +141,18 @@
 }
 
 :global(:root[data-mantine-color-scheme='dark']) {
-  .categories
-    :global(.mantine-SegmentedControl-label):where(:not([data-disabled], [data-active], [data-read-only])):hover {
-    /* Hover: next darker iteration of Neon Ice Dark (darker than --sb-accent). */
-    background: color-mix(in srgb, #077882 70%, var(--sb-surface, #444041));
-    border-color: color-mix(in srgb, #077882 70%, transparent);
+  .categoriesSelectOption:hover {
+    /* Match Mantine Combobox option hover in dark mode (used by contact form Select). */
+    background-color: var(--mantine-color-dark-7);
   }
-}
 
-@supports (color: color-mix(in srgb, #000 50%, #fff)) {
-  .categories
-    :global(.mantine-SegmentedControl-label):where(:not([data-disabled], [data-active], [data-read-only])):hover {
-    background-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 16%, var(--sb-surface, #fff));
+  .searchInput,
+  .searchInput::placeholder,
+  .categoriesSelectInput,
+  .categoriesSelectInput::placeholder,
+  .categoriesSelectOption {
+    font-weight: 400;
+    letter-spacing: 0.01em;
   }
 }
 
@@ -173,19 +176,12 @@
 
 .categoriesSelectInput::placeholder {
   color: var(--sb-text-muted, #4b5563);
-  color: color-mix(in srgb, currentColor 55%, transparent);
+  color: var(--sb-fg-weak);
 }
 
 .categoriesSelectInput:focus {
-  border-color: var(--sb-accent, #1d63c5);
-  box-shadow: 0 0 0 3px rgba(29, 99, 197, 0.18);
-}
-
-@supports (color: color-mix(in srgb, #000 50%, #fff)) {
-  .categoriesSelectInput:focus {
-    border-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 55%, #000);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, transparent);
-  }
+  border-color: var(--sb-focus-border-color, var(--sb-accent, #1d63c5));
+  box-shadow: 0 0 0 3px var(--sb-focus-shadow-color, rgba(29, 99, 197, 0.18));
 }
 
 .categoriesSelectSection {
@@ -195,18 +191,11 @@
 .categoriesSelectDropdown {
   border: none;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  --sb-category-active-bg: var(--sb-surface-accent, rgba(29, 99, 197, 0.12));
-  --sb-category-hover-bg: rgba(29, 99, 197, 0.08);
+  --sb-category-active-bg: var(--sb-accent-surface-selected-bg);
+  --sb-category-hover-bg: var(--sb-accent-surface-hover-bg);
 
   /* Match pill radius on the container too. */
   border-radius: var(--mantine-radius-sm);
-}
-
-@supports (color: color-mix(in srgb, #000 50%, #fff)) {
-  .categoriesSelectDropdown {
-    --sb-category-active-bg: color-mix(in srgb, var(--sb-accent, #1d63c5) 18%, var(--sb-surface, #fff));
-    --sb-category-hover-bg: color-mix(in srgb, var(--sb-accent, #1d63c5) 12%, transparent);
-  }
 }
 
 .categoriesSelectOptions {
@@ -233,12 +222,6 @@
   background-color: var(--sb-category-hover-bg, rgba(29, 99, 197, 0.08));
 }
 
-@supports (color: color-mix(in srgb, #000 50%, #fff)) {
-  .categoriesSelectOption:hover {
-    background-color: color-mix(in srgb, var(--sb-accent, #1d63c5) 12%, transparent);
-  }
-}
-
 /* Selected option */
 .categoriesSelectOption[data-combobox-selected],
 .categoriesSelectOption[data-selected] {
@@ -254,5 +237,11 @@
 
 .grid {
   align-items: stretch;
-  margin: 0;
+  margin: 0 10%;
+}
+
+@media (min-width: 62em) {
+  .grid {
+    margin: 0;
+  }
 }

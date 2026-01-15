@@ -101,17 +101,26 @@ const Header = () => {
   const navItems = normalizeNav((raw as any)?.header_nav);
   const buttons = normalizeButtons((raw as any)?.header_buttons);
   const logo = (raw as any)?.header_logo;
+  const logoDark = (raw as any)?.header_logo_dark;
   const isLight = Boolean((raw as any)?.header_light);
 
-  if (!navItems.length && !buttons.length && !logo) return null;
+  if (!navItems.length && !buttons.length && !logo && !logoDark) return null;
 
   const nextScheme = colorScheme === 'dark' ? 'light' : 'dark';
 
   const logoSrc = typeof logo?.filename === 'string' ? logo.filename : undefined;
   const logoAlt = typeof logo?.alt === 'string' ? logo.alt : undefined;
-  const isDefaultBrandLogo = Boolean(logoSrc && /brand-new-day-logo\.svg(\?.*)?$/i.test(logoSrc));
+  const logoDarkSrc = typeof logoDark?.filename === 'string' ? logoDark.filename : undefined;
+  const logoDarkAlt = typeof logoDark?.alt === 'string' ? logoDark.alt : undefined;
+
+  const isDefaultBrandLogo = Boolean(logoSrc && /andrew-caperton-avatar\.svg(\?.*)?$/i.test(logoSrc));
+
   const resolvedLogoSrc =
-    colorScheme === 'dark' && isDefaultBrandLogo ? '/assets/logos/brand-new-day-logo-dark.svg' : logoSrc;
+    colorScheme === 'dark'
+      ? logoDarkSrc || (isDefaultBrandLogo ? '/assets/logos/andrew-caperton-avatar.svg' : logoSrc)
+      : logoSrc;
+
+  const resolvedLogoAlt = (colorScheme === 'dark' ? logoDarkAlt : undefined) || logoAlt;
 
   return (
     <header className={classNames(styles.header, isLight && styles.isLight)}>
@@ -119,7 +128,7 @@ const Header = () => {
         <div className={styles.brand}>
           {resolvedLogoSrc ? (
             <span className={styles.logo}>
-              <Image src={resolvedLogoSrc} alt={logoAlt || 'Logo'} width={140} height={38} />
+              <Image src={resolvedLogoSrc} alt={resolvedLogoAlt || 'Logo'} width={140} height={38} priority />
             </span>
           ) : (
             <span className={styles.placeholder}>Logo</span>
@@ -187,7 +196,7 @@ const Header = () => {
         title={
           resolvedLogoSrc ? (
             <span className={styles.drawerBrand}>
-              <Image src={resolvedLogoSrc} alt={logoAlt || 'Logo'} width={140} height={38} />
+              <Image src={resolvedLogoSrc} alt={resolvedLogoAlt || 'Logo'} width={140} height={38} priority />
             </span>
           ) : (
             'Menu'

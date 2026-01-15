@@ -1,12 +1,18 @@
 .section {
   width: min(var(--page-shell-max-width), 100%);
-  padding: var(--page-shell-section-padding);
+  padding: var(--page-shell-section-padding-y) var(--page-shell-section-padding);
   border-radius: 16px;
   display: grid;
   gap: 16px;
   background: var(--sb-surface-accent, var(--sb-surface, #ffffff));
   border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
   margin: 64px auto;
+}
+
+:global(:root[data-mantine-color-scheme='dark']) {
+  .section {
+    --sb-section-heading-color: var(--sb-highlight-text-primary-color, #5bbabd);
+  }
 }
 
 .header {
@@ -90,5 +96,11 @@
 }
 
 .soldOut {
-  color: var(--sb-danger, #e03131);
+  color: var(--sb-danger, #d31818);
+}
+
+:global(:root[data-mantine-color-scheme='dark']) {
+  .soldOut {
+    color: var(--sb-danger-dark, #ff7a7a);
+  }
 }

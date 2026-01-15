@@ -59,28 +59,9 @@
 }
 
 // Background image support intentionally disabled.
-// .backgroundImage {
-//   background-size: cover;
-//   background-position: center;
-//   color: #1a1a1a !important;
-// }
 
 .noImage {
   background-color: var(--sb-surface-strong, #f7f9fc);
 }
 
-// .backgroundImage::after {
-//   content: '';
-//   position: absolute;
-//   inset: 0;
-//   background: color-mix(in srgb, var(--sb-surface, #ffffff) 90%, transparent);
-//   z-index: 0;
-// }
-
 /* Background image overlay is currently disabled, so we don't need z-index hacks on Mantine children. */
-
-// .backgroundImage :global(.mantine-Text-root),
-// .backgroundImage :global(.mantine-Button-root),
-// .backgroundImage :global(.mantine-Button-root span) {
-//   color: #1a1a1a !important;
-// }

@@ -55,8 +55,8 @@
 .inner {
   max-width: 640px;
   text-align: start;
-  padding: calc(0.95 * var(--page-shell-section-padding)) var(--page-shell-section-padding)
-    var(--page-shell-section-padding);
+  padding: calc(1.9 * var(--page-shell-section-padding)) calc(2 * var(--page-shell-section-padding))
+    var(--page-shell-section-padding-y);
 }
 
 /* Banner headings use SectionHeader; keep inline segment typography aligned to the Title line-height. */
