@@ -2,6 +2,7 @@
 
 import Button from '@/components/Storyblok/Button/Button';
 import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
+import { DEMO_FORM_DISABLED_MESSAGE, DISABLE_FORM_SUBMIT } from '@/lib/site/demoFlags';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ContactFormSection as ContactFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
@@ -55,6 +56,13 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
 
   const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (DISABLE_FORM_SUBMIT) {
+      setStatus('error');
+      setErrorMessage(DEMO_FORM_DISABLED_MESSAGE);
+      return;
+    }
+
     setStatus('submitting');
     setErrorMessage(null);
 
@@ -106,7 +114,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
                 component={btn.component}
                 storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
                 submit={!isNavigableLink}
-                disabled={isSubmitting}
+                disabled={(!isNavigableLink && DISABLE_FORM_SUBMIT) || isSubmitting}
                 loading={!isNavigableLink && isSubmitting}
               />
             );
@@ -116,7 +124,12 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
     }
 
     return (
-      <MantineButton type="submit" variant="filled" disabled={isSubmitting} loading={isSubmitting}>
+      <MantineButton
+        type="submit"
+        variant="filled"
+        disabled={DISABLE_FORM_SUBMIT || isSubmitting}
+        loading={isSubmitting}
+      >
         Send message
       </MantineButton>
     );

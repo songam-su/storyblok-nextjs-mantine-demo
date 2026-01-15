@@ -1,6 +1,7 @@
 'use client';
 
 import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
+import { DEMO_FORM_DISABLED_MESSAGE, DISABLE_FORM_SUBMIT } from '@/lib/site/demoFlags';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { NewsletterFormSection as NewsletterFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
@@ -28,6 +29,13 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+
+      if (DISABLE_FORM_SUBMIT) {
+        setStatus('error');
+        setErrorMessage(DEMO_FORM_DISABLED_MESSAGE);
+        return;
+      }
+
       if (!email.trim()) return;
 
       setStatus('submitting');
@@ -57,6 +65,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
 
   const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
   const isSubmitting = status === 'submitting';
+  const isSubmitDisabled = isSubmitting || DISABLE_FORM_SUBMIT;
 
   return (
     <section className={classNames('edge-to-edge', styles.section)} {...editable}>
@@ -117,7 +126,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
             <MantineButton
               type="submit"
               loading={isSubmitting}
-              disabled={isSubmitting}
+              disabled={isSubmitDisabled}
               className={classNames(styles.submitButton, submitBgKey ? getStoryblokColorClass(submitBgKey) : undefined)}
             >
               {submitLabel}
