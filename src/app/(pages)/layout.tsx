@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <ColorSchemeScript defaultColorScheme="dark" localStorageKey="site-color-scheme" />
+        <ColorSchemeScript defaultColorScheme="light" localStorageKey="site-color-scheme" />
       </head>
       <body className="app-body">
         <PublishedProviders siteConfig={siteConfig}>
