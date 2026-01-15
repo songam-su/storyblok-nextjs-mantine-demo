@@ -84,6 +84,22 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
     return [{ value: 'all', label: 'All' }, ...items];
   }, [data?.categories]);
 
+  const segmentedCategoryOptions = useMemo(
+    () =>
+      categoryOptions.map((item) => ({
+        value: item.value,
+        label: (
+          <span className={styles.categoryLabel}>
+            <span aria-hidden="true" className={styles.categoryLabelMeasure}>
+              {item.label}
+            </span>
+            <span className={styles.categoryLabelText}>{item.label}</span>
+          </span>
+        ),
+      })),
+    [categoryOptions]
+  );
+
   const filteredArticles = useMemo(() => {
     const raw = data?.articles ?? [];
     const q = query.trim().toLowerCase();
@@ -163,7 +179,7 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
               withItemsBorders={false}
               value={categoryKey}
               onChange={setCategoryKey}
-              data={categoryOptions}
+              data={segmentedCategoryOptions}
               className={styles.categories}
             />
           )}

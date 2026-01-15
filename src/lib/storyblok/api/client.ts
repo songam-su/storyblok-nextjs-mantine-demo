@@ -6,15 +6,19 @@ const REVALIDATE_SECONDS = 600; // 10 min
 import { getStory, type StoryblokVersion } from '@/lib/storyblok/api/storyblokServer';
 
 export async function fetchStory(slug: string, version: StoryblokVersion) {
+  const isDev = process.env.NODE_ENV === 'development';
+
   // Note: App Router route segment caching is controlled by `export const revalidate` in the route.
   // We still force `no-store` for draft to avoid stale preview data.
   const fetchOptions: any =
     version === 'draft'
       ? { cache: 'no-store' }
-      : {
-          cache: 'force-cache',
-          next: { revalidate: REVALIDATE_SECONDS },
-        };
+      : isDev
+        ? { cache: 'no-store' }
+        : {
+            cache: 'force-cache',
+            next: { revalidate: REVALIDATE_SECONDS },
+          };
 
   try {
     return await getStory(slug, { version, fetchOptions });

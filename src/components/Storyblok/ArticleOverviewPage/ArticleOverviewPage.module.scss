@@ -100,7 +100,7 @@
   /* Match project button geometry/typography. */
   --sc-radius: var(--mantine-radius-sm);
   --sc-font-size: var(--mantine-font-size-md);
-  --sc-padding: calc(0.5rem * var(--mantine-scale)) calc(1.375rem * var(--mantine-scale));
+  --sc-padding: calc(0.5rem * var(--mantine-scale)) calc(1.5rem * var(--mantine-scale));
   --sb-category-pill-gap: calc(0.5rem * var(--mantine-scale)); /* 8px */
   /* Minimal container: no extra padding/background; pills fill the width. */
   background-color: transparent;
@@ -110,7 +110,7 @@
   column-gap: var(--sb-category-pill-gap);
 
   :global(.mantine-SegmentedControl-label) {
-    font-weight: 600;
+    font-weight: 700;
     font-size: var(--mantine-font-size-md);
     border-radius: var(--mantine-radius-sm);
     color: var(--sb-text, #111);
@@ -140,7 +140,65 @@
   }
 }
 
+.categoryLabel {
+  display: inline-grid;
+  line-height: inherit;
+}
+
+.categoryLabelMeasure,
+.categoryLabelText {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+
+.categoryLabelMeasure {
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.categoryLabelText {
+  font-weight: 700;
+  opacity: 1;
+  transition: opacity 160ms ease;
+}
+
+.categories :global(.mantine-SegmentedControl-label)[data-active] .categoryLabelMeasure {
+  opacity: 1;
+}
+
+.categories :global(.mantine-SegmentedControl-label)[data-active] .categoryLabelText {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .categoryLabelMeasure,
+  .categoryLabelText {
+    transition: none;
+  }
+}
+
 :global(:root[data-mantine-color-scheme='dark']) {
+  .categories {
+    --sb-category-active-bg: var(--sb-highlight-text-primary-color, #5bbabd);
+    --sb-category-hover-bg: var(--sb-highlight-text-primary-color, #5bbabd);
+    color: var(--sb-background, #2c2c2c);
+  }
+
+  .categories :global(.mantine-SegmentedControl-label) {
+    &:where([data-active]) {
+      // background-color: var(--sb-accent-hover);
+      // color: #fff; //var(--sb-background, #2c2c2c);
+      color: var(--sb-background, #2c2c2c);
+    }
+
+    &:where(:not([data-disabled], [data-active], [data-read-only])):hover {
+      background-color: var(--sb-accent-hover);
+      color: var(--sb-background, #2c2c2c);
+    }
+  }
+
   .categoriesSelectOption:hover {
     /* Match Mantine Combobox option hover in dark mode (used by contact form Select). */
     background-color: var(--mantine-color-dark-7);

@@ -14,6 +14,7 @@ interface StoryblokWebhookPayload {
 }
 
 const HOME_SLUG = 'home';
+const SITE_CONFIG_SLUG = 'site-config';
 const MAX_REQUEST_AGE_SECONDS = 5 * 60; // 5 minutes
 
 const normalizeSlugToPath = (slug?: string | null) => {
@@ -33,37 +34,41 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid secret' }, { status: 401 });
   }
 
+  const rawBody = await req.text();
+
+  // Storyblok can send signed webhooks (recommended) using these headers.
+  // Some plans/configs may not expose a signing secret UI, so we also support
+  // "unsigned" webhooks where the query-string `secret` is the only auth.
   const signatureHeader = req.headers.get('x-storyblok-signature');
   const timestampHeader = req.headers.get('x-storyblok-request-timestamp');
 
-  if (!signatureHeader || !timestampHeader) {
-    return NextResponse.json({ error: 'Missing signature or timestamp' }, { status: 401 });
-  }
+  let signatureVerified = false;
+  if (signatureHeader && timestampHeader) {
+    const timestamp = Number(timestampHeader);
+    if (!Number.isFinite(timestamp)) {
+      return NextResponse.json({ error: 'Invalid timestamp' }, { status: 401 });
+    }
 
-  const timestamp = Number(timestampHeader);
-  if (!Number.isFinite(timestamp)) {
-    return NextResponse.json({ error: 'Invalid timestamp' }, { status: 401 });
-  }
+    const nowSeconds = Date.now() / 1000;
+    if (Math.abs(nowSeconds - timestamp) > MAX_REQUEST_AGE_SECONDS) {
+      return NextResponse.json({ error: 'Stale webhook' }, { status: 401 });
+    }
 
-  const nowSeconds = Date.now() / 1000;
-  if (Math.abs(nowSeconds - timestamp) > MAX_REQUEST_AGE_SECONDS) {
-    return NextResponse.json({ error: 'Stale webhook' }, { status: 401 });
-  }
+    const expectedSignature = crypto.createHmac('sha1', secret).update(rawBody).digest('hex');
+    const providedSignature = signatureHeader.trim().toLowerCase();
 
-  const rawBody = await req.text();
+    const signaturesMatch = (() => {
+      const expectedBuf = Buffer.from(expectedSignature, 'hex');
+      const providedBuf = Buffer.from(providedSignature, 'hex');
+      if (expectedBuf.length !== providedBuf.length) return false;
+      return crypto.timingSafeEqual(expectedBuf, providedBuf);
+    })();
 
-  const expectedSignature = crypto.createHmac('sha1', secret).update(rawBody).digest('hex');
-  const providedSignature = signatureHeader.trim().toLowerCase();
+    if (!signaturesMatch) {
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+    }
 
-  const signaturesMatch = (() => {
-    const expectedBuf = Buffer.from(expectedSignature, 'hex');
-    const providedBuf = Buffer.from(providedSignature, 'hex');
-    if (expectedBuf.length !== providedBuf.length) return false;
-    return crypto.timingSafeEqual(expectedBuf, providedBuf);
-  })();
-
-  if (!signaturesMatch) {
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+    signatureVerified = true;
   }
 
   let payload: StoryblokWebhookPayload;
@@ -71,6 +76,20 @@ export async function POST(req: Request) {
     payload = JSON.parse(rawBody);
   } catch {
     return NextResponse.json({ error: 'Invalid JSON payload' }, { status: 400 });
+  }
+
+  let didRevalidateRootLayout = false;
+  let didRevalidateHomePage = false;
+
+  // Publishing Storyblok site-config should update navigation/logo site-wide.
+  // Revalidate the (pages) layout at the root so all routes pick up the new config
+  // without needing to republish every page.
+  const publishedSlug = (payload.story?.full_slug ?? payload.slug ?? payload.text ?? '').trim();
+  if (publishedSlug === SITE_CONFIG_SLUG || publishedSlug.endsWith(`/${SITE_CONFIG_SLUG}`)) {
+    revalidatePath('/', 'layout');
+    revalidatePath('/', 'page');
+    didRevalidateRootLayout = true;
+    didRevalidateHomePage = true;
   }
 
   const slugs = new Set<string>();
@@ -94,5 +113,11 @@ export async function POST(req: Request) {
 
   await Promise.all(Array.from(slugs).map((slug) => revalidatePath(slug)));
 
-  return NextResponse.json({ revalidated: true, slugs: Array.from(slugs) });
+  return NextResponse.json({
+    revalidated: true,
+    signatureVerified,
+    didRevalidateRootLayout,
+    didRevalidateHomePage,
+    slugs: Array.from(slugs),
+  });
 }
