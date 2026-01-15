@@ -35,6 +35,12 @@
   flex: 0 0 auto;
 }
 
+:global(:root[data-mantine-color-scheme='dark']) {
+  .logo img {
+    filter: invert(1);
+  }
+}
+
 .nav {
   display: flex;
   align-items: center;
