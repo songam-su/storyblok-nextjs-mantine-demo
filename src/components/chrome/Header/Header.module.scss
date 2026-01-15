@@ -87,6 +87,31 @@
     color 160ms ease;
 }
 
+/*
+  Ensure theme-toggle icons always have correct contrast immediately when
+  the scheme flips. Rely on the root scheme attribute rather than derived
+  CSS variables that may update a tick later.
+*/
+:global(:root[data-mantine-color-scheme='light']) {
+  .themeToggle {
+    color: #111;
+  }
+
+  .drawerThemeToggle {
+    color: #111;
+  }
+}
+
+:global(:root[data-mantine-color-scheme='dark']) {
+  .themeToggle {
+    color: #ffffff;
+  }
+
+  .drawerThemeToggle {
+    color: #ffffff;
+  }
+}
+
 .themeToggle:hover {
   background: var(--sb-surface-strong);
 }
@@ -138,25 +163,36 @@
   }
 }
 
-/* No-overlap switching: hide BOTH final icons during transition (fade-out to blank). */
-.themeIconStack[data-switching='true'] {
-  .themeIconSun,
-  .themeIconMoon {
-    opacity: 0;
-    transform: scale(1);
+/*
+  Show the active scheme icon based on the root scheme attribute.
+  This avoids transient mismatches when React state and the root attribute
+  are briefly out of sync (common on first load in private browsing).
+*/
+:global(:root[data-mantine-color-scheme='dark']) {
+  .themeIconStack[data-ready='true'] {
+    .themeIconSun {
+      opacity: 0.75;
+    }
+
+    .themeIconMoon {
+      opacity: 0;
+    }
   }
 }
 
-/* After init and not switching, show only the active scheme's icon (fade-in from blank). */
-.themeIconStack[data-ready='true'][data-switching='false'][data-scheme='dark'] {
-  .themeIconSun {
-    opacity: 0.75;
-  }
-}
+:global(:root[data-mantine-color-scheme='light']) {
+  .themeIconStack[data-ready='true'] {
+    .themeIconMoon {
+      opacity: 0.75;
+    }
 
-.themeIconStack[data-ready='true'][data-switching='false'][data-scheme='light'] {
-  .themeIconMoon {
-    opacity: 0.75;
+    .themeIconSun {
+      opacity: 0;
+    }
+
+    .themeIconSun {
+      opacity: 0;
+    }
   }
 }
 
@@ -286,6 +322,11 @@
 
   :global(.navItem) {
     color: var(--sb-text, #111);
+  }
+
+  .themeToggle,
+  .drawerThemeToggle {
+    color: #111;
   }
 }
 

@@ -247,21 +247,10 @@ export const SiteConfigProvider = ({
   }, []);
 
   const toggleColorScheme = useCallback(() => {
-    setHasInitializedColorScheme(true);
-    setColorSchemeState((current) => {
-      const next = current === 'dark' ? 'light' : 'dark';
-
-      // Persist immediately so a fast refresh keeps the user's choice.
-      try {
-        window.localStorage.setItem(COLOR_SCHEME_STORAGE_KEY, next);
-      } catch {
-        // ignore
-      }
-
-      document.documentElement.setAttribute('data-mantine-color-scheme', next);
-      return next;
-    });
-  }, []);
+    // Use setColorScheme so the root attribute/localStorage are updated synchronously,
+    // avoiding a one-frame lag during the click event.
+    setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
+  }, [colorScheme, setColorScheme]);
 
   return (
     <SiteConfigContext.Provider
