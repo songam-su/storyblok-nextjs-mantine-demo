@@ -1,5 +1,5 @@
 .section {
-  padding: clamp(24px, 4vw, 64px);
+  padding: var(--page-shell-section-padding-y) var(--page-shell-section-padding);
   border-radius: 16px;
   position: relative;
 }
@@ -70,7 +70,7 @@
   :global(.sb-richtext) {
     color: inherit;
 
-    --imageText-pill-accent: var(--sb-accent-secondary-strong, #f4416a);
+    --imageText-pill-accent: var(--sb-accent-secondary-strong, #e02e58);
 
     h1,
     h2,
@@ -120,35 +120,18 @@
       color: var(--sb-text, #111);
       font-weight: 600;
     }
-
-    // ul > li::before {
-    //   content: '';
-    //   flex: 0 0 12px;
-    //   width: 12px;
-    //   height: 4px;
-    //   border-radius: 999px;
-    //   background: color-mix(in srgb, var(--imageText-pill-accent) 80%, transparent);
-    //   margin-top: 0.7em;
-    // }
   }
 }
 
 .eyebrow {
   font-weight: 600;
   letter-spacing: 0.01em;
-  opacity: 0.8;
+  opacity: 1;
   margin-bottom: 4px;
 }
 
-:global(:root[data-mantine-color-scheme='dark']) {
-  .eyebrow {
-    color: var(--sb-text-muted, rgba(245, 245, 245, 0.72));
-    opacity: 1;
-  }
-}
-
 .lead {
-  color: color-mix(in srgb, var(--sb-text, #111) 72%, transparent);
+  color: var(--sb-fg-muted, var(--sb-text-muted, #4b5563));
 }
 
 .actions {
@@ -158,13 +141,12 @@
   justify-content: center;
 
   a[class*='is-ghost']:hover {
-    border: 1px solid var(--sb-accent-secondary, #fd5a78);
-    background: var(--sb-accent-secondary, #fd5a78);
+    border: 1px solid var(--sb-accent-secondary, #ca294f);
+    background: var(--sb-accent-secondary, #ca294f);
   }
 
   a[class*='is-ghost']:not(:hover) {
-    border: 1px solid var(--sb-accent-secondary, #fd5a78);
-    // border/background: color-mix(in srgb, var(--sb-accent-secondary, #fd5a78) 12.5%, transparent);
+    border: 1px solid var(--sb-accent-secondary, #ca294f);
   }
 }
 

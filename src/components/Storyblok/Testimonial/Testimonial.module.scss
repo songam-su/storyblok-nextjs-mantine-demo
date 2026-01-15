@@ -65,6 +65,7 @@
 }
 
 .role {
-  color: color-mix(in srgb, currentColor 65%, transparent);
+  color: currentColor;
+  color: var(--sb-fg-muted);
   font-size: 0.95rem;
 }

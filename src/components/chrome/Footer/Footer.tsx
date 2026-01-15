@@ -1,12 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import NavItem from '@/components/Storyblok/NavItem/NavItem';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
-import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
 import { useSiteConfig } from '@/lib/storyblok/context/SiteConfigContext';
 import type { HeadlineSegment, NavItem as NavItemBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
+import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
 import styles from './Footer.module.scss';
 
 const normalizeNav = (items?: NavItemBlok[]) => (Array.isArray(items) ? items.filter(Boolean) : []);
@@ -44,49 +43,72 @@ const Footer = () => {
         <div className={styles.top}>
           {(footerHeadline.length || about) && (
             <div className={styles.content}>
-              {footerHeadline.length ? <div className={styles.headline}>{renderHeadlineSegments(footerHeadline)}</div> : null}
+              {footerHeadline.length ? (
+                <div className={styles.headline}>{renderHeadlineSegments(footerHeadline)}</div>
+              ) : null}
               {about ? <div className={styles.about}>{renderSbRichText(about)}</div> : null}
             </div>
           )}
-      
-          
+
           <div className={styles.navColumns}>
-          {nav1.length ? (
-            <div className={styles.navColumn}>
-              {(raw as any)?.footer_nav_1_headline && <div className={styles.navTitle}>{(raw as any)?.footer_nav_1_headline}</div>}
-              <div className={styles.navList}>
-                {nav1.map((item) => (
-                  <NavItem key={item._uid} blok={{ ...item, component: 'nav-item' }} _uid={item._uid} component="nav-item" />
-                ))}
+            {nav1.length ? (
+              <div className={styles.navColumn}>
+                {(raw as any)?.footer_nav_1_headline && (
+                  <div className={styles.navTitle}>{(raw as any)?.footer_nav_1_headline}</div>
+                )}
+                <div className={styles.navList}>
+                  {nav1.map((item) => (
+                    <NavItem
+                      key={item._uid}
+                      blok={{ ...item, component: 'nav-item' }}
+                      _uid={item._uid}
+                      component="nav-item"
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : null}
+            ) : null}
 
-          {nav2.length ? (
-            <div className={styles.navColumn}>
-              {(raw as any)?.footer_nav_2_headline && <div className={styles.navTitle}>{(raw as any)?.footer_nav_2_headline}</div>}
-              <div className={styles.navList}>
-                {nav2.map((item) => (
-                  <NavItem key={item._uid} blok={{ ...item, component: 'nav-item' }} _uid={item._uid} component="nav-item" />
-                ))}
+            {nav2.length ? (
+              <div className={styles.navColumn}>
+                {(raw as any)?.footer_nav_2_headline && (
+                  <div className={styles.navTitle}>{(raw as any)?.footer_nav_2_headline}</div>
+                )}
+                <div className={styles.navList}>
+                  {nav2.map((item) => (
+                    <NavItem
+                      key={item._uid}
+                      blok={{ ...item, component: 'nav-item' }}
+                      _uid={item._uid}
+                      component="nav-item"
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : null}
+            ) : null}
 
-          {nav3.length ? (
-            <div className={styles.navColumn}>
-              {(raw as any)?.footer_nav_3_headline && <div className={styles.navTitle}>{(raw as any)?.footer_nav_3_headline}</div>}
-              <div className={styles.navList}>
-                {nav3.map((item) => (
-                  <NavItem key={item._uid} blok={{ ...item, component: 'nav-item' }} _uid={item._uid} component="nav-item" />
-                ))}
+            {nav3.length ? (
+              <div className={styles.navColumn}>
+                {(raw as any)?.footer_nav_3_headline && (
+                  <div className={styles.navTitle}>{(raw as any)?.footer_nav_3_headline}</div>
+                )}
+                <div className={styles.navList}>
+                  {nav3.map((item) => (
+                    <NavItem
+                      key={item._uid}
+                      blok={{ ...item, component: 'nav-item' }}
+                      _uid={item._uid}
+                      component="nav-item"
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : null}
+            ) : null}
+          </div>
         </div>
-        </div>
 
-        {social.length ? (
+        {/* TODO - Fix styles for social links */}
+        {/* {social.length ? (
           <div className={styles.social}>
             {social.map((entry) => (
               <Link key={entry.key} href={entry.href!} className={styles.socialLink} target="_blank" rel="noreferrer">
@@ -94,7 +116,7 @@ const Footer = () => {
               </Link>
             ))}
           </div>
-        ) : null}
+        ) : null} */}
       </div>
     </footer>
   );

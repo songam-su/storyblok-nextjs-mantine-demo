@@ -13,3 +13,22 @@
   background: var(--sb-surface, #ffffff);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
 }
+
+:global([data-mantine-color-scheme='light']) {
+  .contactSelectDropdown {
+    /* Match ArticleOverviewPage category Select hover treatment (light mode). */
+    --sb-category-hover-bg: var(--sb-accent-surface-hover-bg);
+  }
+}
+
+.contactSelectOptions {
+  padding-block: calc(0.25rem * var(--mantine-scale));
+  padding-inline-start: calc(0.125rem * var(--mantine-scale));
+  padding-inline-end: calc(0.25rem * var(--mantine-scale));
+}
+
+:global([data-mantine-color-scheme='light']) {
+  .contactSelectOption:hover {
+    background-color: var(--sb-category-hover-bg, rgba(29, 99, 197, 0.08));
+  }
+}

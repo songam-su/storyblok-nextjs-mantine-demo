@@ -1,6 +1,6 @@
 .section {
   margin-bottom: 16px;
-  padding: var(--page-shell-section-padding);
+  padding: var(--page-shell-section-padding-y) var(--page-shell-section-padding);
   border-radius: 16px;
   display: grid;
   gap: var(--sb-grid-gap-sm);
@@ -12,7 +12,7 @@
 }
 
 .lead {
-  color: color-mix(in srgb, var(--sb-text, #111) 72%, transparent);
+  color: var(--sb-fg-muted, var(--sb-text-muted, #4b5563));
 }
 
 .grid {
@@ -20,6 +20,14 @@
   gap: var(--sb-grid-gap-lg);
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;
+}
+
+@media (max-width: 35.99em) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    padding-left: 10%;
+    padding-right: 10%;
+  }
 }
 
 @media (min-width: 48em) {

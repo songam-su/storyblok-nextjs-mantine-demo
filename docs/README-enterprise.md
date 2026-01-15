@@ -9,7 +9,7 @@ This document is the canonical deep-dive for architecture, flows, and extension 
 
 - Headless CMS: Storyblok (published + preview) with Visual Editor and Bridge.
 - Runtime: Next.js App Router with server layouts, client providers, lazy blok registry, Suspense/ErrorBoundary per blok.
-- Theming/Chrome: Storyblok `site-config` drives header/footer, CSS vars, and Mantine theme.
+- Theming/Chrome: Storyblok `site-config` drives header/footer, CSS vars, and Mantine theme (tokens tuned for contrast targets, including dark mode).
 - Delivery: Published uses ISR (~10 min) at CDN/edge; preview bypasses cache and reflects drafts instantly.
 - Freshness: Webhooks invalidate ISR via `revalidatePath`; preview cookie controls draft mode.
 

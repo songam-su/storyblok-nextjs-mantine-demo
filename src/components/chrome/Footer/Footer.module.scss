@@ -1,6 +1,6 @@
 .footer {
   border-top: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
-  background: color-mix(in srgb, var(--sb-background, #f8f9fb) 92%, transparent);
+  background: var(--sb-glass-bg-subtle);
   padding: 3.8rem var(--page-shell-inline-padding) 3rem;
 }
 
@@ -12,7 +12,7 @@
 }
 
 .top {
-  display: gap;
+  display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 
@@ -95,7 +95,7 @@
   font-size: 0.9rem;
   letter-spacing: 0.125em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--sb-text, #111) 60%, transparent);
+  color: var(--sb-fg-muted, var(--sb-text, #111));
   padding-bottom: 0.4rem;
 }
 
@@ -105,14 +105,14 @@
 
   :is(a, span) {
     font-weight: 600;
-    color: color-mix(in srgb, var(--sb-text, #111) 86%, transparent);
+    color: var(--sb-fg-muted-strong, var(--sb-text, #111));
     padding: 0.15rem 0.5rem;
     border-radius: var(--mantine-radius-sm);
   }
 
   /* Keep hover color stable (light + dark) while allowing other hover effects (e.g., weight) */
   :is(a, span):hover {
-    color: color-mix(in srgb, var(--sb-text, #111) 86%, transparent);
+    color: var(--sb-fg-muted-strong, var(--sb-text, #111));
     font-weight: 700;
   }
 }
@@ -138,7 +138,7 @@
 }
 
 .isLight {
-  background: color-mix(in srgb, var(--sb-background, #ffffff) 94%, #ffffff);
+  background: var(--sb-surface-strong);
   color: var(--sb-text, #111);
   border-color: var(--sb-border, rgba(0, 0, 0, 0.08));
 }

@@ -4,19 +4,32 @@ import Button from '@/components/Storyblok/Button/Button';
 import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ContactFormSection as ContactFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
+import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
 import getSbImageData from '@/lib/storyblok/utils/image';
 import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { Button as MantineButton, Stack, Text, TextInput, Textarea } from '@mantine/core';
+import { Button as MantineButton, Select, Stack, Text, TextInput, Textarea } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
 import Image from 'next/image';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import styles from './ContactFormSection.module.scss';
+
+const CONTACT_INTENT_OPTIONS = [
+  'Hire you for a project',
+  'Discuss a full-time role',
+  'Get consultation or advice',
+  'Explore collaboration',
+  'Connect for networking',
+  'Other',
+] as const;
 
 const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) => {
   const { isEditor } = useStoryblokEditor();
   const editable = isEditor ? storyblokEditable(blok as any) : undefined;
+
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const normalizeQuote = (value?: string | null) => {
     const trimmed = typeof value === 'string' ? value.trim() : '';
@@ -40,9 +53,39 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
 
   const hasButtons = Array.isArray(blok.button) && blok.button.length > 0;
 
-  const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Placeholder submit handler: wire up to API when available
+    setStatus('submitting');
+    setErrorMessage(null);
+
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      name: String(data.get('name') ?? '').trim(),
+      email: String(data.get('email') ?? '').trim(),
+      intent: String(data.get('intent') ?? '').trim(),
+      subject: String(data.get('subject') ?? '').trim(),
+      message: String(data.get('message') ?? '').trim(),
+    };
+
+    try {
+      const res = await fetch('/api/forms/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const body = (await res.json().catch(() => null)) as { message?: string; error?: string } | null;
+        throw new Error(body?.message || body?.error || `Request failed (${res.status})`);
+      }
+
+      form.reset();
+      setStatus('success');
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage(err instanceof Error ? err.message : 'Something went wrong');
+    }
   }, []);
 
   const renderButtons = () => {
@@ -51,6 +94,10 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
         <Stack gap="xs">
           {blok.button!.map((btn) => {
             if (!btn) return null;
+
+            const href = getSbLink(btn.link as any);
+            const isNavigableLink = !isEditor && Boolean(href && href !== '#');
+
             return (
               <Button
                 key={btn._uid}
@@ -58,6 +105,9 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
                 _uid={btn._uid}
                 component={btn.component}
                 storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
+                submit={!isNavigableLink}
+                disabled={isSubmitting}
+                loading={!isNavigableLink && isSubmitting}
               />
             );
           })}
@@ -66,7 +116,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
     }
 
     return (
-      <MantineButton type="submit" variant="filled">
+      <MantineButton type="submit" variant="filled" disabled={isSubmitting} loading={isSubmitting}>
         Send message
       </MantineButton>
     );
@@ -92,6 +142,15 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
     label: styles.inputLabel,
     input: styles.textareaInput,
   };
+
+  const intentSelectClassNames = {
+    ...textInputClassNames,
+    dropdown: styles.intentSelectDropdown,
+    options: styles.intentSelectOptions,
+    option: styles.intentSelectOption,
+  };
+
+  const isSubmitting = status === 'submitting';
 
   return (
     <section className={styles.section} {...editable}>
@@ -124,6 +183,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
                   autoComplete="name"
                   data-lpignore="true"
                   data-1p-ignore="true"
+                  disabled={isSubmitting}
                 />
                 <TextInput
                   classNames={textInputClassNames}
@@ -135,12 +195,23 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
                   autoComplete="email"
                   data-lpignore="true"
                   data-1p-ignore="true"
+                  disabled={isSubmitting}
+                />
+                <Select
+                  classNames={intentSelectClassNames}
+                  label="I’d like to…"
+                  name="intent"
+                  placeholder="Select an option"
+                  data={[...CONTACT_INTENT_OPTIONS]}
+                  required
+                  disabled={isSubmitting}
                 />
                 <TextInput
                   classNames={textInputClassNames}
                   label="Subject"
                   name="subject"
                   placeholder="How can we help?"
+                  disabled={isSubmitting}
                 />
                 <Textarea
                   classNames={textareaClassNames}
@@ -148,8 +219,19 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
                   name="message"
                   minRows={4}
                   placeholder="Share a bit more detail"
+                  disabled={isSubmitting}
                 />
                 <div className={styles.actions}>{renderButtons()}</div>
+                {status === 'success' ? (
+                  <Text c="secondary.6" fw={400} size="lg" ta="center" role="status">
+                    Thanks — your message was sent.
+                  </Text>
+                ) : null}
+                {status === 'error' ? (
+                  <Text c="tomatoJam.9" fw={400} size="lg" ta="center" role="alert">
+                    {errorMessage || 'Unable to send right now. Please try again.'}
+                  </Text>
+                ) : null}
               </Stack>
             </form>
           </Stack>

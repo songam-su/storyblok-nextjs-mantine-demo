@@ -3,14 +3,17 @@
 import Button from '@/components/Storyblok/Button/Button';
 import NavItem from '@/components/Storyblok/NavItem/NavItem';
 import { useSiteConfig } from '@/lib/storyblok/context/SiteConfigContext';
+import type { StoryblokAsset } from '@/lib/storyblok/resources/types/storyblok';
 import type {
   Button as ButtonBlok,
   NavItem as NavItemBlok,
 } from '@/lib/storyblok/resources/types/storyblok-components';
+import getSbImageData from '@/lib/storyblok/utils/image';
 import { Burger, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classNames from 'classnames';
 import Image from 'next/image';
+import Link from 'next/link';
 import type { SVGProps } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Header.module.scss';
@@ -101,26 +104,52 @@ const Header = () => {
   const navItems = normalizeNav((raw as any)?.header_nav);
   const buttons = normalizeButtons((raw as any)?.header_buttons);
   const logo = (raw as any)?.header_logo;
+  const logoDark = (raw as any)?.header_logo_dark;
   const isLight = Boolean((raw as any)?.header_light);
 
-  if (!navItems.length && !buttons.length && !logo) return null;
+  if (!navItems.length && !buttons.length && !logo && !logoDark) return null;
 
   const nextScheme = colorScheme === 'dark' ? 'light' : 'dark';
 
   const logoSrc = typeof logo?.filename === 'string' ? logo.filename : undefined;
   const logoAlt = typeof logo?.alt === 'string' ? logo.alt : undefined;
-  const isDefaultBrandLogo = Boolean(logoSrc && /brand-new-day-logo\.svg(\?.*)?$/i.test(logoSrc));
+  const logoDarkSrc = typeof logoDark?.filename === 'string' ? logoDark.filename : undefined;
+  const logoDarkAlt = typeof logoDark?.alt === 'string' ? logoDark.alt : undefined;
+
+  const logoData = getSbImageData(logo as StoryblokAsset | null);
+  const logoDarkData = getSbImageData(logoDark as StoryblokAsset | null);
+
+  const isDefaultBrandLogo = Boolean(logoSrc && /andrew-caperton-avatar\.svg(\?.*)?$/i.test(logoSrc));
+
   const resolvedLogoSrc =
-    colorScheme === 'dark' && isDefaultBrandLogo ? '/assets/logos/brand-new-day-logo-dark.svg' : logoSrc;
+    colorScheme === 'dark'
+      ? logoDarkSrc || (isDefaultBrandLogo ? '/assets/logos/andrew-caperton-avatar.svg' : logoSrc)
+      : logoSrc;
+
+  const resolvedLogoAlt = (colorScheme === 'dark' ? logoDarkAlt : undefined) || logoAlt;
+  const resolvedLogoObjectPosition =
+    (colorScheme === 'dark' ? logoDarkData?.objectPosition : undefined) || logoData?.objectPosition;
 
   return (
     <header className={classNames(styles.header, isLight && styles.isLight)}>
       <div className={styles.inner}>
         <div className={styles.brand}>
           {resolvedLogoSrc ? (
-            <span className={styles.logo}>
-              <Image src={resolvedLogoSrc} alt={logoAlt || 'Logo'} width={140} height={38} />
-            </span>
+            <Link href="/" className={styles.logoLink} aria-label="Home">
+              <span className={styles.logo}>
+                <Image
+                  src={resolvedLogoSrc}
+                  alt={resolvedLogoAlt || 'Logo'}
+                  fill
+                  sizes="(min-width: 48em) 160px, 136px"
+                  style={{
+                    objectFit: 'contain',
+                    ...(resolvedLogoObjectPosition ? { objectPosition: resolvedLogoObjectPosition } : {}),
+                  }}
+                  priority
+                />
+              </span>
+            </Link>
           ) : (
             <span className={styles.placeholder}>Logo</span>
           )}
@@ -186,9 +215,21 @@ const Header = () => {
         size="xs"
         title={
           resolvedLogoSrc ? (
-            <span className={styles.drawerBrand}>
-              <Image src={resolvedLogoSrc} alt={logoAlt || 'Logo'} width={140} height={38} />
-            </span>
+            <Link href="/" className={styles.logoLink} aria-label="Home" onClick={mobileMenu.close}>
+              <span className={styles.drawerBrand}>
+                <Image
+                  src={resolvedLogoSrc}
+                  alt={resolvedLogoAlt || 'Logo'}
+                  fill
+                  sizes="160px"
+                  style={{
+                    objectFit: 'contain',
+                    ...(resolvedLogoObjectPosition ? { objectPosition: resolvedLogoObjectPosition } : {}),
+                  }}
+                  priority
+                />
+              </span>
+            </Link>
           ) : (
             'Menu'
           )

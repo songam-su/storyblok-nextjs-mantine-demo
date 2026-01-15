@@ -66,7 +66,7 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
           <Stack gap="24px" className={styles.copy} ref={copyRef}>
             <div className={styles.headline}>
               {blok.eyebrow && (
-                <Text size="sm" className={styles.eyebrow} c="dimmed">
+                <Text size="sm" className={styles.eyebrow}>
                   {blok.eyebrow}
                 </Text>
               )}

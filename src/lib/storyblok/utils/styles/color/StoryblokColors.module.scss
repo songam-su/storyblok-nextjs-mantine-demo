@@ -9,20 +9,18 @@
 
 @layer components {
   .primary-highlight {
-    /* neonIceLight */
-    --sb-color-bg: #32f4f8;
-    --sb-color-bg-hover: #09b8bc;
-    --sb-color-text: #212121;
-    --sb-color-highlight: #9cfafc;
+    --sb-color-bg: var(--sb-accent, #348183);
+    --sb-color-bg-hover: var(--sb-accent-hover, #2c6c6e);
+    --sb-color-text: var(--sb-on-accent, #ffffff);
+    --sb-color-highlight: var(--sb-accent-highlight, #8fbabb);
   }
 
   .highlight-1,
   .color_1 {
-    /* bubblegumPink */
-    --sb-color-bg: #f4416a;
-    --sb-color-bg-hover: #fd5a78;
-    --sb-color-text: #ffffff;
-    --sb-color-highlight: #ff93a4;
+    --sb-color-bg: var(--sb-accent-secondary-strong, #e02e58);
+    --sb-color-bg-hover: var(--sb-accent-secondary, #ca294f);
+    --sb-color-text: var(--sb-on-accent, #ffffff);
+    --sb-color-highlight: var(--sb-accent-secondary-highlight, #ee8ca3);
   }
 
   .highlight-2,
@@ -60,7 +58,7 @@
   @supports (color: color-mix(in srgb, #000 10%, #fff)) {
     :global(:root[data-mantine-color-scheme='dark']) {
       .primary-dark {
-        --sb-color-bg-hover: color-mix(in srgb, #212121 62%, #3b3b3b);
+        --sb-color-bg-hover: color-mix(in srgb, #212121 62%, #2c2c2c);
       }
     }
   }
@@ -113,8 +111,8 @@
 
   .background-6 {
     /* gunmetal */
-    --sb-color-bg: #3b3b3b;
-    --sb-color-bg-hover: #3b3b3b;
+    --sb-color-bg: #2c2c2c;
+    --sb-color-bg-hover: #2c2c2c;
     --sb-color-text: #ffffff;
   }
 
@@ -155,23 +153,52 @@
   }
 }
 
-@layer utilities {
-  .highlight-text-primary-highlight {
-    color: #9cfafc;
-  }
+.highlight-text-highlight-1,
+.highlight-text-color_1,
+:global(.mantine-Text-root).highlight-text-highlight-1,
+:global(.mantine-Text-root).highlight-text-color_1 {
+  color: var(--sb-accent-secondary-highlight, #ee8ca3);
+}
 
-  .highlight-text-highlight-1,
-  .highlight-text-color_1 {
-    color: #ff93a4;
-  }
+:global(.mantine-Title-root[data-order='2']) :global(.mantine-Text-root).highlight-text-highlight-1,
+:global(.mantine-Title-root[data-order='2']) :global(.mantine-Text-root).highlight-text-color_1 {
+  color: var(--sb-accent-secondary-highlight, #ee8ca3);
+}
 
-  .highlight-text-highlight-2,
-  .highlight-text-color_2 {
-    color: #ffd073;
-  }
+.highlight-text-highlight-2,
+.highlight-text-color_2,
+:global(.mantine-Text-root).highlight-text-highlight-2,
+:global(.mantine-Text-root).highlight-text-color_2 {
+  color: #ffd073;
+}
 
-  .highlight-text-highlight-3,
-  .highlight-text-color_3 {
-    color: #f19fab;
-  }
+:global(.mantine-Title-root[data-order='2']) :global(.mantine-Text-root).highlight-text-highlight-2,
+:global(.mantine-Title-root[data-order='2']) :global(.mantine-Text-root).highlight-text-color_2 {
+  color: #ffd073;
+}
+
+.highlight-text-highlight-3,
+.highlight-text-color_3,
+:global(.mantine-Text-root).highlight-text-highlight-3,
+:global(.mantine-Text-root).highlight-text-color_3 {
+  color: #d53e5b;
+}
+
+:global(.mantine-Title-root[data-order='2']) :global(.mantine-Text-root).highlight-text-highlight-3,
+:global(.mantine-Title-root[data-order='2']) :global(.mantine-Text-root).highlight-text-color_3 {
+  color: #d53e5b;
+}
+
+.highlight-text-highlight-3,
+.highlight-text-color_3,
+:global(:root[data-mantine-color-scheme='dark'] .mantine-Text-root).highlight-text-highlight-3,
+:global(:root[data-mantine-color-scheme='dark'] .mantine-Text-root).highlight-text-color_3 {
+  color: #f19fab;
+}
+
+:global(:root[data-mantine-color-scheme='dark'] .mantine-Title-root[data-order='2'])
+  :global(.mantine-Text-root).highlight-text-highlight-3,
+:global(:root[data-mantine-color-scheme='dark'] .mantine-Title-root[data-order='2'])
+  :global(.mantine-Text-root).highlight-text-color_3 {
+  color: #f19fab;
 }

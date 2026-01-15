@@ -374,6 +374,7 @@ If preview isn’t behaving as expected, these are the common culprits:
   - `STORYBLOK_REGION` (only if you need a region override)
   - `STORYBLOK_SPACE_ID` (Storyblok CLI tooling)
   - `PREVIEW_ALLOWED_HOSTS`, `PREVIEW_AUTH_COOKIE_NAME`, `STORYBLOK_EDITOR_HOST` (preview route gating for QA/enterprise)
+  - `M365_EMAIL`, `M365_PASSWORD` (only if you enable form email via `POST /api/forms/contact` and `POST /api/forms/newsletter`)
 
 | Variable                             | Description                                                       | Scope  |
 | ------------------------------------ | ----------------------------------------------------------------- | ------ |
@@ -397,6 +398,17 @@ Additional:
 | Variable   | Description                                                               | Scope  |
 | ---------- | ------------------------------------------------------------------------- | ------ |
 | `SITE_URL` | Canonical base URL for metadata (used for `metadataBase`, OG URLs, etc.). | Server |
+
+Form email (Microsoft 365 SMTP): see [docs/reference/form-email.md](docs/reference/form-email.md).
+
+| Variable          | Description                                                     | Scope  |
+| ----------------- | --------------------------------------------------------------- | ------ |
+| `M365_EMAIL`      | Microsoft 365 mailbox username (usually the full email).        | Server |
+| `M365_PASSWORD`   | Password or app password (tenant policy dependent).             | Server |
+| `M365_SMTP_HOST`  | SMTP host override (default: `smtp.office365.com`).             | Server |
+| `M365_SMTP_PORT`  | SMTP port override (default: `587`).                            | Server |
+| `M365_FROM_EMAIL` | Optional from address (defaults to `M365_EMAIL`).               | Server |
+| `M365_TO_EMAIL`   | Destination inbox for notifications (defaults to `M365_EMAIL`). | Server |
 
 ## Deploying on Vercel (short)
 

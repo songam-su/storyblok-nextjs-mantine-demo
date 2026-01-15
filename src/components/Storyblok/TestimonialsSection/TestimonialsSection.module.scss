@@ -1,7 +1,7 @@
 .section {
   width: min(var(--page-shell-max-width), 100%);
   margin: 0 auto;
-  padding: var(--page-shell-section-padding);
+  padding: var(--page-shell-section-padding-y) var(--page-shell-section-padding);
 }
 
 .inner {

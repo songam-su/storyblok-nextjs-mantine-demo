@@ -1,22 +1,22 @@
 [
   {
     "name": "level-1",
-    "id": 113942138414924,
-    "uuid": "25bd5845-06f6-4a5f-bb46-4682b1f00f22",
+    "id": 132488044436459,
+    "uuid": "828c955e-fc36-495a-bd64-5b9b60ce228d",
     "parent_id": null,
     "parent_uuid": null
   },
   {
     "name": "level-2",
-    "id": 113942140176205,
-    "uuid": "1be9ae66-afc2-4c29-a165-5699c15094a1",
+    "id": 132488045087724,
+    "uuid": "da8c2181-c7ee-4bef-b1ee-442233b307c8",
     "parent_id": null,
     "parent_uuid": null
   },
   {
     "name": "richtext",
-    "id": 113942140639054,
-    "uuid": "e4165c3d-b636-41a6-8466-cc4f6ca35639",
+    "id": 132488045902829,
+    "uuid": "be749e50-663b-43b7-876c-fcbb6df07bb4",
     "parent_id": null,
     "parent_uuid": null
   }

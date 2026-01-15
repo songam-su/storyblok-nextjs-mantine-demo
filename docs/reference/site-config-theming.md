@@ -6,6 +6,7 @@ Notes
 
 - Layout fetches `site-config` (published or draft depending on mode).
 - Colors/fonts are normalized into CSS variables and Mantine theme overrides.
+- Default palette tokens are tuned for WCAG contrast targets (especially in dark mode) and should be treated as the canonical source of truth.
 - Header/footer/nav come from site-config bloks (NavItem uses getSbLink sanitizer).
 - Page sections inherit theme tokens (light surfaces, text color, button styles) via providers.
 
@@ -14,15 +15,18 @@ Notes
 There are three layers that work together:
 
 1. **Global CSS tokens (defaults + dark-mode defaults)**
-  - Defined in [src/styles/globals.scss](../../src/styles/globals.scss)
-  - Dark mode uses the selector `:root[data-mantine-color-scheme='dark']`.
+
+- Defined in [src/styles/globals.scss](../../src/styles/globals.scss)
+- Dark mode uses the selector `:root[data-mantine-color-scheme='dark']`.
 
 2. **Runtime overrides from Storyblok `site-config`**
-  - Applied by `SiteConfigProvider` (colors/fonts/radius are normalized and applied as CSS vars + Mantine theme overrides).
-  - Implementation: [src/lib/storyblok/context/SiteConfigContext.tsx](../../src/lib/storyblok/context/SiteConfigContext.tsx)
+
+- Applied by `SiteConfigProvider` (colors/fonts/radius are normalized and applied as CSS vars + Mantine theme overrides).
+- Implementation: [src/lib/storyblok/context/SiteConfigContext.tsx](../../src/lib/storyblok/context/SiteConfigContext.tsx)
 
 3. **Mantine theme palettes + semantic defaults**
-  - Palettes (Neon Ice, Bubblegum, etc.) and semantic tokens live in [src/lib/mantine/theme.ts](../../src/lib/mantine/theme.ts)
+
+- Palettes (Neon Ice, Bubblegum, etc.) and semantic tokens live in [src/lib/mantine/theme.ts](../../src/lib/mantine/theme.ts)
 
 ## Light vs dark mode (how it’s chosen)
 
@@ -32,8 +36,8 @@ There are three layers that work together:
 
 Entry points:
 
-- Published layout: [src/app/(pages)/layout.tsx](../../src/app/(pages)/layout.tsx)
-- Preview layout: [src/app/(preview)/sb-preview/layout.tsx](../../src/app/(preview)/sb-preview/layout.tsx)
+- Published layout: [src/app/(pages)/layout.tsx](<../../src/app/(pages)/layout.tsx>)
+- Preview layout: [src/app/(preview)/sb-preview/layout.tsx](<../../src/app/(preview)/sb-preview/layout.tsx>)
 - Color scheme key: [src/lib/site/colorScheme.ts](../../src/lib/site/colorScheme.ts)
 
 ## CSS tokens (what exists today)
@@ -90,9 +94,12 @@ Defined (with light defaults) in [src/styles/globals.scss](../../src/styles/glob
 - `--page-shell-inline-padding*`
 - `--page-shell-block-padding`
 - `--page-shell-section-gap`
-- `--page-shell-section-padding`
+- `--page-shell-section-padding` (base unit; commonly used for horizontal/inline padding)
+- `--page-shell-section-padding-y` (derived vertical section padding)
 - `--sb-section-stack-gap`
 - `--sb-grid-gap-sm`, `--sb-grid-gap-lg`, `--sb-grid-gap-ui`
+
+Tip: many sections follow the convention `padding: var(--page-shell-section-padding-y) var(--page-shell-section-padding);` to keep vertical rhythm consistent while still allowing narrower horizontal padding.
 
 ### Storyblok “color classes” (per-section overrides)
 
