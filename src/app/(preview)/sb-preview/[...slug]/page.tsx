@@ -65,7 +65,19 @@ export default async function PreviewPage(props: PreviewPageProps) {
 
   const story = await fetchStory(slug, 'draft');
 
-  if (!story) notFound();
+  if (!story) {
+    // For missing preview stories, always route to the CMS-driven 404 in preview.
+    // Avoid redirect loops if the CMS 404 story itself is missing.
+    if (slug !== 'error-404') {
+      const canonical404 = `/sb-preview/error-404${qs.toString() ? `?${qs.toString()}` : ''}`;
+      redirect(canonical404);
+    }
+
+    const { default: CmsPreviewNotFoundPage } = await import(
+      '@/components/chrome/CmsPreviewNotFoundPage/CmsPreviewNotFoundPage'
+    );
+    return <CmsPreviewNotFoundPage />;
+  }
 
   return <StoryblokRenderer story={story} isPreview={true} />;
 }

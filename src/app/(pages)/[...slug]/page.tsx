@@ -1,4 +1,6 @@
+import CmsNotFoundPage from '@/components/chrome/CmsNotFoundPage/CmsNotFoundPage';
 import { getCanonicalUrl } from '@/lib/site/canonicalUrl';
+import { generateCmsNotFoundMetadata } from '@/lib/site/cmsNotFound';
 import { fetchStory } from '@/lib/storyblok/api/client';
 import StoryblokRenderer from '@/lib/storyblok/rendering/StoryblokRenderer';
 import type { Metadata } from 'next';
@@ -22,7 +24,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const story = await fetchStory(slug, 'published');
   const content = story?.content as any;
 
-  if (!story) return {};
+  if (!story) {
+    return generateCmsNotFoundMetadata({ pathname });
+  }
 
   return {
     title: content?.meta_title || story.name,
@@ -40,7 +44,13 @@ export default async function Page({ params }: PageProps) {
   // Published pages only. Preview is handled via the dedicated /sb-preview route.
   const story = await fetchStory(slug, 'published');
 
-  if (!story) notFound();
+  if (!story) {
+    if (process.env.NODE_ENV === 'development') {
+      return <CmsNotFoundPage />;
+    }
+
+    notFound();
+  }
 
   return <StoryblokRenderer story={story} isPreview={false} />;
 }

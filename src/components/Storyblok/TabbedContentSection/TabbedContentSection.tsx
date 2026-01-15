@@ -55,7 +55,12 @@ const TabbedContentSection = ({ blok }: SbComponentProps<TabbedContentSectionBlo
               <Tabs.List>
                 {entries.map((entry) => (
                   <Tabs.Tab key={entry._uid} value={entry._uid}>
-                    {entry.headline || 'Untitled'}
+                    <span className={styles.tabLabel}>
+                      <span aria-hidden="true" className={styles.tabLabelMeasure}>
+                        {entry.headline || 'Untitled'}
+                      </span>
+                      <span className={styles.tabLabelText}>{entry.headline || 'Untitled'}</span>
+                    </span>
                   </Tabs.Tab>
                 ))}
               </Tabs.List>

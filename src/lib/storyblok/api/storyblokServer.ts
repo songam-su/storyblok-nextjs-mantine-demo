@@ -53,6 +53,33 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
 
+function getErrorStatusCode(error: unknown): number | null {
+  if (!isPlainObject(error)) return null;
+
+  const directStatus = error.status;
+  if (typeof directStatus === 'number') return directStatus;
+
+  const response = error.response;
+  if (isPlainObject(response) && typeof response.status === 'number') return response.status;
+
+  return null;
+}
+
+function isNotFoundError(error: unknown): boolean {
+  const status = getErrorStatusCode(error);
+  if (status === 404) return true;
+
+  const message = error instanceof Error ? error.message : null;
+  if (typeof message === 'string' && message.toLowerCase().includes('could not be found')) return true;
+
+  if (isPlainObject(error)) {
+    const maybeMessage = error.message;
+    if (typeof maybeMessage === 'string' && maybeMessage.toLowerCase().includes('could not be found')) return true;
+  }
+
+  return false;
+}
+
 function collectMultilinkStoryUuids(root: unknown, uuids: Set<string>) {
   if (Array.isArray(root)) {
     for (const item of root) collectMultilinkStoryUuids(item, uuids);
@@ -190,6 +217,10 @@ export async function getStory(
 
     // Bubble up configuration errors; swallow transient fetch issues to avoid user-facing 500s.
     if (isConfigError) throw error;
+
+    // A missing Storyblok story is an expected outcome for unknown slugs (404 page rendering).
+    // Don't log it as an error (Next dev overlays console.error).
+    if (isNotFoundError(error)) return null;
 
     console.error('Storyblok getStory failed', { slug, version, error });
     return null;

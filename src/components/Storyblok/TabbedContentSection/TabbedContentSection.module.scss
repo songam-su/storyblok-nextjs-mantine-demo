@@ -30,10 +30,10 @@
 .tabsTab {
   border: 1px solid transparent;
   border-radius: var(--mantine-radius-sm);
-  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  padding: var(--mantine-spacing-sm) calc(1.375rem * var(--mantine-scale));
   background: var(--sb-surface);
   color: var(--sb-text);
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--mantine-font-size-lg);
   line-height: 1.2;
   transition:
@@ -43,10 +43,52 @@
     box-shadow 120ms ease;
 
   /* Mantine may wrap tab text in inner elements; ensure typography inherits consistently. */
-  :is(span, .mantine-Text-root) {
+  :global(.mantine-Text-root),
+  :global(.mantine-Text-root) span {
     font-weight: inherit;
     font-size: inherit;
     line-height: inherit;
+  }
+}
+
+.tabLabel {
+  display: inline-grid;
+  line-height: inherit;
+}
+
+.tabLabelMeasure,
+.tabLabelText {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+
+.tabLabelMeasure {
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.tabLabelText {
+  font-weight: 700;
+  opacity: 1;
+  transition: opacity 160ms ease;
+}
+
+.tabsTab[data-active='true'] .tabLabelMeasure,
+.tabsTab:not([data-active='true']):hover .tabLabelMeasure {
+  opacity: 1;
+}
+
+.tabsTab[data-active='true'] .tabLabelText,
+.tabsTab:not([data-active='true']):hover .tabLabelText {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tabLabelMeasure,
+  .tabLabelText {
+    transition: none;
   }
 }
 
@@ -56,6 +98,17 @@
   color: var(--sb-on-accent);
 }
 
+.tabsTab[data-active='true'] {
+  background: var(--sb-accent);
+  color: var(--sb-on-accent);
+  border-color: var(--sb-accent);
+}
+
+// .tabsTab[data-active='true']:hover {
+//   background: var(--sb-accent-hover);
+//   border-color: var(--sb-accent-hover);
+// }
+
 :global(:root[data-mantine-color-scheme='dark']) {
   .tabsTab:not([data-active='true']) {
     background: transparent;
@@ -64,32 +117,22 @@
   }
 
   .tabsTab:not([data-active='true']):hover {
-    background: var(--sb-accent-surface-selected-bg);
-    border-color: var(--sb-accent-border-subtle);
+    background: var(--sb-accent-hover, #8dd4d4);
+    border-color: var(--sb-accent-hover, #8dd4d4);
+    color: var(--sb-background, #2c2c2c);
   }
-}
 
-.tabsTab[data-active='true'] {
-  background: var(--sb-accent);
-  color: var(--sb-on-accent);
-  border-color: var(--sb-accent);
-}
-
-.tabsTab[data-active='true']:hover {
-  background: var(--sb-accent-hover);
-  border-color: var(--sb-accent-hover);
-}
-
-:global(:root[data-mantine-color-scheme='dark']) {
   .tabsTab[data-active='true'] {
-    background: var(--sb-accent-hover);
-    border-color: var(--sb-accent-hover);
+    background: var(--sb-highlight-text-primary-color, #5bbabd);
+    border-color: var(--sb-highlight-text-primary-color, #5bbabd);
+    color: var(--sb-background, #2c2c2c);
   }
 
-  .tabsTab[data-active='true']:hover {
-    background: var(--sb-accent);
-    border-color: var(--sb-accent);
-  }
+  // .tabsTab[data-active='true']:hover {
+  //   background: var(--sb-highlight-text-primary-color, #5bbabd);
+  //   border-color: var(--sb-highlight-text-primary-color, #5bbabd);
+  //   color: var(--sb-background, #2c2c2c);
+  // }
 }
 
 .panels {

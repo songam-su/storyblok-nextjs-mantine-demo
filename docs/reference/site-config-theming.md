@@ -15,18 +15,15 @@ Notes
 There are three layers that work together:
 
 1. **Global CSS tokens (defaults + dark-mode defaults)**
-
-- Defined in [src/styles/globals.scss](../../src/styles/globals.scss)
-- Dark mode uses the selector `:root[data-mantine-color-scheme='dark']`.
+  - Defined in [src/styles/globals.scss](../../src/styles/globals.scss)
+  - Dark mode uses the selector `:root[data-mantine-color-scheme='dark']`.
 
 2. **Runtime overrides from Storyblok `site-config`**
-
-- Applied by `SiteConfigProvider` (colors/fonts/radius are normalized and applied as CSS vars + Mantine theme overrides).
-- Implementation: [src/lib/storyblok/context/SiteConfigContext.tsx](../../src/lib/storyblok/context/SiteConfigContext.tsx)
+  - Applied by `SiteConfigProvider` (colors/fonts/radius are normalized and applied as CSS vars + Mantine theme overrides).
+  - Implementation: [src/lib/storyblok/context/SiteConfigContext.tsx](../../src/lib/storyblok/context/SiteConfigContext.tsx)
 
 3. **Mantine theme palettes + semantic defaults**
-
-- Palettes (Neon Ice, Bubblegum, etc.) and semantic tokens live in [src/lib/mantine/theme.ts](../../src/lib/mantine/theme.ts)
+  - Palettes (Neon Ice, Bubblegum, etc.) and semantic tokens live in [src/lib/mantine/theme.ts](../../src/lib/mantine/theme.ts)
 
 ## Light vs dark mode (how it’s chosen)
 
@@ -36,8 +33,8 @@ There are three layers that work together:
 
 Entry points:
 
-- Published layout: [src/app/(pages)/layout.tsx](<../../src/app/(pages)/layout.tsx>)
-- Preview layout: [src/app/(preview)/sb-preview/layout.tsx](<../../src/app/(preview)/sb-preview/layout.tsx>)
+- Published layout: [src/app/(pages)/layout.tsx](../../src/app/(pages)/layout.tsx)
+- Preview layout: [src/app/(preview)/sb-preview/layout.tsx](../../src/app/(preview)/sb-preview/layout.tsx)
 - Color scheme key: [src/lib/site/colorScheme.ts](../../src/lib/site/colorScheme.ts)
 
 ## CSS tokens (what exists today)
