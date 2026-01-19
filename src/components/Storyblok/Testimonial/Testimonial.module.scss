@@ -2,14 +2,14 @@
   display: flex;
   flex-direction: column;
   gap: 1.8rem;
-  padding: 1.5rem;
+  padding: var(--sb-card-padding);
   height: 100%;
   margin: 0 auto;
   width: 80%;
   max-width: 720px;
-  background: var(--sb-surface, #ffffff);
-  color: var(--sb-text, #111);
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  background: var(--sb-surface);
+  color: var(--sb-text);
+  border: 1px solid var(--sb-border);
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
   min-height: 160px;
@@ -67,5 +67,4 @@
 .role {
   color: currentColor;
   color: var(--sb-fg-muted);
-  font-size: 0.95rem;
 }

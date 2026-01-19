@@ -2,10 +2,10 @@
   position: relative;
   display: grid;
   gap: 12px;
-  padding: 20px;
+  padding: var(--sb-card-padding);
   border-radius: 16px;
-  background: var(--sb-surface, #ffffff);
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  background: var(--sb-surface);
+  border: 1px solid var(--sb-border);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
 }
 
@@ -18,8 +18,8 @@
 .badge {
   justify-self: start;
   position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
+  top: var(--sb-card-padding);
+  right: var(--sb-card-padding);
 }
 
 .header {
@@ -36,12 +36,14 @@
 .perMonth {
   font-weight: 600;
   font-size: 1.8rem;
-  color: var(--sb-text, #111);
+  color: var(--sb-text);
 }
 
 .body {
   display: grid;
   gap: 1rem;
+  font-size: var(--sb-font-body-size);
+  line-height: var(--sb-font-body-line-height);
 
   p {
     margin: 0.5rem 0;
@@ -59,7 +61,7 @@
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    line-height: 1.4;
+    line-height: var(--sb-font-body-line-height);
   }
 
   :global(ul > li::before) {
@@ -69,7 +71,7 @@
     line-height: 1;
     font-size: 18px;
     font-weight: 900;
-    color: var(--sb-richtext-bullet-icon-color, var(--sb-accent, #1d63c5));
+    color: var(--sb-richtext-bullet-icon-color, var(--sb-accent));
     margin-top: 0.4em;
   }
 }
@@ -84,9 +86,57 @@
 }
 
 .bottomRichText > div {
-  color: var(--sb-text, #111);
+  color: var(--sb-text);
 
   p {
     margin: 0.25rem 0;
+  }
+}
+
+@media (max-width: 48em) {
+  .card {
+    text-align: center;
+  }
+
+  .badge {
+    position: static;
+    align-self: center;
+    justify-self: center;
+    margin-inline: auto;
+  }
+
+  .header {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header :global(.mantine-Title-root) {
+    width: 100%;
+    text-align: center;
+  }
+
+  .price {
+    width: 100%;
+    text-align: center;
+  }
+
+  .body {
+    text-align: center;
+    justify-items: center;
+  }
+
+  .body :global(ul) {
+    justify-items: center;
+  }
+
+  .body :global(ul > li) {
+    justify-content: center;
+  }
+
+  .bottomRichText > div {
+    text-align: center;
   }
 }

@@ -282,3 +282,53 @@ export async function getStories(options: {
     return [] as ISbStoryData[];
   }
 }
+
+export async function getLinks(options: {
+  version: StoryblokVersion;
+  startsWith?: string;
+  perPage?: number;
+  fetchOptions?: any;
+}) {
+  const { version, startsWith, perPage = 100, fetchOptions } = options;
+
+  try {
+    const client = createServerClient(version);
+
+    const collected: any[] = [];
+    let page = 1;
+
+    while (true) {
+      const query: any = {
+        version,
+        per_page: perPage,
+        page,
+        ...(startsWith ? { starts_with: startsWith } : null),
+        ...(version === 'draft' ? { cv: Date.now() } : null),
+      };
+
+      // storyblok-js-client supports arbitrary endpoints via `get()`.
+      const res = await (client as any).get('cdn/links', query, fetchOptions as ISbCustomFetch | undefined);
+      const linksObj = res?.data?.links ?? {};
+      const links = Object.values(linksObj);
+
+      if (!links.length) break;
+      collected.push(...(links as any[]));
+
+      const total = res?.data?.total;
+      if (typeof total === 'number' && collected.length >= total) break;
+      if (links.length < perPage) break;
+
+      page += 1;
+    }
+
+    return collected;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : '';
+    const isConfigError = typeof message === 'string' && message.includes('Missing Storyblok');
+
+    if (isConfigError) throw error;
+
+    console.error('Storyblok getLinks failed', { version, startsWith, error });
+    return [] as any[];
+  }
+}

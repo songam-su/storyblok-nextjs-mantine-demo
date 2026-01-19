@@ -2,7 +2,7 @@
 
 import Button from '@/components/Storyblok/Button/Button';
 import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
-import { DEMO_FORM_DISABLED_MESSAGE, DISABLE_FORM_SUBMIT } from '@/lib/site/demoFlags';
+import SbImage from '@/components/ui/SbImage/SbImage';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ContactFormSection as ContactFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
@@ -12,7 +12,6 @@ import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { Button as MantineButton, Select, Stack, Text, TextInput, Textarea } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
-import Image from 'next/image';
 import { useCallback, useState } from 'react';
 import styles from './ContactFormSection.module.scss';
 
@@ -56,13 +55,6 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
 
   const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (DISABLE_FORM_SUBMIT) {
-      setStatus('error');
-      setErrorMessage(DEMO_FORM_DISABLED_MESSAGE);
-      return;
-    }
-
     setStatus('submitting');
     setErrorMessage(null);
 
@@ -114,7 +106,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
                 component={btn.component}
                 storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
                 submit={!isNavigableLink}
-                disabled={(!isNavigableLink && DISABLE_FORM_SUBMIT) || isSubmitting}
+                disabled={isSubmitting}
                 loading={!isNavigableLink && isSubmitting}
               />
             );
@@ -124,12 +116,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
     }
 
     return (
-      <MantineButton
-        type="submit"
-        variant="filled"
-        disabled={DISABLE_FORM_SUBMIT || isSubmitting}
-        loading={isSubmitting}
-      >
+      <MantineButton type="submit" variant="filled" disabled={isSubmitting} loading={isSubmitting}>
         Send message
       </MantineButton>
     );
@@ -184,9 +171,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
 
             <form className={styles.formCard} onSubmit={handleSubmit} data-lpignore="true" data-1p-ignore="true">
               <Stack gap="md">
-                <Text c="dimmed" size="sm">
-                  Tell us about your request.
-                </Text>
+                <Text c="dimmed">Tell us about your request.</Text>
                 <TextInput
                   classNames={textInputClassNames}
                   label="Name"
@@ -254,7 +239,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
           <aside className={classNames(styles.aside, hasImage ? styles.asideWithImage : styles.asideNoImage)}>
             {hasImage ? (
               <div className={styles.asideImage} aria-hidden="true">
-                <Image
+                <SbImage
                   src={imageData!.src}
                   alt={imageData!.alt || ''}
                   fill

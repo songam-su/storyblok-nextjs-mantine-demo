@@ -19,9 +19,7 @@ const LatestArticlesSection = ({ blok }: SbComponentProps<LatestArticlesSectionB
       <Stack gap="var(--sb-section-stack-gap)">
         {hasHeader && <SectionHeader headline={blok.headline} lead={blok.lead} />}
 
-        <Text size="sm" c="dimmed">
-          No articles connected yet.
-        </Text>
+        <Text c="dimmed">No articles connected yet.</Text>
       </Stack>
     </section>
   );

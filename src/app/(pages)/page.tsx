@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: content?.meta_title || story.name,
     description: content?.meta_description,
     alternates: {
-      canonical: getCanonicalUrl('/'),
+      canonical: getCanonicalUrl('/').toString(),
     },
   };
 }

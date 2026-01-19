@@ -25,20 +25,51 @@
   color: var(--sb-text);
 }
 
-.logo {
-  position: relative;
+.logoLink {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 140px;
-  height: 38px;
-  flex: 0 0 auto;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 10px;
 }
 
-:global(:root[data-mantine-color-scheme='dark']) {
-  .logo img {
-    filter: invert(1);
-  }
+.logoLink:focus-visible {
+  outline: 2px solid var(--sb-focus-outline-color);
+  outline-offset: 3px;
+}
+
+/*
+  Logo lockup (mark + text) is rendered as two separate SVGs.
+  Keep it simple + browser-safe: no transforms, just contain.
+*/
+.logoLockup {
+  --logo-height: 2.875em;
+  --logo-mark-width: 2.875em;
+  --logo-text-width: 11.25em;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  height: var(--logo-height);
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.logoMark,
+.logoText {
+  position: relative;
+  height: 100%;
+}
+
+.logoMark {
+  width: var(--logo-mark-width);
+}
+
+.logoText {
+  width: var(--logo-text-width);
+  top: -0.03125em;
+  left: -0.125em;
 }
 
 .nav {
@@ -71,15 +102,17 @@
 }
 
 .themeToggle {
-  width: 40px;
-  height: 40px;
+  --theme-toggle-bg: var(--sb-header-theme-toggle-bg);
+
+  width: calc(2.25rem * 1);
+  height: calc(2.25rem * 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
+  border-radius: var(--mantine-radius-sm);
   border: 1px solid var(--sb-border);
-  background: var(--sb-surface);
-  color: var(--sb-text);
+  background: var(--theme-toggle-bg);
+  color: var(--sb-header-theme-toggle-fg);
   cursor: pointer;
   transition:
     background-color 160ms ease,
@@ -87,33 +120,36 @@
     color 160ms ease;
 }
 
-/*
-  Ensure theme-toggle icons always have correct contrast immediately when
-  the scheme flips. Rely on the root scheme attribute rather than derived
-  CSS variables that may update a tick later.
-*/
-:global(:root[data-mantine-color-scheme='light']) {
-  .themeToggle {
-    color: #111;
-  }
-
-  .drawerThemeToggle {
-    color: #111;
-  }
-}
-
-:global(:root[data-mantine-color-scheme='dark']) {
-  .themeToggle {
-    color: #ffffff;
-  }
-
-  .drawerThemeToggle {
-    color: #ffffff;
-  }
-}
-
 .themeToggle:hover {
-  background: var(--sb-surface-strong);
+  --theme-toggle-bg: var(--sb-header-theme-toggle-hover-bg);
+  background: var(--theme-toggle-bg);
+  border-color: var(--sb-header-theme-toggle-hover-border);
+  color: var(--sb-header-theme-toggle-hover-fg);
+}
+
+.sunCore {
+  fill: var(--theme-toggle-bg, transparent);
+}
+
+/* Hover: make the visible icon crisp (100% opacity) and white. */
+:global(:root[data-mantine-color-scheme='dark']) {
+  .themeToggle:hover {
+    .themeIconStack[data-ready='true'] {
+      .themeIconSun {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+:global(:root[data-mantine-color-scheme='light']) {
+  .themeToggle:hover {
+    .themeIconStack[data-ready='true'] {
+      .themeIconMoon {
+        opacity: 1;
+      }
+    }
+  }
 }
 
 .themeToggle:focus-visible {
@@ -164,6 +200,18 @@
 }
 
 /*
+  Prevent overlap during scheme switching:
+  - When switching, fade both final icons to 0.
+  - When switching ends, the scheme-specific rules below fade the correct icon back in.
+*/
+.themeIconStack[data-ready='true'][data-switching='true'] {
+  .themeIconSun,
+  .themeIconMoon {
+    opacity: 0 !important;
+  }
+}
+
+/*
   Show the active scheme icon based on the root scheme attribute.
   This avoids transient mismatches when React state and the root attribute
   are briefly out of sync (common on first load in private browsing).
@@ -183,11 +231,7 @@
 :global(:root[data-mantine-color-scheme='light']) {
   .themeIconStack[data-ready='true'] {
     .themeIconMoon {
-      opacity: 0.75;
-    }
-
-    .themeIconSun {
-      opacity: 0;
+      opacity: 1;
     }
 
     .themeIconSun {
@@ -205,74 +249,114 @@
 .mobileMenuControl {
   display: none;
   margin-left: auto;
-  color: var(--sb-text, #111);
+  color: var(--sb-text);
 
   :global(.mantine-Burger-burger) {
-    background-color: var(--sb-text, #111);
+    background-color: var(--sb-text);
   }
 
   :global(.mantine-Burger-burger)::before,
   :global(.mantine-Burger-burger)::after {
-    background-color: var(--sb-text, #111);
+    background-color: var(--sb-text);
   }
 }
 
-.drawerBrand {
-  position: relative;
+.drawerBrandLockup {
+  --drawer-logo-height: 44px;
+  --drawer-logo-mark-width: 44px;
+  --drawer-logo-text-width: 120px;
+
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 140px;
-  height: 38px;
+  gap: 10px;
+  height: var(--drawer-logo-height);
 }
 
-.drawerContent {
-  background: var(--sb-background, #ffffff);
-  color-scheme: var(--sb-color-scheme, light);
-  color: var(--sb-text, #111);
+.drawerBrandMark,
+.drawerBrandText {
+  position: relative;
+  height: 100%;
 }
 
-.drawerHeader {
-  border-bottom: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
-  background: var(--sb-background, #ffffff);
-  color: var(--sb-text, #111);
+.drawerBrandMark {
+  width: var(--drawer-logo-mark-width);
+}
 
-  :global(.mantine-Drawer-title) {
-    color: var(--sb-text, #111);
-  }
-
-  :global(.mantine-CloseButton-root) {
-    color: var(--sb-text, #111);
-  }
+.drawerBrandText {
+  width: var(--drawer-logo-text-width);
+  top: -0.03125em;
+  left: -0.125em;
 }
 
 .drawerBody {
   padding-top: 0.75rem;
-  background: var(--sb-background, #ffffff);
-  color: var(--sb-text, #111);
+  padding-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileNav {
+  order: 1;
+}
+
+:global(:root[data-mantine-color-scheme='dark']) {
+  .drawerContent {
+    background: var(--sb-surface-glass-bg);
+    color-scheme: dark;
+    color: var(--sb-text);
+  }
+
+  .drawerHeader {
+    border-bottom: 1px solid var(--sb-border);
+    background: var(--sb-surface-glass-bg);
+    color: var(--sb-text);
+
+    :global(.mantine-Drawer-title) {
+      color: inherit;
+    }
+
+    :global(.mantine-CloseButton-root) {
+      color: inherit;
+    }
+  }
+
+  .drawerBody {
+    background: var(--sb-surface-glass-bg);
+    color: var(--sb-text);
+  }
 }
 
 .drawerUtilities {
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
-  margin-bottom: 1rem;
+  order: 3;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  padding-bottom: 0;
+  border-top: 1px solid var(--sb-border);
 }
 
 .drawerThemeToggle {
+  --theme-toggle-bg: var(--sb-header-theme-toggle-hover-bg);
+
   width: 100%;
+  height: 36px;
+  min-height: 36px;
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 600;
+  line-height: 1;
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.7rem 0.85rem;
-  border-radius: 12px;
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
-  background: var(--sb-surface, #ffffff);
-  color: var(--sb-text, #111);
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1.25rem 0 0.85rem;
+  border-radius: var(--mantine-radius-sm);
+  border: none;
+  background: var(--theme-toggle-bg);
+  color: var(--sb-header-theme-toggle-hover-fg);
   cursor: pointer;
-}
-
-.drawerThemeToggle:hover {
-  background: var(--sb-surface-strong, #ffffff);
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
 }
 
 .drawerThemeToggle:focus-visible {
@@ -281,8 +365,40 @@
 }
 
 .drawerThemeToggleLabel {
-  font-weight: 600;
+  font-size: inherit;
+  font-weight: inherit;
   letter-spacing: 0.01em;
+  text-align: center;
+  line-height: inherit;
+  opacity: 0.5;
+  transition: opacity 520ms ease-in-out;
+}
+
+/* Match the label opacity to the visible icon and fade it during switching. */
+.drawerThemeToggle {
+  .themeIconStack[data-ready='true'] ~ .drawerThemeToggleLabel {
+    opacity: 1;
+  }
+
+  .themeIconStack[data-ready='true'][data-switching='true'] ~ .drawerThemeToggleLabel {
+    opacity: 0 !important;
+  }
+}
+
+:global(:root[data-mantine-color-scheme='dark']) {
+  .drawerThemeToggle {
+    color: var(--sb-on-accent);
+
+    .themeIconStack[data-ready='true'] {
+      .themeIconSun {
+        opacity: 1;
+      }
+    }
+
+    .themeIconStack[data-ready='true'] ~ .drawerThemeToggleLabel {
+      opacity: 1;
+    }
+  }
 }
 
 .mobileNavList {
@@ -290,18 +406,52 @@
   flex-direction: column;
   gap: 0.9rem;
 
-  :is(a, span) {
-    display: block;
+  /*
+    IMPORTANT: Only style direct children (the nav items themselves).
+    NavItem renders an inner <span> label; if we style all descendant spans
+    we double-apply padding and the <a> becomes ~90px tall.
+  */
+  > :is(a, span) {
+    display: flex;
+    align-items: center;
     width: 100%;
     font-size: 1.05rem;
-    color: var(--sb-text, #111);
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--sb-text);
     padding: 0.6rem 0.65rem;
     border-radius: var(--mantine-radius-sm);
+    text-decoration: none;
+  }
+
+  > :is(a, span):hover {
+    background: var(--sb-surface-hover-bg);
+  }
+}
+
+/* Active item (including Home and Storyblok NavItems). */
+.mobileNavItemActive,
+.mobileNavList > :is(a, span)[aria-current='page'] {
+  font-weight: 750;
+  background: var(--sb-surface-active-bg);
+}
+
+:global(:root[data-mantine-color-scheme='dark']) {
+  .mobileNavList {
+    > :is(a, span):hover {
+      background: var(--sb-surface-hover-bg);
+    }
+  }
+
+  .mobileNavItemActive,
+  .mobileNavList > :is(a, span)[aria-current='page'] {
+    background: var(--sb-surface-active-bg);
   }
 }
 
 .mobileActions {
-  margin-top: 1.25rem;
+  margin-top: 3.5rem;
+  order: 2;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -313,26 +463,39 @@
 
 .placeholder {
   opacity: 0.7;
-  font-size: 0.9rem;
+  font-size: var(--sb-font-body-size);
+  line-height: var(--sb-font-body-line-height);
 }
 
 .isLight {
   background: var(--sb-surface);
-  border-color: var(--sb-border, rgba(0, 0, 0, 0.08));
+  border-color: var(--sb-border);
 
   :global(.navItem) {
-    color: var(--sb-text, #111);
+    color: var(--sb-text);
   }
 
   .themeToggle,
   .drawerThemeToggle {
-    color: #111;
+    color: var(--sb-text);
   }
 }
 
 @media (max-width: 48em) {
   .inner {
     gap: 0.75rem;
+  }
+
+  .logoLockup {
+    --logo-height: 40px;
+    --logo-mark-width: 40px;
+    --logo-text-width: calc(136px * 1.5);
+  }
+
+  .drawerBrandLockup {
+    --drawer-logo-height: 40px;
+    --drawer-logo-mark-width: 40px;
+    --drawer-logo-text-width: calc(120px * 1.5);
   }
 
   .nav,

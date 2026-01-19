@@ -1,17 +1,17 @@
 .button {
-  // background-color: var(--sb-accent, #0070f3);
-  border: 1px solid var(--sb-border, #eaeaea);
+  // background-color: var(--sb-accent);
+  border: 1px solid var(--sb-border);
   margin: 1rem;
-  padding: 1.5rem;
+  padding: var(--sb-card-padding);
   border-radius: 10px;
   text-align: left;
-  color: var(--sb-text, #111);
+  color: var(--sb-text);
   max-width: 300px;
   transition: all 0.3s ease-in-out;
 
   &:hover {
-    border-color: var(--sb-accent, #0070f3);
-    color: var(--sb-accent, #0070f3);
+    border-color: var(--sb-accent);
+    color: var(--sb-accent);
   }
 }
 
@@ -24,4 +24,5 @@
 .description {
   font-size: 1rem;
   text-align: left;
+  line-height: var(--sb-font-body-line-height);
 }

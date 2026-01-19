@@ -22,7 +22,7 @@
 .mobileImage {
   display: none;
   width: 100%;
-  border-radius: 16px;
+  border-radius: 0;
   overflow: hidden;
   background-image: var(--sb-hero-image, none);
   background-position: var(--sb-hero-position, center);
@@ -80,7 +80,7 @@
   font-weight: 650;
   letter-spacing: 0.01em;
   opacity: 0.98;
-  color: var(--sb-accent, #1d63c5);
+  color: var(--sb-accent);
   font-size: clamp(0.98rem, 1.4vw, 1.1rem);
   line-height: 1.2;
 }
@@ -116,7 +116,7 @@
 }
 
 .lead {
-  color: var(--sb-text-muted, #4b5563);
+  color: var(--sb-text-muted);
   margin: 0;
   max-width: 60ch;
   font-size: clamp(1.05rem, 1.35vw, 1.22rem);
@@ -185,9 +185,9 @@
 // In the provided home-page example, the secondary CTA is configured as bg='white' + text='primary-dark'.
 // Force that combination to render as a secondary (red) CTA in the Hero only.
 .actions :global([data-sb-bg-color='white'][data-sb-text-color='primary-dark']) {
-  --sb-color-bg: var(--sb-accent-secondary-strong, #e02e58);
-  --sb-color-bg-hover: var(--sb-accent-secondary, #ca294f);
-  --sb-color-text: var(--sb-on-accent, #fff);
+  --sb-color-bg: var(--sb-accent-secondary-strong);
+  --sb-color-bg-hover: var(--sb-accent-secondary);
+  --sb-color-text: var(--sb-on-accent);
 }
 
 .hasBackgroundImage {
@@ -225,8 +225,8 @@
   margin-left: calc(1.5 * var(--page-shell-inline-padding));
   padding: clamp(18px, 3vw, 28px);
   border-radius: 14px;
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
-  background: var(--sb-surface-glass-bg, var(--sb-surface, #ffffff));
+  border: 1px solid var(--sb-border);
+  background: var(--sb-surface-glass-bg);
   box-shadow: 0 12px 32px rgba(2, 6, 23, 0.14);
   backdrop-filter: blur(6px);
 }
@@ -248,11 +248,11 @@
 
 .contentBox :global(.mantine-Text-root),
 .contentBox :global(.mantine-Title-root) {
-  color: var(--sb-text, #111);
+  color: var(--sb-text);
 }
 
 .contentBox .lead {
-  color: var(--sb-fg-muted-strong, var(--sb-text, #111));
+  color: var(--sb-fg-muted-strong, var(--sb-text));
   padding: 0 calc(2 * var(--page-shell-inline-padding));
 }
 

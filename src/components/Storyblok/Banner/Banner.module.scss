@@ -5,7 +5,7 @@
   background-color: var(--sb-color-bg, var(--sb-color-default-bg));
 
   /* SectionHeader (h2) should be white inside banners. */
-  --sb-section-heading-color: var(--sb-on-overlay, #fff);
+  --sb-section-heading-color: var(--sb-on-overlay);
 }
 
 .banner + .banner {
@@ -28,8 +28,8 @@
   background-size: var(--sb-banner-size, cover);
   background-position: var(--sb-banner-position, center);
   background-repeat: no-repeat;
-  color: var(--sb-on-overlay, #fff);
-  --sb-color-text: var(--sb-on-overlay, #fff);
+  color: var(--sb-on-overlay);
+  --sb-color-text: var(--sb-on-overlay);
 }
 
 .background-cover {

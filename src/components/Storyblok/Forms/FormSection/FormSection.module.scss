@@ -8,9 +8,9 @@
 
 .formCard {
   padding: 1.5rem;
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  border: 1px solid var(--sb-border);
   border-radius: 16px;
-  background: var(--sb-surface, #ffffff);
+  background: var(--sb-surface);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
 }
 
@@ -29,6 +29,6 @@
 
 :global([data-mantine-color-scheme='light']) {
   .contactSelectOption:hover {
-    background-color: var(--sb-category-hover-bg, rgba(29, 99, 197, 0.08));
+    background-color: var(--sb-category-hover-bg, var(--sb-accent-surface-hover-bg));
   }
 }

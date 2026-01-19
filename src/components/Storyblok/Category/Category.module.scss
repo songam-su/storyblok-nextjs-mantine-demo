@@ -1,8 +1,8 @@
 .card {
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  border: 1px solid var(--sb-border);
   border-radius: 12px;
-  padding: 16px;
-  background: var(--sb-surface, var(--sb-surface-subtle, rgba(255, 255, 255, 0.02)));
+  padding: var(--sb-card-padding);
+  background: var(--sb-surface);
   display: grid;
   gap: 8px;
 }

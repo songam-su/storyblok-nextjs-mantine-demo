@@ -1,14 +1,14 @@
 'use client';
 
+import SbImage from '@/components/ui/SbImage/SbImage';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type { ArticlePage as ArticlePageBlok } from '@/lib/storyblok/resources/types/storyblok-components';
+import getSbImageData from '@/lib/storyblok/utils/image';
+import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { Badge, Stack, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
-import Image from 'next/image';
-import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichText';
-import getSbImageData from '@/lib/storyblok/utils/image';
-import type { ArticlePage as ArticlePageBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './ArticlePage.module.scss';
 
 const ArticlePage = ({ blok }: SbComponentProps<ArticlePageBlok>) => {
@@ -30,7 +30,7 @@ const ArticlePage = ({ blok }: SbComponentProps<ArticlePageBlok>) => {
         {categories.length > 0 && (
           <div className={styles.categories}>
             {categories.map((cat, idx) => (
-              <Badge key={typeof cat === 'string' ? idx : cat?.uuid ?? idx} variant="light" color="gray">
+              <Badge key={typeof cat === 'string' ? idx : (cat?.uuid ?? idx)} variant="light" color="gray">
                 {typeof cat === 'string' ? cat : cat?.name || cat?.slug || 'Category'}
               </Badge>
             ))}
@@ -40,7 +40,7 @@ const ArticlePage = ({ blok }: SbComponentProps<ArticlePageBlok>) => {
 
       {hasImage && (
         <div className={styles.media}>
-          <Image
+          <SbImage
             src={imageData!.src}
             alt={imageData!.alt || ''}
             width={imageData?.width || 1600}

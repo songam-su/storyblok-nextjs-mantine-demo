@@ -18,7 +18,7 @@
 .categories :global(.mantine-Badge-label) {
   font-size: 18px;
   letter-spacing: 0.5px;
-  color: var(--sb-accent, #1d63c5);
+  color: var(--sb-accent);
 }
 
 .media {
@@ -26,7 +26,7 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  background: var(--sb-surface, #ffffff);
+  background: var(--sb-surface);
   width: 50%;
   margin: 1rem auto 2rem;
 }

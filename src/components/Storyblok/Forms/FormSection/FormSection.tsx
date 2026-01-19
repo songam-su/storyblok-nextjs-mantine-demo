@@ -2,7 +2,6 @@
 
 import Button from '@/components/Storyblok/Button/Button';
 import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
-import { DEMO_FORM_DISABLED_MESSAGE, DISABLE_FORM_SUBMIT } from '@/lib/site/demoFlags';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { FormSection as FormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
@@ -33,13 +32,6 @@ const FormSection = ({ blok }: SbComponentProps<FormSectionBlok>) => {
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-
-      if (DISABLE_FORM_SUBMIT) {
-        setStatus('error');
-        setErrorMessage(DEMO_FORM_DISABLED_MESSAGE);
-        return;
-      }
-
       setStatus('submitting');
       setErrorMessage(null);
 
@@ -103,12 +95,7 @@ const FormSection = ({ blok }: SbComponentProps<FormSectionBlok>) => {
 
     // Fallback button to keep the form actionable
     return (
-      <MantineButton
-        type="submit"
-        variant="filled"
-        disabled={DISABLE_FORM_SUBMIT || isSubmitting}
-        loading={isSubmitting}
-      >
+      <MantineButton type="submit" variant="filled" disabled={isSubmitting} loading={isSubmitting}>
         Submit
       </MantineButton>
     );
@@ -157,16 +144,16 @@ const FormSection = ({ blok }: SbComponentProps<FormSectionBlok>) => {
 
         <Paper className={styles.formCard} withBorder={false} shadow="sm" component="form" onSubmit={handleSubmit}>
           <Stack gap="md">
-            <Text c="dimmed" size="sm">
+            <Text c="dimmed">
               {formType === 'newsletter' ? 'Subscribe to stay updated.' : 'Send us a note and we will get back to you.'}
             </Text>
             {status === 'success' ? (
-              <Text c="dimmed" size="sm" role="status">
+              <Text c="dimmed" role="status">
                 {formType === 'newsletter' ? 'Thanks — we received your email.' : 'Thanks — your message was sent.'}
               </Text>
             ) : null}
             {status === 'error' ? (
-              <Text c="dimmed" size="sm" role="alert">
+              <Text c="dimmed" role="alert">
                 {errorMessage || 'Unable to submit right now. Please try again.'}
               </Text>
             ) : null}

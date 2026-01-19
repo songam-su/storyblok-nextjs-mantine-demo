@@ -8,6 +8,7 @@ import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { CloseButton, SegmentedControl, Select, SimpleGrid, Text, TextInput, Title } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { storyblokEditable } from '@storyblok/react';
+import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './ArticleOverviewPage.module.scss';
 
@@ -37,6 +38,9 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
   const { isEditor } = useStoryblokEditor();
   const editable = isEditor ? storyblokEditable(blok as any) : undefined;
 
+  const pathname = usePathname();
+  const isPreviewPath = pathname === '/sb-preview' || pathname.startsWith('/sb-preview/');
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<ApiResponse | null>(null);
@@ -52,7 +56,6 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
         setIsLoading(true);
         setError(null);
 
-        const isPreviewPath = typeof window !== 'undefined' && window.location.pathname.startsWith('/sb-preview');
         const version = isPreviewPath ? 'draft' : 'published';
         const res = await fetch(`/api/articles?version=${version}`, {
           signal: controller.signal,
@@ -77,7 +80,7 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
 
     load();
     return () => controller.abort();
-  }, []);
+  }, [isPreviewPath]);
 
   const categoryOptions = useMemo(() => {
     const items = (data?.categories ?? []).map((c) => ({ value: c.key, label: c.name }));
@@ -190,13 +193,9 @@ const ArticleOverviewPage = ({ blok }: SbComponentProps<ArticleOverviewPageBlok>
         {isLoading ? (
           <PageSkeleton mode="content" />
         ) : error ? (
-          <Text size="sm" c="red">
-            {error}
-          </Text>
+          <Text c="red">{error}</Text>
         ) : filteredArticles.length === 0 ? (
-          <Text size="sm" c="dimmed">
-            No articles match your filters.
-          </Text>
+          <Text c="dimmed">No articles match your filters.</Text>
         ) : (
           <SimpleGrid
             cols={{ base: 1, sm: 2, md: 3, lg: 4 }}

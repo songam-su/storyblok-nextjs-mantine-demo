@@ -11,6 +11,7 @@
   },
   "scripts": {
     "build": "next build",
+    "check:sb-tokens": "node ./scripts/check-sb-tokens.mjs",
     "dev": "next dev -p 3010 --experimental-https --experimental-https-key ./.dev/certs/localhost-key.pem --experimental-https-cert ./.dev/certs/localhost-crt.pem",
     "dev-setup": "node ./.dev/certs/generate-cert.cjs",
     "sb:build": "storyblok build",

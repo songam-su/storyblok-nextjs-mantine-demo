@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 interface StoryblokWebhookPayload {
@@ -16,6 +16,14 @@ interface StoryblokWebhookPayload {
 const HOME_SLUG = 'home';
 const SITE_CONFIG_SLUG = 'site-config';
 const MAX_REQUEST_AGE_SECONDS = 5 * 60; // 5 minutes
+const REVALIDATE_TAG_PROFILE = { expire: 0 } as const;
+
+const normalizeStorySlugForTag = (slug?: string | null) => {
+  if (!slug) return null;
+  const trimmed = slug.trim().replace(/^\/+/, '').replace(/\/+$/, '');
+  if (!trimmed) return null;
+  return trimmed.toLowerCase();
+};
 
 const normalizeSlugToPath = (slug?: string | null) => {
   if (!slug) return null;
@@ -86,11 +94,27 @@ export async function POST(req: Request) {
   // without needing to republish every page.
   const publishedSlug = (payload.story?.full_slug ?? payload.slug ?? payload.text ?? '').trim();
   if (publishedSlug === SITE_CONFIG_SLUG || publishedSlug.endsWith(`/${SITE_CONFIG_SLUG}`)) {
+    revalidateTag(`story:${SITE_CONFIG_SLUG}`, REVALIDATE_TAG_PROFILE);
     revalidatePath('/', 'layout');
     revalidatePath('/', 'page');
     didRevalidateRootLayout = true;
     didRevalidateHomePage = true;
   }
+
+  // Invalidate Storyblok fetch-cache entries for the affected stories.
+  // This makes published updates visible immediately without waiting for the
+  // default revalidate interval.
+  const storySlugsForTags = new Set<string>();
+  const mainStorySlug = normalizeStorySlugForTag(payload.story?.full_slug ?? payload.slug ?? payload.text);
+  if (mainStorySlug) storySlugsForTags.add(mainStorySlug);
+  payload.story?.alternates?.forEach((alternate) => {
+    const altStorySlug = normalizeStorySlugForTag(alternate.full_slug);
+    if (altStorySlug) storySlugsForTags.add(altStorySlug);
+  });
+  // NOTE: payload.cached_urls is generally path-shaped, not Storyblok full_slug.
+  // We intentionally don't tag-invalidate those here.
+
+  storySlugsForTags.forEach((storySlug) => revalidateTag(`story:${storySlug}`, REVALIDATE_TAG_PROFILE));
 
   const slugs = new Set<string>();
 

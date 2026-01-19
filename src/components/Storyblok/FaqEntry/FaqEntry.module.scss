@@ -1,8 +1,8 @@
 .entry {
   padding: var(--mantine-spacing-lg);
   border-radius: var(--mantine-radius-lg);
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
-  background-color: var(--sb-surface, var(--sb-surface-subtle, rgba(255, 255, 255, 0.02)));
+  border: 1px solid var(--sb-border);
+  background-color: var(--sb-surface);
   color: inherit;
 }
 

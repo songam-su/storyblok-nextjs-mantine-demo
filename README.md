@@ -289,6 +289,7 @@ Additional Storyblok bloks can follow the same pattern. See [Component Implement
 | `pnpm test:watch` | Runs unit tests in watch mode                                                 |
 | `pnpm cy:open`    | Opens Cypress (E2E) UI                                                        |
 | `pnpm cy:run`     | Runs Cypress E2E headlessly                                                   |
+| `pnpm check:sb-tokens` | Fails if `var(--sb-...)` is used without a fallback and the token is undefined |
 | `pnpm sb:login`   | Logs into Storyblok CLI (region EU by default)                                |
 | `pnpm sb:pull`    | Pulls Storyblok resources and regenerates types                               |
 | `pnpm vercel`     | Pulls Vercel env vars into a local `.env` file                                |

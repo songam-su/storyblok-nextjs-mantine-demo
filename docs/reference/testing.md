@@ -30,6 +30,7 @@ If you’re wiring CI, a reasonable baseline is:
 - `pnpm lint`
 - `pnpm test`
 - `pnpm build`
+- `pnpm check:sb-tokens`
 
 Optionally:
 

@@ -2,11 +2,11 @@
   position: relative;
   display: grid;
   gap: 12px;
-  padding: 18px;
+  padding: var(--sb-card-padding);
   border-radius: 12px;
-  background-color: var(--sb-surface, #ffffff);
-  color: var(--sb-text, #111);
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  background-color: var(--sb-surface);
+  color: var(--sb-text);
+  border: 1px solid var(--sb-border);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   transition:
     transform 150ms ease,
@@ -27,12 +27,12 @@
 /* Ensure overrides apply when Mantine adds inline dark backgrounds on the same element */
 :global(.mantine-Card-root).card,
 :global(.mantine-Paper-root).card {
-  background-color: var(--sb-surface, #ffffff);
-  color: var(--sb-text, #111);
+  background-color: var(--sb-surface);
+  color: var(--sb-text);
 }
 
 .withBorder {
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  border: 1px solid var(--sb-border);
 }
 
 .rowSpan2 {
@@ -61,7 +61,7 @@
 // Background image support intentionally disabled.
 
 .noImage {
-  background-color: var(--sb-surface-strong, #f7f9fc);
+  background-color: var(--sb-surface-strong);
 }
 
 /* Background image overlay is currently disabled, so we don't need z-index hacks on Mantine children. */

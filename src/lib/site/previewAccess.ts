@@ -1,11 +1,22 @@
+import crypto from 'crypto';
+
 type HeadersLike = {
   get(name: string): string | null;
 };
 
+function base64UrlDecode(value: string): Buffer {
+  const padded = value
+    .replace(/-/g, '+')
+    .replace(/_/g, '/')
+    .padEnd(Math.ceil(value.length / 4) * 4, '=');
+  return Buffer.from(padded, 'base64');
+}
+
 function isNonProductionEnvironment(): boolean {
   // Vercel sets VERCEL_ENV to: 'production' | 'preview' | 'development'.
   const vercelEnv = process.env.VERCEL_ENV;
-  if (vercelEnv && vercelEnv !== 'production') return true;
+  const deployEnv = process.env.DEPLOY_ENV ?? process.env.NEXT_PUBLIC_DEPLOY_ENV ?? vercelEnv;
+  if (deployEnv && deployEnv !== 'production') return true;
 
   // Fallback for local/non-Vercel deployments.
   return process.env.NODE_ENV !== 'production';
@@ -28,11 +39,47 @@ export function isPreviewAllowedForHost(host: string | null | undefined): boolea
   return allowlist.includes(normalizedHost);
 }
 
-function hasCookie(headers: HeadersLike | null | undefined, cookieName: string): boolean {
+function getCookieValue(headers: HeadersLike | null | undefined, cookieName: string): string | null {
   const raw = headers?.get('cookie') ?? '';
-  if (!raw) return false;
+  if (!raw) return null;
   // Cheap/robust enough for gating: look for a "name=" segment boundary.
-  return raw.split(';').some((part) => part.trimStart().toLowerCase().startsWith(`${cookieName.toLowerCase()}=`));
+  const target = cookieName.toLowerCase();
+  for (const part of raw.split(';')) {
+    const trimmed = part.trimStart();
+    const idx = trimmed.indexOf('=');
+    if (idx <= 0) continue;
+    const name = trimmed.slice(0, idx).trim().toLowerCase();
+    if (name !== target) continue;
+    return trimmed.slice(idx + 1).trim();
+  }
+  return null;
+}
+
+function isValidPreviewAuthToken(token: string, secret: string): boolean {
+  // Format: <timestamp>.<nonce>.<sig>
+  const parts = token.split('.');
+  if (parts.length !== 3) return false;
+  const [rawTs, nonce, sig] = parts;
+
+  const ts = Number(rawTs);
+  if (!Number.isFinite(ts) || ts <= 0) return false;
+
+  // 7 days validity (matches cookie maxAge).
+  const now = Math.floor(Date.now() / 1000);
+  if (ts > now + 60) return false; // allow small clock skew
+  if (now - ts > 60 * 60 * 24 * 7) return false;
+
+  const payload = `${rawTs}.${nonce}`;
+  const expected = crypto.createHmac('sha256', secret).update(payload).digest();
+  let provided: Buffer;
+  try {
+    provided = base64UrlDecode(sig);
+  } catch {
+    return false;
+  }
+
+  if (expected.length !== provided.length) return false;
+  return crypto.timingSafeEqual(expected, provided);
 }
 
 function isStoryblokEditorRequest(headers: HeadersLike | null | undefined, url: string | null | undefined): boolean {
@@ -84,7 +131,12 @@ export function isPreviewAllowed(options: PreviewAccessOptions): boolean {
   if (isDraftModeEnabled) return true;
 
   const authCookieName = process.env.PREVIEW_AUTH_COOKIE_NAME ?? 'preview_auth';
-  if (authCookieName && hasCookie(headers, authCookieName)) return true;
+  const authCookieValue = authCookieName ? getCookieValue(headers, authCookieName) : null;
+  if (authCookieName && authCookieValue) {
+    const secret = process.env.PREVIEW_AUTH_SECRET;
+    if (!secret) return true;
+    if (isValidPreviewAuthToken(authCookieValue, secret)) return true;
+  }
 
   if (isStoryblokEditorRequest(headers, url)) return true;
 

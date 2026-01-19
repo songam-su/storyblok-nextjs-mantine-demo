@@ -1,6 +1,6 @@
 .section {
   border-radius: var(--mantine-radius-sm);
-  background-color: var(--sb-surface, var(--sb-surface-subtle, rgba(255, 255, 255, 0.02)));
+  background-color: var(--sb-surface);
   padding: var(--page-shell-section-padding-y) var(--page-shell-section-padding);
   margin-bottom: var(--page-shell-section-padding-y);
   color: inherit;
@@ -31,7 +31,7 @@
 .accordionItem {
   border-radius: var(--mantine-radius-sm);
   border: 1px solid var(--sb-border);
-  background: var(--sb-surface, var(--sb-surface-subtle, rgba(255, 255, 255, 0.02)));
+  background: var(--sb-surface);
   overflow: hidden;
 }
 
@@ -49,11 +49,6 @@
 .accordionLabel {
   font-weight: 600;
   letter-spacing: -0.01em;
-}
-
-/* When an entry is open, give the question a subtle accent tint. */
-.accordionItem[data-active='true'] .accordionLabel {
-  // color: var(--sb-accent-text-tint);
 }
 
 /* When an entry is open, keep a subtle tint on the header even when not hovered. */

@@ -4,8 +4,19 @@ Purpose: illustrate how Storyblok assets are turned into responsive images with 
 
 Notes
 
-- getSbImageData reads asset metadata, focus, and size prefs; returns URL + sizes for `Image`.
+- `getSbImageData` reads asset metadata, focus, and size prefs; returns URL + sizing metadata.
 - Components (logo grids, cards, hero, image-text) consume this helper to respect focal points and aspect constraints.
+
+## SbImage wrapper (SVG-safe)
+
+We use a small wrapper component to avoid sending SVG assets through the Next image pipeline:
+
+- Component: [src/components/ui/SbImage/SbImage.tsx](../../src/components/ui/SbImage/SbImage.tsx)
+- Behavior:
+  - If `src` is an SVG, render a plain `<img>`.
+  - Otherwise render `next/image`.
+
+Most UI components should prefer `SbImage` over importing `next/image` directly.
 
 ## ImageCard aspect ratio expectations
 
@@ -30,5 +41,5 @@ If you need to support a different aspect ratio, update:
 flowchart LR
   SB["Storyblok asset<br/>+ focal point"] --> Helper["getSbImageData<br/>(url, width/height, sizes)"]
   Helper --> Components[Hero / Grid Card / Logo Section / Image-Text]
-  Components --> NextImage["Next/Image or <img><br/>with sizes + object-fit"]
+  Components --> NextImage["SbImage<br/>(SVG via <img>, raster via next/image)"]
 ```

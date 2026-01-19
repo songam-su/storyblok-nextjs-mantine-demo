@@ -1,12 +1,12 @@
 'use client';
 
 import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
+import SbImage from '@/components/ui/SbImage/SbImage';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ProductsSection as ProductsSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { SimpleGrid, Stack } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
-import Image from 'next/image';
 import styles from './ProductsSection.module.scss';
 
 type PluginProductItem = {
@@ -123,7 +123,7 @@ const ProductsSection = ({ blok }: SbComponentProps<ProductsSectionBlok>) => {
                     <div key={key} className={styles.card}>
                       {product.image ? (
                         <div className={styles.imageWrap}>
-                          <Image
+                          <SbImage
                             src={product.image}
                             alt={product.name ?? ''}
                             fill

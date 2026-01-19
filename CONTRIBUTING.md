@@ -15,6 +15,7 @@ Thanks for taking the time to contribute.
 - Unit tests (watch): `pnpm test:watch`
 - E2E tests: `pnpm cy:open` / `pnpm cy:run`
 - Build: `pnpm build`
+- Theme token safety check: `pnpm check:sb-tokens`
 
 ## Formatting and linting
 

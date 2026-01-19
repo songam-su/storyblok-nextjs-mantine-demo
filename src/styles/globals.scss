@@ -23,6 +23,34 @@ body {
   background-color: var(--sb-background);
 
   /*
+    Standard button sizing tokens (used for pills/segmented controls too)
+    - Keep values in rem for WCAG text scaling
+    - Provide "sm" defaults for mobile-first components
+  */
+  --button-height-sm: 2.75rem;
+  --button-padding-x-sm: clamp(1rem, 4.5vw, 1.375rem);
+
+  --button-height: var(--button-height-sm);
+  --button-padding-x: var(--button-padding-x-sm);
+
+  /*
+    Standard card/content padding tokens
+    - Mobile-first: 1em
+    - Desktop+: 1.25em
+  */
+  --sb-card-padding-mobile: 1em;
+  --sb-card-padding-desktop: 1.25em;
+  --sb-card-padding: var(--sb-card-padding-mobile);
+
+  /*
+    Typography tokens
+    - Keep body text >= 16px on mobile by default (1rem)
+    - Reuse across card content / long-form copy for consistency
+  */
+  --sb-font-body-size: 1rem;
+  --sb-font-body-line-height: 1.55;
+
+  /*
     Brand palette tokens
     - Primary accent: sageTeal (used for headings/interactive accents)
     - Secondary accent: raspberryRed (used for selected CTAs and category pills)
@@ -71,6 +99,20 @@ body {
 
   --sb-skeleton-bg: var(--sb-surface);
   --sb-skeleton-shimmer: rgba(0, 0, 0, 0.08);
+
+  /* Neutral interaction surfaces (used for nav hovers/actives) */
+  --sb-surface-hover-bg: rgba(0, 0, 0, 0.04);
+  --sb-surface-active-bg: rgba(0, 0, 0, 0.06);
+
+  /* Elevation / shadows */
+  --sb-shadow-sticky-nav: 0 1px 1px #ddd;
+
+  /* Header theme toggle tokens (avoid hardcoded colors in modules) */
+  --sb-header-theme-toggle-bg: var(--sb-surface);
+  --sb-header-theme-toggle-fg: var(--sb-text-muted);
+  --sb-header-theme-toggle-hover-bg: rgba(0, 0, 0, 0.05);
+  --sb-header-theme-toggle-hover-fg: var(--sb-text);
+  --sb-header-theme-toggle-hover-border: var(--sb-border);
 
   --sb-accent-surface-hover-bg: rgba(52, 129, 131, 0.12);
   --sb-accent-surface-selected-bg: rgba(52, 129, 131, 0.18);
@@ -188,6 +230,20 @@ body {
   --sb-skeleton-bg: var(--sb-surface);
   --sb-skeleton-shimmer: rgba(255, 255, 255, 0.08);
 
+  /* Neutral interaction surfaces (used for nav hovers/actives) */
+  --sb-surface-hover-bg: rgba(255, 255, 255, 0.08);
+  --sb-surface-active-bg: rgba(255, 255, 255, 0.12);
+
+  /* Elevation / shadows */
+  --sb-shadow-sticky-nav: 0 1px 1px #222;
+
+  /* Header theme toggle tokens (avoid hardcoded colors in modules) */
+  --sb-header-theme-toggle-bg: var(--sb-surface);
+  --sb-header-theme-toggle-fg: var(--sb-text);
+  --sb-header-theme-toggle-hover-bg: var(--sb-surface-strong);
+  --sb-header-theme-toggle-hover-fg: var(--sb-text);
+  --sb-header-theme-toggle-hover-border: var(--sb-border);
+
   --sb-accent-surface-hover-bg: rgba(44, 108, 110, 0.32);
   --sb-accent-surface-selected-bg: rgba(44, 108, 110, 0.44);
   --sb-accent-surface-active-bg: rgba(44, 108, 110, 0.6);
@@ -227,6 +283,15 @@ body {
     --sb-skeleton-bg: color-mix(in srgb, var(--sb-surface) 92%, var(--sb-background));
     --sb-skeleton-shimmer: color-mix(in srgb, var(--sb-surface) 85%, var(--sb-text));
 
+    --sb-surface-hover-bg: color-mix(in srgb, var(--sb-text) 4%, transparent);
+    --sb-surface-active-bg: color-mix(in srgb, var(--sb-text) 6%, transparent);
+
+    --sb-header-theme-toggle-hover-bg: color-mix(in srgb, var(--sb-text) 5%, transparent);
+    --sb-header-theme-toggle-hover-border: color-mix(in srgb, var(--sb-glass-bg-subtle) 82%, var(--sb-text) 6%);
+
+    :root[data-mantine-color-scheme='dark'] {
+      --sb-header-theme-toggle-hover-bg: color-mix(in srgb, var(--sb-surface-strong) 35%, var(--sb-glass-bg) 65%);
+    }
     --sb-accent-surface-hover-bg: color-mix(in srgb, var(--sb-accent) 12%, var(--sb-surface));
     --sb-accent-surface-selected-bg: color-mix(in srgb, var(--sb-accent) 18%, var(--sb-surface));
     --sb-accent-surface-active-bg: color-mix(in srgb, var(--sb-accent) 24%, var(--sb-surface));
@@ -267,6 +332,20 @@ body {
   background-color: var(--sb-background);
   color: var(--sb-text);
   min-height: 100vh;
+  font-size: var(--sb-font-body-size);
+  line-height: var(--sb-font-body-line-height);
+}
+
+/*
+  Mobile readability
+  - Mantine `Text size="sm"/"xs"` maps to these CSS vars.
+  - Override on small screens to avoid <16px text.
+*/
+@media (max-width: 48em) {
+  :root {
+    --mantine-font-size-xs: 1rem;
+    --mantine-font-size-sm: 1rem;
+  }
 }
 
 .page-shell__content {
@@ -297,6 +376,7 @@ body {
   :root {
     --page-shell-inline-padding: var(--page-shell-inline-padding-sm);
     --sb-section-stack-gap: 2.5rem;
+    --sb-card-padding: var(--sb-card-padding-desktop);
   }
 }
 

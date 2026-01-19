@@ -1,6 +1,6 @@
 .section {
   width: 100%;
-  background-color: var(--sb-newsletter-bg, var(--sb-surface-accent-secondary, #ffcbd3));
+  background-color: var(--sb-newsletter-bg, var(--sb-surface-accent-secondary));
   padding: calc(1.8 * var(--page-shell-section-padding)) calc(2 * var(--page-shell-section-padding))
     var(--page-shell-section-padding-y);
 }
@@ -16,7 +16,7 @@
   justify-content: space-between;
   gap: 18px;
   border-radius: 0;
-  color: var(--sb-text, #111);
+  color: var(--sb-text);
   background: transparent;
   box-shadow: none;
 }
@@ -47,7 +47,7 @@
   :global(.mantine-Title-root) {
     letter-spacing: -0.01em;
     line-height: 1.12;
-    color: var(--sb-text, #111);
+    color: var(--sb-text);
 
     /* Make the Title a predictable alignment container. */
     display: flex;
@@ -84,16 +84,10 @@
 }
 
 .helper {
-  color: #2c2c2c;
+  color: var(--sb-text);
   opacity: 1;
   font-weight: 600;
   letter-spacing: 0.01em;
-}
-
-:global(:root[data-mantine-color-scheme='dark']) {
-  .helper {
-    color: #ffffff;
-  }
 }
 
 .formRow {
@@ -142,9 +136,9 @@
 .emailInput {
   height: calc(2.75rem * var(--mantine-scale));
   border-radius: var(--mantine-radius-sm);
-  background: var(--sb-surface, #ffffff);
-  border: 1px solid var(--sb-border, #d7dbe0);
-  color: var(--sb-text, #111);
+  background: var(--sb-surface);
+  border: 1px solid var(--sb-border);
+  color: var(--sb-text);
   font-size: var(--mantine-font-size-md);
   font-weight: 500;
   padding-inline-start: 20px;
@@ -167,12 +161,12 @@
 }
 
 .emailInput:focus {
-  border-color: var(--sb-focus-border-color, var(--sb-accent, #1d63c5));
-  box-shadow: 0 0 0 3px var(--sb-focus-shadow-color, rgba(29, 99, 197, 0.18));
+  border-color: var(--sb-focus-border-color);
+  box-shadow: 0 0 0 3px var(--sb-focus-shadow-color);
 }
 
 .emailInput::placeholder {
-  color: var(--sb-fg-weak, var(--sb-text-muted, #4b5563));
+  color: var(--sb-fg-weak, var(--sb-text-muted));
   font-weight: 400;
   font-size: inherit;
 }
@@ -184,8 +178,8 @@
   font-weight: 750;
   letter-spacing: 0.01em;
 
-  background: var(--sb-color-bg, var(--sb-accent-secondary-strong, #e02e58));
-  color: var(--sb-on-accent, #fff);
+  background: var(--sb-color-bg, var(--sb-accent-secondary-strong));
+  color: var(--sb-on-accent);
   border: 0;
   box-shadow: none;
   overflow: hidden;
@@ -201,7 +195,7 @@
 .submitButton:hover {
   background: var(
     --sb-color-bg-hover,
-    var(--sb-color-bg, var(--sb-accent-secondary, var(--sb-accent-secondary-strong, #e02e58)))
+    var(--sb-color-bg, var(--sb-accent-secondary, var(--sb-accent-secondary-strong)))
   );
 }
 

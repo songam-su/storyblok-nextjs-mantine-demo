@@ -31,6 +31,7 @@ Use this folder as the canonical home for technical docs.
 - Webhook revalidation: [reference/webhook-revalidate.md](reference/webhook-revalidate.md)
 - ISR cache lifecycle: [reference/isr-cache-lifecycle.md](reference/isr-cache-lifecycle.md)
 - Preview live update (Bridge): [reference/preview-live-update.md](reference/preview-live-update.md)
+- SEO + indexing + sitemaps: [reference/seo-indexing-and-sitemaps.md](reference/seo-indexing-and-sitemaps.md)
 - Routing proxy + canonicalization: [reference/routing-proxy-and-canonicalization.md](reference/routing-proxy-and-canonicalization.md)
 - Navigation/link resolution behavior: [reference/navigation-link-resolution.md](reference/navigation-link-resolution.md)
 - Storyblok content model overview: [reference/storyblok-data-model.md](reference/storyblok-data-model.md)

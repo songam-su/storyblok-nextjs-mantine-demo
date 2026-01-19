@@ -13,7 +13,7 @@
 }
 
 .button[data-sb-text-color='primary-dark'] {
-  --sb-button-ghost-hover-text: var(--sb-on-accent, #fff);
+  --sb-button-ghost-hover-text: var(--sb-on-accent);
 }
 
 .button[data-sb-bg-color='primary-highlight'][data-sb-text-color='primary-dark'],
@@ -23,7 +23,7 @@
 .button[data-sb-bg-color='color_1'][data-sb-text-color='primary-dark'],
 .button[data-sb-bg-color='color_2'][data-sb-text-color='primary-dark'],
 .button[data-sb-bg-color='color_3'][data-sb-text-color='primary-dark'] {
-  --sb-color-text: var(--sb-on-accent, #fff);
+  --sb-color-text: var(--sb-on-accent);
 }
 
 // Fix contrast for the common Storyblok CTA configuration:
@@ -31,8 +31,8 @@
 // Rest: dark outline/text. Hover: subtle accent tint.
 .button.is-ghost[data-sb-bg-color='primary-dark'][data-sb-text-color='white'] {
   --sb-button-ghost-hover-bg: var(--sb-accent-strong-hover-bg);
-  --sb-button-ghost-hover-border: var(--sb-accent, #1d63c5);
-  --sb-button-ghost-hover-text: var(--sb-on-accent, #fff);
+  --sb-button-ghost-hover-border: var(--sb-accent);
+  --sb-button-ghost-hover-text: var(--sb-on-accent);
 }
 
 .button:not(.is-ghost):hover {
@@ -52,4 +52,19 @@
 // When the configured background is white, fall back to the configured text color for contrast.
 .button.is-ghost[data-sb-bg-color='white'] {
   --sb-button-ghost-rest-color: var(--sb-color-text, var(--sb-color-default-text));
+}
+
+@media (max-width: 48em) {
+  /* Mobile UX: render "ghost" buttons like regular buttons for stronger affordance/tap targets. */
+  .button.is-ghost {
+    background: var(--sb-color-bg, var(--sb-color-default-bg));
+    border: 1px solid transparent;
+    color: var(--sb-color-text, var(--sb-color-default-text));
+  }
+
+  .button.is-ghost:hover {
+    background: var(--sb-color-bg-hover, var(--sb-color-bg, var(--sb-color-default-bg)));
+    color: var(--sb-color-text, var(--sb-color-default-text));
+    border-color: transparent;
+  }
 }

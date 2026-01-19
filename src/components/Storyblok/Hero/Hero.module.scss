@@ -8,7 +8,7 @@
   width: 100%;
   height: min(70vh, 720px);
   display: block;
-  background-color: var(--sb-surface, #ffffff);
+  background-color: var(--sb-surface);
 }
 
 .img {
@@ -45,11 +45,11 @@
 .inner {
   background: linear-gradient(
     180deg,
-    var(--sb-image-overlay-1, rgba(0, 0, 0, 0.48)) 0%,
-    var(--sb-image-overlay-2, rgba(0, 0, 0, 0.28)) 50%,
-    var(--sb-image-overlay-3, rgba(0, 0, 0, 0.2)) 100%
+    var(--sb-image-overlay-1) 0%,
+    var(--sb-image-overlay-2) 50%,
+    var(--sb-image-overlay-3) 100%
   );
-  color: var(--sb-on-overlay, #fff);
+  color: var(--sb-on-overlay);
   padding: 2rem;
   border-radius: 8px;
 }

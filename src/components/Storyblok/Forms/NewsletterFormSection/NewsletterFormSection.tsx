@@ -1,7 +1,6 @@
 'use client';
 
 import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
-import { DEMO_FORM_DISABLED_MESSAGE, DISABLE_FORM_SUBMIT } from '@/lib/site/demoFlags';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { NewsletterFormSection as NewsletterFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getStoryblokColorClass } from '@/lib/storyblok/utils/styles/color/storyblokColorUtils';
@@ -29,13 +28,6 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-
-      if (DISABLE_FORM_SUBMIT) {
-        setStatus('error');
-        setErrorMessage(DEMO_FORM_DISABLED_MESSAGE);
-        return;
-      }
-
       if (!email.trim()) return;
 
       setStatus('submitting');
@@ -65,7 +57,6 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
 
   const hasHeader = hasSectionHeaderContent(blok.headline, blok.lead);
   const isSubmitting = status === 'submitting';
-  const isSubmitDisabled = isSubmitting || DISABLE_FORM_SUBMIT;
 
   return (
     <section className={classNames('edge-to-edge', styles.section)} {...editable}>
@@ -83,9 +74,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
               />
             )}
 
-            <Text className={styles.helper} size="sm">
-              Get instant updates in your inbox.
-            </Text>
+            <Text className={styles.helper}>Get instant updates in your inbox.</Text>
           </div>
 
           <div className={styles.formRow}>
@@ -126,7 +115,7 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
             <MantineButton
               type="submit"
               loading={isSubmitting}
-              disabled={isSubmitDisabled}
+              disabled={isSubmitting}
               className={classNames(styles.submitButton, submitBgKey ? getStoryblokColorClass(submitBgKey) : undefined)}
             >
               {submitLabel}
@@ -134,13 +123,13 @@ const NewsletterFormSection = ({ blok }: SbComponentProps<NewsletterFormSectionB
           </div>
 
           {status === 'success' ? (
-            <Text className={styles.helper} size="sm" role="status">
+            <Text className={styles.helper} role="status">
               Thanks — we received your request.
             </Text>
           ) : null}
 
           {status === 'error' ? (
-            <Text className={styles.helper} size="sm" role="alert">
+            <Text className={styles.helper} role="alert">
               {errorMessage || 'Unable to submit right now. Please try again.'}
             </Text>
           ) : null}

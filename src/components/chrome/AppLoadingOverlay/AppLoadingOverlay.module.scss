@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: var(--sb-background, #f8f9fb);
+  background: var(--sb-background);
   opacity: 1;
   transition: opacity 220ms ease-in-out;
   pointer-events: none;

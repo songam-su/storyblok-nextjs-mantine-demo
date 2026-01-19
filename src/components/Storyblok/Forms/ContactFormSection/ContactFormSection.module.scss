@@ -56,13 +56,13 @@
   padding: 1rem 0;
   border: none;
   border-radius: 16px;
-  background: var(--sb-surface, #ffffff);
+  background: var(--sb-surface);
   box-shadow: none;
 }
 
 :root[data-mantine-color-scheme='dark'] {
   .formCard {
-    background: var(--sb-background, #2c2c2c);
+    background: var(--sb-background);
   }
 }
 
@@ -95,7 +95,7 @@
 
 :global([data-mantine-color-scheme='light']) {
   .intentSelectOption:hover {
-    background-color: var(--sb-category-hover-bg, rgba(29, 99, 197, 0.08));
+    background-color: var(--sb-category-hover-bg, var(--sb-accent-surface-hover-bg));
   }
 }
 
@@ -118,7 +118,7 @@
 }
 
 .asideWithImage {
-  color: var(--sb-on-accent, #fff);
+  color: var(--sb-on-accent);
 
   &::before {
     content: '';
@@ -130,9 +130,9 @@
 }
 
 .asideNoImage {
-  background: var(--sb-surface-strong, #ffffff);
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
-  color: var(--sb-text, #111);
+  background: var(--sb-surface-strong);
+  border: 1px solid var(--sb-border);
+  color: var(--sb-text);
 }
 
 .asideImage {
