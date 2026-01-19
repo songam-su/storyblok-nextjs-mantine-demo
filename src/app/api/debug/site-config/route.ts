@@ -14,9 +14,6 @@ function summarizeAsset(asset: unknown) {
 function summarizeSiteConfigContent(content: any) {
   return {
     header_logo: summarizeAsset(content?.header_logo),
-    header_logo_text: summarizeAsset(content?.header_logo_text),
-    header_logo_dark: summarizeAsset(content?.header_logo_dark),
-    header_logo_text_dark: summarizeAsset(content?.header_logo_text_dark),
   };
 }
 

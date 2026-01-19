@@ -1,6 +1,6 @@
 [
   {
-    "id": 132488073133332,
+    "id": 113942139056829,
     "name": "A Brand New Day team",
     "preset": {
       "_uid": "fe71af1b-a6a9-4af3-8135-49fa43faf0ab",
@@ -36,17 +36,17 @@
       "secondary_background_color": "primary-background",
       "preserve_image_aspect_ratio": true
     },
-    "component_id": 132488060585715,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:20.978Z",
-    "updated_at": "2026-01-10T08:55:20.978Z",
+    "component_id": 113942139006389,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.042Z",
+    "updated_at": "2025-11-18T23:11:45.042Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488075234583,
+    "id": 113942138790584,
     "name": "A joyful digital agency",
     "preset": {
       "_uid": "a996fd46-4fc0-4608-830f-f1aa10575eab",
@@ -194,17 +194,17 @@
       "background_color": "white",
       "reverse_desktop_layout": false
     },
-    "component_id": 132488061257460,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:21.491Z",
-    "updated_at": "2026-01-10T08:55:21.491Z",
+    "component_id": 113942138740148,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:44.977Z",
+    "updated_at": "2025-11-18T23:11:44.977Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488075992344,
+    "id": 113942138835641,
     "name": "Brand glow-up",
     "preset": {
       "_uid": "486a6899-8eb1-4c10-bec1-1a85ab1b9735",
@@ -379,17 +379,17 @@
       "reverse_mobile_layout": true,
       "reverse_desktop_layout": false
     },
-    "component_id": 132488061257460,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:21.676Z",
-    "updated_at": "2026-01-10T08:55:21.676Z",
+    "component_id": 113942138740148,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:44.988Z",
+    "updated_at": "2025-11-18T23:11:44.988Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488072805651,
+    "id": 113942139577029,
     "name": "Bright ideas, fresh off the wire",
     "preset": {
       "_uid": "75c606a4-f136-4352-9c12-4fc20689e214",
@@ -412,17 +412,17 @@
       "component": "featured-articles-section",
       "background_color": "white"
     },
-    "component_id": 132488058472176,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:20.898Z",
-    "updated_at": "2026-01-10T08:55:20.898Z",
+    "component_id": 113942139530680,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.170Z",
+    "updated_at": "2025-11-18T23:11:45.170Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488077024537,
+    "id": 113942138876602,
     "name": "Design to dev",
     "preset": {
       "_uid": "8d5f9c08-6f74-4ad5-af13-61869a428da7",
@@ -593,17 +593,17 @@
       "reverse_desktop_layout": false,
       "preserve_image_aspect_ratio": false
     },
-    "component_id": 132488061257460,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:21.928Z",
-    "updated_at": "2026-01-10T08:55:21.928Z",
+    "component_id": 113942138740148,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:44.998Z",
+    "updated_at": "2025-11-18T23:11:44.998Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488071732498,
+    "id": 113942139871943,
     "name": "Frequently asked questions",
     "preset": {
       "_uid": "5574cc2e-3dae-4421-b3a0-a13f243997c9",
@@ -809,17 +809,17 @@
         }
       ]
     },
-    "component_id": 132488058156783,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:20.636Z",
-    "updated_at": "2026-01-10T08:55:20.636Z",
+    "component_id": 113942139821500,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.242Z",
+    "updated_at": "2025-11-18T23:11:45.242Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488078744860,
+    "id": 113942141190858,
     "name": "Get instant updates",
     "preset": {
       "_uid": "50783df5-4ef3-4383-a171-609cc1fbd350",
@@ -851,17 +851,17 @@
       ],
       "component": "newsletter-form-section"
     },
-    "component_id": 132488062646006,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:22.348Z",
-    "updated_at": "2026-01-10T08:55:22.348Z",
+    "component_id": 113942141152719,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.564Z",
+    "updated_at": "2025-11-18T23:11:45.564Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488071027985,
+    "id": 113942141108937,
     "name": "Get in touch with our team",
     "preset": {
       "_uid": "6dbd18bf-b744-4d6b-b5a2-47fc98deb44d",
@@ -931,17 +931,17 @@
       "position": "Ambassador of Smiles",
       "component": "contact-form-section"
     },
-    "component_id": 132488057050862,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:20.464Z",
-    "updated_at": "2026-01-10T08:55:20.464Z",
+    "component_id": 113942141062606,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.543Z",
+    "updated_at": "2025-11-18T23:11:45.543Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488077720858,
+    "id": 113942138917563,
     "name": "Joyful integrations",
     "preset": {
       "_uid": "8e77ad58-1a36-4027-bc42-19facce1be22",
@@ -1111,17 +1111,17 @@
       "reverse_mobile_layout": true,
       "reverse_desktop_layout": true
     },
-    "component_id": 132488061257460,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:22.098Z",
-    "updated_at": "2026-01-10T08:55:22.098Z",
+    "component_id": 113942138740148,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.008Z",
+    "updated_at": "2025-11-18T23:11:45.008Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488080743710,
+    "id": 113942139339457,
     "name": "Meet our team",
     "preset": {
       "_uid": "85cb1d9e-6cc1-44ec-8331-e401836e43b6",
@@ -1201,17 +1201,17 @@
       "component": "grid-section",
       "background_color": "white"
     },
-    "component_id": 132488069322494,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:22.836Z",
-    "updated_at": "2026-01-10T08:55:22.836Z",
+    "component_id": 113942139293111,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.112Z",
+    "updated_at": "2025-11-18T23:11:45.112Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488081464607,
+    "id": 113942139384514,
     "name": "Our services",
     "preset": {
       "_uid": "3b7f8e1b-b2a9-4d77-846e-ee1e16110e18",
@@ -1327,17 +1327,17 @@
       "component": "grid-section",
       "background_color": "primary-background"
     },
-    "component_id": 132488069322494,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:23.013Z",
-    "updated_at": "2026-01-10T08:55:23.013Z",
+    "component_id": 113942139293111,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.122Z",
+    "updated_at": "2025-11-18T23:11:45.122Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488081816864,
+    "id": 113942139429571,
     "name": "Our working process",
     "preset": {
       "_uid": "4046e908-1b01-49ac-a123-6eaa1686e68d",
@@ -1501,17 +1501,17 @@
       "component": "grid-section",
       "background_color": "primary-background"
     },
-    "component_id": 132488069322494,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:23.097Z",
-    "updated_at": "2026-01-10T08:55:23.097Z",
+    "component_id": 113942139293111,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.133Z",
+    "updated_at": "2025-11-18T23:11:45.133Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488082890017,
+    "id": 113942139478724,
     "name": "Pricing made simple",
     "preset": {
       "_uid": "8aa766b8-e70c-4765-bc7b-e28b16f461b5",
@@ -1966,17 +1966,17 @@
       "component": "grid-section",
       "background_color": "white"
     },
-    "component_id": 132488069322494,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:23.360Z",
-    "updated_at": "2026-01-10T08:55:23.360Z",
+    "component_id": 113942139293111,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.145Z",
+    "updated_at": "2025-11-18T23:11:45.145Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488070716688,
+    "id": 113942139241152,
     "name": "Ready to bring joy to your brand?",
     "preset": {
       "_uid": "1b7bcdc2-06b5-4ae6-9988-2ba6c6b59429",
@@ -2040,17 +2040,17 @@
       "background_image_width": "50",
       "background_image_alignment": "right"
     },
-    "component_id": 132488056379117,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:20.388Z",
-    "updated_at": "2026-01-10T08:55:20.388Z",
+    "component_id": 113942139190710,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.087Z",
+    "updated_at": "2025-11-18T23:11:45.087Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488068242703,
+    "id": 113942139773638,
     "name": "The world’s leading brands believe in joy",
     "preset": {
       "_uid": "cb973cb3-4049-47b7-a906-d5142def0094",
@@ -2131,17 +2131,17 @@
       ],
       "component": "logo-section"
     },
-    "component_id": 132488053929705,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:19.784Z",
-    "updated_at": "2026-01-10T08:55:19.784Z",
+    "component_id": 113942139727291,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.218Z",
+    "updated_at": "2025-11-18T23:11:45.218Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488074214677,
+    "id": 113942139097790,
     "name": "We bring joy to everything we do",
     "preset": {
       "_uid": "6eb0d1f9-dd12-4559-a7da-fd031f2db7dd",
@@ -2180,17 +2180,17 @@
         "plugin": "storyblok-palette"
       }
     },
-    "component_id": 132488060585715,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:21.242Z",
-    "updated_at": "2026-01-10T08:55:21.242Z",
+    "component_id": 113942139006389,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.053Z",
+    "updated_at": "2025-11-18T23:11:45.053Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488079818013,
+    "id": 113942139966152,
     "name": "What our clients say",
     "preset": {
       "_uid": "7003e2f9-4bb8-4ffd-98e7-4104ca0021b4",
@@ -2210,17 +2210,17 @@
         "043178a9-b85f-4931-95ac-c07f43dc9a4d"
       ]
     },
-    "component_id": 132488066143995,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:22.610Z",
-    "updated_at": "2026-01-10T08:55:22.610Z",
+    "component_id": 113942139923901,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.265Z",
+    "updated_at": "2025-11-18T23:11:45.265Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488078503195,
+    "id": 113942138958524,
     "name": "What we stand for",
     "preset": {
       "_uid": "2c7ce60c-54e8-49c4-8831-d0d259e16bda",
@@ -2336,17 +2336,17 @@
       "reverse_desktop_layout": false,
       "preserve_image_aspect_ratio": true
     },
-    "component_id": 132488061257460,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:22.264Z",
-    "updated_at": "2026-01-10T08:55:22.264Z",
+    "component_id": 113942138740148,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.019Z",
+    "updated_at": "2025-11-18T23:11:45.019Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488074538262,
+    "id": 113942139142847,
     "name": "Where creativity meets joy!",
     "preset": {
       "_uid": "177a9059-e922-4f5c-9805-d6e319c1f200",
@@ -2420,17 +2420,17 @@
       "image_decoration": true,
       "secondary_background_color": "background-2"
     },
-    "component_id": 132488060585715,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:21.321Z",
-    "updated_at": "2026-01-10T08:55:21.321Z",
+    "component_id": 113942139006389,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:45.063Z",
+    "updated_at": "2025-11-18T23:11:45.063Z",
     "image": "",
     "color": null,
     "icon": null,
     "description": null
   },
   {
-    "id": 132488083574050,
+    "id": 113942138598071,
     "name": "Why choose a Brand New Day?",
     "preset": {
       "_uid": "72d9f11f-77c6-4c14-8408-8c7fd7033332",
@@ -2988,10 +2988,10 @@
       ],
       "component": "tabbed-content-section"
     },
-    "component_id": 132488069658367,
-    "space_id": 288592846051770,
-    "created_at": "2026-01-10T08:55:23.527Z",
-    "updated_at": "2026-01-10T08:55:23.527Z",
+    "component_id": 113942138543537,
+    "space_id": 288596360272599,
+    "created_at": "2025-11-18T23:11:44.930Z",
+    "updated_at": "2025-11-18T23:11:44.930Z",
     "image": "",
     "color": null,
     "icon": null,

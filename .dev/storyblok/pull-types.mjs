@@ -2,7 +2,16 @@ import { execSync } from 'child_process';
 import dotenv from 'dotenv';
 import { existsSync } from 'fs';
 
+import { ensureStoryblokCliLoggedIn } from './helpers/ensure-storyblok-login.mjs';
+
 dotenv.config();
+
+try {
+  ensureStoryblokCliLoggedIn();
+} catch (error) {
+  console.error(`❌ ${error instanceof Error ? error.message : String(error)}`);
+  process.exit(1);
+}
 
 const spaceId = process.env.STORYBLOK_SPACE_ID;
 if (!spaceId) {
@@ -25,8 +34,30 @@ try {
   console.log('Pulling Storyblok components...');
   execSync(`storyblok components --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
 
+  componentFiles.forEach((file) => {
+    if (!existsSync(file)) {
+      throw new Error(
+        [
+          `Components output file not found: ${file}`,
+          'This usually means the Storyblok CLI could not fetch data (even if it printed "Pull complete").',
+          'Try: pnpm sb:login (ensure correct region), then rerun: pnpm sb:pull-types',
+        ].join('\n')
+      );
+    }
+  });
+
   console.log('Pulling Storyblok types...');
   execSync(`storyblok types --space ${spaceId} --path ${resourcesPath} generate`, { stdio: 'inherit' });
+
+  if (!existsSync(typeFile)) {
+    throw new Error(
+      [
+        `Types output file not found: ${typeFile}`,
+        'This usually means the Storyblok CLI could not fetch data (even if it printed "Generate complete").',
+        'Try: pnpm sb:login (ensure correct region), then rerun: pnpm sb:pull-types',
+      ].join('\n')
+    );
+  }
 
   console.log('✅ Pull components and types complete. Moving files...');
 

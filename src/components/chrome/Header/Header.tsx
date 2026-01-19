@@ -2,19 +2,16 @@
 
 import Button from '@/components/Storyblok/Button/Button';
 import NavItem from '@/components/Storyblok/NavItem/NavItem';
-import SbImage from '@/components/ui/SbImage/SbImage';
 import { useSiteConfig } from '@/lib/storyblok/context/SiteConfigContext';
-import type { StoryblokAsset } from '@/lib/storyblok/resources/types/storyblok';
 import type {
   Button as ButtonBlok,
   NavItem as NavItemBlok,
 } from '@/lib/storyblok/resources/types/storyblok-components';
-import getSbImageData from '@/lib/storyblok/utils/image';
 import { Burger, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classNames from 'classnames';
+import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import type { SVGProps } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Header.module.scss';
@@ -76,7 +73,6 @@ const AutoThemeIcon = (props: SVGProps<SVGSVGElement>) => (
 const Header = () => {
   const { config, colorScheme, hasInitializedColorScheme, toggleColorScheme } = useSiteConfig();
   const raw = config?.raw;
-  const pathname = usePathname();
   const [mobileMenuOpened, mobileMenu] = useDisclosure(false);
 
   const [isIconSwitching, setIsIconSwitching] = useState(false);
@@ -153,89 +149,39 @@ const Header = () => {
 
   const navItems = normalizeNav((raw as any)?.header_nav);
   const buttons = normalizeButtons((raw as any)?.header_buttons);
-  const logoMark = (raw as any)?.header_logo;
-  const logoText = (raw as any)?.header_logo_text;
-  const logoMarkDark = (raw as any)?.header_logo_dark;
-  const logoTextDark = (raw as any)?.header_logo_text_dark;
+  const logo = (raw as any)?.header_logo;
+  const logoDark = (raw as any)?.header_logo_dark;
   const isLight = Boolean((raw as any)?.header_light);
 
-  if (!navItems.length && !buttons.length && !logoMark && !logoText && !logoMarkDark && !logoTextDark) return null;
+  if (!navItems.length && !buttons.length && !logo && !logoDark) return null;
 
   const nextScheme = colorScheme === 'dark' ? 'light' : 'dark';
 
-  const markSrc = typeof logoMark?.filename === 'string' ? logoMark.filename : undefined;
-  const markAlt = typeof logoMark?.alt === 'string' ? logoMark.alt : undefined;
-  const textSrc = typeof logoText?.filename === 'string' ? logoText.filename : undefined;
-  const textAlt = typeof logoText?.alt === 'string' ? logoText.alt : undefined;
+  const logoSrc = typeof logo?.filename === 'string' ? logo.filename : undefined;
+  const logoAlt = typeof logo?.alt === 'string' ? logo.alt : undefined;
 
-  const markDarkSrc = typeof logoMarkDark?.filename === 'string' ? logoMarkDark.filename : undefined;
-  const markDarkAlt = typeof logoMarkDark?.alt === 'string' ? logoMarkDark.alt : undefined;
-  const textDarkSrc = typeof logoTextDark?.filename === 'string' ? logoTextDark.filename : undefined;
-  const textDarkAlt = typeof logoTextDark?.alt === 'string' ? logoTextDark.alt : undefined;
+  const logoDarkSrc = typeof logoDark?.filename === 'string' ? logoDark.filename : undefined;
+  const logoDarkAlt = typeof logoDark?.alt === 'string' ? logoDark.alt : undefined;
 
-  const markData = getSbImageData(logoMark as StoryblokAsset | null);
-  const markDarkData = getSbImageData(logoMarkDark as StoryblokAsset | null);
-  const textData = getSbImageData(logoText as StoryblokAsset | null);
-  const textDarkData = getSbImageData(logoTextDark as StoryblokAsset | null);
+  const isDefaultBrandLogo = Boolean(logoSrc && /andrew-caperton-avatar\.svg(\?.*)?$/i.test(logoSrc));
 
-  const isMarkDefaultBrandLogo = Boolean(markSrc && /andrew-caperton-avatar\.svg(\?.*)?$/i.test(markSrc));
-
-  const resolvedMarkSrc =
+  const resolvedLogoSrc =
     colorScheme === 'dark'
-      ? markDarkSrc || (isMarkDefaultBrandLogo ? '/assets/logos/andrew-caperton-avatar.svg' : markSrc)
-      : markSrc;
-  const resolvedTextSrc = colorScheme === 'dark' ? textDarkSrc || textSrc : textSrc;
+      ? logoDarkSrc || (isDefaultBrandLogo ? '/assets/logos/andrew-caperton-avatar.svg' : logoSrc)
+      : isDefaultBrandLogo
+        ? '/assets/logos/andrew-caperton-avatar.svg'
+        : logoSrc;
 
-  const resolvedMarkAlt = (colorScheme === 'dark' ? markDarkAlt : undefined) || markAlt;
-  const resolvedTextAlt = (colorScheme === 'dark' ? textDarkAlt : undefined) || textAlt;
-
-  const resolvedMarkObjectPosition =
-    (colorScheme === 'dark' ? markDarkData?.objectPosition : undefined) || markData?.objectPosition;
-  const resolvedTextObjectPosition =
-    (colorScheme === 'dark' ? textDarkData?.objectPosition : undefined) || textData?.objectPosition;
-
-  const isHomeActive = pathname === '/' || pathname === '/sb-preview/home';
+  const resolvedLogoAlt = (colorScheme === 'dark' ? logoDarkAlt : undefined) || logoAlt;
 
   return (
     <header className={classNames(styles.header, isLight && styles.isLight)}>
       <div className={styles.inner}>
         <div className={styles.brand}>
-          {resolvedMarkSrc || resolvedTextSrc ? (
-            <Link href="/" className={styles.logoLink} aria-label="Go to homepage">
-              <span className={styles.logoLockup}>
-                {resolvedMarkSrc ? (
-                  <span className={styles.logoMark}>
-                    <SbImage
-                      src={resolvedMarkSrc}
-                      alt={resolvedMarkAlt || 'Logo'}
-                      fill
-                      sizes="(min-width: 48em) 56px, 48px"
-                      priority
-                      style={{
-                        objectFit: 'contain',
-                        ...(resolvedMarkObjectPosition ? { objectPosition: resolvedMarkObjectPosition } : {}),
-                      }}
-                    />
-                  </span>
-                ) : null}
-
-                {resolvedTextSrc ? (
-                  <span className={styles.logoText}>
-                    <SbImage
-                      src={resolvedTextSrc}
-                      alt={resolvedTextAlt || 'Logo text'}
-                      fill
-                      sizes="(min-width: 48em) 160px, 136px"
-                      priority
-                      style={{
-                        objectFit: 'contain',
-                        ...(resolvedTextObjectPosition ? { objectPosition: resolvedTextObjectPosition } : {}),
-                      }}
-                    />
-                  </span>
-                ) : null}
-              </span>
-            </Link>
+          {resolvedLogoSrc ? (
+            <span className={styles.logo}>
+              <Image src={resolvedLogoSrc} alt={resolvedLogoAlt || 'Logo'} width={140} height={38} priority />
+            </span>
           ) : (
             <span className={styles.placeholder}>Logo</span>
           )}
@@ -300,44 +246,15 @@ const Header = () => {
         position="right"
         size="xs"
         title={
-          resolvedMarkSrc || resolvedTextSrc ? (
+          resolvedLogoSrc ? (
             <Link href="/" className={styles.logoLink} aria-label="Go to homepage" onClick={mobileMenu.close}>
-              <span className={styles.drawerBrandLockup}>
-                {resolvedMarkSrc ? (
-                  <span className={styles.drawerBrandMark}>
-                    <SbImage
-                      src={resolvedMarkSrc}
-                      alt={resolvedMarkAlt || 'Logo'}
-                      fill
-                      sizes="48px"
-                      priority
-                      style={{
-                        objectFit: 'contain',
-                        ...(resolvedMarkObjectPosition ? { objectPosition: resolvedMarkObjectPosition } : {}),
-                      }}
-                    />
-                  </span>
-                ) : null}
-
-                {resolvedTextSrc ? (
-                  <span className={styles.drawerBrandText}>
-                    <SbImage
-                      src={resolvedTextSrc}
-                      alt={resolvedTextAlt || 'Logo text'}
-                      fill
-                      sizes="160px"
-                      priority
-                      style={{
-                        objectFit: 'contain',
-                        ...(resolvedTextObjectPosition ? { objectPosition: resolvedTextObjectPosition } : {}),
-                      }}
-                    />
-                  </span>
-                ) : null}
+              <span className={styles.drawerSrTitle}>Menu</span>
+              <span className={styles.drawerBrand}>
+                <Image src={resolvedLogoSrc} alt={resolvedLogoAlt || 'Logo'} width={140} height={38} priority />
               </span>
             </Link>
           ) : (
-            'Menu'
+            <span className={styles.drawerSrTitle}>Menu</span>
           )
         }
         classNames={{
@@ -372,13 +289,6 @@ const Header = () => {
         {navItems.length ? (
           <nav className={styles.mobileNav} aria-label="Mobile navigation">
             <div className={styles.mobileNavList} onClick={mobileMenu.close}>
-              <Link
-                href="/"
-                className={classNames(styles.mobileNavHome, isHomeActive && styles.mobileNavItemActive)}
-                aria-current={isHomeActive ? 'page' : undefined}
-              >
-                <span>Home</span>
-              </Link>
               {navItems.map((item) => (
                 <NavItem
                   key={item._uid}
