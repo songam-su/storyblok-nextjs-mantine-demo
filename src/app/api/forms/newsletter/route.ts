@@ -1,4 +1,5 @@
 import { sendNewsletterSignupEmail } from '@/lib/email/m365Mailer';
+import { DEMO_FORM_DISABLED_MESSAGE, DISABLE_FORM_SUBMIT } from '@/lib/site/demoFlags';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -7,6 +8,10 @@ const NewsletterPayload = z.object({
 });
 
 export async function POST(req: Request) {
+  if (DISABLE_FORM_SUBMIT) {
+    return NextResponse.json({ error: DEMO_FORM_DISABLED_MESSAGE }, { status: 403 });
+  }
+
   let rawBody: unknown;
   try {
     rawBody = await req.json();
