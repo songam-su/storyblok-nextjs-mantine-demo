@@ -1,10 +1,11 @@
-import crypto from 'crypto';
-import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { POST } from '@/app/api/webhooks/revalidate/route';
-import { revalidatePath } from 'next/cache';
+import crypto from 'crypto';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
+  revalidateTag: vi.fn(),
 }));
 
 describe('Storyblok revalidate webhook', () => {
@@ -12,14 +13,14 @@ describe('Storyblok revalidate webhook', () => {
 
   beforeEach(() => {
     vi.mocked(revalidatePath).mockReset();
+    vi.mocked(revalidateTag).mockReset();
     process.env.STORYBLOK_WEBHOOK_SECRET = secret;
   });
 
   const buildRequest = (body: any, opts?: { timestampOffset?: number; signatureOverride?: string }) => {
     const rawBody = JSON.stringify(body);
     const timestamp = Math.floor(Date.now() / 1000) + (opts?.timestampOffset ?? 0);
-    const signature =
-      opts?.signatureOverride ?? crypto.createHmac('sha1', secret).update(rawBody).digest('hex');
+    const signature = opts?.signatureOverride ?? crypto.createHmac('sha1', secret).update(rawBody).digest('hex');
 
     return new Request(`http://localhost/api/webhooks/revalidate?secret=${secret}`, {
       method: 'POST',
@@ -51,6 +52,9 @@ describe('Storyblok revalidate webhook', () => {
     expect(revalidatePath).toHaveBeenCalledWith('/foo/bar');
     expect(revalidatePath).toHaveBeenCalledWith('/foo/de');
     expect(revalidatePath).toHaveBeenCalledWith('/baz');
+
+    expect(revalidateTag).toHaveBeenCalledWith('story:foo/bar', expect.any(Object));
+    expect(revalidateTag).toHaveBeenCalledWith('story:foo/de', expect.any(Object));
   });
 
   it('rejects invalid signature', async () => {

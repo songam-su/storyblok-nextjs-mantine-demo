@@ -1,5 +1,5 @@
 .footer {
-  border-top: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  border-top: 1px solid var(--sb-border);
   background: var(--sb-glass-bg-subtle);
   padding: 3.8rem var(--page-shell-inline-padding) 3rem;
 }
@@ -12,13 +12,14 @@
 }
 
 .top {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 
   @media (min-width: 768px) {
-    display: flex;
     flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
   }
 }
 
@@ -39,7 +40,7 @@
 }
 
 .headline {
-  color: var(--sb-headline-color, var(--sb-text, #111));
+  color: var(--sb-headline-color, var(--sb-text));
   font-size: clamp(1.6rem, 2.2vw, 2.2rem);
   font-weight: 800;
   line-height: 1.15;
@@ -57,18 +58,21 @@
 }
 
 .about {
-  color: var(--sb-text, #111);
+  color: var(--sb-text);
 }
 
 .navColumns {
   display: flex;
-  gap: 4rem;
+  flex-wrap: nowrap;
+  gap: 1.25rem;
   flex: 1;
-  justify-content: center;
-  margin: 0 auto;
+  justify-content: space-between;
+  margin: 0;
+  min-width: 0;
 
   @media (min-width: 768px) {
     gap: 3rem;
+    justify-content: center;
     margin-left: auto;
     margin-right: auto;
   }
@@ -78,10 +82,14 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: 120px;
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
   text-align: center;
 
   @media (min-width: 768px) {
+    flex: 0 0 auto;
+    width: 120px;
     max-width: 200px;
   }
 
@@ -92,11 +100,15 @@
 
 .navTitle {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: var(--sb-font-body-size);
   letter-spacing: 0.125em;
   text-transform: uppercase;
-  color: var(--sb-fg-muted, var(--sb-text, #111));
+  color: var(--sb-fg-muted, var(--sb-text));
   padding-bottom: 0.4rem;
+
+  @media (min-width: 768px) {
+    font-size: 0.9rem;
+  }
 }
 
 .navList {
@@ -105,14 +117,14 @@
 
   :is(a, span) {
     font-weight: 600;
-    color: var(--sb-fg-muted-strong, var(--sb-text, #111));
+    color: var(--sb-fg-muted-strong, var(--sb-text));
     padding: 0.15rem 0.5rem;
     border-radius: var(--mantine-radius-sm);
   }
 
   /* Keep hover color stable (light + dark) while allowing other hover effects (e.g., weight) */
   :is(a, span):hover {
-    color: var(--sb-fg-muted-strong, var(--sb-text, #111));
+    color: var(--sb-fg-muted-strong, var(--sb-text));
     font-weight: 700;
   }
 }
@@ -139,6 +151,6 @@
 
 .isLight {
   background: var(--sb-surface-strong);
-  color: var(--sb-text, #111);
-  border-color: var(--sb-border, rgba(0, 0, 0, 0.08));
+  color: var(--sb-text);
+  border-color: var(--sb-border);
 }

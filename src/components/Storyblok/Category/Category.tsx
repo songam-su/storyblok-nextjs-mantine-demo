@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import classNames from 'classnames';
-import { storyblokEditable } from '@storyblok/react';
+import SbImage from '@/components/ui/SbImage/SbImage';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { Category as CategoryBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import { storyblokEditable } from '@storyblok/react';
+import classNames from 'classnames';
 import styles from './Category.module.scss';
 
 const Category = ({ blok }: SbComponentProps<CategoryBlok>) => {
@@ -15,7 +15,7 @@ const Category = ({ blok }: SbComponentProps<CategoryBlok>) => {
     <div {...editable} className={styles.card}>
       {hasIcon && (
         <div className={styles.iconWrap}>
-          <Image
+          <SbImage
             src={blok.icon!.filename}
             alt={blok.icon!.alt || blok.headline || 'Category icon'}
             width={48}

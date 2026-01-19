@@ -1,12 +1,12 @@
 'use client';
 
-import { Card, Group, Stack, Text, Avatar } from '@mantine/core';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
+import type { Testimonial as TestimonialBlok } from '@/lib/storyblok/resources/types/storyblok-components';
+import getSbImageData from '@/lib/storyblok/utils/image';
+import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import { Avatar, Card, Group, Stack, Text } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
-import getSbImageData from '@/lib/storyblok/utils/image';
-import type { Testimonial as TestimonialBlok } from '@/lib/storyblok/resources/types/storyblok-components';
-import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import styles from './Testimonial.module.scss';
 
 const Testimonial = ({ blok }: SbComponentProps<TestimonialBlok>) => {
@@ -27,19 +27,12 @@ const Testimonial = ({ blok }: SbComponentProps<TestimonialBlok>) => {
       shadow="sm"
       {...editable}
     >
-      {blok.quote && (
-        <Text className={styles.quote}>“{blok.quote}”</Text>
-      )}
+      {blok.quote && <Text className={styles.quote}>“{blok.quote}”</Text>}
 
       {(blok.name || blok.role || hasPhoto) && (
         <Group className={styles.meta} justify="flex-start" align="center">
           {hasPhoto ? (
-            <Avatar
-              src={photo!.src}
-              alt={photo!.alt || blok.name || 'Testimonial author'}
-              radius="xl"
-              size={48}
-            />
+            <Avatar src={photo!.src} alt={photo!.alt || blok.name || 'Testimonial author'} radius="xl" size={48} />
           ) : (
             <Avatar radius="xl" size={48} color="gray" variant="light">
               {(blok.name || '?').slice(0, 1)}
@@ -47,11 +40,11 @@ const Testimonial = ({ blok }: SbComponentProps<TestimonialBlok>) => {
           )}
 
           <Stack gap={2}>
-            {blok.name && (
-              <Text className={styles.name}>{blok.name}</Text>
-            )}
+            {blok.name && <Text className={styles.name}>{blok.name}</Text>}
             {blok.role && (
-              <Text className={styles.role}>{blok.role}</Text>
+              <Text className={styles.role} fz="var(--sb-font-body-size)" lh="var(--sb-font-body-line-height)">
+                {blok.role}
+              </Text>
             )}
           </Stack>
         </Group>

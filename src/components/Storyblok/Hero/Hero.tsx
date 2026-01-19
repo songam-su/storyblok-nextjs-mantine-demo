@@ -1,16 +1,16 @@
 'use client';
 
-import React from 'react';
+import { Group, Stack, Text, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
-import { Group, Stack, Text, Title } from '@mantine/core';
-import Image from 'next/image';
+import React from 'react';
 
-import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
-import styles from './Hero.module.scss';
 import Button from '@/components/Storyblok/Button/Button';
+import SbImage from '@/components/ui/SbImage/SbImage';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import getSbImageData from '@/lib/storyblok/utils/image';
+import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import styles from './Hero.module.scss';
 
 type HeroBlock = {
   _uid: string;
@@ -37,7 +37,7 @@ const Hero: React.FC<SbComponentProps<HeroBlock>> = ({ blok }) => {
     <section className={styles.hero} {...editable}>
       {hasImage ? (
         <div className={mediaClasses}>
-          <Image
+          <SbImage
             className={styles.img}
             src={imageData!.src}
             alt={imageData!.alt || ''}

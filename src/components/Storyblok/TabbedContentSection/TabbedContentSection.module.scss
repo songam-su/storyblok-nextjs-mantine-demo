@@ -21,16 +21,75 @@
   width: 100%;
 }
 
+.stickySentinel {
+  height: 1px;
+}
+
+.nav {
+  position: sticky;
+  top: var(--sb-sticky-top, 0px);
+  z-index: 40;
+}
+
+/* Desktop: keep the same tab UI, but do not stick on scroll. */
+@media (min-width: 48em) {
+  .nav {
+    position: static;
+    top: auto;
+  }
+}
+
+.navStuck {
+  background: var(--sb-background);
+  backdrop-filter: none;
+}
+
+@media (max-width: 48em) {
+  .nav {
+    padding: calc(0.5 * var(--page-shell-section-padding)) var(--page-shell-section-padding);
+  }
+
+  .navStuck {
+    box-shadow: var(--sb-shadow-sticky-nav);
+  }
+}
+
+.tabsListViewport {
+  position: relative;
+  overflow: hidden;
+}
+
 .tabsList {
-  gap: 12px;
+  gap: 10px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.125rem;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.tabsList::-webkit-scrollbar {
+  display: none;
+}
+
+.tabsListViewport::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--button-height-sm);
+  pointer-events: none;
+  background: linear-gradient(to right, transparent, var(--sb-glass-bg-subtle));
 }
 
 .tabsTab {
-  border: 1px solid transparent;
+  border: 1px solid var(--sb-border);
   border-radius: var(--mantine-radius-sm);
-  padding: var(--mantine-spacing-sm) calc(1.375rem * var(--mantine-scale));
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
   background: var(--sb-surface);
   color: var(--sb-text);
   font-weight: 700;
@@ -42,12 +101,48 @@
     border-color 120ms ease,
     box-shadow 120ms ease;
 
+  scroll-snap-align: start;
+
   /* Mantine may wrap tab text in inner elements; ensure typography inherits consistently. */
   :global(.mantine-Text-root),
   :global(.mantine-Text-root) span {
     font-weight: inherit;
     font-size: inherit;
     line-height: inherit;
+  }
+}
+
+@media (max-width: 48em) {
+  /*
+    Mobile best-practice typography:
+    - Minimum 16px (1rem)
+    - Keep horizontal scrolling usable even when text scales (WCAG 1.4.4)
+  */
+  .tabsListViewport {
+    margin-inline: calc(-1 * var(--page-shell-section-padding));
+  }
+
+  .tabsList {
+    padding-inline: var(--page-shell-section-padding);
+    scroll-padding-inline: var(--page-shell-section-padding);
+  }
+
+  .tabsTab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--button-height, var(--button-height-sm));
+    padding-block: 0;
+    padding-inline: var(--button-padding-x, var(--button-padding-x-sm));
+    font-size: 1rem;
+    min-height: 0;
+  }
+
+  /* Mobile has no meaningful hover: keep non-active pills in the tinted rest state. */
+  .tabsTab:not([data-active]) {
+    background: transparent;
+    border-color: var(--sb-accent-border-subtle);
+    color: var(--sb-text);
   }
 }
 
@@ -63,81 +158,283 @@
 }
 
 .tabLabelMeasure {
-  font-weight: 700;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 160ms ease;
+  display: none;
 }
 
 .tabLabelText {
   font-weight: 700;
-  opacity: 1;
-  transition: opacity 160ms ease;
 }
 
-.tabsTab[data-active='true'] .tabLabelMeasure,
-.tabsTab:not([data-active='true']):hover .tabLabelMeasure {
-  opacity: 1;
+/* Hover should be a subtle tint, not an inverted active state. */
+.tabsTab:not([data-active]):hover {
+  background: var(--sb-accent-surface-hover-bg);
+  border-color: var(--sb-accent-border-subtle);
+  color: var(--sb-text);
 }
 
-.tabsTab[data-active='true'] .tabLabelText,
-.tabsTab:not([data-active='true']):hover .tabLabelText {
-  opacity: 0;
-}
+/* Desktop: match the current mobile inactive button feel (no accent-green border; muted text at rest). */
+@media (min-width: 48em) {
+  .tabsTab:not([data-active]) {
+    background: transparent;
+    border-color: var(--sb-border);
+    color: var(--sb-text-muted);
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .tabLabelMeasure,
-  .tabLabelText {
-    transition: none;
+  .tabsTab:not([data-active]):hover {
+    background: var(--sb-accent-surface-hover-bg);
+    border-color: var(--sb-border);
+    color: var(--sb-text);
   }
 }
 
-.tabsTab:not([data-active='true']):hover {
-  background: var(--sb-accent-hover);
-  border-color: var(--sb-accent-hover);
-  color: var(--sb-on-accent);
-}
-
-.tabsTab[data-active='true'] {
+.tabsTab[data-active] {
   background: var(--sb-accent);
   color: var(--sb-on-accent);
   border-color: var(--sb-accent);
 }
 
-// .tabsTab[data-active='true']:hover {
-//   background: var(--sb-accent-hover);
-//   border-color: var(--sb-accent-hover);
-// }
+.tabsTab:focus-visible {
+  outline: 2px solid var(--sb-focus-outline-color);
+  outline-offset: 3px;
+}
 
 :global(:root[data-mantine-color-scheme='dark']) {
-  .tabsTab:not([data-active='true']) {
-    background: transparent;
-    border-color: transparent;
+  .tabsTab:not([data-active]):hover {
+    background: var(--sb-accent-surface-hover-bg);
+    border-color: var(--sb-accent-border-subtle);
     color: var(--sb-text);
   }
 
-  .tabsTab:not([data-active='true']):hover {
-    background: var(--sb-accent-hover, #8dd4d4);
-    border-color: var(--sb-accent-hover, #8dd4d4);
-    color: var(--sb-background, #2c2c2c);
+  .tabsTab[data-active] {
+    background: var(--sb-highlight-text-primary-color);
+    border-color: var(--sb-highlight-text-primary-color);
+    color: var(--sb-background);
   }
 
-  .tabsTab[data-active='true'] {
-    background: var(--sb-highlight-text-primary-color, #5bbabd);
-    border-color: var(--sb-highlight-text-primary-color, #5bbabd);
-    color: var(--sb-background, #2c2c2c);
-  }
+  @media (min-width: 48em) {
+    .tabsTab:not([data-active]) {
+      background: transparent;
+      border-color: var(--sb-border);
+      color: var(--sb-text-muted);
+    }
 
+    .tabsTab:not([data-active]):hover {
+      background: var(--sb-accent-surface-hover-bg);
+      border-color: var(--sb-border);
+      color: var(--sb-text);
+    }
+  }
   // .tabsTab[data-active='true']:hover {
-  //   background: var(--sb-highlight-text-primary-color, #5bbabd);
-  //   border-color: var(--sb-highlight-text-primary-color, #5bbabd);
-  //   color: var(--sb-background, #2c2c2c);
+  //   background: var(--sb-highlight-text-primary-color);
+  //   border-color: var(--sb-highlight-text-primary-color);
+  //   color: var(--sb-background);
   // }
+}
+
+/* Desktop: remove borders entirely for all tabs (inactive + active). */
+@media (min-width: 48em) {
+  .tabsTab {
+    border: none;
+  }
 }
 
 .panels {
   display: grid;
-  margin-top: var(--mantine-spacing-md);
+  margin-top: 1rem;
+}
+
+.segmented {
+  width: max-content;
+}
+
+.segmentedScroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-inline: var(--page-shell-section-padding);
+  scrollbar-width: none;
+}
+
+.segmentedScroller::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ensure the internal control row stays one line when content is wider than the viewport. */
+.segmented :global(.mantine-SegmentedControl-controls) {
+  flex-wrap: nowrap;
+  gap: calc(0.5 * var(--page-shell-section-padding) + clamp(12px, 2vw, 32px));
+}
+
+/* Ensure item dividers are not rendered (Mantine uses ::before separators). */
+.segmented :global(.mantine-SegmentedControl-control)::before {
+  display: none;
+  content: none;
+}
+
+.segmentedRoot {
+  background: var(--sb-surface);
+  border: 1px solid transparent;
+  padding: 0;
+}
+
+.segmentedIndicator {
+  background: var(--sb-accent);
+}
+
+.segmentedLabel {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.segmentedControl {
+  color: var(--sb-text);
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+@media (max-width: 48em) {
+  /* Edge-to-edge sticky bar on mobile (no outer padding). */
+  .nav {
+    margin-inline: calc(-1 * var(--page-shell-section-padding));
+  }
+
+  .navStuck {
+    border-radius: 0;
+  }
+
+  .segmentedLabel {
+    font-size: 1rem;
+    line-height: 1.2;
+    height: var(--button-height, var(--button-height-sm));
+    padding-block: 0;
+    padding-inline: var(--button-padding-x, var(--button-padding-x-sm));
+  }
+
+  .segmentedRoot :global(.mantine-SegmentedControl-controls) {
+    /* Use margins for spacing so we always get visible separation on mobile. */
+    gap: 0 !important;
+  }
+
+  .segmentedRoot {
+    min-height: var(--button-height, var(--button-height-sm));
+    border-radius: 0;
+    background: transparent;
+  }
+
+  /* Mantine may apply overlap/negative margins for dividers; neutralize so gap is honored. */
+  .segmentedRoot :global(.mantine-SegmentedControl-control) {
+    margin: 0 !important;
+    margin-right: calc(0.5 * var(--page-shell-section-padding)) !important;
+    flex: 0 0 auto !important;
+  }
+
+  .segmentedRoot :global(.mantine-SegmentedControl-control:last-child) {
+    margin-right: 0 !important;
+  }
+
+  .segmentedControl {
+    /* Keep control padding at 0 so active/hover/inactive heights match exactly. */
+    padding: 0;
+    min-height: var(--button-height, var(--button-height-sm));
+  }
+
+  /* Mobile has no meaningful hover: keep non-active segmented pills in the tinted rest state. */
+  .segmentedControl:not([data-active='true']) .segmentedLabel {
+    background: transparent;
+  }
+
+  .accordionControl {
+    font-size: 1rem;
+  }
+}
+
+/* Mantine applies data-active to controls; ensure AA contrast on selected state. */
+.segmentedControl[data-active='true'] .segmentedLabel {
+  color: var(--sb-on-accent);
+}
+
+/* Hover tint belongs to the label (not the whole control) to keep pill sizing consistent. */
+.segmentedControl:not([data-active='true']):hover .segmentedLabel {
+  background: var(--sb-accent-surface-hover-bg);
+}
+
+.segmentedPanel {
+  margin-top: 1rem;
+}
+
+@media (max-width: 48em) {
+  .segmentedPanel {
+    margin-top: calc(1rem - calc(0.5 * var(--page-shell-section-padding)));
+  }
+}
+
+.accordion {
+  background: transparent;
+}
+
+.accordionItem {
+  border-radius: var(--mantine-radius-sm);
+  border: 1px solid var(--sb-border);
+  background: var(--sb-surface);
+  overflow: hidden;
+}
+
+.accordionItem + .accordionItem {
+  margin-top: var(--mantine-spacing-sm);
+}
+
+.accordionControl {
+  color: inherit;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.accordionLabel {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.accordionItem[data-active='true'] .accordionControl {
+  background: var(--sb-accent-surface-active-bg);
+}
+
+.accordionControl:hover {
+  background: var(--sb-accent-surface-hover-bg);
+}
+
+.accordionPanel {
+  color: inherit;
+}
+
+.accordionContent {
+  padding-top: var(--mantine-spacing-sm);
+  padding-bottom: var(--mantine-spacing-sm);
+}
+
+:global(:root[data-mantine-color-scheme='dark']) {
+  .tabsListViewport::after {
+    background: linear-gradient(to right, transparent, var(--sb-background));
+  }
+
+  .segmentedRoot {
+    background: transparent;
+  }
+
+  .segmentedIndicator {
+    background: var(--sb-highlight-text-primary-color);
+  }
+
+  .segmentedControl[data-active='true'] .segmentedLabel {
+    color: var(--sb-background);
+  }
 }
 
 .panel {

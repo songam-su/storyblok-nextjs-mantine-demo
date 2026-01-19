@@ -2,6 +2,7 @@
 
 import Button from '@/components/Storyblok/Button/Button';
 import { renderHeadlineSegments } from '@/components/Storyblok/utils/renderHeadlineSegments';
+import SbImage from '@/components/ui/SbImage/SbImage';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ImageTextSection as ImageTextSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import getSbImageData from '@/lib/storyblok/utils/image';
@@ -11,7 +12,6 @@ import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { Stack, Text, Title } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import styles from './ImageTextSection.module.scss';
 
@@ -105,7 +105,7 @@ const ImageTextSection = ({ blok }: SbComponentProps<ImageTextSectionBlok>) => {
             }
           >
             <div className={classNames(styles.frame, preserveAspectRatio && styles.contain)}>
-              <Image
+              <SbImage
                 className={styles.img}
                 src={imageData!.src}
                 alt={imageData!.alt || ''}

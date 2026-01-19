@@ -25,7 +25,7 @@ sequenceDiagram
     note over Editor,Next: Preview traffic (draftMode + bridge)
     Editor->>Proxy: GET /some-page?_storyblok_tk=...
     Proxy->>Next: rewrite to /sb-preview/some-page
-    Next->>SB: fetchStory(slug, draft) (no-store)
+    Next->>SB: fetchStory(slug, draft) (no-store, noindex)
     SB-->>Next: draft story payload
     Next-->>Editor: HTML + bridge-enabled preview UX
   end
@@ -34,6 +34,7 @@ sequenceDiagram
     note over SB,Next: Publish event triggers revalidation
     SB->>Hook: POST publish webhook (signed)
     Hook->>Next: revalidatePath(/some-page)
+    Hook->>Next: revalidateTag(story:some-page)
     Next-->>SB: next request refetches published content
   end
 ```

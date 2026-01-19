@@ -21,7 +21,7 @@ ISR[(ISR/Static cache)]
 end
 
 subgraph PREV["Preview Path<br/>(editor-first)"]
-PREV_ROUTE["Route: app/(preview)/sb-preview/...<br/>force-dynamic"]
+PREV_ROUTE["Route: app/(preview)/sb-preview/...<br/>force-dynamic<br/>no-store + noindex"]
 PREV_FETCH["fetchStory(slug, 'draft')<br/>no-store + cv"]
 PREV_RENDER["Render with StoryblokRenderer<br/>(bridge ON)"]
 VE[(Storyblok Visual Editor)]

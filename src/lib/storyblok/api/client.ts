@@ -8,6 +8,8 @@ import { getStory, type StoryblokVersion } from '@/lib/storyblok/api/storyblokSe
 export async function fetchStory(slug: string, version: StoryblokVersion) {
   const isDev = process.env.NODE_ENV === 'development';
 
+  const cacheTags = version === 'published' ? ['storyblok', `story:${slug}`] : undefined;
+
   // Note: App Router route segment caching is controlled by `export const revalidate` in the route.
   // We still force `no-store` for draft to avoid stale preview data.
   const fetchOptions: any =
@@ -17,7 +19,7 @@ export async function fetchStory(slug: string, version: StoryblokVersion) {
         ? { cache: 'no-store' }
         : {
             cache: 'force-cache',
-            next: { revalidate: REVALIDATE_SECONDS },
+            next: { revalidate: REVALIDATE_SECONDS, tags: cacheTags },
           };
 
   try {

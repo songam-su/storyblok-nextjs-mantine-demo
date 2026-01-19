@@ -54,9 +54,9 @@
 
 .searchInput {
   height: calc(2.75rem * var(--mantine-scale));
-  background: var(--sb-surface, #ffffff);
-  border: 1px solid var(--sb-border, #d7dbe0);
-  color: var(--sb-text, #111);
+  background: var(--sb-surface);
+  border: 1px solid var(--sb-border);
+  color: var(--sb-text);
   box-shadow: none;
   transition:
     border-color 180ms ease,
@@ -78,24 +78,24 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: var(--sb-text-muted, #4b5563);
+  color: var(--sb-text-muted);
 }
 
 .searchInput::placeholder {
-  color: var(--sb-fg-weak, var(--sb-text-muted, #4b5563));
+  color: var(--sb-fg-weak, var(--sb-text-muted));
   font-weight: 400;
   font-size: inherit;
 }
 
 .searchInput:focus {
-  border-color: var(--sb-focus-border-color, var(--sb-accent, #1d63c5));
-  box-shadow: 0 0 0 3px var(--sb-focus-shadow-color, rgba(29, 99, 197, 0.18));
+  border-color: var(--sb-focus-border-color);
+  box-shadow: 0 0 0 3px var(--sb-focus-shadow-color);
 }
 
 .categories {
   /* Mantine SegmentedControl root background (defaults to a gray). */
-  --sc-background: var(--sb-surface, #ffffff);
-  --sb-category-active-bg: var(--sb-accent, #1d63c5);
+  --sc-background: var(--sb-surface);
+  --sb-category-active-bg: var(--sb-accent);
   --sc-color: var(--sb-category-active-bg);
   /* Match project button geometry/typography. */
   --sc-radius: var(--mantine-radius-sm);
@@ -113,19 +113,19 @@
     font-weight: 700;
     font-size: var(--mantine-font-size-md);
     border-radius: var(--mantine-radius-sm);
-    color: var(--sb-text, #111);
+    color: var(--sb-text);
     transition:
       color 90ms ease,
       background-color 90ms ease;
 
     &:where([data-active]) {
-      color: var(--sb-on-accent, #fff);
+      color: var(--sb-on-accent);
     }
 
     /* Match Select dropdown hover color for non-active pills. */
     &:where(:not([data-disabled], [data-active], [data-read-only])):hover {
       background-color: var(--sb-accent-hover);
-      color: var(--sb-on-accent, #fff);
+      color: var(--sb-on-accent);
     }
   }
 
@@ -137,6 +137,37 @@
   :global(.mantine-SegmentedControl-control)::before {
     display: none;
     content: none;
+  }
+}
+
+/* Desktop: match TabbedContent pill colors (inactive/hover/active) without changing behavior. */
+@media (min-width: 48em) {
+  .categories {
+    /* Use explicit pill backgrounds; avoid Mantine indicator tint spanning gaps. */
+    --sc-background: transparent;
+    --sc-color: transparent;
+  }
+
+  .categories :global(.mantine-SegmentedControl-label) {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: var(--sb-text-muted);
+    transition:
+      color 120ms ease,
+      background-color 120ms ease,
+      border-color 120ms ease;
+
+    &:where([data-active]) {
+      background-color: var(--sb-accent);
+      border-color: var(--sb-accent);
+      color: var(--sb-on-accent);
+    }
+
+    &:where(:not([data-disabled], [data-active], [data-read-only])):hover {
+      background-color: var(--sb-accent-surface-hover-bg);
+      border-color: var(--sb-accent-surface-hover-bg);
+      color: var(--sb-text);
+    }
   }
 }
 
@@ -181,21 +212,39 @@
 
 :global(:root[data-mantine-color-scheme='dark']) {
   .categories {
-    --sb-category-active-bg: var(--sb-highlight-text-primary-color, #5bbabd);
-    --sb-category-hover-bg: var(--sb-highlight-text-primary-color, #5bbabd);
-    color: var(--sb-background, #2c2c2c);
+    --sb-category-active-bg: var(--sb-highlight-text-primary-color);
+    --sb-category-hover-bg: var(--sb-highlight-text-primary-color);
+    color: var(--sb-background);
   }
 
   .categories :global(.mantine-SegmentedControl-label) {
     &:where([data-active]) {
       // background-color: var(--sb-accent-hover);
-      // color: #fff; //var(--sb-background, #2c2c2c);
-      color: var(--sb-background, #2c2c2c);
+      // color: var(--sb-background);
+      color: var(--sb-background);
     }
 
     &:where(:not([data-disabled], [data-active], [data-read-only])):hover {
       background-color: var(--sb-accent-hover);
-      color: var(--sb-background, #2c2c2c);
+      color: var(--sb-background);
+    }
+  }
+
+  @media (min-width: 48em) {
+    .categories :global(.mantine-SegmentedControl-label) {
+      border-color: transparent;
+
+      &:where([data-active]) {
+        background-color: var(--sb-highlight-text-primary-color);
+        border-color: var(--sb-highlight-text-primary-color);
+        color: var(--sb-background);
+      }
+
+      &:where(:not([data-disabled], [data-active], [data-read-only])):hover {
+        background-color: var(--sb-accent-surface-hover-bg);
+        border-color: var(--sb-accent-surface-hover-bg);
+        color: var(--sb-text);
+      }
     }
   }
 
@@ -220,9 +269,9 @@
 }
 
 .categoriesSelectInput {
-  background: var(--sb-surface, #ffffff);
-  border-color: var(--sb-border, rgba(0, 0, 0, 0.12));
-  color: var(--sb-text, #111);
+  background: var(--sb-surface);
+  border-color: var(--sb-border);
+  color: var(--sb-text);
 
   /* Match the SegmentedControl pills / project buttons. */
   border-radius: var(--mantine-radius-sm);
@@ -233,17 +282,17 @@
 }
 
 .categoriesSelectInput::placeholder {
-  color: var(--sb-text-muted, #4b5563);
+  color: var(--sb-text-muted);
   color: var(--sb-fg-weak);
 }
 
 .categoriesSelectInput:focus {
-  border-color: var(--sb-focus-border-color, var(--sb-accent, #1d63c5));
-  box-shadow: 0 0 0 3px var(--sb-focus-shadow-color, rgba(29, 99, 197, 0.18));
+  border-color: var(--sb-focus-border-color);
+  box-shadow: 0 0 0 3px var(--sb-focus-shadow-color);
 }
 
 .categoriesSelectSection {
-  color: var(--sb-text-muted, #4b5563);
+  color: var(--sb-text-muted);
 }
 
 .categoriesSelectDropdown {
@@ -264,7 +313,7 @@
 }
 
 .categoriesSelectOption {
-  color: var(--sb-text, #111);
+  color: var(--sb-text);
 
   /* Match the SegmentedControl pills / project buttons. */
   border-radius: var(--mantine-radius-sm);
@@ -277,14 +326,14 @@
 
 /* Hovered option */
 .categoriesSelectOption:hover {
-  background-color: var(--sb-category-hover-bg, rgba(29, 99, 197, 0.08));
+  background-color: var(--sb-category-hover-bg, var(--sb-accent-surface-hover-bg));
 }
 
 /* Selected option */
 .categoriesSelectOption[data-combobox-selected],
 .categoriesSelectOption[data-selected] {
-  background-color: var(--sb-category-active-bg, rgba(29, 99, 197, 0.12));
-  color: var(--sb-text, #111);
+  background-color: var(--sb-category-active-bg, var(--sb-accent-surface-selected-bg));
+  color: var(--sb-text);
   font-weight: 600;
 }
 

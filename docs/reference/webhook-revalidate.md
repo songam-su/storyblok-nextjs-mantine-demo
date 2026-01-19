@@ -9,6 +9,15 @@ Notes
 - Slugs come from `story.full_slug`, `story.alternates[].full_slug`, and `cached_urls`.
 - Fail fast on invalid secret/signature/stale timestamp; no revalidation on failure.
 
+## Tag-based invalidation
+
+Published Storyblok fetches are tagged so the webhook can invalidate cached fetch results immediately:
+
+- `fetchStory(slug, 'published')` uses `next: { tags: ['storyblok', 'story:<slug>'] }`
+  - Implementation: [src/lib/storyblok/api/client.ts](../../src/lib/storyblok/api/client.ts)
+- Webhook invalidates story tags via `revalidateTag('story:<slug>')` in addition to `revalidatePath(...)`
+  - Implementation: [src/app/api/webhooks/revalidate/route.ts](../../src/app/api/webhooks/revalidate/route.ts)
+
 ```mermaid
 sequenceDiagram
   participant SB as Storyblok
@@ -25,6 +34,9 @@ sequenceDiagram
     Collect-->>API: slugs array
     loop for each slug
       API->>Cache: revalidatePath(slug)
+    end
+    loop for each story
+      API->>Cache: revalidateTag(story:full_slug)
     end
     API-->>SB: 200 { revalidated: true, slugs }
   else invalid

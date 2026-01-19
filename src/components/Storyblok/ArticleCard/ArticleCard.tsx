@@ -1,8 +1,8 @@
 'use client';
 
+import SbImage from '@/components/ui/SbImage/SbImage';
 import { Title } from '@mantine/core';
 import classNames from 'classnames';
-import Image from 'next/image';
 import Link from 'next/link';
 import styles from './ArticleCard.module.scss';
 
@@ -48,7 +48,7 @@ const ArticleCard = ({
     <>
       {hasImage ? (
         <div className={styles.imageWrap}>
-          <Image src={image!.src} alt={image?.alt || ''} fill className={styles.image} sizes={imageSizes} />
+          <SbImage src={image!.src} alt={image?.alt || ''} fill className={styles.image} sizes={imageSizes} />
         </div>
       ) : null}
 
@@ -59,7 +59,7 @@ const ArticleCard = ({
               <span key={cat.key} className={styles.category}>
                 {cat.icon?.src ? (
                   <span className={styles.categoryIconWrap} aria-hidden="true">
-                    <Image
+                    <SbImage
                       src={cat.icon.src}
                       alt={cat.icon.alt || ''}
                       width={18}

@@ -1,4 +1,3 @@
-import CmsNotFoundPage from '@/components/chrome/CmsNotFoundPage/CmsNotFoundPage';
 import { getCanonicalUrl } from '@/lib/site/canonicalUrl';
 import { generateCmsNotFoundMetadata } from '@/lib/site/cmsNotFound';
 import { fetchStory } from '@/lib/storyblok/api/client';
@@ -32,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: content?.meta_title || story.name,
     description: content?.meta_description,
     alternates: {
-      canonical: getCanonicalUrl(pathname),
+      canonical: getCanonicalUrl(pathname).toString(),
     },
   };
 }
@@ -45,10 +44,8 @@ export default async function Page({ params }: PageProps) {
   const story = await fetchStory(slug, 'published');
 
   if (!story) {
-    if (process.env.NODE_ENV === 'development') {
-      return <CmsNotFoundPage />;
-    }
-
+    // Ensure a true 404 response while rendering the CMS-driven 404 content.
+    // (The route-group not-found boundary renders the CMS 404 story with a safe fallback.)
     notFound();
   }
 

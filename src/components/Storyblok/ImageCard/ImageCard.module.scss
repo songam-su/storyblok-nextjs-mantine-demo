@@ -4,8 +4,8 @@
   grid-template-rows: auto 1fr;
   height: 100%;
   border-radius: 14px;
-  background: var(--sb-surface, #ffffff);
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  background: var(--sb-surface);
+  border: 1px solid var(--sb-border);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 
   margin: 0 auto;
@@ -34,7 +34,7 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   overflow: hidden;
-  background: var(--sb-color-bg, var(--sb-surface, #ffffff));
+  background: var(--sb-color-bg, var(--sb-surface));
   padding-top: clamp(24px, 6vw, 48px);
 }
 
@@ -55,7 +55,7 @@
 }
 
 .content {
-  padding: 1rem;
+  padding: var(--sb-card-padding);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -67,5 +67,5 @@
 }
 
 .text {
-  color: var(--sb-text-muted, #4b5563);
+  color: var(--sb-text-muted);
 }

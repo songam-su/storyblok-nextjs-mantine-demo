@@ -1,9 +1,9 @@
 import NotFoundPage from '@/components/chrome/NotFoundPage/NotFoundPage';
-import { fetchStory } from '@/lib/storyblok/api/client';
+import { fetchCmsNotFoundStory } from '@/lib/site/cmsNotFound';
 import StoryblokRenderer from '@/lib/storyblok/rendering/StoryblokRenderer';
 
 export default async function CmsNotFoundPage() {
-  const story = await fetchStory('error-404', 'published');
+  const story = await fetchCmsNotFoundStory('published');
 
   if (!story) {
     return <NotFoundPage />;

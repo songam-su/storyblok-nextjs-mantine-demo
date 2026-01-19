@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@/components/Storyblok/Button/Button';
+import SbImage from '@/components/ui/SbImage/SbImage';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { TabbedContentEntry as TabbedContentEntryBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import getSbImageData from '@/lib/storyblok/utils/image';
@@ -8,7 +9,6 @@ import { renderSbRichText } from '@/lib/storyblok/utils/richtext/renderSbRichTex
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { Card, Stack, Text } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
-import Image from 'next/image';
 import styles from './TabbedContentEntry.module.scss';
 
 const TabbedContentEntry = ({ blok }: SbComponentProps<TabbedContentEntryBlok>) => {
@@ -27,7 +27,16 @@ const TabbedContentEntry = ({ blok }: SbComponentProps<TabbedContentEntryBlok>) 
           <Stack gap="sm">
             {blok.headline && <Text className={styles.headline}>{blok.headline}</Text>}
 
-            {blok.description && <div className={styles.richtext}>{renderSbRichText(blok.description)}</div>}
+            {blok.description && (
+              <Text
+                component="div"
+                className={styles.richtext}
+                fz="var(--sb-font-body-size)"
+                lh="var(--sb-font-body-line-height)"
+              >
+                {renderSbRichText(blok.description)}
+              </Text>
+            )}
 
             {Array.isArray(blok.button) && blok.button.length > 0 && (
               <Stack gap="xs">
@@ -50,7 +59,7 @@ const TabbedContentEntry = ({ blok }: SbComponentProps<TabbedContentEntryBlok>) 
 
         {hasImage ? (
           <div className={styles.mediaPane} aria-hidden={image?.alt ? undefined : true}>
-            <Image
+            <SbImage
               src={image!.src}
               alt={image?.alt || ''}
               fill

@@ -3,8 +3,8 @@
   gap: var(--page-shell-section-gap);
 
   /* Reference Banner: force the Banner background + text, not the CTA buttons. */
-  --sb-color-bg: var(--sb-accent, #1d63c5);
-  --sb-color-text: var(--sb-text, #111);
+  --sb-color-bg: var(--sb-accent);
+  --sb-color-text: var(--sb-text);
 }
 
 /*
@@ -12,8 +12,8 @@
   which overrides inherited vars from `.wrapper`. Apply vars directly to the Banner root.
 */
 .wrapper .item :global(.edge-to-edge) {
-  --sb-color-bg: var(--sb-accent, #1d63c5);
-  --sb-color-text: var(--sb-text, #111);
+  --sb-color-bg: var(--sb-accent);
+  --sb-color-text: var(--sb-text);
 }
 
 /*
@@ -25,8 +25,8 @@
   even if CSS-module class names change.
 */
 .wrapper :global(.mantine-Button-root[data-sb-bg-color][data-sb-text-color]) {
-  background-color: var(--sb-surface-inverse, #111);
-  color: var(--sb-on-inverse, #fff);
+  background-color: var(--sb-surface-inverse);
+  color: var(--sb-on-inverse);
   border-color: transparent;
 
   transition:
@@ -35,15 +35,15 @@
     border-color 220ms ease-in-out;
 
   /* Keep the Button component's internal hover logic aligned */
-  --sb-color-bg: var(--sb-surface-inverse, #111);
-  --sb-color-text: var(--sb-on-inverse, #fff);
+  --sb-color-bg: var(--sb-surface-inverse);
+  --sb-color-text: var(--sb-on-inverse);
   /* Always flip to white on hover (same in light + dark). */
-  --sb-color-bg-hover: #fff;
+  --sb-color-bg-hover: var(--sb-on-accent);
 }
 
 .wrapper :global(.mantine-Button-root[data-sb-bg-color][data-sb-text-color]:hover) {
-  background-color: #fff;
-  color: #111;
+  background-color: var(--sb-on-accent);
+  color: var(--sb-surface-inverse);
 }
 
 .item {

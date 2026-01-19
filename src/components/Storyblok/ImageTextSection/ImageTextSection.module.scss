@@ -60,7 +60,7 @@
 }
 
 .richtext {
-  color: var(--sb-text-muted, #4b5563);
+  color: var(--sb-text-muted);
 
   p {
     margin: 0;
@@ -70,7 +70,7 @@
   :global(.sb-richtext) {
     color: inherit;
 
-    --imageText-pill-accent: var(--sb-accent-secondary-strong, #e02e58);
+    --imageText-pill-accent: var(--sb-accent-secondary-strong);
 
     h1,
     h2,
@@ -92,7 +92,7 @@
     h4,
     h5,
     h6 {
-      color: var(--sb-headline-color, var(--sb-text, #111));
+      color: var(--sb-headline-color, var(--sb-text));
     }
 
     ul {
@@ -117,7 +117,7 @@
     // Remove paragraph margins inside list items so the first line aligns with the marker.
     ul > li :is(p) {
       margin: 0;
-      color: var(--sb-text, #111);
+      color: var(--sb-text);
       font-weight: 600;
     }
   }
@@ -131,7 +131,7 @@
 }
 
 .lead {
-  color: var(--sb-fg-muted, var(--sb-text-muted, #4b5563));
+  color: var(--sb-fg-muted, var(--sb-text-muted));
 }
 
 .actions {
@@ -141,19 +141,36 @@
   justify-content: center;
 
   a[class*='is-ghost']:hover {
-    border: 1px solid var(--sb-accent-secondary, #ca294f);
-    background: var(--sb-accent-secondary, #ca294f);
+    border: 1px solid var(--sb-accent-secondary);
+    background: var(--sb-accent-secondary);
   }
 
   a[class*='is-ghost']:not(:hover) {
-    border: 1px solid var(--sb-accent-secondary, #ca294f);
+    border: 1px solid var(--sb-accent-secondary);
   }
 }
 
 :global(:root[data-mantine-color-scheme='dark']) {
   .actions {
     :is(a, button)[class*='is-ghost'][data-sb-bg-color='primary-dark'][data-sb-text-color='white'] {
-      --sb-button-ghost-rest-color: var(--sb-on-accent, #fff);
+      --sb-button-ghost-rest-color: var(--sb-on-accent);
+    }
+  }
+}
+
+@media (max-width: 48em) {
+  .actions {
+    :is(a, button)[class*='is-ghost'] {
+      background: var(--sb-accent-secondary-strong);
+      border: 1px solid var(--sb-accent-secondary-strong);
+      color: var(--sb-on-accent);
+    }
+
+    :is(a, button)[class*='is-ghost']:hover {
+      background: var(--sb-accent-secondary-strong);
+      border-color: var(--sb-accent-secondary-strong);
+      color: var(--sb-on-accent);
+      background: var(--sb-accent-secondary, #cccccc);
     }
   }
 }
@@ -172,7 +189,7 @@
   aspect-ratio: 3 / 3;
   border-radius: 12px;
   overflow: hidden;
-  background: var(--sb-surface, #ffffff);
+  background: var(--sb-surface);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 

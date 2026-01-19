@@ -1,9 +1,11 @@
+import { getCanonicalUrl } from '@/lib/site/canonicalUrl';
+import { getCmsNotFoundStorySlug } from '@/lib/site/cmsNotFound';
 import { isPreviewAllowed } from '@/lib/site/previewAccess';
 import { fetchStory } from '@/lib/storyblok/api/client';
 import StoryblokRenderer from '@/lib/storyblok/rendering/StoryblokRenderer';
 import type { Metadata } from 'next';
 import { draftMode, headers } from 'next/headers';
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -24,6 +26,7 @@ export async function generateMetadata(props: PreviewPageProps): Promise<Metadat
   const params = await props.params;
   const rawSegments = params?.slug ?? [];
   const slug = rawSegments.length ? rawSegments.map((s) => s.toLowerCase()).join('/') : 'home';
+  const publishedPathname = slug === 'home' ? '/' : `/${slug}`;
 
   const story = await fetchStory(slug, 'draft');
   const content = story?.content as any;
@@ -33,6 +36,19 @@ export async function generateMetadata(props: PreviewPageProps): Promise<Metadat
   return {
     title: content?.meta_title || story.name,
     description: content?.meta_description,
+    // Defense-in-depth: discourage indexing even if headers are misconfigured.
+    robots: {
+      index: false,
+      follow: false,
+      googleBot: {
+        index: false,
+        follow: false,
+      },
+    },
+    // Canonicalize preview pages to their published URL to avoid duplicate-content signals.
+    alternates: {
+      canonical: getCanonicalUrl(publishedPathname).toString(),
+    },
   };
 }
 
@@ -55,7 +71,12 @@ export default async function PreviewPage(props: PreviewPageProps) {
   });
 
   const url = host ? `https://${host}/sb-preview/${slug}?${qs.toString()}` : null;
-  if (!isPreviewAllowed({ host, headers: h, url, isDraftModeEnabled: draft.isEnabled })) notFound();
+  if (!isPreviewAllowed({ host, headers: h, url, isDraftModeEnabled: draft.isEnabled })) {
+    const nextPath = `/sb-preview/${slug}`;
+    const nextQuery = qs.toString();
+    const nextWithQuery = `${nextPath}${nextQuery ? `?${nextQuery}` : ''}`;
+    redirect(`/sb-preview/login?next=${encodeURIComponent(nextWithQuery)}`);
+  }
 
   // Canonicalize mixed-case vanity URLs (e.g. /sb-preview/HoMe -> /sb-preview/home).
   if (rawSegments.length && rawSegments.some((s, i) => s !== normalizedSegments[i])) {
@@ -66,10 +87,11 @@ export default async function PreviewPage(props: PreviewPageProps) {
   const story = await fetchStory(slug, 'draft');
 
   if (!story) {
+    const notFoundSlug = getCmsNotFoundStorySlug();
     // For missing preview stories, always route to the CMS-driven 404 in preview.
     // Avoid redirect loops if the CMS 404 story itself is missing.
-    if (slug !== 'error-404') {
-      const canonical404 = `/sb-preview/error-404${qs.toString() ? `?${qs.toString()}` : ''}`;
+    if (slug !== notFoundSlug) {
+      const canonical404 = `/sb-preview/${notFoundSlug}${qs.toString() ? `?${qs.toString()}` : ''}`;
       redirect(canonical404);
     }
 

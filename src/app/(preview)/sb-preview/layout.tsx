@@ -8,7 +8,6 @@ import type { SiteConfigContent } from '@/lib/storyblok/context/SiteConfigContex
 import { ColorSchemeScript } from '@mantine/core';
 import type { Metadata } from 'next';
 import { draftMode, headers } from 'next/headers';
-import { notFound } from 'next/navigation';
 import ScrollToTop from '../../ScrollToTop';
 import PreviewProviders from './providers';
 
@@ -31,9 +30,10 @@ export default async function PreviewLayout({ children }: { children: React.Reac
   const h = await headers();
   const host = h.get('host');
   const draft = await draftMode();
-  if (!isPreviewAllowed({ host, headers: h, isDraftModeEnabled: draft.isEnabled })) notFound();
 
-  const siteConfigStory = await fetchStory('site-config', 'draft');
+  const allowed = isPreviewAllowed({ host, headers: h, isDraftModeEnabled: draft.isEnabled });
+
+  const siteConfigStory = await fetchStory('site-config', allowed ? 'draft' : 'published');
   const siteConfig = siteConfigStory?.content as SiteConfigContent | undefined;
 
   return (

@@ -11,20 +11,35 @@ import type { Metadata } from 'next';
 import ScrollToTop from '../ScrollToTop';
 import PublishedProviders from './providers';
 
-export const metadata: Metadata = {
-  metadataBase: METADATA_BASE,
-  icons: {
-    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }, { url: '/favicon.ico' }],
-  },
-  robots: {
-    index: false,
-    follow: false,
-    googleBot: {
-      index: false,
-      follow: false,
+export function generateMetadata(): Metadata {
+  const nodeEnv = process.env.NODE_ENV;
+  const vercelEnv = process.env.VERCEL_ENV;
+
+  const deployEnv = process.env.DEPLOY_ENV ?? process.env.NEXT_PUBLIC_DEPLOY_ENV ?? vercelEnv;
+
+  const isNonProductionDeploy = nodeEnv !== 'production' || (deployEnv && deployEnv !== 'production');
+
+  return {
+    metadataBase: METADATA_BASE,
+    icons: {
+      icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }, { url: '/favicon.ico' }],
     },
-  },
-};
+    // In production we want indexing; for preview/dev deployments we keep it noindex.
+    robots: isNonProductionDeploy
+      ? {
+          index: false,
+          follow: false,
+          googleBot: {
+            index: false,
+            follow: false,
+          },
+        }
+      : {
+          index: true,
+          follow: true,
+        },
+  };
+}
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const siteConfigStory = await fetchStory('site-config', 'published');

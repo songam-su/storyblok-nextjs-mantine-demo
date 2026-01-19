@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@/components/Storyblok/Button/Button';
+import SbImage from '@/components/ui/SbImage/SbImage';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { GridCard as GridCardBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import getSbImageData from '@/lib/storyblok/utils/image';
@@ -8,7 +9,6 @@ import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { Card, Flex, px, Stack, Text } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
-import Image from 'next/image';
 import styles from './GridCard.module.scss';
 
 const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
@@ -42,7 +42,7 @@ const GridCard = ({ blok }: SbComponentProps<GridCardBlok>) => {
         <Flex gap="xs" ta="center" justify="space-between" dir="column">
           {showIcon && (
             <div className={styles.icon}>
-              <Image
+              <SbImage
                 src={iconData!.src}
                 alt={iconData!.alt || ''}
                 width={iconData?.width || 64}

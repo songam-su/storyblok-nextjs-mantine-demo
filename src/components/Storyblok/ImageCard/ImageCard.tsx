@@ -1,12 +1,12 @@
 'use client';
 
+import SbImage from '@/components/ui/SbImage/SbImage';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ImageCard as ImageCardBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import getSbImageData from '@/lib/storyblok/utils/image';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { Text } from '@mantine/core';
 import { storyblokEditable } from '@storyblok/react';
-import Image from 'next/image';
 import styles from './ImageCard.module.scss';
 
 const EARTH_TONE_PASTELS = [
@@ -86,7 +86,7 @@ const ImageCard = ({ blok }: SbComponentProps<ImageCardBlok>) => {
       {hasImage && (
         <div className={styles.imageFrame} style={frameBackgroundStyle}>
           <div className={styles.imageInner}>
-            <Image
+            <SbImage
               className={styles.img}
               src={imageData!.src}
               alt={imageData!.alt || ''}
@@ -103,7 +103,7 @@ const ImageCard = ({ blok }: SbComponentProps<ImageCardBlok>) => {
           {blok.label && <p className={styles.label}>{blok.label}</p>}
 
           {blok.text && (
-            <Text size="sm" className={styles.text}>
+            <Text className={styles.text} fz="var(--sb-font-body-size)" lh="var(--sb-font-body-line-height)">
               {blok.text}
             </Text>
           )}

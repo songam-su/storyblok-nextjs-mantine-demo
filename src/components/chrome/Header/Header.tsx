@@ -2,15 +2,19 @@
 
 import Button from '@/components/Storyblok/Button/Button';
 import NavItem from '@/components/Storyblok/NavItem/NavItem';
+import SbImage from '@/components/ui/SbImage/SbImage';
 import { useSiteConfig } from '@/lib/storyblok/context/SiteConfigContext';
+import type { StoryblokAsset } from '@/lib/storyblok/resources/types/storyblok';
 import type {
   Button as ButtonBlok,
   NavItem as NavItemBlok,
 } from '@/lib/storyblok/resources/types/storyblok-components';
+import getSbImageData from '@/lib/storyblok/utils/image';
 import { Burger, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classNames from 'classnames';
-import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { SVGProps } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Header.module.scss';
@@ -21,6 +25,7 @@ const normalizeButtons = (items?: ButtonBlok[]) => (Array.isArray(items) ? items
 const SunIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" {...props}>
     <path
+      className={styles.sunCore}
       d="M12 17.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z"
       stroke="currentColor"
       strokeWidth="2"
@@ -71,13 +76,59 @@ const AutoThemeIcon = (props: SVGProps<SVGSVGElement>) => (
 const Header = () => {
   const { config, colorScheme, hasInitializedColorScheme, toggleColorScheme } = useSiteConfig();
   const raw = config?.raw;
+  const pathname = usePathname();
   const [mobileMenuOpened, mobileMenu] = useDisclosure(false);
 
   const [isIconSwitching, setIsIconSwitching] = useState(false);
+  const [displayedScheme, setDisplayedScheme] = useState<'light' | 'dark'>(colorScheme);
   const hasRunInitTransition = useRef(false);
   const ICON_FADE_MS = 520;
   const ICON_GAP_MS = 55;
   const ICON_SWITCH_HOLD_MS = ICON_FADE_MS + ICON_GAP_MS;
+
+  const endIconSwitchingWhenReady = useCallback(
+    (targetScheme?: 'light' | 'dark') => {
+      const start = window.performance?.now?.() ?? Date.now();
+      const maxWaitMs = 1500;
+      let swappedLabel = false;
+
+      const tick = () => {
+        const now = window.performance?.now?.() ?? Date.now();
+        const elapsed = now - start;
+        const rootScheme = document.documentElement.getAttribute('data-mantine-color-scheme');
+        const schemeMatches = targetScheme ? rootScheme === targetScheme : true;
+
+        // After the fade-out completes, swap the displayed label while hidden.
+        // This makes the new values appear only on the fade-in.
+        if (!swappedLabel && targetScheme && elapsed >= ICON_FADE_MS && schemeMatches) {
+          swappedLabel = true;
+          setDisplayedScheme(targetScheme);
+        }
+
+        // Hold for at least the icon fade+gap so we never show overlapping glyphs.
+        if (elapsed >= ICON_SWITCH_HOLD_MS && schemeMatches) {
+          setIsIconSwitching(false);
+          return;
+        }
+
+        if (elapsed >= maxWaitMs) {
+          setIsIconSwitching(false);
+          return;
+        }
+
+        window.requestAnimationFrame(tick);
+      };
+
+      window.requestAnimationFrame(tick);
+    },
+    [ICON_FADE_MS, ICON_SWITCH_HOLD_MS]
+  );
+
+  // Keep the displayed scheme in sync when we are not actively animating.
+  useEffect(() => {
+    if (isIconSwitching) return;
+    setDisplayedScheme(colorScheme);
+  }, [colorScheme, isIconSwitching]);
 
   useEffect(() => {
     if (!hasInitializedColorScheme || hasRunInitTransition.current) return;
@@ -85,51 +136,106 @@ const Header = () => {
 
     // Ensure the first transition (sparkle -> final icon) has no overlap.
     setIsIconSwitching(true);
-    const id = window.setTimeout(() => setIsIconSwitching(false), ICON_SWITCH_HOLD_MS);
-    return () => window.clearTimeout(id);
-  }, [hasInitializedColorScheme, ICON_SWITCH_HOLD_MS]);
+    endIconSwitchingWhenReady();
+  }, [endIconSwitchingWhenReady, hasInitializedColorScheme]);
 
   const handleToggleColorScheme = useCallback(() => {
     if (isIconSwitching) return;
+    const targetScheme: 'light' | 'dark' = colorScheme === 'dark' ? 'light' : 'dark';
     setIsIconSwitching(true);
     toggleColorScheme();
-    window.setTimeout(() => setIsIconSwitching(false), ICON_SWITCH_HOLD_MS);
-  }, [ICON_SWITCH_HOLD_MS, isIconSwitching, toggleColorScheme]);
+    // Keep the label/icon hidden until the root scheme actually updates.
+    // This prevents a brief flash where stale text/icon becomes visible mid-transition.
+    endIconSwitchingWhenReady(targetScheme);
+  }, [colorScheme, endIconSwitchingWhenReady, isIconSwitching, toggleColorScheme]);
 
   if (!raw) return null;
 
   const navItems = normalizeNav((raw as any)?.header_nav);
   const buttons = normalizeButtons((raw as any)?.header_buttons);
-  const logo = (raw as any)?.header_logo;
-  const logoDark = (raw as any)?.header_logo_dark;
+  const logoMark = (raw as any)?.header_logo;
+  const logoText = (raw as any)?.header_logo_text;
+  const logoMarkDark = (raw as any)?.header_logo_dark;
+  const logoTextDark = (raw as any)?.header_logo_text_dark;
   const isLight = Boolean((raw as any)?.header_light);
 
-  if (!navItems.length && !buttons.length && !logo && !logoDark) return null;
+  if (!navItems.length && !buttons.length && !logoMark && !logoText && !logoMarkDark && !logoTextDark) return null;
 
   const nextScheme = colorScheme === 'dark' ? 'light' : 'dark';
 
-  const logoSrc = typeof logo?.filename === 'string' ? logo.filename : undefined;
-  const logoAlt = typeof logo?.alt === 'string' ? logo.alt : undefined;
-  const logoDarkSrc = typeof logoDark?.filename === 'string' ? logoDark.filename : undefined;
-  const logoDarkAlt = typeof logoDark?.alt === 'string' ? logoDark.alt : undefined;
+  const markSrc = typeof logoMark?.filename === 'string' ? logoMark.filename : undefined;
+  const markAlt = typeof logoMark?.alt === 'string' ? logoMark.alt : undefined;
+  const textSrc = typeof logoText?.filename === 'string' ? logoText.filename : undefined;
+  const textAlt = typeof logoText?.alt === 'string' ? logoText.alt : undefined;
 
-  const isDefaultBrandLogo = Boolean(logoSrc && /andrew-caperton-avatar\.svg(\?.*)?$/i.test(logoSrc));
+  const markDarkSrc = typeof logoMarkDark?.filename === 'string' ? logoMarkDark.filename : undefined;
+  const markDarkAlt = typeof logoMarkDark?.alt === 'string' ? logoMarkDark.alt : undefined;
+  const textDarkSrc = typeof logoTextDark?.filename === 'string' ? logoTextDark.filename : undefined;
+  const textDarkAlt = typeof logoTextDark?.alt === 'string' ? logoTextDark.alt : undefined;
 
-  const resolvedLogoSrc =
+  const markData = getSbImageData(logoMark as StoryblokAsset | null);
+  const markDarkData = getSbImageData(logoMarkDark as StoryblokAsset | null);
+  const textData = getSbImageData(logoText as StoryblokAsset | null);
+  const textDarkData = getSbImageData(logoTextDark as StoryblokAsset | null);
+
+  const isMarkDefaultBrandLogo = Boolean(markSrc && /andrew-caperton-avatar\.svg(\?.*)?$/i.test(markSrc));
+
+  const resolvedMarkSrc =
     colorScheme === 'dark'
-      ? logoDarkSrc || (isDefaultBrandLogo ? '/assets/logos/andrew-caperton-avatar.svg' : logoSrc)
-      : logoSrc;
+      ? markDarkSrc || (isMarkDefaultBrandLogo ? '/assets/logos/andrew-caperton-avatar.svg' : markSrc)
+      : markSrc;
+  const resolvedTextSrc = colorScheme === 'dark' ? textDarkSrc || textSrc : textSrc;
 
-  const resolvedLogoAlt = (colorScheme === 'dark' ? logoDarkAlt : undefined) || logoAlt;
+  const resolvedMarkAlt = (colorScheme === 'dark' ? markDarkAlt : undefined) || markAlt;
+  const resolvedTextAlt = (colorScheme === 'dark' ? textDarkAlt : undefined) || textAlt;
+
+  const resolvedMarkObjectPosition =
+    (colorScheme === 'dark' ? markDarkData?.objectPosition : undefined) || markData?.objectPosition;
+  const resolvedTextObjectPosition =
+    (colorScheme === 'dark' ? textDarkData?.objectPosition : undefined) || textData?.objectPosition;
+
+  const isHomeActive = pathname === '/' || pathname === '/sb-preview/home';
 
   return (
     <header className={classNames(styles.header, isLight && styles.isLight)}>
       <div className={styles.inner}>
         <div className={styles.brand}>
-          {resolvedLogoSrc ? (
-            <span className={styles.logo}>
-              <Image src={resolvedLogoSrc} alt={resolvedLogoAlt || 'Logo'} width={140} height={38} priority />
-            </span>
+          {resolvedMarkSrc || resolvedTextSrc ? (
+            <Link href="/" className={styles.logoLink} aria-label="Go to homepage">
+              <span className={styles.logoLockup}>
+                {resolvedMarkSrc ? (
+                  <span className={styles.logoMark}>
+                    <SbImage
+                      src={resolvedMarkSrc}
+                      alt={resolvedMarkAlt || 'Logo'}
+                      fill
+                      sizes="(min-width: 48em) 56px, 48px"
+                      priority
+                      style={{
+                        objectFit: 'contain',
+                        ...(resolvedMarkObjectPosition ? { objectPosition: resolvedMarkObjectPosition } : {}),
+                      }}
+                    />
+                  </span>
+                ) : null}
+
+                {resolvedTextSrc ? (
+                  <span className={styles.logoText}>
+                    <SbImage
+                      src={resolvedTextSrc}
+                      alt={resolvedTextAlt || 'Logo text'}
+                      fill
+                      sizes="(min-width: 48em) 160px, 136px"
+                      priority
+                      style={{
+                        objectFit: 'contain',
+                        ...(resolvedTextObjectPosition ? { objectPosition: resolvedTextObjectPosition } : {}),
+                      }}
+                    />
+                  </span>
+                ) : null}
+              </span>
+            </Link>
           ) : (
             <span className={styles.placeholder}>Logo</span>
           )}
@@ -194,10 +300,42 @@ const Header = () => {
         position="right"
         size="xs"
         title={
-          resolvedLogoSrc ? (
-            <span className={styles.drawerBrand}>
-              <Image src={resolvedLogoSrc} alt={resolvedLogoAlt || 'Logo'} width={140} height={38} priority />
-            </span>
+          resolvedMarkSrc || resolvedTextSrc ? (
+            <Link href="/" className={styles.logoLink} aria-label="Go to homepage" onClick={mobileMenu.close}>
+              <span className={styles.drawerBrandLockup}>
+                {resolvedMarkSrc ? (
+                  <span className={styles.drawerBrandMark}>
+                    <SbImage
+                      src={resolvedMarkSrc}
+                      alt={resolvedMarkAlt || 'Logo'}
+                      fill
+                      sizes="48px"
+                      priority
+                      style={{
+                        objectFit: 'contain',
+                        ...(resolvedMarkObjectPosition ? { objectPosition: resolvedMarkObjectPosition } : {}),
+                      }}
+                    />
+                  </span>
+                ) : null}
+
+                {resolvedTextSrc ? (
+                  <span className={styles.drawerBrandText}>
+                    <SbImage
+                      src={resolvedTextSrc}
+                      alt={resolvedTextAlt || 'Logo text'}
+                      fill
+                      sizes="160px"
+                      priority
+                      style={{
+                        objectFit: 'contain',
+                        ...(resolvedTextObjectPosition ? { objectPosition: resolvedTextObjectPosition } : {}),
+                      }}
+                    />
+                  </span>
+                ) : null}
+              </span>
+            </Link>
           ) : (
             'Menu'
           )
@@ -225,13 +363,22 @@ const Header = () => {
               <SunIcon className={classNames(styles.themeIcon, styles.themeIconFinal, styles.themeIconSun)} />
               <MoonIcon className={classNames(styles.themeIcon, styles.themeIconFinal, styles.themeIconMoon)} />
             </span>
-            <span className={styles.drawerThemeToggleLabel}>{colorScheme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+            <span className={styles.drawerThemeToggleLabel}>
+              {displayedScheme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            </span>
           </button>
         </div>
 
         {navItems.length ? (
           <nav className={styles.mobileNav} aria-label="Mobile navigation">
             <div className={styles.mobileNavList} onClick={mobileMenu.close}>
+              <Link
+                href="/"
+                className={classNames(styles.mobileNavHome, isHomeActive && styles.mobileNavItemActive)}
+                aria-current={isHomeActive ? 'page' : undefined}
+              >
+                <span>Home</span>
+              </Link>
               {navItems.map((item) => (
                 <NavItem
                   key={item._uid}

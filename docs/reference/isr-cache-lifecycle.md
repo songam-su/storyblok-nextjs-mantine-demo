@@ -5,7 +5,7 @@ Purpose: show how ISR populates/serves content and how webhooks invalidate stale
 Notes
 
 - ISR window ~10 minutes; first miss triggers render and cache fill.
-- Webhooks call revalidatePath to invalidate affected slugs.
+- Webhooks call `revalidatePath` and `revalidateTag` to invalidate affected slugs and cached Storyblok fetches.
 
 ```mermaid
 flowchart LR
@@ -19,4 +19,5 @@ flowchart LR
 
   SB -. publish/update webhook .-> WH[/api/webhooks/revalidate/]
   WH -. revalidatePath(slugs) .-> CDN
+  WH -. revalidateTag(story:slug) .-> NX
 ```

@@ -9,18 +9,18 @@
 
 @layer components {
   .primary-highlight {
-    --sb-color-bg: var(--sb-accent, #348183);
-    --sb-color-bg-hover: var(--sb-accent-hover, #2c6c6e);
-    --sb-color-text: var(--sb-on-accent, #ffffff);
-    --sb-color-highlight: var(--sb-accent-highlight, #8fbabb);
+    --sb-color-bg: var(--sb-accent);
+    --sb-color-bg-hover: var(--sb-accent-hover);
+    --sb-color-text: var(--sb-on-accent);
+    --sb-color-highlight: var(--sb-accent-highlight);
   }
 
   .highlight-1,
   .color_1 {
-    --sb-color-bg: var(--sb-accent-secondary-strong, #e02e58);
-    --sb-color-bg-hover: var(--sb-accent-secondary, #ca294f);
-    --sb-color-text: var(--sb-on-accent, #ffffff);
-    --sb-color-highlight: var(--sb-accent-secondary-highlight, #ee8ca3);
+    --sb-color-bg: var(--sb-accent-secondary-strong);
+    --sb-color-bg-hover: var(--sb-accent-secondary);
+    --sb-color-text: var(--sb-on-accent);
+    --sb-color-highlight: var(--sb-accent-secondary-highlight);
   }
 
   .highlight-2,
@@ -43,7 +43,7 @@
 
   .primary-dark {
     /* carbonBlack */
-    --sb-color-bg: #212121;
+    --sb-color-bg: #111111;
     --sb-color-bg-hover: #434343;
     --sb-color-text: #ffffff;
   }
@@ -58,7 +58,7 @@
   @supports (color: color-mix(in srgb, #000 10%, #fff)) {
     :global(:root[data-mantine-color-scheme='dark']) {
       .primary-dark {
-        --sb-color-bg-hover: color-mix(in srgb, #212121 62%, #2c2c2c);
+        --sb-color-bg-hover: color-mix(in srgb, var(--sb-color-default-bg) 62%, var(--sb-background));
       }
     }
   }
@@ -157,12 +157,12 @@
 .highlight-text-color_1,
 :global(.mantine-Text-root).highlight-text-highlight-1,
 :global(.mantine-Text-root).highlight-text-color_1 {
-  color: var(--sb-accent-secondary-highlight, #ee8ca3);
+  color: var(--sb-accent-secondary-highlight);
 }
 
 :global(.mantine-Title-root[data-order='2']) :global(.mantine-Text-root).highlight-text-highlight-1,
 :global(.mantine-Title-root[data-order='2']) :global(.mantine-Text-root).highlight-text-color_1 {
-  color: var(--sb-accent-secondary-highlight, #ee8ca3);
+  color: var(--sb-accent-secondary-highlight);
 }
 
 .highlight-text-highlight-2,

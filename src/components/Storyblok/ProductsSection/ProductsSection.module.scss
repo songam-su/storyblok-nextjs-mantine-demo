@@ -4,14 +4,14 @@
   border-radius: 16px;
   display: grid;
   gap: 16px;
-  background: var(--sb-surface-accent, var(--sb-surface, #ffffff));
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  background: var(--sb-surface-accent, var(--sb-surface));
+  border: 1px solid var(--sb-border);
   margin: 64px auto;
 }
 
 :global(:root[data-mantine-color-scheme='dark']) {
   .section {
-    --sb-section-heading-color: var(--sb-highlight-text-primary-color, #5bbabd);
+    --sb-section-heading-color: var(--sb-highlight-text-primary-color);
   }
 }
 
@@ -21,16 +21,16 @@
 }
 
 .lead {
-  color: var(--sb-text-muted, #4b5563);
+  color: var(--sb-text-muted);
   max-width: 720px;
 }
 
 .pluginBox {
-  padding: 18px;
+  padding: var(--sb-card-padding);
   border-radius: 12px;
-  border: 1px dashed var(--sb-border, rgba(0, 0, 0, 0.12));
-  background: var(--sb-surface, #ffffff);
-  color: var(--sb-text-muted, #4b5563);
+  border: 1px dashed var(--sb-border);
+  background: var(--sb-surface);
+  color: var(--sb-text-muted);
 }
 
 .grid {
@@ -44,8 +44,8 @@
   max-width: 720px;
   overflow: hidden;
   border-radius: 14px;
-  background: var(--sb-surface, #ffffff);
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  background: var(--sb-surface);
+  border: 1px solid var(--sb-border);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 
   @media (min-width: 48em) {
@@ -63,7 +63,7 @@
   position: relative;
   aspect-ratio: 1 / 1;
   width: 100%;
-  background: var(--sb-surface, #ffffff);
+  background: var(--sb-surface);
 }
 
 .image {
@@ -72,7 +72,7 @@
 }
 
 .body {
-  padding: 24px;
+  padding: var(--sb-card-padding);
   display: grid;
   gap: 12px;
 }
@@ -86,7 +86,7 @@
 
 .description {
   margin: 0;
-  color: var(--sb-text-muted, #4b5563);
+  color: var(--sb-text-muted);
   line-height: 1.55;
 }
 
@@ -96,11 +96,11 @@
 }
 
 .soldOut {
-  color: var(--sb-danger, #d31818);
+  color: var(--sb-danger);
 }
 
 :global(:root[data-mantine-color-scheme='dark']) {
   .soldOut {
-    color: var(--sb-danger-dark, #ff7a7a);
+    color: var(--sb-danger-dark);
   }
 }

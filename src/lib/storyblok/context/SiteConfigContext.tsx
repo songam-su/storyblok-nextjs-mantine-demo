@@ -180,7 +180,7 @@ export const SiteConfigProvider = ({
   const [config, setConfigState] = useState<NormalizedSiteConfig | undefined>(initialNormalized);
   // IMPORTANT: Keep SSR + first client render deterministic to avoid hydration mismatches.
   // We sync from ColorSchemeScript/localStorage after mount.
-  const [colorScheme, setColorSchemeState] = useState<SiteColorScheme>('dark');
+  const [colorScheme, setColorSchemeState] = useState<SiteColorScheme>('light');
   const [hasInitializedColorScheme, setHasInitializedColorScheme] = useState(false);
 
   const theme = useMemo(() => applyConfigToTheme(config), [config]);
@@ -279,7 +279,7 @@ export const SiteThemeProvider = ({ children }: { children: React.ReactNode }) =
   const { theme, colorScheme } = useSiteConfig();
 
   return (
-    <MantineProvider theme={theme} defaultColorScheme="dark" forceColorScheme={colorScheme}>
+    <MantineProvider theme={theme} defaultColorScheme="light" forceColorScheme={colorScheme}>
       {children}
     </MantineProvider>
   );

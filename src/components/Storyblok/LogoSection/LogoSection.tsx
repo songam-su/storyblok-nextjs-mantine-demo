@@ -1,15 +1,15 @@
 'use client';
 
-import React from 'react';
 import { storyblokEditable } from '@storyblok/react';
-import Image from 'next/image';
+import React from 'react';
 
-import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
+import SbImage from '@/components/ui/SbImage/SbImage';
+import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import { LogoSection as LogoSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import getSbImageData from '@/lib/storyblok/utils/image';
-import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
-import styles from './LogoSection.module.scss';
+import { SbComponentProps } from '@/types/storyblok/SbComponentProps';
 import { Title } from '@mantine/core';
+import styles from './LogoSection.module.scss';
 
 const LogoSection: React.FC<SbComponentProps<LogoSectionBlok>> = ({ blok }) => {
   const { isEditor } = useStoryblokEditor();
@@ -26,13 +26,17 @@ const LogoSection: React.FC<SbComponentProps<LogoSectionBlok>> = ({ blok }) => {
 
   return (
     <section className={styles.section} {...editable}>
-      {blok.lead && <Title order={2} className={styles.lead}>{blok.lead}</Title>}
+      {blok.lead && (
+        <Title order={2} className={styles.lead}>
+          {blok.lead}
+        </Title>
+      )}
 
       {logos.length > 0 && (
         <div className={styles.grid}>
           {logos.map(({ asset, data }, index) => (
             <div className={styles.logo} key={asset?.id ?? index}>
-              <Image
+              <SbImage
                 src={data!.src}
                 alt={data!.alt || ''}
                 width={data?.width || 240}

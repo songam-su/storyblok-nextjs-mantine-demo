@@ -14,9 +14,9 @@
 }
 
 .card {
-  border: 1px solid var(--sb-border, rgba(0, 0, 0, 0.12));
+  border: 1px solid var(--sb-border);
   border-radius: 16px;
   padding: 1.25rem;
-  background: var(--sb-surface, #ffffff);
+  background: var(--sb-surface);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
 }

@@ -430,7 +430,9 @@ export interface RichtextYoutube {
 
 export interface SiteConfig {
   header_logo?: StoryblokAsset;
+  header_logo_text?: StoryblokAsset;
   header_logo_dark?: StoryblokAsset;
+  header_logo_text_dark?: StoryblokAsset;
   header_nav?: NavItem[];
   header_buttons?: Button[];
   primary_highlight_color?: unknown;
@@ -471,6 +473,8 @@ export interface SiteConfig {
   instagram?: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
   youtube?: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
   facebook?: Exclude<StoryblokMultilink, {linktype?: "email"} | {linktype?: "asset"}>;
+  vertical_logo?: StoryblokAsset;
+  vertical_logo_dark?: StoryblokAsset;
   component: "site-config";
   _uid: string;
   [k: string]: unknown;

@@ -3,12 +3,13 @@
   right: 1rem;
   bottom: 1rem;
   z-index: 1000;
-  background: var(--sb-overlay-bg, rgba(0, 0, 0, 0.6));
-  color: var(--sb-on-overlay, #fff);
-  border: 1px solid var(--sb-overlay-border, rgba(255, 255, 255, 0.2));
+  background: var(--sb-overlay-bg);
+  color: var(--sb-on-overlay);
+  border: 1px solid var(--sb-overlay-border);
   border-radius: 12px;
   padding: 0.5rem 0.75rem;
-  font-size: 12px;
+  font-size: var(--sb-font-body-size);
+  line-height: var(--sb-font-body-line-height);
   font-weight: 600;
   letter-spacing: 0.01em;
   pointer-events: none;
