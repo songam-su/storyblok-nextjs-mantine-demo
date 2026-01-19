@@ -3,6 +3,7 @@
 import Button from '@/components/Storyblok/Button/Button';
 import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
 import SbImage from '@/components/ui/SbImage/SbImage';
+import { DEMO_FORM_DISABLED_MESSAGE, DISABLE_FORM_SUBMIT } from '@/lib/site/demoFlags';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { ContactFormSection as ContactFormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import { getSbLink } from '@/lib/storyblok/utils/getSbLink';
@@ -55,6 +56,13 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
 
   const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (DISABLE_FORM_SUBMIT && !isEditor) {
+      setStatus('error');
+      setErrorMessage(DEMO_FORM_DISABLED_MESSAGE);
+      return;
+    }
+
     setStatus('submitting');
     setErrorMessage(null);
 
@@ -86,7 +94,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
       setStatus('error');
       setErrorMessage(err instanceof Error ? err.message : 'Something went wrong');
     }
-  }, []);
+  }, [isEditor]);
 
   const renderButtons = () => {
     if (hasButtons) {
@@ -106,7 +114,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
                 component={btn.component}
                 storyblokEditable={isEditor ? storyblokEditable(btn as any) : undefined}
                 submit={!isNavigableLink}
-                disabled={isSubmitting}
+                disabled={isSubmitting || (DISABLE_FORM_SUBMIT && !isEditor && !isNavigableLink)}
                 loading={!isNavigableLink && isSubmitting}
               />
             );
@@ -151,6 +159,7 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
   };
 
   const isSubmitting = status === 'submitting';
+  const isFormDisabled = DISABLE_FORM_SUBMIT && !isEditor;
 
   return (
     <section className={styles.section} {...editable}>
@@ -219,7 +228,9 @@ const ContactFormSection = ({ blok }: SbComponentProps<ContactFormSectionBlok>) 
                   placeholder="Share a bit more detail"
                   disabled={isSubmitting}
                 />
-                <div className={styles.actions}>{renderButtons()}</div>
+                <div className={styles.actions} aria-disabled={isFormDisabled}>
+                  {renderButtons()}
+                </div>
                 {status === 'success' ? (
                   <Text c="secondary.6" fw={400} size="lg" ta="center" role="status">
                     Thanks — your message was sent.

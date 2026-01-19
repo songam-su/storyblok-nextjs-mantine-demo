@@ -2,6 +2,7 @@
 
 import Button from '@/components/Storyblok/Button/Button';
 import SectionHeader, { hasSectionHeaderContent } from '@/components/Storyblok/SectionHeader/SectionHeader';
+import { DEMO_FORM_DISABLED_MESSAGE, DISABLE_FORM_SUBMIT } from '@/lib/site/demoFlags';
 import { useStoryblokEditor } from '@/lib/storyblok/context/StoryblokEditorContext';
 import type { FormSection as FormSectionBlok } from '@/lib/storyblok/resources/types/storyblok-components';
 import type { SbComponentProps } from '@/types/storyblok/SbComponentProps';
@@ -32,6 +33,13 @@ const FormSection = ({ blok }: SbComponentProps<FormSectionBlok>) => {
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+
+      if (DISABLE_FORM_SUBMIT && !isEditor) {
+        setStatus('error');
+        setErrorMessage(DEMO_FORM_DISABLED_MESSAGE);
+        return;
+      }
+
       setStatus('submitting');
       setErrorMessage(null);
 
@@ -68,7 +76,7 @@ const FormSection = ({ blok }: SbComponentProps<FormSectionBlok>) => {
         setErrorMessage(err instanceof Error ? err.message : 'Something went wrong');
       }
     },
-    [formType]
+    [formType, isEditor]
   );
 
   const isSubmitting = status === 'submitting';
