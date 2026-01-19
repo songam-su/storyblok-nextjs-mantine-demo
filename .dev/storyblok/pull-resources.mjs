@@ -2,7 +2,16 @@ import { execSync } from 'child_process';
 import dotenv from 'dotenv';
 import { existsSync } from 'fs';
 
+import { ensureStoryblokCliLoggedIn } from './helpers/ensure-storyblok-login.mjs';
+
 dotenv.config();
+
+try {
+  ensureStoryblokCliLoggedIn();
+} catch (error) {
+  console.error(`❌ ${error instanceof Error ? error.message : String(error)}`);
+  process.exit(1);
+}
 
 const spaceId = process.env.STORYBLOK_SPACE_ID;
 if (!spaceId) {
@@ -22,15 +31,33 @@ const typeFile = `${resourcesPath}types/${spaceId}/storyblok-components.d.ts`;
 const datasourcesFile = `${resourcesPath}datasources/${spaceId}/datasources.json`;
 // const languagesFile = `${resourcesPath}languages/${spaceId}/languages.json`; // TODO: determine correct filename and path
 
+function assertExistsOrThrow(filePath, label) {
+  if (existsSync(filePath)) return;
+  throw new Error(
+    [
+      `${label} output file not found: ${filePath}`,
+      'This usually means the Storyblok CLI could not fetch data (even if it printed "Pull complete").',
+      'Try: pnpm sb:login (ensure correct region), then rerun: pnpm sb:pull',
+    ].join('\n')
+  );
+}
+
 try {
   console.log('Pulling Storyblok components...');
   execSync(`storyblok components --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
 
+  // Storyblok CLI may exit 0 even on failures; verify outputs before continuing.
+  componentFiles.forEach((filePath) => assertExistsOrThrow(filePath, 'Components'));
+
   console.log('Pulling Storyblok types...');
   execSync(`storyblok types --space ${spaceId} --path ${resourcesPath} generate`, { stdio: 'inherit' });
 
+  assertExistsOrThrow(typeFile, 'Types');
+
   console.log('Pulling Storyblok datasources...');
   execSync(`storyblok datasources --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });
+
+  assertExistsOrThrow(datasourcesFile, 'Datasources');
 
   console.log('Pulling Storyblok languages...');
   execSync(`storyblok languages --space ${spaceId} --path ${resourcesPath} pull`, { stdio: 'inherit' });

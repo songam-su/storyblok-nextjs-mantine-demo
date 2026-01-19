@@ -25,10 +25,37 @@
   color: var(--sb-text);
 }
 
-.logoLink {
+.logo {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 140px;
+  height: 38px;
+  flex: 0 0 auto;
+}
+
+:global(:root[data-mantine-color-scheme='dark']) {
+  .logo img {
+    filter: invert(1);
+  }
+
+  .drawerBrand img {
+    filter: invert(1);
+  }
+}
+
+.drawerBrandLink {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 10px;
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: center;
   color: inherit;
   text-decoration: none;
   border-radius: 10px;
@@ -39,37 +66,27 @@
   outline-offset: 3px;
 }
 
-/*
-  Logo lockup (mark + text) is rendered as two separate SVGs.
-  Keep it simple + browser-safe: no transforms, just contain.
-*/
-.logoLockup {
-  --logo-height: 2.875em;
-  --logo-mark-width: 2.875em;
-  --logo-text-width: 11.25em;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55em;
-  height: var(--logo-height);
-  flex: 0 0 auto;
-  margin-top: 2px;
+.drawerBrandLink:focus-visible {
+  outline: 2px solid var(--sb-focus-outline-color);
+  outline-offset: 3px;
 }
 
-.logoMark,
-.logoText {
-  position: relative;
-  height: 100%;
+.drawerTitle {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--sb-text);
 }
 
-.logoMark {
-  width: var(--logo-mark-width);
-}
-
-.logoText {
-  width: var(--logo-text-width);
-  top: -0.03125em;
-  left: -0.125em;
+.drawerSrTitle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .nav {
@@ -78,7 +95,7 @@
   margin-left: auto;
   flex: 1 1 auto;
   min-width: 0;
-  padding: 0 2.3rem;
+  padding: 0 0 0 1.8rem;
 }
 
 .navList {
@@ -261,31 +278,33 @@
   }
 }
 
-.drawerBrandLockup {
-  --drawer-logo-height: 44px;
-  --drawer-logo-mark-width: 44px;
-  --drawer-logo-text-width: 120px;
-
+.drawerBrand {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  height: var(--drawer-logo-height);
+  justify-content: center;
+  width: 140px;
+  height: 38px;
 }
 
-.drawerBrandMark,
-.drawerBrandText {
-  position: relative;
-  height: 100%;
+.drawerContent {
+  background: var(--sb-background, #ffffff);
+  color-scheme: var(--sb-color-scheme, light);
+  color: var(--sb-text, #111);
 }
 
-.drawerBrandMark {
-  width: var(--drawer-logo-mark-width);
-}
+.drawerHeader {
+  border-bottom: 1px solid var(--sb-border, rgba(0, 0, 0, 0.08));
+  background: var(--sb-background, #ffffff);
+  color: var(--sb-text, #111);
 
-.drawerBrandText {
-  width: var(--drawer-logo-text-width);
-  top: -0.03125em;
-  left: -0.125em;
+  :global(.mantine-Drawer-title) {
+    color: var(--sb-text, #111);
+  }
+
+  :global(.mantine-CloseButton-root) {
+    color: var(--sb-text, #111);
+  }
 }
 
 .drawerBody {
@@ -293,6 +312,8 @@
   padding-bottom: 0.75rem;
   display: flex;
   flex-direction: column;
+  background: var(--sb-background, #ffffff);
+  color: var(--sb-text, #111);
 }
 
 .mobileNav {
@@ -484,18 +505,6 @@
 @media (max-width: 48em) {
   .inner {
     gap: 0.75rem;
-  }
-
-  .logoLockup {
-    --logo-height: 40px;
-    --logo-mark-width: 40px;
-    --logo-text-width: calc(136px * 1.5);
-  }
-
-  .drawerBrandLockup {
-    --drawer-logo-height: 40px;
-    --drawer-logo-mark-width: 40px;
-    --drawer-logo-text-width: calc(120px * 1.5);
   }
 
   .nav,
