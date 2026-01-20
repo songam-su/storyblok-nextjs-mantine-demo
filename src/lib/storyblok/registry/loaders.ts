@@ -15,10 +15,6 @@ type UntypedRegistry = Record<string, () => Promise<{ default: React.ComponentTy
 
 export type StoryblokComponentRegistry = UntypedRegistry & TypedRegistry;
 
-const fallback = async () => ({
-  default: (_props: SbComponentProps<any>) => null,
-});
-
 // ✅ Single source of truth for all components
 export const registry = {
   // Implemented components
