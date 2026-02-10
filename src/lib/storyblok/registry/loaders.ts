@@ -15,10 +15,6 @@ type UntypedRegistry = Record<string, () => Promise<{ default: React.ComponentTy
 
 export type StoryblokComponentRegistry = UntypedRegistry & TypedRegistry;
 
-const fallback = async () => ({
-  default: (_props: SbComponentProps<any>) => null,
-});
-
 // ✅ Single source of truth for all components
 export const registry = {
   // Implemented components
@@ -49,8 +45,6 @@ export const registry = {
   'newsletter-form-section': () => import('@/components/Storyblok/Forms/NewsletterFormSection/NewsletterFormSection'),
   'personalized-section': () => import('@/components/Storyblok/PersonalizedSection/PersonalizedSection'),
   'site-config': (() => import('@/components/Storyblok/SiteConfig/SiteConfig')) as TypedLoader<'site-config'>,
-
-  // Components not implemented yet → fallback to placeholder
   'banner-reference': () => import('@/components/Storyblok/BannerReference/BannerReference'),
   category: () => import('@/components/Storyblok/Category/Category'),
   'latest-articles-section': () => import('@/components/Storyblok/LatestArticlesSection/LatestArticlesSection'),
