@@ -39,10 +39,10 @@ export async function generateMetadata(props: PreviewPageProps): Promise<Metadat
     // Defense-in-depth: discourage indexing even if headers are misconfigured.
     robots: {
       index: false,
-      follow: false,
+      follow: true,
       googleBot: {
         index: false,
-        follow: false,
+        follow: true,
       },
     },
     // Canonicalize preview pages to their published URL to avoid duplicate-content signals.

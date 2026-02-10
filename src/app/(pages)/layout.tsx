@@ -12,32 +12,20 @@ import ScrollToTop from '../ScrollToTop';
 import PublishedProviders from './providers';
 
 export function generateMetadata(): Metadata {
-  const nodeEnv = process.env.NODE_ENV;
-  const vercelEnv = process.env.VERCEL_ENV;
-
-  const deployEnv = process.env.DEPLOY_ENV ?? process.env.NEXT_PUBLIC_DEPLOY_ENV ?? vercelEnv;
-
-  const isNonProductionDeploy = nodeEnv !== 'production' || (deployEnv && deployEnv !== 'production');
-
   return {
     metadataBase: METADATA_BASE,
     icons: {
       icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }, { url: '/favicon.ico' }],
     },
-    // In production we want indexing; for preview/dev deployments we keep it noindex.
-    robots: isNonProductionDeploy
-      ? {
-          index: false,
-          follow: false,
-          googleBot: {
-            index: false,
-            follow: false,
-          },
-        }
-      : {
-          index: true,
-          follow: true,
-        },
+    // Demo subdomain: allow crawling but prevent indexing across all pages.
+    robots: {
+      index: false,
+      follow: true,
+      googleBot: {
+        index: false,
+        follow: true,
+      },
+    },
   };
 }
 
